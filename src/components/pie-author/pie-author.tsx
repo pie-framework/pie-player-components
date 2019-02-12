@@ -1,5 +1,9 @@
 import { Component, Prop } from '@stencil/core';
 
+/**
+ * Pie Author will load a Pie Content model for authoring.
+ * It needs to be run in the context 
+ */
 @Component({
   tag: 'pie-author',
   styleUrl: 'pie-author.css',
