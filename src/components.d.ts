@@ -18,35 +18,19 @@ export namespace Components {
 
   interface PieAuthor {
     /**
-    * The first name
+    * The item config
     */
-    'first': string;
-    /**
-    * The last name
-    */
-    'last': string;
-    /**
-    * The middle name
-    */
-    'middle': string;
+    'config': PieContent;
   }
   interface PieAuthorAttributes extends StencilHTMLAttributes {
     /**
-    * The first name
+    * The item config
     */
-    'first'?: string;
-    /**
-    * The last name
-    */
-    'last'?: string;
-    /**
-    * The middle name
-    */
-    'middle'?: string;
+    'config'?: PieContent;
   }
 
   interface PieCloudLoader {
-    'createAuthor': (config: any) => void;
+    'createAuthor': (opts: any) => void;
   }
   interface PieCloudLoaderAttributes extends StencilHTMLAttributes {}
 }

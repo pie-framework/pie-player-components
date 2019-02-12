@@ -1,8 +1,8 @@
 import { Config } from '@stencil/core';
 
 export const config: Config = {
-  namespace: 'pie-player',
-  bundles: [ { components: [ 'pie-author' ] } ],
+  namespace: 'pie-player-components',
+  bundles: [ { components: [ 'pie-author','pie-cloud-loader' ] } ],
   outputTargets:[
     { type: 'dist' },
     { type: 'docs' },

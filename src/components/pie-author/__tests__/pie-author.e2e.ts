@@ -10,7 +10,7 @@ describe('pie-author', () => {
   });
 
   it('renders changes to the name data', async () => {
-    const page = await newE2EPage();
+    // const page = await newE2EPage();
 
     // await page.setContent('<pie-author></pie-author>');
     // const component = await page.find('pie-author');

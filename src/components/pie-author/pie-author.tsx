@@ -1,4 +1,5 @@
 import { Component, Prop } from '@stencil/core';
+import { PieContent } from '../../interface';
 
 /**
  * Pie Author will load a Pie Content model for authoring.
@@ -11,23 +12,10 @@ import { Component, Prop } from '@stencil/core';
 })
 export class Author {
   /**
-   * The first name
+   * The item config
    */
-  @Prop() first: string;
+  @Prop() config: PieContent;
 
-  /**
-   * The middle name
-   */
-  @Prop() middle: string;
-
-  /**
-   * The last name
-   */
-  @Prop() last: string;
-
-  private getText(): string {
-    return '';
-  }
 
   componentWillLoad(){
     // get item model
@@ -35,6 +23,6 @@ export class Author {
   }
 
   render() {
-    return <div>Hello, World! I'm {this.getText()}</div>;
+    return <div>Hello, World! </div>;
   }
 }

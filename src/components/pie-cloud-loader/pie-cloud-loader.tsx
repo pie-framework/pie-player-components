@@ -1,6 +1,5 @@
 import { Component, Method, Prop, Element } from '@stencil/core';
 import {
-  ItemConfig,
   PieItemElement,
   PieContent,
   AdvancedItemConfig
@@ -17,7 +16,13 @@ export class CloudLoader {
   @Element() el: HTMLElement;
 
   @Method()
-  createAuthor(config: any) {
+  createAuthor(opts: any) {
+
+    var err = new Error();
+    console.error(err.stack);
+
+    const config = opts.config;
+    console.log(`-- create author called with ${config}`);
     const authorEl = this.doc.createElement('pie-author');
     Object.assign(authorEl, { config });
     this.el.appendChild(authorEl);
@@ -25,7 +30,10 @@ export class CloudLoader {
       const ac = config as AdvancedItemConfig;
       this.loadCloudPies(ac.pie.elements, this.doc);
     } else {
+      
       const pc = config as PieContent;
+      console.log(`-- simple pie ${JSON.stringify(pc)}`);
+
       this.loadCloudPies(pc.elements, this.doc);
     }
     
@@ -46,10 +54,10 @@ export class CloudLoader {
     doc,
     base_url = 'https://pits-dot-pie-dev-221718.appspot.com/bundles/'
   ) {
-    console.log('----loadCloudPies');
+    
     const head = doc.getElementsByTagName('head')[0];
     const keys = Object.keys(elements);
-
+    console.log(`----loadCloudPies ${JSON.stringify(keys)}`);
     for (const key in keys) {
       const elementName = keys[key];
       const npmPackage: string = elements[elementName];
@@ -86,6 +94,7 @@ export class CloudLoader {
       script.id = elementName;
       script.onload = onloadFn;
       script.src = base_url + npmPackage + '/editor.js';
+      console.log(`appending ${JSON.stringify(script.src)}`);
       head.appendChild(script);
     }
   }

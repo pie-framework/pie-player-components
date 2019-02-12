@@ -1,36 +1,51 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newE2EPage, E2EPage, E2EElement } from '@stencil/core/testing';
 import { simplePieMock } from '../__mock__/config';
 
-describe('pie-cloud-loader', () => {
-  it('creates author element', async () => {
-    const page = await newE2EPage();
+const fs = require('fs');
 
+const mockPieCloudResponseContent = fs.readFileSync(
+  __dirname + '/__tests__/mockPieCloudResponse.js'
+);
+
+const setupInterceptPieCloud = (page, match): Promise<void> => {
+  page.on('request', request => {
+    console.log(`----- intercept called, url = ${request.url()}  match = ${match}`);
+    // mock the response from pie cloud
+    if (request.url().match(match)) {
+      console.log(`----- returning mock`);
+      request.respond({
+        status: 200,
+        contentType: 'application/javascript',
+        body: mockPieCloudResponseContent
+      });
+    } else {
+      request.continue();
+    }
+  });
+  return page.setRequestInterception(true);
+};
+
+describe('pie-cload-loader', () => {
+  let page: E2EPage, pieCloudLoader: E2EElement;
+  const pie = '@pie-element/multiple-choice';
+  beforeEach(async () => {
+    page = await newE2EPage();
     await page.setContent('<pie-cloud-loader></pie-cloud-loader>');
-    const element = await page.find('pie-cloud-loader');
-    element.callMethod('createAuthor', {config: simplePieMock});
-    await page.waitForChanges();
-    const authorEl = await element.find('pie-author');
-    expect(authorEl).toHaveClass('hydrated');
+    pieCloudLoader = await page.find('pie-cloud-loader');
   });
 
-  it('renders changes to the name data', async () => {
-    const page = await newE2EPage();
+  it('renders', async () => {
+    expect(pieCloudLoader).toHaveClass('hydrated');
+  });
 
-    // await page.setContent('<pie-author></pie-author>');
-    // const component = await page.find('pie-author');
-    // const element = await page.find('pie-author >>> div');
-    // expect(element.textContent).toEqual(`Hello, World! I'm `);
-
-    // component.setProperty('first', 'James');
-    // await page.waitForChanges();
-    // expect(element.textContent).toEqual(`Hello, World! I'm James`);
-
-    // component.setProperty('last', 'Quincy');
-    // await page.waitForChanges();
-    // expect(element.textContent).toEqual(`Hello, World! I'm James Quincy`);
-
-    // component.setProperty('middle', 'Earl');
-    // await page.waitForChanges();
-    // expect(element.textContent).toEqual(`Hello, World! I'm James Earl Quincy`);
+  it('loads the script and registers', async () => {
+    await setupInterceptPieCloud(page, pie);
+    console.log(`-- calling createAuthor  from tests`);
+    await pieCloudLoader.callMethod('createAuthor', { config: simplePieMock });
+    await page.waitForChanges();
+    const pieElement = await page.waitForSelector('pie-cloud-loader pie-author');
+    expect(pieElement).toBeDefined();
+    const pieScript = await page.find('script#multiple-choice');
+    expect(pieScript).toBeDefined();
   });
 });
