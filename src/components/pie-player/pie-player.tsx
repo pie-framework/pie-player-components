@@ -2,9 +2,6 @@ import { Component, Prop, Watch, State, Element } from '@stencil/core';
 import { PieContent, ItemConfig } from '../../interface';
 import { PieLoader } from '../../pie-loader';
 import { pieContentFromConfig } from '../../utils/utils';
-import {
-  SessionChangedEvent
-} from '@pie-framework/pie-player-events';
 
 interface PieElement extends HTMLElement {
   _model: Object,
@@ -79,20 +76,12 @@ export class Player {
 
   updateModels() {
     this.pieContentModel.models.map(async model => {
+      console.log(`**** updating model for ${model.element}`)
       const pieEl: PieElement = this.el.querySelector(`[id='${model.id}']`);
       const controller : PieController = PieLoader.getController(pieEl.localName);
       const session = this.session[model.id] = pieEl.session ? pieEl.session : {};
       pieEl.session = session;
       pieEl.model = await controller.model(model,session,this.env);
-    });
-  }
-
-  addListeners() {
-    this.pieContentModel.models.map(async model => {
-      const pieEl: PieElement = this.el.querySelector(`[id='${model.id}']`);
-      pieEl.addEventListener(SessionChangedEvent.TYPE, (event: SessionChangedEvent) => {
-        event.detail.
-      });
     });
   }
 

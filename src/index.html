@@ -1,78 +1,164 @@
 <!DOCTYPE html>
 <html dir="ltr" lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0">
-  <title>Stencil Component Starter</title>
-  <script src="/build/pie-player-components.js"></script>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0"
+    />
+    <title>Stencil Component Starter</title>
+    <script src="/build/pie-player-components.js"></script>
+  </head>
+  <body>
+ 
 
-</head>
-<body>
+    <pie-player id="player"></pie-player>
 
-  <pie-player id="player"></pie-player>
-
-  <script>
-    const config = {
-      id: "1",
-      elements: {"pie-multiple-choice": "@pie-element/multiple-choice@2.4.6"},
-      models: [
-      {
-      id: '1',
-      element: 'multiple-choice',
-      prompt: 'Which of these northern European countries are EU members?',
-      choiceMode: 'checkbox',
-      keyMode: 'numbers',
-      choices: [
-        {
-          correct: true,
-          value: 'sweden',
-          label: 'Sweden',
-          feedback: {
-            type: 'none',
-            value: ''
-          }
+    <script>
+      const config = {
+        id: '1',
+        elements: {
+          'pie-multiple-choice': '@pie-element/multiple-choice@2.4.6',
+          'pie-number-line': '@pie-element/number-line@3.0.4'
         },
-        {
-          value: 'iceland',
-          label: 'Iceland',
-          feedback: {
-            type: 'none',
-            value: ''
+        models: [
+          {
+            id: '1',
+            element: 'multiple-choice',
+            prompt:
+              'Which of these northern European countries are EU members?',
+            choiceMode: 'checkbox',
+            keyMode: 'numbers',
+            choices: [
+              {
+                correct: true,
+                value: 'sweden',
+                label: 'Sweden',
+                feedback: {
+                  type: 'none',
+                  value: ''
+                }
+              },
+              {
+                value: 'iceland',
+                label: 'Iceland',
+                feedback: {
+                  type: 'none',
+                  value: ''
+                }
+              },
+              {
+                value: 'norway',
+                label: 'Norway',
+                feedback: {
+                  type: 'none',
+                  value: ''
+                }
+              },
+              {
+                correct: true,
+                value: 'finland',
+                label: 'Finland',
+                feedback: {
+                  type: 'none',
+                  value: ''
+                }
+              }
+            ],
+            partialScoring: false,
+            partialScoringLabel: `Each correct response that is correctly checked and each incorrect response
+            that is correctly unchecked will be worth 1 point.
+            The maximum points is the total number of answer choices.`
+          },
+          {
+            id: '2',
+            element: 'number-line',
+            correctResponse: [
+              {
+                type: 'point',
+                pointType: 'full',
+                domainPosition: 1
+              },
+              {
+                type: 'line',
+                leftPoint: 'full',
+                rightPoint: 'empty',
+                domainPosition: 1,
+                size: 2
+              }
+            ],
+            feedback: {
+              correct: {
+                type: 'default',
+                default: 'Correct'
+              },
+              partial: {
+                type: 'default',
+                default: 'Nearly'
+              },
+              incorrect: {
+                type: 'custom',
+                custom: '<h1>Incorrect</h1>'
+              }
+            },
+            allowPartialScoring: true,
+            partialScoring: [
+              {
+                numberOfCorrect: 1,
+                scorePercentage: 35
+              }
+            ],
+            config: {
+              width: 500,
+              height: 400,
+              domain: [-5, 5],
+              initialElements: [
+                {
+                  type: 'point',
+                  pointType: 'empty',
+                  domainPosition: -1
+                }
+              ],
+              maxNumberOfPoints: 20,
+              tickFrequency: 6,
+              showMinorTicks: true,
+              snapPerTick: 1,
+              tickLabelOverrides: [],
+              initialType: 'PF',
+              exhibitOnly: false,
+              availableTypes: {
+                PF: true,
+                PE: true,
+                LFF: true,
+                LEF: true,
+                LFE: true,
+                LEE: true,
+                RFN: true,
+                RFP: true,
+                REN: true,
+                REP: true
+              }
+            }
           }
-        },
-        {
-          value: 'norway',
-          label: 'Norway',
-          feedback: {
-            type: 'none',
-            value:
-              ''
-          }
-        },
-        {
-          correct: true,
-          value: 'finland',
-          label: 'Finland',
-          feedback: {
-            type: 'none',
-            value: ''
-          }
-        }
-      ],
-      partialScoring: false,
-      partialScoringLabel: `Each correct response that is correctly checked and each incorrect response
-          that is correctly unchecked will be worth 1 point.
-          The maximum points is the total number of answer choices.`
-    }],
-      markup: "<pie-multiple-choice id='1'></pie-multiple-choice>"
-    };
+        ],
+        markup: `
+        <div style="padding: 15px;">
+          <pie-multiple-choice id='1'></pie-multiple-choice>
+        </div>
+        <div>
+        <pie-number-line id='2'></pie-number-line>
+        </div>
+        `
+      };
 
+      const player = document.getElementById('player');
 
-    const player = document.getElementById("player");
+      player.addEventListener('session-changed', event => {
+        console.log(event.type + ':' + JSON.stringify(event.detail));
+        console.log(JSON.stringify(player.session['1']));
+      });
 
-    player.config = config;
-
-  </script>
-
-</body>
+      player.config = config;
+    </script>
+  </body>
 </html>
