@@ -1,10 +1,11 @@
 import { newE2EPage, E2EPage, E2EElement } from '@stencil/core/testing';
-import { simplePieMock } from '../__mock__/config';
+import { simplePieMock } from '../../__mock__/config';
+import { PieLoader } from "../../../pie-loader";
 
 const fs = require('fs');
 
 const mockPieCloudResponseContent = fs.readFileSync(
-  __dirname + '/__tests__/mockPieCloudResponse.js'
+  __dirname + '/mockPieCloudResponse.js'
 );
 
 const setupInterceptPieCloud = (page, match): Promise<void> => {
@@ -47,5 +48,6 @@ describe('pie-cload-loader', () => {
     expect(pieElement).toBeDefined();
     const pieScript = await page.find('script#multiple-choice');
     expect(pieScript).toBeDefined();
+    console.log(`registry.... ${JSON.stringify(PieLoader.registry)}`);
   });
 });

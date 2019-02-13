@@ -10,6 +10,7 @@ import '@stencil/core';
 
 import {
   AdvancedItemConfig,
+  ItemConfig,
   PieContent,
 } from './interface';
 
@@ -33,17 +34,48 @@ export namespace Components {
     'createAuthor': (opts: any) => void;
   }
   interface PieCloudLoaderAttributes extends StencilHTMLAttributes {}
+
+  interface PiePlayer {
+    /**
+    * The Pie config model.
+    */
+    'config': ItemConfig;
+    /**
+    * Describes runtime environment for the player.
+    */
+    'env': Object;
+    /**
+    * The Pie Session
+    */
+    'session': Object;
+  }
+  interface PiePlayerAttributes extends StencilHTMLAttributes {
+    /**
+    * The Pie config model.
+    */
+    'config'?: ItemConfig;
+    /**
+    * Describes runtime environment for the player.
+    */
+    'env'?: Object;
+    /**
+    * The Pie Session
+    */
+    'session'?: Object;
+  }
 }
 
 declare global {
   interface StencilElementInterfaces {
     'PieAuthor': Components.PieAuthor;
     'PieCloudLoader': Components.PieCloudLoader;
+    'PiePlayer': Components.PiePlayer;
   }
 
   interface StencilIntrinsicElements {
     'pie-author': Components.PieAuthorAttributes;
     'pie-cloud-loader': Components.PieCloudLoaderAttributes;
+    'pie-player': Components.PiePlayerAttributes;
   }
 
 
@@ -59,14 +91,22 @@ declare global {
     new (): HTMLPieCloudLoaderElement;
   };
 
+  interface HTMLPiePlayerElement extends Components.PiePlayer, HTMLStencilElement {}
+  var HTMLPiePlayerElement: {
+    prototype: HTMLPiePlayerElement;
+    new (): HTMLPiePlayerElement;
+  };
+
   interface HTMLElementTagNameMap {
     'pie-author': HTMLPieAuthorElement
     'pie-cloud-loader': HTMLPieCloudLoaderElement
+    'pie-player': HTMLPiePlayerElement
   }
 
   interface ElementTagNameMap {
     'pie-author': HTMLPieAuthorElement;
     'pie-cloud-loader': HTMLPieCloudLoaderElement;
+    'pie-player': HTMLPiePlayerElement;
   }
 
 

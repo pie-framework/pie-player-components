@@ -6,6 +6,9 @@ import {
 } from '../../interface';
 import isFunction from 'lodash/isFunction';
 import { getPackageWithoutVersion } from '../../utils/utils';
+import { PieLoader } from '../../pie-loader';
+
+
 
 @Component({
   tag: 'pie-cloud-loader'
@@ -15,12 +18,10 @@ export class CloudLoader {
 
   @Element() el: HTMLElement;
 
+  
+
   @Method()
   createAuthor(opts: any) {
-
-    var err = new Error();
-    console.error(err.stack);
-
     const config = opts.config;
     console.log(`-- create author called with ${config}`);
     const authorEl = this.doc.createElement('pie-author');
@@ -28,13 +29,12 @@ export class CloudLoader {
     this.el.appendChild(authorEl);
     if (config.pie) {
       const ac = config as AdvancedItemConfig;
-      this.loadCloudPies(ac.pie.elements, this.doc);
-    } else {
-      
+      PieLoader.loadCloudPies(ac.pie.elements, this.doc);
+      // this.loadCloudPies(ac.pie.elements, this.doc);
+    } else {   
       const pc = config as PieContent;
       console.log(`-- simple pie ${JSON.stringify(pc)}`);
-
-      this.loadCloudPies(pc.elements, this.doc);
+      PieLoader.loadCloudPies(pc.elements, this.doc);
     }
     
   }
@@ -43,6 +43,7 @@ export class CloudLoader {
     class extends HTMLElement {
       set model(_) {}
     };
+
   /**
    *
    * @param {Object<string,string>} elements elements to load from pie cloud service
