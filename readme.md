@@ -2,25 +2,104 @@
 
 # Pie Player Components
 
-This package provides components for using PIE Framework content.
+> STATUS - Pre-Alpha, this is a work in progress. Apis may  change.
 
+This package provides Web Components for using PIE Framework content.
+
+It provides [pie-player](src/components/pie-player/readme.md)
+
+`<pie-player></pie-player>`
+
+For rendering PIE content, and [pie-author](src/components/pie-player/readme.md)
+
+
+`<pie-author></pie-author>`
+
+For authoring content.
 
 ## Using these components
 
 ### Script tag
 
-- Put a script tag similar to this `<script src='https://unpkg.com/my-component@0.0.1/dist/pie-player-componets.js'></script>` in the head of your index.html
-- Then you can use the elements anywhere in your template, JSX, html etc
+
+Put  
+
+```html
+<script src='https://unpkg.com/@pie-framework@latest/dist/pie-player-components.js'></script>
+``` 
+
+in the head of your index.html
+
+Then you can use the element anywhere in your template, JSX, html etc.
+
+```html
+<pie-player id="player"></pie-player>
+<script>
+      const player = document.getElementById('player');
+
+      player.addEventListener('session-changed', event => {
+        // do something
+      });
+
+      player.config = config;
+</script>
+```
 
 ### Node Modules
-- Run `npm install pie-player-components --save`
-- Put a script tag similar to this `<script src='node_modules/my-component/dist/mycomponent.js'></script>` in the head of your index.html
+- Run `npm install @pie-framework/pie-player-components --save`
+- Put this `<script src='node_modules/@pie-framework/pie-player-components/dist/pie-player-components.js'></script>` in the head of your index.html
 - Then you can use the element anywhere in your template, JSX, html etc
+
+### VUE
+
+
+#### 1: Add the component to the dependencies
+
+```json
+// package.json
+
+"dependencies": {
+  ...
+  "@pie-framework/pie-player-components": "latest"
+}
+```
+
+#### 2: Import the component(s)
+
+```javascript
+import { defineCustomElements } from '@pie-framework/pie-player-components/dist/loader';
+
+defineCustomElements(window);
+```
+
+#### 3: Consume the component
+
+To prevent Vue from complaining that your component has an unrecognized tag, add the following in main.js. Use either the full name, or regex if you want to capture a family of components.
+
+```json
+Vue.config.ignoredElements = [
+  "pie-player",
+  "pie-author"
+];
+```
+
+It is now possible to use the tag provided by the pie components in any template of the app.
+
+```html
+<pie-player v-bind:config.prop="config" />
+```
+
 
 ### React
 
 TODO
 
-### VUE
 
-TODO
+
+# TODO
+
+- [ ] send an OPTIONS request to build service and have a loading status if there's a 503, and re-try
+- [ ] pie-loader should manage loading bundles for an item
+- [ ] pie-loader should handle the possiblity of two versions of a PIE being loaded
+- [ ] implement docs 
+- [ ] implement pie-author

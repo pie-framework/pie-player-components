@@ -3,21 +3,6 @@ import { PieContent, ItemConfig } from '../../interface';
 import { PieLoader } from '../../pie-loader';
 import { pieContentFromConfig } from '../../utils/utils';
 
-interface PieElement extends HTMLElement {
-  _model: Object,
-  model: Object;
-  configure: Object,
-  _configure: Object,
-  session: Object;
-  onModelChanged: Function;
-}
-
-
-type PieController = {
-  model: (config: Object, session: Object, env: Object) => Promise<Object>;
-  score: (config: Object, session: Object, env: Object) => Promise<Object>;
-};
-
 
 
 /**
@@ -75,32 +60,15 @@ export class Player {
   }
 
   updateModels() {
-    this.pieContentModel.models.map(async model => {
-      console.log(`**** updating model for ${model.element}`)
-      const pieEl: PieElement = this.el.querySelector(`[id='${model.id}']`);
-      const controller : PieController = PieLoader.getController(pieEl.localName);
-      const session = this.session[model.id] = pieEl.session ? pieEl.session : {};
-      pieEl.session = session;
-      pieEl.model = await controller.model(model,session,this.env);
-    });
+    PieLoader.updateModels(this.pieContentModel.models, this.el, this.env);
   }
 
   componentWillLoad(){
     this.watchConfig(this.config);
-    // get item model
-    // find out if elements are registered yet for the config pies
   }
 
   async componentDidLoad() {
-    
-    const undefinedElements = this.el.querySelectorAll(':not(:defined)');
-    console.log(`undefinedElements --- ${undefinedElements.length}`);
-    const promises = [...undefinedElements].map(
-      e => customElements.whenDefined(e.localName)
-    );
-    await Promise.all(promises);
-    this.elementsLoaded = true;
-    console.log(`undefinedElements loaded ${this.el.querySelectorAll(':not(:defined)').length}`);
+    this.elementsLoaded = await PieLoader.elementsHaveLoaded(this.el);    
   }
 
   render() {

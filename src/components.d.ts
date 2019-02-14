@@ -9,9 +9,7 @@ import '@stencil/core';
 
 
 import {
-  AdvancedItemConfig,
   ItemConfig,
-  PieContent,
 } from './interface';
 
 
@@ -19,21 +17,32 @@ export namespace Components {
 
   interface PieAuthor {
     /**
-    * The item config
+    * The Pie config model.
     */
-    'config': PieContent;
+    'config': ItemConfig;
+    /**
+    * Describes runtime environment for the player.
+    */
+    'env': Object;
+    /**
+    * The Pie Session
+    */
+    'session': Object;
   }
   interface PieAuthorAttributes extends StencilHTMLAttributes {
     /**
-    * The item config
+    * The Pie config model.
     */
-    'config'?: PieContent;
+    'config'?: ItemConfig;
+    /**
+    * Describes runtime environment for the player.
+    */
+    'env'?: Object;
+    /**
+    * The Pie Session
+    */
+    'session'?: Object;
   }
-
-  interface PieCloudLoader {
-    'createAuthor': (opts: any) => void;
-  }
-  interface PieCloudLoaderAttributes extends StencilHTMLAttributes {}
 
   interface PiePlayer {
     /**
@@ -68,13 +77,11 @@ export namespace Components {
 declare global {
   interface StencilElementInterfaces {
     'PieAuthor': Components.PieAuthor;
-    'PieCloudLoader': Components.PieCloudLoader;
     'PiePlayer': Components.PiePlayer;
   }
 
   interface StencilIntrinsicElements {
     'pie-author': Components.PieAuthorAttributes;
-    'pie-cloud-loader': Components.PieCloudLoaderAttributes;
     'pie-player': Components.PiePlayerAttributes;
   }
 
@@ -85,12 +92,6 @@ declare global {
     new (): HTMLPieAuthorElement;
   };
 
-  interface HTMLPieCloudLoaderElement extends Components.PieCloudLoader, HTMLStencilElement {}
-  var HTMLPieCloudLoaderElement: {
-    prototype: HTMLPieCloudLoaderElement;
-    new (): HTMLPieCloudLoaderElement;
-  };
-
   interface HTMLPiePlayerElement extends Components.PiePlayer, HTMLStencilElement {}
   var HTMLPiePlayerElement: {
     prototype: HTMLPiePlayerElement;
@@ -99,13 +100,11 @@ declare global {
 
   interface HTMLElementTagNameMap {
     'pie-author': HTMLPieAuthorElement
-    'pie-cloud-loader': HTMLPieCloudLoaderElement
     'pie-player': HTMLPiePlayerElement
   }
 
   interface ElementTagNameMap {
     'pie-author': HTMLPieAuthorElement;
-    'pie-cloud-loader': HTMLPieCloudLoaderElement;
     'pie-player': HTMLPiePlayerElement;
   }
 

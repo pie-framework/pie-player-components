@@ -22,7 +22,7 @@ export const pieContentFromConfig = (config: any): PieContent => {
       return pc;
     }
   } catch (err) {
-    console.warn('invalid pie model');
+    console.warn(`invalid pie model: ${JSON.stringify(config)}`);
     return null;  
   }
 };

@@ -1,32 +1,31 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newE2EPage, E2EElement, E2EPage } from '@stencil/core/testing';
+import { setupInterceptPieCloud } from '../../__tests__/util';
+import { simplePieMock } from '../../__mock__/config';
 
 describe('pie-author', () => {
-  it('renders', async () => {
-    const page = await newE2EPage();
+  let pie;
+  let page: E2EPage, pieAuthor: E2EElement; 
+  beforeEach(async () => {
+    pie = '@pie-element/multiple-choice';
+    page = await newE2EPage();
+  });
 
-    await page.setContent('<pie-author></pie-author>');
+  it.skip('renders', async () => {
     const element = await page.find('pie-author');
     expect(element).toHaveClass('hydrated');
   });
 
-  it('renders changes to the name data', async () => {
-    // const page = await newE2EPage();
+  it('loads the PIE Content and packges ', async () => {
+    await page.setContent('<pie-author config="evan"></pie-author>');
+    pieAuthor = await page.find('pie-author');
+    setupInterceptPieCloud(page,  pie);
+    pieAuthor.setProperty('config', simplePieMock)
+    await page.waitForChanges();
+    
+    const el = await page.waitForSelector('pie-author');
+    expect(el).toBeDefined();
+    const pieScript = await page.find('script#multiple-choice');
+    expect(pieScript).toBeDefined();
 
-    // await page.setContent('<pie-author></pie-author>');
-    // const component = await page.find('pie-author');
-    // const element = await page.find('pie-author >>> div');
-    // expect(element.textContent).toEqual(`Hello, World! I'm `);
-
-    // component.setProperty('first', 'James');
-    // await page.waitForChanges();
-    // expect(element.textContent).toEqual(`Hello, World! I'm James`);
-
-    // component.setProperty('last', 'Quincy');
-    // await page.waitForChanges();
-    // expect(element.textContent).toEqual(`Hello, World! I'm James Quincy`);
-
-    // component.setProperty('middle', 'Earl');
-    // await page.waitForChanges();
-    // expect(element.textContent).toEqual(`Hello, World! I'm James Earl Quincy`);
   });
 });

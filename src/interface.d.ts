@@ -34,3 +34,19 @@ interface PieModel  {
 
 export type ItemConfig = PieContent | AdvancedItemConfig;
 
+
+interface PieElement extends HTMLElement {
+  _model: Object,
+  model: Object;
+  configure: Object,
+  _configure: Object,
+  session: Object;
+  onModelChanged: Function;
+}
+
+
+type PieController = {
+  model: (config: Object, session: Object, env: Object) => Promise<Object>;
+  score: (config: Object, session: Object, env: Object) => Promise<Object>;
+};
+

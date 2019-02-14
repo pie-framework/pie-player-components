@@ -12,7 +12,7 @@
   <body>
  
 
-    <pie-player id="player"></pie-player>
+    <pie-author id="player"></pie-author>
 
     <script>
       const config = {
@@ -24,7 +24,7 @@
         models: [
           {
             id: '1',
-            element: 'multiple-choice',
+            element: 'pie-multiple-choice',
             prompt:
               'Which of these northern European countries are EU members?',
             choiceMode: 'checkbox',
@@ -72,7 +72,7 @@
           },
           {
             id: '2',
-            element: 'number-line',
+            element: 'pie-number-line',
             correctResponse: [
               {
                 type: 'point',

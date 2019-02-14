@@ -1,6 +1,11 @@
 import isFunction from 'lodash/isFunction';
 import { getPackageWithoutVersion } from './utils/utils';
-import { PieItemElement } from './interface';
+import {
+  PieItemElement,
+  PieElement,
+  PieController,
+  PieContent
+} from './interface';
 import { BUILD_SERVICE_BASE } from './defaults';
 
 enum Status {
@@ -18,38 +23,54 @@ interface Entry {
 }
 
 interface Registry {
-  [key:string]: Entry
+  [key: string]: Entry;
 }
 
 /**
  * Pie Registry contols the loading of all PIEs from the pie build service
  */
 export namespace PieLoader {
-
-  console.log(`INIT REGISTRY...`);
   window['PIE_REGISTRY'] = window['PIE_REGISTRY'] ? window['PIE_REGISTRY'] : {};
   export const registry: Registry = window['PIE_REGISTRY'];
 
-
   export const getController = (pieTagName: string) => {
-     return registry[pieTagName].controller;
-  }
+    return registry[pieTagName].controller;
+  };
 
   const getEmptyConfigure = () =>
     class extends HTMLElement {
       set model(_) {}
     };
-    
 
+  export const elementsHaveLoaded = (el): Promise<boolean> => {
+    const undefinedElements = el.querySelectorAll(':not(:defined)');
+    if (undefinedElements.length == 0) {
+      return Promise.resolve(false);
+    }
 
-  /**
-   * TODO check the registy to see if elements are loaded/loading already
-   * if they are, check package version, if duplicate is different version prepare to load and modify component tags in markup 
-   * if not prepare to load
-   */
-  // const getPackagesToLoad = (pieConfig: PieContent) => {
-   
-  // } 
+    const promises = [...undefinedElements].map(e =>
+      customElements.whenDefined(e.localName)
+    );
+    return Promise.all(promises)
+      .then(() => {
+        return Promise.resolve(true);
+      })
+      .catch(() => {
+        return Promise.resolve(false);
+      });
+  };
+
+  export const updateModels = (models, el, env) => {
+    models.map(async model => {
+      const pieEl: PieElement = el.querySelector(`[id='${model.id}']`);
+      const controller: PieController = PieLoader.getController(
+        pieEl.localName
+      );
+      pieEl.session || (pieEl.session = {});
+      pieEl.model = await controller.model(model, pieEl.session, env);
+    });
+  };
+
   /**
    *
    * @param {Object<string,string>} elements elements to load from pie cloud service
@@ -61,17 +82,16 @@ export namespace PieLoader {
     doc,
     base_url = BUILD_SERVICE_BASE
   ) => {
-
     const head = doc.getElementsByTagName('head')[0];
     const keys = Object.keys(elements);
-    console.log(`----loadCloudPies ${JSON.stringify(keys)}`);
+
     for (const key in keys) {
       const elementName = keys[key];
       const npmPackage: string = elements[elementName];
       const packageWithoutVersion = getPackageWithoutVersion(npmPackage);
+
       const script = doc.createElement('script');
       const onloadFn = (_package => {
-        console.log('----on load function');
         return () => {
           const packages = _package.split('+');
           const elementsName = elementName.split('+');
@@ -82,7 +102,6 @@ export namespace PieLoader {
             const atSymbolPos = initialEl.indexOf('@');
             const elName =
               atSymbolPos >= 0 ? initialEl.slice(0, atSymbolPos) : initialEl;
-            console.log('defining elements');
 
             if (!customElements.get(elName)) {
               customElements.define(elName, pie.Element);
@@ -91,11 +110,9 @@ export namespace PieLoader {
                 package: _package,
                 status: Status.loading,
                 tagName: elName
-              }
+              };
 
-              console.log(`registry updated in onload.... ${JSON.stringify(PieLoader.registry)}`);
               customElements.whenDefined(elName).then(async () => {
-                console.log(`updating registery in whendefined...`);
                 registry[elName].status = Status.loaded;
                 registry[elName].element = customElements.get(elName);
                 registry[elName].controller = pie.controller;
@@ -109,7 +126,9 @@ export namespace PieLoader {
               customElements.define(configElName, pie.Configure);
 
               customElements.whenDefined(configElName).then(async () => {
-                registry[elName].config = customElements.get(configElName);
+                registry[configElName].config = customElements.get(
+                  configElName
+                );
               });
             }
           });
@@ -119,9 +138,28 @@ export namespace PieLoader {
       script.id = elementName;
       script.onload = onloadFn;
       script.src = base_url + npmPackage + '/editor.js';
-      console.log(`appending ${JSON.stringify(script.src)}`);
+
       head.appendChild(script);
     }
-  }
+  };
 
+  export const convertPieContent = (
+    content: PieContent,
+    forAuthoring = true
+  ): PieContent => {
+    let c = content;
+    // todo make authoring configs markup point to -config element
+    // todo if markup is present, replace in-place with  new tags
+    // todo if no markup , add markup with sequence of tags
+    if (forAuthoring) {
+      const tags = content.models.map(model => {
+        return `<${model.element}-config id="${model.id}"></${
+          model.element
+        }-config>`;
+      });
+      c.markup = tags.join('');
+    }
+
+    return c;
+  };
 }
