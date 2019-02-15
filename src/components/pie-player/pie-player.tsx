@@ -60,12 +60,14 @@ export class Player {
 
   @State() pieContentModel: PieContent;
 
+  pieLoader = new PieLoader();
+
   @Watch('config')
   watchConfig(newConfig) {
     this.pieContentModel = pieContentFromConfig(newConfig);
     if (!this.elementsLoaded) {
       this.el.innerHTML = this.pieContentModel.markup;
-      PieLoader.loadCloudPies(this.pieContentModel.elements, this.doc);
+      this.pieLoader.loadCloudPies(this.pieContentModel.elements, this.doc);
     } else {
       this.updateModels();
     }
@@ -81,7 +83,7 @@ export class Player {
   updateModels() {
     this.pieContentModel.models.forEach(async model => {
       const pieEl: PieElement = this.el.querySelector(`[id='${model.id}']`);
-      const controller: PieController = PieLoader.getController(
+      const controller: PieController = this.pieLoader.getController(
         pieEl.localName
       );
       pieEl.session =  this.findOrAddSession(this.session.data, model.id);
@@ -94,7 +96,7 @@ export class Player {
   }
 
   async componentDidLoad() {
-    this.elementsLoaded = await PieLoader.elementsHaveLoaded(this.el);
+    this.elementsLoaded = await this.pieLoader.elementsHaveLoaded(this.el);
   }
 
   render() {

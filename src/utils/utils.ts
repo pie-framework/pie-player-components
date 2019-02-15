@@ -1,5 +1,5 @@
 import parseNpm from 'parse-package-name';
-import { PieContent, AdvancedItemConfig } from '../interface';
+import { PieContent, AdvancedItemConfig, PieItemElement } from '../interface';
 
 export const getPackageWithoutVersion = packages => {
   const packagesArray = packages.split('+');
@@ -10,7 +10,9 @@ export const getPackageWithoutVersion = packages => {
   return newPackageArray.join('+');
 };
 
-
+export const getPackageBundleUri = (pies: PieItemElement) => {
+  return encodeURI(Object.values(pies).join('+'));
+}
 
 export const pieContentFromConfig = (config: any): PieContent => {
   try {

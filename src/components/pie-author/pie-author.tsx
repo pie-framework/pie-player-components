@@ -37,14 +37,16 @@ export class Author {
 
   @State() pieContentModel: PieContent;
 
+  pieLoader = new PieLoader();
+
   @Watch('config')
   watchConfig(newConfig) {
     if (newConfig) {
       this.pieContentModel = pieContentFromConfig(newConfig);
-      this.pieContentModel = PieLoader.convertPieContent(this.pieContentModel);
+      this.pieContentModel = this.pieLoader.convertPieContent(this.pieContentModel);
 
       if (!this.elementsLoaded) {
-        PieLoader.loadCloudPies(this.pieContentModel.elements, this.doc);
+        this.pieLoader.loadCloudPies(this.pieContentModel.elements, this.doc);
       } else {
         this.updateModels();
       }
@@ -70,7 +72,7 @@ export class Author {
   }
 
   async componentDidLoad() {
-    this.elementsLoaded = await PieLoader.elementsHaveLoaded(this.el);
+    this.elementsLoaded = await this.pieLoader.elementsHaveLoaded(this.el);
   }
 
   render() {

@@ -11,14 +11,15 @@ The Pie Player loads PIE content for rendering.
 | --------- | --------- | --------------------------------------------- | ---------------------------------- | ------------------------------------- |
 | `config`  | --        | The Pie config model.                         | `AdvancedItemConfig \| PieContent` | `undefined`                           |
 | `env`     | --        | Describes runtime environment for the player. | `Object`                           | `{ mode: 'gather', role: 'student' }` |
-| `session` | --        | The Pie Session                               | `{ id: string; data: any[]; }`     | `{id: nanoid(), data:[]}`             |
+| `session` | --        | The Pie Session                               | `{ id: string; data: any[]; }`     | `{id: "", data:[]}`                   |
 
 
 ## Events
 
-| Event            | Description                                                                                              | Type                |
-| ---------------- | -------------------------------------------------------------------------------------------------------- | ------------------- |
-| `sessionUpdated` | Emmitted when any interaction in the set of interactions being rendered has been mutated by user action. | `CustomEvent<void>` |
+| Event               | Description                                                                                                                               | Type                |
+| ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- | ------------------- |
+| `responseCompleted` | TODO - Emmitted when any all interactions in a PIE Assessment Item have reported that a user  has provided a response to the interaction. | `CustomEvent<void>` |
+| `sessionChanged`    | Emmitted when any interaction in the set of interactions being rendered has been mutated by user action.                                  | `CustomEvent<void>` |
 
 
 ----------------------------------------------

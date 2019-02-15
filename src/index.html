@@ -155,7 +155,6 @@
 
       player.addEventListener('sessionChanged', event => {
         console.log(event.type + ':' + JSON.stringify(event.detail));
-        console.log(JSON.stringify(player.session['1']));
       });
 
       player.config = config;
