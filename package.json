@@ -16,10 +16,6 @@
     "test": "stencil test --spec --e2e",
     "test.watch": "stencil test --spec --e2e --watchAll"
   },
-  "dependencies": {
-    "@pie-framework/pie-player-events": "^0.1.0",
-    "parse-package-name": "^0.1.0"
-  },
   "devDependencies": {
     "@stencil/core": "~0.16.2",
     "@types/jest": "23.3.14",
@@ -27,11 +23,14 @@
     "jest": "23.6.0",
     "jest-cli": "23.6.0",
     "jest-environment-node-debug": "^2.0.0",
+    "nanoid": "^2.0.1",
     "prettier": "1.16.4",
     "puppeteer": "1.8.0",
     "tslint": "^5.12.1",
     "tslint-config-prettier": "^1.18.0",
-    "typescript": "^3.3.3"
+    "typescript": "^3.3.3",
+    "@pie-framework/pie-player-events": "^0.1.0",
+    "parse-package-name": "^0.1.0"
   },
   "license": "MIT"
 }

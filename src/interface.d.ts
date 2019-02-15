@@ -12,6 +12,10 @@ interface PieContent {
   markup: string;
 }
 
+export type ItemSession = {
+  id: string;
+  data: any[];
+};
 
 export interface PieItemElement { 
   [elementName: string]: string 

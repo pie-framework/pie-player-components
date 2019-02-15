@@ -5,17 +5,10 @@
 class MockElement extends HTMLElement {
   constructor() {
     super();
-    // console.log('constructing mock el');
-    // const shadow = this.attachShadow({ mode: 'open' });
-    // const name = this.getAttribute('name');
-    // const helloEl = document.createElement('div');
-    // helloEl.textContent = "hello element" + name;
-    // shadow.appendChild(helloEl);
+
   }
   set model(val) {
-    console.log('model setter on mock el with ' + val);
     if (val) {
-      console.log('adding model attr ');
       this.setAttribute('model', 'true');
     } else {
       this.removeAttribute('model');

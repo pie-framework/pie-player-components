@@ -2,9 +2,9 @@
 
 # Pie Player Components
 
-> STATUS - Pre-Alpha, this is a work in progress. Apis may  change.
+> STATUS - Pre-Alpha, this is a work in progress. Apis may change.
 
-This package provides Web Components for using PIE Framework content.
+This package provides Custom Html Elements for using PIE Framework content.
 
 It provides [pie-player](src/components/pie-player/readme.md)
 
@@ -98,8 +98,15 @@ TODO
 
 # TODO
 
+Element Registry
+This is not working yet. Goal is for these components to use a controller that maintains a registry of which custom elements are installed and only reach out to the bundle build service when it needs new one(s). 
+
+
+
 - [ ] send an OPTIONS request to build service and have a loading status if there's a 503, and re-try
 - [ ] pie-loader should manage loading bundles for an item
-- [ ] pie-loader should handle the possiblity of two versions of a PIE being loaded
+- [ ] pie-loader should handle the possiblity of two versions of a PIE being loaded (will probably need build service update to include version in global key)
 - [ ] implement docs 
 - [ ] implement pie-author
+- [ ] handle re-setting of same player/author with a new config
+- [ ] export a pie-loader tag/component that holds the loading controller and can wrap player/author to provide some control over loader behavior. This will make it exportable so can be used with pie-demo or anything else that needs loading.

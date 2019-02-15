@@ -2,8 +2,6 @@ import isFunction from 'lodash/isFunction';
 import { getPackageWithoutVersion } from './utils/utils';
 import {
   PieItemElement,
-  PieElement,
-  PieController,
   PieContent
 } from './interface';
 import { BUILD_SERVICE_BASE } from './defaults';
@@ -46,7 +44,7 @@ export namespace PieLoader {
     const undefinedElements = el.querySelectorAll(':not(:defined)');
     if (undefinedElements.length == 0) {
       return Promise.resolve(false);
-    }
+  }
 
     const promises = [...undefinedElements].map(e =>
       customElements.whenDefined(e.localName)
@@ -58,17 +56,6 @@ export namespace PieLoader {
       .catch(() => {
         return Promise.resolve(false);
       });
-  };
-
-  export const updateModels = (models, el, env) => {
-    models.map(async model => {
-      const pieEl: PieElement = el.querySelector(`[id='${model.id}']`);
-      const controller: PieController = PieLoader.getController(
-        pieEl.localName
-      );
-      pieEl.session || (pieEl.session = {});
-      pieEl.model = await controller.model(model, pieEl.session, env);
-    });
   };
 
   /**
@@ -126,7 +113,7 @@ export namespace PieLoader {
               customElements.define(configElName, pie.Configure);
 
               customElements.whenDefined(configElName).then(async () => {
-                registry[configElName].config = customElements.get(
+                registry[elName].config = customElements.get(
                   configElName
                 );
               });

@@ -10,6 +10,7 @@ import '@stencil/core';
 
 import {
   ItemConfig,
+  ItemSession,
 } from './interface';
 
 
@@ -56,7 +57,7 @@ export namespace Components {
     /**
     * The Pie Session
     */
-    'session': Object;
+    'session': ItemSession;
   }
   interface PiePlayerAttributes extends StencilHTMLAttributes {
     /**
@@ -68,9 +69,17 @@ export namespace Components {
     */
     'env'?: Object;
     /**
+    * TODO - Emmitted when any all interactions in a PIE Assessment Item have reported that a user  has provided a response to the interaction.
+    */
+    'onResponseCompleted'?: (event: CustomEvent) => void;
+    /**
+    * Emmitted when any interaction in the set of interactions being rendered has been mutated by user action.
+    */
+    'onSessionChanged'?: (event: CustomEvent) => void;
+    /**
     * The Pie Session
     */
-    'session'?: Object;
+    'session'?: ItemSession;
   }
 }
 
