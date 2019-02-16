@@ -16,9 +16,6 @@ import {
   SessionChangedEvent
 } from '@pie-framework/pie-player-events';
 
-/**
- * Pie Player loads Pie Content and implements the Pie Player Api
- */
 @Component({
   tag: 'pie-player',
   shadow: false
@@ -63,11 +60,11 @@ export class Player {
   pieLoader = new PieLoader();
 
   @Watch('config')
-  watchConfig(newConfig) {
+  async watchConfig(newConfig) {
     this.pieContentModel = pieContentFromConfig(newConfig);
     if (!this.elementsLoaded) {
       this.el.innerHTML = this.pieContentModel.markup;
-      this.pieLoader.loadCloudPies(this.pieContentModel.elements, this.doc);
+      await this.pieLoader.loadCloudPies(this.pieContentModel.elements, this.doc);
     } else {
       this.updateModels();
     }

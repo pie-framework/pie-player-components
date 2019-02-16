@@ -1,9 +1,11 @@
+console.log(`---------- evaluated MockElement`);
 /*
  *  This mocks the code structure that would be returned from pie cloud service
  */
-
 class MockElement extends HTMLElement {
   constructor() {
+    console.log(`---------- constructing MockElement`);
+
     super();
 
   }
@@ -21,6 +23,7 @@ class MockElement extends HTMLElement {
 
 class MockConfig extends HTMLElement {
   constructor() {
+
     super();
     const shadow = this.attachShadow({ mode: 'open' });
     const name = this.getAttribute('name');

@@ -11,6 +11,7 @@ import '@stencil/core';
 import {
   ItemConfig,
   ItemSession,
+  PieItemElement,
 } from './interface';
 
 
@@ -44,6 +45,14 @@ export namespace Components {
     */
     'session'?: Object;
   }
+
+  interface PieLoader {
+    /**
+    * Loads the custom elments defined by the PIEs, if they are not already loaded.
+    */
+    'loadPies': (pieHash: PieItemElement) => Promise<void>;
+  }
+  interface PieLoaderAttributes extends StencilHTMLAttributes {}
 
   interface PiePlayer {
     /**
@@ -86,11 +95,13 @@ export namespace Components {
 declare global {
   interface StencilElementInterfaces {
     'PieAuthor': Components.PieAuthor;
+    'PieLoader': Components.PieLoader;
     'PiePlayer': Components.PiePlayer;
   }
 
   interface StencilIntrinsicElements {
     'pie-author': Components.PieAuthorAttributes;
+    'pie-loader': Components.PieLoaderAttributes;
     'pie-player': Components.PiePlayerAttributes;
   }
 
@@ -101,6 +112,12 @@ declare global {
     new (): HTMLPieAuthorElement;
   };
 
+  interface HTMLPieLoaderElement extends Components.PieLoader, HTMLStencilElement {}
+  var HTMLPieLoaderElement: {
+    prototype: HTMLPieLoaderElement;
+    new (): HTMLPieLoaderElement;
+  };
+
   interface HTMLPiePlayerElement extends Components.PiePlayer, HTMLStencilElement {}
   var HTMLPiePlayerElement: {
     prototype: HTMLPiePlayerElement;
@@ -109,11 +126,13 @@ declare global {
 
   interface HTMLElementTagNameMap {
     'pie-author': HTMLPieAuthorElement
+    'pie-loader': HTMLPieLoaderElement
     'pie-player': HTMLPiePlayerElement
   }
 
   interface ElementTagNameMap {
     'pie-author': HTMLPieAuthorElement;
+    'pie-loader': HTMLPieLoaderElement;
     'pie-player': HTMLPiePlayerElement;
   }
 

@@ -1,17 +1,7 @@
 import { PieLoader,Status } from "../pie-loader";
 import { PieItemElement } from '../interface';
+import { MockPieLoader } from "./mockPieLoader";
 
-class MockPieLoader extends PieLoader {
-  constructor() {
-    super();
-  }
-  public _getElementsToLoad() {
-    return this.getElementsToLoad;
-  } 
-  public _registry() {
-    return this.registry;
-  }
-}
 
 describe('hande registry  packages', () => {
 
@@ -46,5 +36,7 @@ describe('hande registry  packages', () => {
     expect(result).toBeDefined();
     expect(result['math-inline']).toBeDefined();
   });
+
+
 
 });
