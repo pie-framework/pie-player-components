@@ -38,18 +38,14 @@ export const setupInterceptForRetry = (page: E2EPage, numberOfFailures = 4): Pro
     headers: resHeaders,
     status: 503
   }
-  console.log(`setting  up intercept`);
 
   let count = 0;
   page.on('request', request => {
     count++;
-    
-    console.log(`[setupInterceptForRetry] ${count} request received ${request.url()}`);
-    // mock the response from pie cloud
-    console.log(`[setupInterceptForRetry] headers ${JSON.stringify(request.headers())}`);
+    ;
     if (request.url().match(BUILD_SERVICE_BASE)) {
-      console.log(`[setupInterceptForRetry] send 503 response for ${request.url()}`);
-      if (count <= numberOfFailures) {
+      // fail the pre-flights
+      if (count <= numberOfFailures && request.method() === "OPTIONS") {
         request.respond(failResponse);
       } else {
         request.respond(successResponse);

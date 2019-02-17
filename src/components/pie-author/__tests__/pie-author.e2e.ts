@@ -7,7 +7,8 @@ describe('pie-author', () => {
   let page: E2EPage, pieAuthor: E2EElement; 
   beforeEach(async () => {
     pie = '@pie-element/multiple-choice';
-    page = await newE2EPage();
+    page = await newE2EPage()
+
   });
 
   it.skip('renders', async () => {
@@ -16,6 +17,7 @@ describe('pie-author', () => {
   });
 
   it('loads the PIE Content and packges ', async () => {
+ 
     await page.setContent('<pie-author config="evan"></pie-author>');
     pieAuthor = await page.find('pie-author');
     setupInterceptPieCloud(page,  pie);
@@ -28,4 +30,6 @@ describe('pie-author', () => {
     expect(pieScript).toBeDefined();
 
   });
+
+
 });

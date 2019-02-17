@@ -71,6 +71,11 @@ export class PieLoader {
   public loadCloudPies = async (
     elements: PieItemElement,
     doc,
+    retryOptions = {
+      retries: 10,
+      minTimeout: 1000,
+      maxTimeout: 5000
+    },
     base_url = BUILD_SERVICE_BASE
   ) => {
     const head = doc.getElementsByTagName('head')[0];
@@ -78,23 +83,16 @@ export class PieLoader {
     const bundleUri = getPackageBundleUri(piesToLoad);
     const script = doc.createElement('script');
     const scriptUrl = base_url + bundleUri + '/editor.js';
-    console.log(`loader calling ready script`);
-    await this.scriptBuildReady(scriptUrl);
-    console.log(`ready script returned`);
+    await this.scriptBuildReady(scriptUrl,retryOptions);
 
     const onloadFn = (_pies => {
       return () => {
-        console.log(`onload calling`);
         const pieKeys = Object.keys(_pies);
 
         pieKeys.forEach(key => {
           const packagesWithoutVersion = getPackageWithoutVersion(_pies[key]);
-          console.log(`onload window.pie = ${JSON.stringify(window['pie'])}`);
           const pie = window['pie'].default[packagesWithoutVersion];
-          console.log(`onload window.pie  / ${packagesWithoutVersion} = ${JSON.stringify(pie)}`);
-
           const elName = key;
-
           if (!customElements.get(elName)) {
             customElements.define(elName, pie.Element);
 
@@ -164,23 +162,24 @@ export class PieLoader {
   protected async scriptBuildReady(
     scriptUrl,
     opts = {
-      retries: 5,
-      minTimeout: 50,
-      maxTimeout: 100
+      retries: 10,
+      minTimeout: 1000,
+      maxTimeout: 2000
     }
   ) {
-    console.log(` (scriptBuildReady) called: ${scriptUrl.substr(0, 500)}`);
     return await retry(
-      async () => {
-        // console.log(`[scriptBuildReady] attempts = ${attempts}`);
+      async (bail, attempts) => {
         // if anything throws retry will occur
         const res = await fetch(scriptUrl, {
           method: 'GET',
           mode: 'cors',
           headers: {
-            "Content-Type": "application/json",
+            "Content-Type": "application/text",
           }
         });
+        if (res.status.toString().match("4..")) {
+          bail("page error");
+        }
         return res;
       },
       {

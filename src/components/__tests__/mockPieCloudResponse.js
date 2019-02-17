@@ -1,13 +1,19 @@
-console.log(`---------- evaluated MockElement`);
+function createContent(el) {
+  const shadow = el.attachShadow({ mode: 'open' });
+  const name = el.getAttribute('name');
+  const helloEl = document.createElement('div');
+  helloEl.textContent = "hello pie" + name;
+  shadow.appendChild(helloEl);
+}
+
+
 /*
  *  This mocks the code structure that would be returned from pie cloud service
  */
 class MockElement extends HTMLElement {
   constructor() {
-    console.log(`---------- constructing MockElement`);
-
     super();
-
+    createContent(this);
   }
   set model(val) {
     if (val) {
@@ -23,13 +29,8 @@ class MockElement extends HTMLElement {
 
 class MockConfig extends HTMLElement {
   constructor() {
-
     super();
-    const shadow = this.attachShadow({ mode: 'open' });
-    const name = this.getAttribute('name');
-    const helloEl = document.createElement('div');
-    helloEl.textContent = "hello pie" + name;
-    shadow.appendChild(helloEl);
+    createContent(this);
   }
 }
 
@@ -41,13 +42,29 @@ const controller = {
   }
 }
 
+class MultipleChoice extends MockElement {}
+class MultipleChoiceConfig extends MockConfig {}
+class InlineChoice extends MockElement {}
+class InlineChoiceConfig extends MockConfig {}
+class MathInline extends MockElement {}
+class MathInlineConfig extends MockConfig {}
 
 
 window['pie'] = {
   default: {
     '@pie-element/multiple-choice': {
-      Element: MockElement,
-      Configure: MockConfig,
+      Element: MultipleChoice,
+      Configure: MultipleChoiceConfig,
+      controller
+    },
+    '@pie-element/inline-choice': {
+      Element: InlineChoice,
+      Configure: InlineChoiceConfig,
+      controller
+    },
+    '@pie-element/math-inline': {
+      Element: MathInline,
+      Configure: MathInlineConfig,
       controller
     }
   }

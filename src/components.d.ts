@@ -51,8 +51,33 @@ export namespace Components {
     * Loads the custom elments defined by the PIEs, if they are not already loaded.
     */
     'loadPies': (pieHash: PieItemElement) => Promise<void>;
+    /**
+    * If the bundle is not available yet, the maximum number of milliseconds  between two retries for downloading
+    */
+    'maxTimeout': number;
+    /**
+    * If the bundle is not available yet, number of milliseconds before starting  the first retry attempt.
+    */
+    'minTimeout': number;
+    /**
+    * If the bundle is not available yet, the number of re-try attempts to download.
+    */
+    'retries': number;
   }
-  interface PieLoaderAttributes extends StencilHTMLAttributes {}
+  interface PieLoaderAttributes extends StencilHTMLAttributes {
+    /**
+    * If the bundle is not available yet, the maximum number of milliseconds  between two retries for downloading
+    */
+    'maxTimeout'?: number;
+    /**
+    * If the bundle is not available yet, number of milliseconds before starting  the first retry attempt.
+    */
+    'minTimeout'?: number;
+    /**
+    * If the bundle is not available yet, the number of re-try attempts to download.
+    */
+    'retries'?: number;
+  }
 
   interface PiePlayer {
     /**
