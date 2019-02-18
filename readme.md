@@ -103,10 +103,5 @@ This is not working yet. Goal is for these components to use a controller that m
 
 
 
-- [ ] send an OPTIONS request to build service and have a loading status if there's a 503, and re-try
-- [ ] pie-loader should manage loading bundles for an item
 - [ ] pie-loader should handle the possiblity of two versions of a PIE being loaded (will probably need build service update to include version in global key)
-- [ ] implement docs 
-- [ ] implement pie-author
 - [ ] handle re-setting of same player/author with a new config
-- [ ] export a pie-loader tag/component that holds the loading controller and can wrap player/author to provide some control over loader behavior. This will make it exportable so can be used with pie-demo or anything else that needs loading.
