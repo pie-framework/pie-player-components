@@ -6,7 +6,11 @@ import {
 import { PieItemElement} from '../../interface';
 import { PieLoader } from '../../pie-loader';
 
-
+/**
+ * This component wraps the utility for loading bundles PIE pacakges from 
+ * the build service. It is not required to load this component if using `pie-player` 
+ * or `pie-author` components.
+ */
 @Component({
   tag: 'pie-loader',
   shadow: false

@@ -9,7 +9,6 @@ import { pieContentFromConfig } from '../../utils/utils';
  */
 @Component({
   tag: 'pie-author',
-  styleUrl: 'pie-author.css',
   shadow: false // shadow dom causes material ui problem
 })
 export class Author {
@@ -24,16 +23,6 @@ export class Author {
    */
   @Prop() config: ItemConfig;
 
-  /**
-   * The Pie Session
-   */
-  @Prop() session: Object = {};
-
-  /**
-   * Describes runtime environment for the player.
-   *
-   */
-  @Prop() env: Object = { mode: 'gather', role: 'student' };
 
   @State() pieContentModel: PieContent;
 
@@ -75,6 +64,11 @@ export class Author {
     this.elementsLoaded = await this.pieLoader.elementsHaveLoaded(this.el);
   }
 
+  hostData() {
+    return {
+      'class': { 'pie-loading': !this.elementsLoaded }
+    };
+  }
   render() {
     return <div innerHTML={this.pieContentModel.markup} />;
   }

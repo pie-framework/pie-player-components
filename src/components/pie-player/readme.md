@@ -1,6 +1,13 @@
 # pie-player
 
-The Pie Player loads PIE content for rendering.
+The `pie-player` component will load pie content for rendering.
+  
+### Showing a Loader
+
+This component loads the bundled JS assets from the build service. While these assets are loading 
+The class `pie-loading` will be added to the element while assets are being loaded from the server.
+  
+ 
 
 <!-- Auto Generated Below -->
 

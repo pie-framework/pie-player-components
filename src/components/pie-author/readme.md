@@ -1,17 +1,21 @@
 # pie-author
 
+  
+### Showing a Loader
 
+This component loads the bundled JS assets from the build service. While these assets are loading 
+The class `pie-loading` will be added to the element while assets are being loaded from the server.
+  
+ 
 
 <!-- Auto Generated Below -->
 
 
 ## Properties
 
-| Property  | Attribute | Description                                   | Type                               | Default                               |
-| --------- | --------- | --------------------------------------------- | ---------------------------------- | ------------------------------------- |
-| `config`  | --        | The Pie config model.                         | `AdvancedItemConfig \| PieContent` | `undefined`                           |
-| `env`     | --        | Describes runtime environment for the player. | `Object`                           | `{ mode: 'gather', role: 'student' }` |
-| `session` | --        | The Pie Session                               | `Object`                           | `{}`                                  |
+| Property | Attribute | Description           | Type                               | Default     |
+| -------- | --------- | --------------------- | ---------------------------------- | ----------- |
+| `config` | --        | The Pie config model. | `AdvancedItemConfig \| PieContent` | `undefined` |
 
 
 ----------------------------------------------

@@ -168,7 +168,7 @@ export class PieLoader {
     }
   ) {
     return await retry(
-      async (bail, attempts) => {
+      async (bail) => {
         // if anything throws retry will occur
         const res = await fetch(scriptUrl, {
           method: 'GET',

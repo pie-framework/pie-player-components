@@ -22,28 +22,12 @@ export namespace Components {
     * The Pie config model.
     */
     'config': ItemConfig;
-    /**
-    * Describes runtime environment for the player.
-    */
-    'env': Object;
-    /**
-    * The Pie Session
-    */
-    'session': Object;
   }
   interface PieAuthorAttributes extends StencilHTMLAttributes {
     /**
     * The Pie config model.
     */
     'config'?: ItemConfig;
-    /**
-    * Describes runtime environment for the player.
-    */
-    'env'?: Object;
-    /**
-    * The Pie Session
-    */
-    'session'?: Object;
   }
 
   interface PieLoader {

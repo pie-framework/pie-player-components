@@ -100,6 +100,11 @@ export class Player {
     return <div innerHTML={this.pieContentModel.markup} />;
   }
 
+  hostData() {
+    return {
+      'class': { 'pie-loading': !this.elementsLoaded }
+    };
+  }
 
   /**
    * TODO - just wrapping the underlying PIE events for now, and exposing a player-level api.

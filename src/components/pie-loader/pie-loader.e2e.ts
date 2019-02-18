@@ -1,8 +1,7 @@
 import { setupInterceptForRetry } from '../__tests__/util';
 import { newE2EPage, E2EElement, E2EPage } from '@stencil/core/testing';
 import { PieItemElement } from '../../interface';
-import { BUILD_SERVICE_BASE } from '../../defaults';
-import { pathToFileURL } from 'url';
+
 
 describe('pie-loader', () => {
   let page: E2EPage;
@@ -16,9 +15,9 @@ describe('pie-loader', () => {
 
   beforeEach(async () => {
     page = await newE2EPage();
-    // TODO - supress expected browser console errors, the below doesn't work
+    // TODO - figure out how supress expected browser console errors, the below doesn't work
     // (page as any).removeListener('error', (message) => {
-    //   console.log(`wrapped -- ${message}`);
+    //   ...
     // });
   });
 
