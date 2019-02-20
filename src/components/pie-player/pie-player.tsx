@@ -61,10 +61,14 @@ export class Player {
 
   @Watch('config')
   async watchConfig(newConfig) {
+    if (!newConfig) {
+      return;
+    }
     this.pieContentModel = pieContentFromConfig(newConfig);
     if (!this.elementsLoaded) {
       this.el.innerHTML = this.pieContentModel.markup;
       await this.pieLoader.loadCloudPies(this.pieContentModel.elements, this.doc);
+      this.elementsLoaded = await this.pieLoader.elementsHaveLoaded(this.el);
     } else {
       this.updateModels();
     }
@@ -79,7 +83,7 @@ export class Player {
 
   updateModels() {
     this.pieContentModel.models.forEach(async model => {
-      const pieEl: PieElement = this.el.querySelector(`[id='${model.id}']`);
+      const pieEl: PieElement = this.el.querySelector(`[id='${model.id}']`);      
       const controller: PieController = this.pieLoader.getController(
         pieEl.localName
       );
@@ -88,13 +92,10 @@ export class Player {
     });
   }
 
-  componentWillLoad() {
+  async componentWillLoad() {
     this.watchConfig(this.config);
   }
 
-  async componentDidLoad() {
-    this.elementsLoaded = await this.pieLoader.elementsHaveLoaded(this.el);
-  }
 
   render() {
     return <div innerHTML={this.pieContentModel.markup} />;

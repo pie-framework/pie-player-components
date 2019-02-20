@@ -16,12 +16,18 @@ export const getPackageBundleUri = (pies: PieItemElement) => {
 
 export const pieContentFromConfig = (config: any): PieContent => {
   try {
+    if (typeof config == 'string')  {
+      config = JSON.parse(config);
+    }
     if (config.pie) {
       const ac = config as AdvancedItemConfig;
       return ac.pie;
-    } else {
+    } else if (config.elements)  {
       const pc = config as PieContent;
       return pc;
+    } else {
+      console.warn(`invalid pie data model: ${JSON.stringify(config)}`);
+      return null;
     }
   } catch (err) {
     console.warn(`invalid pie model: ${JSON.stringify(config)}`);
