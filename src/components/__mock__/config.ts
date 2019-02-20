@@ -5,7 +5,7 @@ export const simplePieMock: PieContent = {
   elements: {"pie-multiple-choice": "@pie-element/multiple-choice@2.4.6"},
   models: [
     { 
-      id: "a",
+      id: "1",
       element: "pie-multiple-choice"
     }],
   markup: "<pie-multiple-choice id='1'></pie-multiple-choice>"
