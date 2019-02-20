@@ -6,6 +6,10 @@ const fs = require('fs');
 const mockPieCloudResponseContent = fs.readFileSync(
   __dirname + '/mockPieCloudResponse.js'
 );
+const resHeaders = {"Access-Control-Allow-Origin": "*", 
+"Access-Control-Allow-Methods": "DELETE, POST, GET, OPTIONS",
+"Access-Control-Allow-Headers": "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With"
+};
 
 export const setupInterceptPieCloud = (page, match): Promise<void> => {
   page.on('request', request => {
@@ -13,6 +17,7 @@ export const setupInterceptPieCloud = (page, match): Promise<void> => {
     if (request.url().match(match)) {
       request.respond({
         status: 200,
+        headers: resHeaders,
         contentType: 'application/javascript',
         body: mockPieCloudResponseContent
       });
@@ -24,10 +29,7 @@ export const setupInterceptPieCloud = (page, match): Promise<void> => {
 };
 
 export const setupInterceptForRetry = (page: E2EPage, numberOfFailures = 4): Promise<void> => {
-  const resHeaders = {"Access-Control-Allow-Origin": "*", 
-  "Access-Control-Allow-Methods": "DELETE, POST, GET, OPTIONS",
-  "Access-Control-Allow-Headers": "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With"
-};
+
   const successResponse = {
     status: 200,
     contentType: 'application/javascript',

@@ -20,11 +20,9 @@ describe('pie-author', () => {
  
     await page.setContent('<pie-author config="evan"></pie-author>');
     pieAuthor = await page.find('pie-author');
-    console.log(`********** ${pieAuthor.getAttribute('class')}`);
     setupInterceptPieCloud(page,  pie);
     pieAuthor.setProperty('config', simplePieMock)
     await page.waitForChanges();
-    console.log(`********** ${pieAuthor.getAttribute('class')}`);
     const el = await page.waitForSelector('pie-author');
     expect(el).toBeDefined();
     const pieScript = await page.find('script#multiple-choice');
