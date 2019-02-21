@@ -47,7 +47,7 @@ export class PieLoader {
   public elementsHaveLoaded = (el): Promise<boolean> => {
     const undefinedElements = el.querySelectorAll(':not(:defined)');
     if (undefinedElements.length == 0) {
-      return Promise.resolve(false);
+      return Promise.resolve(true);
     }
 
     const promises = [...undefinedElements].map(e =>
@@ -81,6 +81,10 @@ export class PieLoader {
     const head = doc.getElementsByTagName('head')[0];
     const piesToLoad = this.getElementsToLoad(elements);
     const bundleUri = getPackageBundleUri(piesToLoad);
+
+    if (!bundleUri) {
+      return;
+    }
     const script = doc.createElement('script');
     const scriptUrl = base_url + bundleUri + '/editor.js';
     await this.scriptBuildReady(scriptUrl,retryOptions);

@@ -30,7 +30,7 @@ describe('pie-player', () => {
     expect(model).toBeTruthy();
   });
 
-  it('load with js', async () => {
+  it('loads with js, multiple times', async () => {
     setupInterceptPieCloud(page, '@pie-element/multiple-choice');
     await page.setContent(`<div id="player-holder"></div>`);
     await page.evaluate(loadPie, JSON.stringify(simplePieMock));
@@ -43,5 +43,17 @@ describe('pie-player', () => {
       el.getAttribute('model')
    );
     expect(model).toBeTruthy();
+
+
+    // load it again
+    await page.evaluate(loadPie, JSON.stringify(simplePieMock));
+    await page.waitForChanges();
+
+    const secondPieElement = await page.waitForSelector('pie-player:nth-child(2) pie-multiple-choice');
+    expect(secondPieElement).toBeDefined();
+    const model2 = await page.$eval('pie-player:nth-child(2) pie-multiple-choice', el =>
+      el.getAttribute('model')
+   );
+   expect(model2).toBeTruthy();
   });
 });
