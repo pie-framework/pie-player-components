@@ -18,7 +18,7 @@
     "start": "stencil build --dev --watch --serve",
     "test": "stencil test --spec --e2e",
     "test.watch": "stencil test --spec --e2e --watchAll",
-    "release": "npm run build && release-it"
+    "release": "npm run build && release-it --no-git.requireCleanWorkingDir"
   },
   "devDependencies": {
     "@pie-framework/pie-player-events": "^0.1.0",
