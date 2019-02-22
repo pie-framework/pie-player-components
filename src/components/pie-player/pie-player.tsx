@@ -81,15 +81,20 @@ export class Player {
     }
   }
 
+  @Watch('env')
   updateModels() {
-    this.pieContentModel.models.forEach(async model => {
-      const pieEl: PieElement = this.el.querySelector(`[id='${model.id}']`);      
-      const controller: PieController = this.pieLoader.getController(
-        pieEl.localName
-      );
-      pieEl.session =  this.findOrAddSession(this.session.data, model.id);
-      pieEl.model = await controller.model(model, pieEl.session, this.env);
-    });
+    if (this.pieContentModel &&  this.pieContentModel.models) {
+      this.pieContentModel.models.forEach(async model => {
+        const pieEl: PieElement = this.el.querySelector(`[id='${model.id}']`);      
+        const controller: PieController = this.pieLoader.getController(
+          pieEl.localName
+        );
+        pieEl.session =  this.findOrAddSession(this.session.data, model.id);
+        if (pieEl) {
+          pieEl.model = await controller.model(model, pieEl.session, this.env);
+        };   
+      });
+    }
   }
 
   async componentWillLoad() {

@@ -50,10 +50,14 @@ export class Author {
   }
 
   updateModels() {
-    this.pieContentModel.models.map(async model => {
-      const pieEl: PieElement = this.el.querySelector(`[id='${model.id}']`);
-      pieEl.model = model;
-    });
+    if (this.pieContentModel && this.pieContentModel.models)  {
+      this.pieContentModel.models.map(async model => {
+        const pieEl: PieElement = this.el.querySelector(`[id='${model.id}']`);
+        if (pieEl) {
+          pieEl.model = model;
+        };
+      });
+    }
   }
 
   componentWillLoad() {

@@ -16,6 +16,7 @@ class MockElement extends HTMLElement {
     createContent(this);
   }
   set model(val) {
+    this._model = val;
     if (val) {
       this.setAttribute('model', 'true');
     } else {
@@ -23,7 +24,7 @@ class MockElement extends HTMLElement {
     }
   }
   get model() {
-    return this.hasAttribute('model');
+    return this._model;
   }
 }
 
@@ -36,7 +37,8 @@ class MockConfig extends HTMLElement {
 
 const controller = {
   model: (config, session, env) => {
-    return {model:true}
+    // console.log(`model conntroller called with ${JSON.stringify(config)}, ${JSON.stringify(session)}, ${JSON.stringify(env)}`)
+    return {model:config, session, env};
   },
   outcome: (config, session, env) => {
   }

@@ -30,6 +30,24 @@ describe('pie-player', () => {
     expect(model).toBeTruthy();
   });
 
+  it('passes env chages to PIE', async () => {
+    setupInterceptPieCloud(page, '@pie-element/multiple-choice');
+    await page.setContent(`<pie-player></pie-player>`);
+    piePlayer = await page.find('pie-player');
+    await piePlayer.setProperty('config', simplePieMock)
+    await page.waitForChanges();
+    expect(piePlayer).toBeDefined();
+    piePlayer.setProperty('env', {mode: 'evaluate', role: 
+  'student'});
+   await page.waitForChanges();
+
+    const pieEl = await page.find('pie-player pie-multiple-choice');
+    const pieElModel = await pieEl.getProperty('model');
+    expect(pieElModel.env.mode).toEqual('evaluate');
+  
+  });
+
+
   it('loads with js, multiple times', async () => {
     setupInterceptPieCloud(page, '@pie-element/multiple-choice');
     await page.setContent(`<div id="player-holder"></div>`);
@@ -43,7 +61,6 @@ describe('pie-player', () => {
       el.getAttribute('model')
    );
     expect(model).toBeTruthy();
-
 
     // load it again
     await page.evaluate(loadPie, JSON.stringify(simplePieMock));
