@@ -1,6 +1,6 @@
 {
   "name": "@pie-framework/pie-player-components",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "description": "Pie Player Components",
   "module": "dist/esm/index.js",
   "main": "dist/index.js",
@@ -20,19 +20,20 @@
     "test.watch": "stencil test --spec --e2e --watchAll",
     "release": "npm run build && release-it --no-git.requireCleanWorkingDir"
   },
+  "dependencies": {
+    "async-retry": "^1.2.3",
+    "parse-package-name": "^0.1.0"
+  },
   "devDependencies": {
     "@pie-framework/pie-player-events": "^0.1.0",
     "@stencil/core": "~0.18.0",
     "@types/jest": "23.3.14",
     "@types/lodash": "^4.14.121",
     "@types/puppeteer": "1.12.1",
-    "async-retry": "^1.2.3",
     "jest": "23.6.0",
     "jest-cli": "23.6.0",
     "jest-environment-node-debug": "^2.0.0",
     "lodash": "^4.17.11",
-    "nanoid": "^2.0.1",
-    "parse-package-name": "^0.1.0",
     "prettier": "1.16.4",
     "puppeteer": "1.11.0",
     "release-it": "^10.1.0",
