@@ -89,9 +89,10 @@ export class Player {
         const controller: PieController = this.pieLoader.getController(
           pieEl.localName
         );
-        pieEl.session =  this.findOrAddSession(this.session.data, model.id);
+        const session = this.findOrAddSession(this.session.data, model.id);
+        pieEl.session = session;
         if (pieEl) {
-          pieEl.model = await controller.model(model, pieEl.session, this.env);
+          pieEl.model = await controller.model(model, session, this.env);
         };   
       });
     }
