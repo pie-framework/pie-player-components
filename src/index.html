@@ -14,6 +14,8 @@
 
     <pie-player id="player"></pie-player>
 
+    <pie-author id="author"></pie-author>
+
     <script>
       const config = {
         id: '1',
@@ -151,12 +153,72 @@
         `
       };
 
+      const authorConfig =  {
+        id: '1',
+        elements: {
+          'pie-multiple-choice': '@pie-element/multiple-choice@2.4.6'
+        },
+        models: [
+          {
+            id:"1",
+            element: 'pie-multiple-choice',
+            prompt:
+              'Which of these northern European countries are EU members?',
+            choiceMode: 'checkbox',
+            keyMode: 'numbers',
+            choices: [
+              {
+                correct: true,
+                value: 'sweden',
+                label: 'Sweden',
+                feedback: {
+                  type: 'none',
+                  value: ''
+                }
+              },
+              {
+                value: 'iceland',
+                label: 'Iceland',
+                feedback: {
+                  type: 'none',
+                  value: ''
+                }
+              },
+              {
+                value: 'norway',
+                label: 'Norway',
+                feedback: {
+                  type: 'none',
+                  value: ''
+                }
+              },
+              {
+                correct: true,
+                value: 'finland',
+                label: 'Finland',
+                feedback: {
+                  type: 'none',
+                  value: ''
+                }
+              }
+            ],
+            partialScoring: false,
+            shuffle: false,
+            partialScoringLabel: `Each correct response that is correctly checked and each incorrect response
+          that is correctly unchecked will be worth 1 point.
+          The maximum points is the total number of answer choices.`
+          }
+        ],
+        markup: "<pie-multiple-choice id='1'></pie-multiple-choice>"
+      };
+
       const player = document.getElementById('player');
+      const author = document.getElementById('author');
 
       player.addEventListener('sessionChanged', event => {
         console.log(event.type + ':' + JSON.stringify(event.detail));
       });
-
+      author.config = authorConfig;
       player.config = config;
     </script>
   </body>
