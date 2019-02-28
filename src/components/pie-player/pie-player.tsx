@@ -18,6 +18,7 @@ import {
 
 @Component({
   tag: 'pie-player',
+  styleUrl: "pie-player.css",
   shadow: false
 })
 export class Player {
@@ -101,7 +102,6 @@ export class Player {
   async componentWillLoad() {
     this.watchConfig(this.config);
   }
-
 
   render() {
     return <div innerHTML={this.pieContentModel.markup} />;
