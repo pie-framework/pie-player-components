@@ -27,6 +27,7 @@
   "devDependencies": {
     "@pie-framework/pie-player-events": "^0.1.0",
     "@stencil/core": "~0.18.0",
+    "@stencil/sass": "^0.1.1",
     "@types/jest": "23.3.14",
     "@types/lodash": "^4.14.121",
     "@types/puppeteer": "1.12.1",

@@ -18,7 +18,7 @@ import {
 
 @Component({
   tag: 'pie-player',
-  styleUrl: "pie-player.css",
+  styleUrl: "pie-player.scss",
   shadow: false
 })
 export class Player {

@@ -9,6 +9,7 @@ import { pieContentFromConfig } from '../../utils/utils';
  */
 @Component({
   tag: 'pie-author',
+  styleUrl: 'pie-author.scss',
   shadow: false // shadow dom causes material ui problem
 })
 export class Author {
