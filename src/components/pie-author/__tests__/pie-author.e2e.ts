@@ -30,5 +30,21 @@ describe('pie-author', () => {
 
   });
 
+  it('creates new models if models is empty ', async () => {
+    setupInterceptPieCloud(page,  pie);
+    await page.setContent('<pie-author></pie-author>');
+    pieAuthor = await page.find('pie-author');
+    expect(pieAuthor).toHaveClass('hydrated');
+    await page.waitForChanges();
+    const emptyItem = simplePieMock;
+    emptyItem.models = null;
+    expect(pieAuthor).toBeDefined();
+    await pieAuthor.setProperty('config', emptyItem);
+    await page.waitForChanges();
+    const configEl = await page.find('pie-author pie-multiple-choice-config');
+    expect(configEl.nodeName).toEqual('PIE-MULTIPLE-CHOICE-CONFIG');
+    const model = await configEl.getProperty('model');
+    expect(model.id).toEqual('1');
+  });
 
 });

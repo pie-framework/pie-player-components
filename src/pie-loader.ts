@@ -36,7 +36,7 @@ export class PieLoader {
   protected registry: Map<string, Entry>;
 
   public getController = (pieTagName: string) => {
-    return this.registry[pieTagName].controller;
+    return this.registry[pieTagName] ? this.registry[pieTagName].controller : null;
   };
 
   private getEmptyConfigure = () =>
@@ -48,7 +48,7 @@ export class PieLoader {
     const undefinedElements = el.querySelectorAll(':not(:defined)');
     if (undefinedElements.length == 0) {
       return Promise.resolve(true);
-    }
+    } 
 
     const promises = [...undefinedElements].map(e =>
       customElements.whenDefined(e.localName)
@@ -99,7 +99,6 @@ export class PieLoader {
           const elName = key;
           if (!customElements.get(elName)) {
             customElements.define(elName, pie.Element);
-
             this.registry[elName] = {
               package: _pies[key],
               status: Status.loading,
@@ -118,7 +117,6 @@ export class PieLoader {
 
             const configElName = elName + '-config';
             customElements.define(configElName, pie.Configure);
-
             customElements.whenDefined(configElName).then(async () => {
               this.registry[elName].config = customElements.get(configElName);
             });
@@ -138,14 +136,23 @@ export class PieLoader {
     forAuthoring = true
   ): PieContent => {
     let c = content;
-    // todo if markup is present, replace in-place with  new tags
     if (forAuthoring) {
-      const tags = content.models.map(model => {
-        return `<${model.element}-config id="${model.id}"></${
-          model.element
-        }-config>`;
-      });
-      c.markup = tags.join('');
+      if (!c.markup && c.models) {
+        const tags = content.models.map(model => {
+          return `<${model.element}-config id="${model.id}"></${
+            model.element
+          }-config>`;
+        });
+        c.markup = tags.join('');
+      }
+      if (c.markup) {
+        let markup;
+        Object.keys(c.elements).forEach(key => {
+          markup = c.markup.split(key).join( key+'-config');
+        });
+        c.markup = markup;
+      }
+ 
     }
 
     return c;

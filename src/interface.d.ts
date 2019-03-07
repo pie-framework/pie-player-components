@@ -7,7 +7,7 @@ interface PieContent {
   elements: PieItemElement;
 
   /** Models for each PIE included in the item */
-  models: [PieModel]
+  models: PieModel[]
 
   markup: string;
 }
