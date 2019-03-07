@@ -1,4 +1,4 @@
-import { Component, Element, Prop, State, Watch, Method } from '@stencil/core';
+import { Component, Element, Prop, State, Watch } from '@stencil/core';
 import { PieContent, ItemConfig, PieElement } from '../../interface';
 import { PieLoader } from '../../pie-loader';
 import { pieContentFromConfig } from '../../utils/utils';
