@@ -22,12 +22,20 @@ export namespace Components {
     * The Pie config model.
     */
     'config': ItemConfig;
+    /**
+    * To customize the standard behaviour provided by interaction configuration views you can  provide settings key-ed by the package name.  e.g.  `{ '@pie-element/inline-choice': { promptLabel: 'Item Stem' } }`  The settings that are configurable for each authoring view are documented in  the `@package-name/docs` folder for each package.
+    */
+    'configSettings'?: {[packageName:string]:Object};
   }
   interface PieAuthorAttributes extends StencilHTMLAttributes {
     /**
     * The Pie config model.
     */
     'config'?: ItemConfig;
+    /**
+    * To customize the standard behaviour provided by interaction configuration views you can  provide settings key-ed by the package name.  e.g.  `{ '@pie-element/inline-choice': { promptLabel: 'Item Stem' } }`  The settings that are configurable for each authoring view are documented in  the `@package-name/docs` folder for each package.
+    */
+    'configSettings'?: {[packageName:string]:Object};
   }
 
   interface PieLoader {

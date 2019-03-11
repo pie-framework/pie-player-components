@@ -16,7 +16,7 @@ describe('pie-author', () => {
     expect(element).toHaveClass('hydrated');
   });
 
-  it('loads the PIE Content and packges ', async () => {
+  it('loads the PIE Content and packages ', async () => {
  
     await page.setContent('<pie-author config="evan"></pie-author>');
     pieAuthor = await page.find('pie-author');
@@ -45,6 +45,22 @@ describe('pie-author', () => {
     expect(configEl.nodeName).toEqual('PIE-MULTIPLE-CHOICE-CONFIG');
     const model = await configEl.getProperty('model');
     expect(model.id).toEqual('1');
+  });
+
+  it('sets config settings if present', async () => {
+ 
+    await page.setContent('<pie-author config="evan"></pie-author>');
+    pieAuthor = await page.find('pie-author');
+    setupInterceptPieCloud(page,  pie);
+    pieAuthor.setProperty('configSettings', {'@pie-element/multiple-choice': { "foo": "bar"} });
+    pieAuthor.setProperty('config', simplePieMock)
+    await page.waitForChanges();
+    const el = await page.waitForSelector('pie-author');
+    expect(el).toBeDefined();
+    const configEl = await page.find('pie-author pie-multiple-choice-config');
+    const configure = await configEl.getProperty('configure');
+    expect(configure.foo).toEqual("bar");
+
   });
 
 });

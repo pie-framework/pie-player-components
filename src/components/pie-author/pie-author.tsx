@@ -28,6 +28,17 @@ export class Author {
    */
   @Prop() config: ItemConfig;
 
+  /**
+   * To customize the standard behaviour provided by interaction configuration views you can 
+   * provide settings key-ed by the package name.  e.g.
+   * 
+   * `{ '@pie-element/inline-choice': { promptLabel: 'Item Stem' } }`
+   * 
+   * The settings that are configurable for each authoring view are documented in 
+   * the `@package-name/docs` folder for each package.
+   */
+  @Prop() configSettings?: {[packageName:string]:Object}
+
   @State() pieContentModel: PieContent;
 
   pieLoader = new PieLoader();
@@ -107,8 +118,15 @@ export class Author {
     if (this.pieContentModel && this.pieContentModel.models) {
       this.pieContentModel.models.map(async model => {
         const pieEl: PieElement = this.el.querySelector(`[id='${model.id}']`);
+        const pieElName = pieEl.tagName.toLowerCase().split('-config')[0];
+        const packageName = parseNpm(this.pieContentModel.elements[pieElName])
+            .name;
+
         if (pieEl) {
           pieEl.model = model;
+          if (this.configSettings && this.configSettings[packageName]) {
+            pieEl.configure = this.configSettings[packageName]
+          }
         }
       });
     }
