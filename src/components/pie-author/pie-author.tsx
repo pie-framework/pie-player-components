@@ -5,7 +5,7 @@ import { pieContentFromConfig } from '../../utils/utils';
 import parseNpm from 'parse-package-name';
 
 // TODO - remove temporary polyfills
-import { createConfigFunctions } from '../../polyfill-elements';
+// import { createConfigFunctions } from '../../polyfill-elements';
 
 /**
  * Pie Author will load a Pie Content model for authoring.
@@ -85,31 +85,10 @@ export class Author {
       // set up a model for each pie defined in the markup
       elsWithId.forEach(el => {
         const pieElName = el.tagName.toLowerCase().split('-config')[0];
-
-        // this is a pie?
+        // initialize emtpy model if this is a pie
         if (this.pieContentModel.elements[pieElName]) {
-          const packageName = parseNpm(this.pieContentModel.elements[pieElName])
-            .name;
-
-          const controller: any = this.pieLoader.getController(pieElName);
           const elementId = el.getAttribute('id');
-          // TODO - remove polyfill
-          // when removing polyfill should replace result with {} if no func defined on controller.s
-          const hasFunc =
-            controller &&
-            controller.createConfig &&
-            typeof controller.createConfig === 'function';
-          const createModelFunc = hasFunc
-            ? controller.createConfig
-            : createConfigFunctions[packageName];
-          const currentModel =
-            this.pieContentModel && this.pieContentModel.models
-              ? this.pieContentModel.models.find(m => m.id === elementId)
-              : {};
-
-          const model = createModelFunc(currentModel);
-          model.id = elementId;
-          model.element = pieElName;
+          const model = {id: elementId, element: pieElName};
           this.pieContentModel.models.push(model);
         }
       });
