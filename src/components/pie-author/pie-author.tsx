@@ -97,11 +97,10 @@ export class Author {
     if (this.pieContentModel && this.pieContentModel.models) {
       this.pieContentModel.models.map(async model => {
         const pieEl: PieElement = this.el.querySelector(`[id='${model.id}']`);
-        const pieElName = pieEl.tagName.toLowerCase().split('-config')[0];
-        const packageName = parseNpm(this.pieContentModel.elements[pieElName])
-            .name;
-
         if (pieEl) {
+          const pieElName = pieEl.tagName.toLowerCase().split('-config')[0];
+          const packageName = parseNpm(this.pieContentModel.elements[pieElName])
+              .name;
           pieEl.model = model;
           if (this.configSettings && this.configSettings[packageName]) {
             pieEl.configure = this.configSettings[packageName]
