@@ -112,7 +112,9 @@ export class Author {
   }
 
   async componentWillLoad() {
-    this.elementsLoaded = await this.pieLoader.elementsHaveLoaded(this.el);
+    if (this.config) {
+      this.elementsLoaded = await this.pieLoader.elementsHaveLoaded(this.el);
+    }
     this.watchConfig(this.config);
   }
 
