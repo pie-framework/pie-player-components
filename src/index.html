@@ -154,69 +154,74 @@
       };
 
       const authorConfig =  {
-        id: '1',
-        elements: {
-          'pie-multiple-choice': '@pie-element/multiple-choice@2.7.3'
-        },
-        models: [
+    "markup": "<br/><multiple-choice pie-id=\"E10404\"></multiple-choice>",
+    "elements": {
+      "multiple-choice": "@pie-element/multiple-choice@latest"
+    },
+    "buildInfo": [
+      {
+        "version": "2.1.0",
+        "name": "@pie-element/multiple-choice"
+      }
+    ],
+    "models": [
+      {
+        "keyMode": "letters",
+        "choices": [
           {
-            id:"1",
-            element: 'pie-multiple-choice',
-            prompt:
-              'Which of these northern European countries are EU members?',
-            choiceMode: 'checkbox',
-            keyMode: 'numbers',
-            choices: [
-              {
-                correct: true,
-                value: 'sweden',
-                label: 'Sweden',
-                feedback: {
-                  type: 'none',
-                  value: ''
-                }
-              },
-              {
-                value: 'iceland',
-                label: 'Iceland',
-                feedback: {
-                  type: 'none',
-                  value: ''
-                }
-              },
-              {
-                value: 'norway',
-                label: 'Norway',
-                feedback: {
-                  type: 'none',
-                  value: ''
-                }
-              },
-              {
-                correct: true,
-                value: 'finland',
-                label: 'Finland',
-                feedback: {
-                  type: 'none',
-                  value: ''
-                }
-              }
-            ],
-            partialScoring: false,
-            shuffle: false,
-            partialScoringLabel: `Each correct response that is correctly checked and each incorrect response
-          that is correctly unchecked will be worth 1 point .
-          The maximum points is the total number of answer choices.`
+            "correct": false,
+            "value": "A",
+            "label": "<p>employ a full-time military.</p>",
+            "feedback": {
+              "type": "none",
+              "value": "<p>The German military was severely limited in scope of personnel and size as a result of the treaty.</p>"
+            }
+          },
+          {
+            "feedback": {
+              "type": "none",
+              "value": "<p>Student incorrectly chooses this option, which occurred after World War II, not World War I.</p>"
+            },
+            "correct": false,
+            "value": "B",
+            "label": "<p>divide into two states: West Germany and East Germany.</p>"
+          },
+          {
+            "feedback": {
+              "type": "none",
+              "value": "<p>The overseas colonies were removed from German control and, therefore, no additional services were provided.</p>"
+            },
+            "correct": false,
+            "value": "C",
+            "label": "<p>provide overseas colonies with better social services.</p>"
+          },
+          {
+            "correct": true,
+            "value": "D",
+            "label": "<p>accept sole responsibility for the war.</p>",
+            "feedback": {
+              "type": "none"
+            }
           }
         ],
-        markup: "<pie-multiple-choice id='1'></pie-multiple-choice>"
-      };
+        "id": "E10404",
+        "element": "multiple-choice",
+        "choiceMode": "radio",
+        "prompt": "<p>The Treaty of Versailles required Germany to</p>"
+      }
+    ]
+  };
 
       const player = document.getElementById('player');
       const author = document.getElementById('author');
 
       player.addEventListener('sessionChanged', event => {
         console.log(event.type + ':' + JSON.stringify(event.detail));
+      });
+
+      author.addEventListener('model.updated', event => {
+        console.log(event.type + ':' + JSON.stringify(author.config));
+        // console.log(event.type + ':' + JSON.stringify(event.detail));
       });
       author.config = authorConfig;
       player.config = config;

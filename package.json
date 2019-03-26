@@ -22,6 +22,7 @@
     "demo": "npm run start & http-server www"
   },
   "dependencies": {
+    "@pie-framework/pie-configure-events": "^1.2.0",
     "async-retry": "^1.2.3",
     "parse-package-name": "^0.1.0"
   },

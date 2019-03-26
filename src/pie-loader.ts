@@ -139,20 +139,12 @@ export class PieLoader {
     if (forAuthoring) {
       if (!c.markup && c.models) {
         const tags = content.models.map(model => {
-          return `<${model.element}-config id="${model.id}"></${
+          return `<${model.element} id="${model.id}"></${
             model.element
           }-config>`;
         });
         c.markup = tags.join('');
-      }
-      if (c.markup) {
-        let markup;
-        Object.keys(c.elements).forEach(key => {
-          markup = c.markup.split(key).join( key+'-config');
-        });
-        c.markup = markup;
-      }
- 
+      } 
     }
 
     return c;

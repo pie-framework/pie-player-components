@@ -1,9 +1,9 @@
-import { Component, Element, Prop, State, Watch } from '@stencil/core';
+import { Component, Element, Prop, State, Watch, Event, EventEmitter } from '@stencil/core';
 import { PieContent, ItemConfig, PieElement } from '../../interface';
 import { PieLoader } from '../../pie-loader';
 import { pieContentFromConfig } from '../../utils/utils';
 import parseNpm from 'parse-package-name';
-
+import { ModelUpdatedEvent } from '@pie-framework/pie-configure-events'
 // TODO - remove temporary polyfills
 // import { createConfigFunctions } from '../../polyfill-elements';
 
@@ -28,6 +28,12 @@ export class Author {
    */
   @Prop() config: ItemConfig;
 
+
+  /**
+   * Emmitted when the model for the content has been updated in the ui.
+   */
+  @Event() modelUpdated: EventEmitter;
+
   /**
    * To customize the standard behaviour provided by interaction configuration views you can 
    * provide settings key-ed by the package name.  e.g.
@@ -39,12 +45,27 @@ export class Author {
    */
   @Prop() configSettings?: {[packageName:string]:Object}
 
-  @State() pieContentModel: PieContent;
+  pieContentModel: PieContent;
 
   pieLoader = new PieLoader();
 
+  renderMarkup: String;
+
+  getRenderMarkup(): string {
+    const c = this.pieContentModel;
+    let markup = "";
+    if (c.markup) {
+      Object.keys(c.elements).forEach(key => {
+        markup = c.markup.split(key).join( key+'-config');
+      });
+      return markup;
+    }
+  }
+
   @Watch('config')
   async watchConfig(newConfig) {
+    
+    console.log('watch config called in pie-player-components:author');
     if (newConfig) {
       try {
         this.elementsLoaded = false;
@@ -60,17 +81,22 @@ export class Author {
 
   @Watch('elementsLoaded')
   watchElementsLoaded(newValue: boolean, oldValue: boolean) {
+    console.log(`[pie-player-components:author] watchElementsLoaded ${newValue} ${oldValue}`);
+
     if (
       newValue &&
       !oldValue &&
       this.pieContentModel &&
       this.pieContentModel.markup
     ) {
+      console.log(`[pie-player-components:author] watchElementsLoaded  is calling updateModels()`);
       this.updateModels();
     }
   }
 
   updateModels() {
+    console.log('[pie-player-components:author] updateModels');
+
     if (
       this.pieContentModel &&
       this.pieContentModel.elements &&
@@ -113,6 +139,8 @@ export class Author {
   }
 
   async componentWillLoad() {
+    console.log('[pie-player-components:author] componentWillLoad');
+
     if (this.config) {
       this.elementsLoaded = await this.pieLoader.elementsHaveLoaded(this.el);
     }
@@ -120,10 +148,28 @@ export class Author {
   }
 
   async componentDidLoad() {
+
+    console.log('[pie-player-components:author] componentDidload');
+    this.el.addEventListener(ModelUpdatedEvent.TYPE, (e:ModelUpdatedEvent) =>  {
+      // set the internal model
+      // emit a content-item level event with the model
+      if (this.pieContentModel && e.update) {
+        this.pieContentModel.models.forEach(m => {
+          if (m.id === e.update.id) {
+            Object.assign(m, e.update);
+          }
+        });
+        e.stopPropagation();
+        this.modelUpdated.emit(this.pieContentModel)
+      }  
+    });
+
     this.loadPieElements();
   }
 
   async componentDidUpdate() {
+    console.log('[pie-player-components:author] componentDidupdate');
+
     this.loadPieElements();
   }
 
@@ -143,8 +189,10 @@ export class Author {
     };
   }
   render() {
+    console.log('[pie-player-components:author] render');
+
     if (this.pieContentModel && this.pieContentModel.markup) {
-      return <div innerHTML={this.pieContentModel.markup} />;
+      return <div innerHTML={this.getRenderMarkup()} />;
     }
   }
 }

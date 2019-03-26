@@ -19,6 +19,13 @@ The class `pie-loading` will be added to the element while assets are being load
 | `configSettings` | --        | To customize the standard behaviour provided by interaction configuration views you can  provide settings key-ed by the package name.  e.g.  `{ '@pie-element/inline-choice': { promptLabel: 'Item Stem' } }`  The settings that are configurable for each authoring view are documented in  the `@package-name/docs` folder for each package. | `{ [packageName: string]: Object; }` | `undefined` |
 
 
+## Events
+
+| Event          | Description                                                         | Type                |
+| -------------- | ------------------------------------------------------------------- | ------------------- |
+| `modelUpdated` | Emmitted when the model for the content has been updated in the ui. | `CustomEvent<void>` |
+
+
 ----------------------------------------------
 
 *Built with [StencilJS](https://stenciljs.com/)*
