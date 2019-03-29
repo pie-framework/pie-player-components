@@ -11,8 +11,12 @@
   </head>
   <body>
  
-
-    <pie-player id="player"></pie-player>
+    <div>
+      <button id="update">update</button>
+    </div>
+   
+   
+    <!-- <pie-player id="player"></pie-player> -->
 
     <pie-author id="author"></pie-author>
 
@@ -212,19 +216,31 @@
     ]
   };
 
-      const player = document.getElementById('player');
+      // const player = document.getElementById('player');
       const author = document.getElementById('author');
+      const button = document.getElementById('update');
 
-      player.addEventListener('sessionChanged', event => {
-        console.log(event.type + ':' + JSON.stringify(event.detail));
-      });
+      button.onclick = ev => {
+        //var copy = Object.assign({}, authorConfig);
+        const copy = JSON.parse(JSON.stringify(authorConfig));
+
+        copy.models[0].choices[0].correct = !authorConfig.models[0].choices[0].correct;
+        copy.models[0].choices[3].correct = !authorConfig.models[0].choices[3].correct;
+        copy.models[0].choices.splice(1,1);
+     
+        author.config = copy;
+      }
+
+      // player.addEventListener('sessionChanged', event => {
+      //   console.log(event.type + ':' + JSON.stringify(event.detail));
+      // });
 
       author.addEventListener('model.updated', event => {
         console.log(event.type + ':' + JSON.stringify(author.config));
         // console.log(event.type + ':' + JSON.stringify(event.detail));
       });
       author.config = authorConfig;
-      player.config = config;
+      // player.config = config;
     </script>
   </body>
 </html>

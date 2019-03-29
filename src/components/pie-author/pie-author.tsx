@@ -3,7 +3,9 @@ import { PieContent, ItemConfig, PieElement } from '../../interface';
 import { PieLoader } from '../../pie-loader';
 import { pieContentFromConfig } from '../../utils/utils';
 import parseNpm from 'parse-package-name';
-import { ModelUpdatedEvent } from '@pie-framework/pie-configure-events'
+import { ModelUpdatedEvent } from '@pie-framework/pie-configure-events';
+import _isEqual from 'lodash/isEqual';
+
 // TODO - remove temporary polyfills
 // import { createConfigFunctions } from '../../polyfill-elements';
 
@@ -63,19 +65,40 @@ export class Author {
   }
 
   @Watch('config')
-  async watchConfig(newConfig) {
+  async watchConfig(newValue, oldValue) {
     
-    console.log('watch config called in pie-player-components:author');
-    if (newConfig) {
+    console.log('[pie-player-components:author] watch config called');
+    if (newValue && !_isEqual(newValue,oldValue)) {
+    
+      console.log('[pie-player-components:author] config is different');
       try {
-        this.elementsLoaded = false;
-        this.pieContentModel = pieContentFromConfig(newConfig);
-        this.pieContentModel = this.pieLoader.convertPieContent(
-          this.pieContentModel
-        );
+        
+        this.pieContentModel = pieContentFromConfig(newValue);
+        this.addConfigTags(this.pieContentModel);
+
+        // elements have not changed, don't need to wait for them to load before updating model
+        if (newValue.elements && _isEqual(newValue.elements, oldValue.elements)) {
+          console.log('[pie-player-components:author] elements have not changed');
+          // this.updateModels();
+          this.elementsLoaded = false;
+        } else {
+          this.elementsLoaded = false;
+        }
+        
       } catch (error) {
         console.log(`ERROR ${error}`);
       }
+    }
+  }
+
+  addConfigTags(c: PieContent) {
+    if (!c.markup && c.models) {
+      const tags = c.models.map(model => {
+        return `<${model.element} id="${model.id}"></${
+          model.element
+        }-config>`;
+      });
+      c.markup = tags.join('');
     }
   }
 
@@ -89,7 +112,7 @@ export class Author {
       this.pieContentModel &&
       this.pieContentModel.markup
     ) {
-      console.log(`[pie-player-components:author] watchElementsLoaded  is calling updateModels()`);
+      console.log(`[pie-player-components:author] watchElementsLoaded  is now calling updateModels()`);
       this.updateModels();
     }
   }
@@ -114,14 +137,16 @@ export class Author {
         // initialize emtpy model if this is a pie
         if (this.pieContentModel.elements[pieElName]) {
           const elementId = el.getAttribute('id');
-          const model = {id: elementId, element: pieElName};
-          this.pieContentModel.models.push(model);
+          if (!this.pieContentModel.models.find(m => m.id === elementId)) {
+            const model = {id: elementId, element: pieElName};
+            this.pieContentModel.models.push(model);
+          }  
         }
       });
       tempDiv.remove();
     }
     if (this.pieContentModel && this.pieContentModel.models) {
-      this.pieContentModel.models.map(async model => {
+      this.pieContentModel.models.map(model => {
         let pieEl: PieElement = this.el.querySelector(`[id='${model.id}']`);
         !pieEl && (pieEl = this.el.querySelector(`[pie-id='${model.id}']`));
         
@@ -144,7 +169,7 @@ export class Author {
     if (this.config) {
       this.elementsLoaded = await this.pieLoader.elementsHaveLoaded(this.el);
     }
-    this.watchConfig(this.config);
+    this.watchConfig(this.config, {});
   }
 
   async componentDidLoad() {
@@ -169,8 +194,8 @@ export class Author {
 
   async componentDidUpdate() {
     console.log('[pie-player-components:author] componentDidupdate');
-
-    this.loadPieElements();
+    
+        this.loadPieElements();
   }
 
   async loadPieElements() {
@@ -189,7 +214,7 @@ export class Author {
     };
   }
   render() {
-    console.log('[pie-player-components:author] render');
+    console.log('updated render called');
 
     if (this.pieContentModel && this.pieContentModel.markup) {
       return <div innerHTML={this.getRenderMarkup()} />;

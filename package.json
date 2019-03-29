@@ -1,6 +1,6 @@
 {
   "name": "@pie-framework/pie-player-components",
-  "version": "0.0.22",
+  "version": "0.1.0",
   "description": "Pie Player Components",
   "module": "dist/esm/index.js",
   "main": "dist/index.js",
@@ -15,11 +15,12 @@
   ],
   "scripts": {
     "build": "stencil build --docs",
-    "start": "stencil build --dev --watch --serve",
+    "start": "stencil build --dev --es5 --watch --serve",
     "test": "stencil test --spec --e2e",
     "test.watch": "stencil test --spec --e2e --watchAll",
     "release": "npm run build && release-it --no-git.requireCleanWorkingDir",
-    "demo": "npm run start & http-server www"
+    "demo": "npm run start & http-server www",
+    "yalc": "yalc push"
   },
   "dependencies": {
     "@pie-framework/pie-configure-events": "^1.2.0",
@@ -42,7 +43,8 @@
     "release-it": "^10.1.0",
     "tslint": "^5.12.1",
     "tslint-config-prettier": "^1.18.0",
-    "typescript": "^3.3.3"
+    "typescript": "^3.3.3",
+    "yalc": "^1.0.0-pre.27"
   },
   "license": "MIT"
 }

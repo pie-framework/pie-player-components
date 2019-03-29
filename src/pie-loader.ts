@@ -50,9 +50,9 @@ export class PieLoader {
       return Promise.resolve(true);
     } 
 
-    const promises = [...undefinedElements].map(e =>
+    const promises = undefinedElements ?  [...undefinedElements].map(e =>
       customElements.whenDefined(e.localName)
-    );
+    ) : [];
     return Promise.all(promises)
       .then(() => {
         return Promise.resolve(true);
@@ -81,8 +81,10 @@ export class PieLoader {
     const head = doc.getElementsByTagName('head')[0];
     const piesToLoad = this.getElementsToLoad(elements);
     const bundleUri = getPackageBundleUri(piesToLoad);
-
+    console.log(`piesToLoad.length  ${piesToLoad.length}`)
     if (!bundleUri) {
+      console.log(`!bundleUri`)
+
       return;
     }
     const script = doc.createElement('script');
