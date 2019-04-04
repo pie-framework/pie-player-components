@@ -1,6 +1,6 @@
 import { newE2EPage, E2EElement, E2EPage } from '@stencil/core/testing';
 import { setupInterceptPieCloud } from '../../__tests__/util';
-import { simplePieMock } from '../../__mock__/config';
+import { simplePieMock, multipleChoiceItem, inlineChoiceItem } from '../../__mock__/config';
 
 describe('pie-author', () => {
   let pie;
@@ -61,6 +61,28 @@ describe('pie-author', () => {
     const configure = await configEl.getProperty('configure');
     expect(configure.foo).toEqual("bar");
 
+  });
+
+  it.skip('can switch items', async() => {
+    await page.setContent('<pie-author config="evan"></pie-author>');
+    pieAuthor = await page.find('pie-author');
+    pieAuthor.setProperty('config', multipleChoiceItem);
+    await page.waitForChanges();
+    await page.waitForSelector('pie-author pie-multiple-choice-config:defined');
+    const pieModel = await page.$eval(
+      'pie-author pie-multiple-choice-config',
+      el => (el as any).model
+    );
+    expect(pieModel.element).toEqual('pie-multiple-choice');
+
+    pieAuthor.setProperty('contentConfig', inlineChoiceItem);
+    await page.waitForChanges();
+    await page.waitForSelector('pie-author pie-inline-choice-config:defined');
+    const inlineChoiceModel = await page.$eval(
+      'pie-author pie-inline-choice-config',
+      el => (el as any).model
+    );
+    expect(inlineChoiceModel.element).toEqual('pie-inline-choice');
   });
 
 });

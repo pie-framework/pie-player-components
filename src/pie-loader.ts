@@ -81,10 +81,7 @@ export class PieLoader {
     const head = doc.getElementsByTagName('head')[0];
     const piesToLoad = this.getElementsToLoad(elements);
     const bundleUri = getPackageBundleUri(piesToLoad);
-    console.log(`piesToLoad.length  ${piesToLoad.length}`)
     if (!bundleUri) {
-      console.log(`!bundleUri`)
-
       return;
     }
     const script = doc.createElement('script');

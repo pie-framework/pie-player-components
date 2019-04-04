@@ -6,9 +6,6 @@ import parseNpm from 'parse-package-name';
 import { ModelUpdatedEvent } from '@pie-framework/pie-configure-events';
 import _isEqual from 'lodash/isEqual';
 
-// TODO - remove temporary polyfills
-// import { createConfigFunctions } from '../../polyfill-elements';
-
 /**
  * Pie Author will load a Pie Content model for authoring.
  * It needs to be run in the context
@@ -67,27 +64,15 @@ export class Author {
   @Watch('config')
   async watchConfig(newValue, oldValue) {
     
-    console.log('[pie-player-components:author] watch config called');
-    if (newValue && !_isEqual(newValue,oldValue)) {
-    
-      console.log('[pie-player-components:author] config is different');
+    if (newValue && !_isEqual(newValue,oldValue)) {   
       try {
-        
+        this.elementsLoaded = false;
         this.pieContentModel = pieContentFromConfig(newValue);
         this.addConfigTags(this.pieContentModel);
-
-        // elements have not changed, don't need to wait for them to load before updating model
-        if (newValue.elements && _isEqual(newValue.elements, oldValue.elements)) {
-          console.log('[pie-player-components:author] elements have not changed');
-          // this.updateModels();
-          this.elementsLoaded = false;
-        } else {
-          this.elementsLoaded = false;
-        }
-        
       } catch (error) {
         console.log(`ERROR ${error}`);
       }
+      
     }
   }
 
@@ -104,22 +89,17 @@ export class Author {
 
   @Watch('elementsLoaded')
   watchElementsLoaded(newValue: boolean, oldValue: boolean) {
-    console.log(`[pie-player-components:author] watchElementsLoaded ${newValue} ${oldValue}`);
-
     if (
       newValue &&
       !oldValue &&
       this.pieContentModel &&
       this.pieContentModel.markup
     ) {
-      console.log(`[pie-player-components:author] watchElementsLoaded  is now calling updateModels()`);
       this.updateModels();
     }
   }
 
   updateModels() {
-    console.log('[pie-player-components:author] updateModels');
-
     if (
       this.pieContentModel &&
       this.pieContentModel.elements &&
@@ -164,8 +144,6 @@ export class Author {
   }
 
   async componentWillLoad() {
-    console.log('[pie-player-components:author] componentWillLoad');
-
     if (this.config) {
       this.elementsLoaded = await this.pieLoader.elementsHaveLoaded(this.el);
     }
@@ -173,8 +151,6 @@ export class Author {
   }
 
   async componentDidLoad() {
-
-    console.log('[pie-player-components:author] componentDidload');
     this.el.addEventListener(ModelUpdatedEvent.TYPE, (e:ModelUpdatedEvent) =>  {
       // set the internal model
       // emit a content-item level event with the model
@@ -193,8 +169,6 @@ export class Author {
   }
 
   async componentDidUpdate() {
-    console.log('[pie-player-components:author] componentDidupdate');
-    
         this.loadPieElements();
   }
 
@@ -214,8 +188,6 @@ export class Author {
     };
   }
   render() {
-    console.log('updated render called');
-
     if (this.pieContentModel && this.pieContentModel.markup) {
       return <div innerHTML={this.getRenderMarkup()} />;
     }
