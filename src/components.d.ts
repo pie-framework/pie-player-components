@@ -36,6 +36,10 @@ export namespace Components {
     * To customize the standard behaviour provided by interaction configuration views you can  provide settings key-ed by the package name.  e.g.  `{ '@pie-element/inline-choice': { promptLabel: 'Item Stem' } }`  The settings that are configurable for each authoring view are documented in  the `@package-name/docs` folder for each package.
     */
     'configSettings'?: {[packageName:string]:Object};
+    /**
+    * Emmitted when the model for the content has been updated in the ui.
+    */
+    'onModelUpdated'?: (event: CustomEvent) => void;
   }
 
   interface PieLoader {

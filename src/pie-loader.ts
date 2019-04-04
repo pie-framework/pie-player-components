@@ -50,9 +50,9 @@ export class PieLoader {
       return Promise.resolve(true);
     } 
 
-    const promises = [...undefinedElements].map(e =>
+    const promises = undefinedElements ?  [...undefinedElements].map(e =>
       customElements.whenDefined(e.localName)
-    );
+    ) : [];
     return Promise.all(promises)
       .then(() => {
         return Promise.resolve(true);
@@ -81,7 +81,6 @@ export class PieLoader {
     const head = doc.getElementsByTagName('head')[0];
     const piesToLoad = this.getElementsToLoad(elements);
     const bundleUri = getPackageBundleUri(piesToLoad);
-
     if (!bundleUri) {
       return;
     }
@@ -139,20 +138,12 @@ export class PieLoader {
     if (forAuthoring) {
       if (!c.markup && c.models) {
         const tags = content.models.map(model => {
-          return `<${model.element}-config id="${model.id}"></${
+          return `<${model.element} id="${model.id}"></${
             model.element
           }-config>`;
         });
         c.markup = tags.join('');
-      }
-      if (c.markup) {
-        let markup;
-        Object.keys(c.elements).forEach(key => {
-          markup = c.markup.split(key).join( key+'-config');
-        });
-        c.markup = markup;
-      }
- 
+      } 
     }
 
     return c;

@@ -1,11 +1,10 @@
-import { Component, Element, Prop, State, Watch } from '@stencil/core';
+import { Component, Element, Prop, State, Watch, Event, EventEmitter } from '@stencil/core';
 import { PieContent, ItemConfig, PieElement } from '../../interface';
 import { PieLoader } from '../../pie-loader';
 import { pieContentFromConfig } from '../../utils/utils';
 import parseNpm from 'parse-package-name';
-
-// TODO - remove temporary polyfills
-// import { createConfigFunctions } from '../../polyfill-elements';
+import { ModelUpdatedEvent } from '@pie-framework/pie-configure-events';
+import _isEqual from 'lodash/isEqual';
 
 /**
  * Pie Author will load a Pie Content model for authoring.
@@ -28,6 +27,12 @@ export class Author {
    */
   @Prop() config: ItemConfig;
 
+
+  /**
+   * Emmitted when the model for the content has been updated in the ui.
+   */
+  @Event() modelUpdated: EventEmitter;
+
   /**
    * To customize the standard behaviour provided by interaction configuration views you can 
    * provide settings key-ed by the package name.  e.g.
@@ -39,22 +44,46 @@ export class Author {
    */
   @Prop() configSettings?: {[packageName:string]:Object}
 
-  @State() pieContentModel: PieContent;
+  pieContentModel: PieContent;
 
   pieLoader = new PieLoader();
 
+  renderMarkup: String;
+
+  getRenderMarkup(): string {
+    const c = this.pieContentModel;
+    let markup = "";
+    if (c.markup) {
+      Object.keys(c.elements).forEach(key => {
+        markup = c.markup.split(key).join( key+'-config');
+      });
+      return markup;
+    }
+  }
+
   @Watch('config')
-  async watchConfig(newConfig) {
-    if (newConfig) {
+  async watchConfig(newValue, oldValue) {
+    
+    if (newValue && !_isEqual(newValue,oldValue)) {   
       try {
         this.elementsLoaded = false;
-        this.pieContentModel = pieContentFromConfig(newConfig);
-        this.pieContentModel = this.pieLoader.convertPieContent(
-          this.pieContentModel
-        );
+        this.pieContentModel = pieContentFromConfig(newValue);
+        this.addConfigTags(this.pieContentModel);
       } catch (error) {
         console.log(`ERROR ${error}`);
       }
+      
+    }
+  }
+
+  addConfigTags(c: PieContent) {
+    if (!c.markup && c.models) {
+      const tags = c.models.map(model => {
+        return `<${model.element} id="${model.id}"></${
+          model.element
+        }-config>`;
+      });
+      c.markup = tags.join('');
     }
   }
 
@@ -88,20 +117,23 @@ export class Author {
         // initialize emtpy model if this is a pie
         if (this.pieContentModel.elements[pieElName]) {
           const elementId = el.getAttribute('id');
-          const model = {id: elementId, element: pieElName};
-          this.pieContentModel.models.push(model);
+          if (!this.pieContentModel.models.find(m => m.id === elementId)) {
+            const model = {id: elementId, element: pieElName};
+            this.pieContentModel.models.push(model);
+          }  
         }
       });
       tempDiv.remove();
     }
     if (this.pieContentModel && this.pieContentModel.models) {
-      this.pieContentModel.models.map(async model => {
-        const pieEl: PieElement = this.el.querySelector(`[id='${model.id}']`);
-        const pieElName = pieEl.tagName.toLowerCase().split('-config')[0];
-        const packageName = parseNpm(this.pieContentModel.elements[pieElName])
-            .name;
-
+      this.pieContentModel.models.map(model => {
+        let pieEl: PieElement = this.el.querySelector(`[id='${model.id}']`);
+        !pieEl && (pieEl = this.el.querySelector(`[pie-id='${model.id}']`));
+        
         if (pieEl) {
+          const pieElName = pieEl.tagName.toLowerCase().split('-config')[0];
+          const packageName = parseNpm(this.pieContentModel.elements[pieElName])
+              .name;
           pieEl.model = model;
           if (this.configSettings && this.configSettings[packageName]) {
             pieEl.configure = this.configSettings[packageName]
@@ -112,16 +144,32 @@ export class Author {
   }
 
   async componentWillLoad() {
-    this.elementsLoaded = await this.pieLoader.elementsHaveLoaded(this.el);
-    this.watchConfig(this.config);
+    if (this.config) {
+      this.elementsLoaded = await this.pieLoader.elementsHaveLoaded(this.el);
+    }
+    this.watchConfig(this.config, {});
   }
 
   async componentDidLoad() {
+    this.el.addEventListener(ModelUpdatedEvent.TYPE, (e:ModelUpdatedEvent) =>  {
+      // set the internal model
+      // emit a content-item level event with the model
+      if (this.pieContentModel && e.update) {
+        this.pieContentModel.models.forEach(m => {
+          if (m.id === e.update.id) {
+            Object.assign(m, e.update);
+          }
+        });
+        e.stopPropagation();
+        this.modelUpdated.emit(this.pieContentModel)
+      }  
+    });
+
     this.loadPieElements();
   }
 
   async componentDidUpdate() {
-    this.loadPieElements();
+        this.loadPieElements();
   }
 
   async loadPieElements() {
@@ -141,7 +189,7 @@ export class Author {
   }
   render() {
     if (this.pieContentModel && this.pieContentModel.markup) {
-      return <div innerHTML={this.pieContentModel.markup} />;
+      return <div innerHTML={this.getRenderMarkup()} />;
     }
   }
 }
