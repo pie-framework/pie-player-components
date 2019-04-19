@@ -158,9 +158,9 @@
       };
 
       const authorConfig =  {
-    "markup": "<br/><multiple-choice pie-id=\"E10404\"></multiple-choice>",
+    "markup": "<br/><pie-ebsr pie-id=\"E10404\"></multiple-choice>",
     "elements": {
-      "multiple-choice": "@pie-element/multiple-choice@latest"
+      "pie-ebsr": "@pie-element/ebsr@latest"
     },
     "buildInfo": [
       {
@@ -169,53 +169,48 @@
       }
     ],
     "models": [
-      {
-        "keyMode": "letters",
-        "choices": [
-          {
-            "correct": false,
-            "value": "A",
-            "label": "<p>employ a full-time military.</p>",
-            "feedback": {
-              "type": "none",
-              "value": "<p>The German military was severely limited in scope of personnel and size as a result of the treaty.</p>"
-            }
-          },
-          {
-            "feedback": {
-              "type": "none",
-              "value": "<p>Student incorrectly chooses this option, which occurred after World War II, not World War I.</p>"
-            },
-            "correct": false,
-            "value": "B",
-            "label": "<p>divide into two states: West Germany and East Germany.</p>"
-          },
-          {
-            "feedback": {
-              "type": "none",
-              "value": "<p>The overseas colonies were removed from German control and, therefore, no additional services were provided.</p>"
-            },
-            "correct": false,
-            "value": "C",
-            "label": "<p>provide overseas colonies with better social services.</p>"
-          },
-          {
-            "correct": true,
-            "value": "D",
-            "label": "<p>accept sole responsibility for the war.</p>",
-            "feedback": {
-              "type": "none"
-            }
-          }
-        ],
-        "id": "E10404",
-        "element": "multiple-choice",
-        "choiceMode": "radio",
-        "prompt": "<p>The Treaty of Versailles required Germany to</p>"
+    {
+        "id": "1",
+        "element": "pie-element-ebsr",
+        "mode": "advanced",
+        "partA": {
+            "prompt": "What color is the sky?",
+            "choiceMode": "radio",
+            "keyMode": "numbers",
+            "choices": [
+                { "value": "yellow", "label": "Yellow", "correct": false },
+                { "value": "green", "label": "Green", "correct": false },
+                { "correct": true, "value": "blue", "label": "Blue" }
+            ],
+            "partialScoring": false,
+            "partialScoringLabel": "Each correct response that is correctly checked and each incorrect response\n          that is correctly unchecked will be worth 1 point.\n          The maximum points is the total number of answer choices.",
+            "shuffle": false,
+            "showCorrect": false
+        },
+        "partB": {
+            "prompt": "What color do you get when you mix Red with your answer in Part 1?",
+            "choiceMode": "radio",
+            "keyMode": "numbers",
+            "choices": [
+                { "value": "orange", "label": "Orange", "correct": false },
+                { "correct": true, "value": "purple", "label": "Purple" },
+                { "value": "pink", "label": "Pink" },
+                { "value": "green", "label": "Green" }
+            ],
+            "partialScoring": false,
+            "partialScoringLabel": "Each correct response that is correctly checked and each incorrect response\n          that is correctly unchecked will be worth 1 point.\n          The maximum points is the total number of answer choices.",
+            "shuffle": false
+        }
+
       }
     ]
   };
 
+
+      customElements.whenDefined('multiple-choice-configure').then(c => {
+        console.log('defined');
+      })
+     
       // const player = document.getElementById('player');
       const author = document.getElementById('author');
       const button = document.getElementById('update');

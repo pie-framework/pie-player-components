@@ -189,4 +189,46 @@ export class PieLoader {
       }
     );
   }
+
+  // TODO - some duplication to refactor the methods below
+  async loadJs(views: string[], doc:Document): Promise<any> {
+    return Promise.all(views.map(v => this.loadScript(v, doc)));
+  }
+
+  loadScript = (src, doc: Document): Promise<boolean> =>
+   new Promise((resolve, reject) => {
+    const script = doc.createElement("script");
+    script.src = src;
+    script.onload = () => {
+      resolve();
+    };
+    script.onerror = function(e) {
+      console.log("error loading script: ", src);
+      reject(e);
+    };
+    doc.head.appendChild(script);
+  });
+
+  defineElements(els: { [key: string]: string }): Promise<any> {
+    const promises = Object.keys(els).map(k => {
+      const cleaned = this.elNameCleaned(els[k]);
+      const Def = (window as any).pie.default[cleaned].Element;
+      if (!Def) {
+        throw new Error(`missing definition for: ${cleaned}`);
+      }
+      if (!customElements.get(k)) {
+        customElements.define(k, Def);
+      }
+      return customElements.whenDefined(k).then(() => {
+        console.log(`${k} is defined!`);
+      });
+    });
+    return Promise.all(promises);
+  }
+
+  elNameCleaned = e => {
+    const stripped: string = e.startsWith("@") ? e.substring(1) : e;
+    const arr = stripped.split("@");
+    return e.startsWith("@") ? `@${arr[0]}` : arr[0];
+  };
 }

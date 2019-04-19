@@ -65,6 +65,7 @@ describe('pie-author', () => {
 
   it.skip('can switch items', async() => {
     await page.setContent('<pie-author config="evan"></pie-author>');
+    setupInterceptPieCloud(page,  pie);
     pieAuthor = await page.find('pie-author');
     pieAuthor.setProperty('config', multipleChoiceItem);
     await page.waitForChanges();
@@ -75,7 +76,8 @@ describe('pie-author', () => {
     );
     expect(pieModel.element).toEqual('pie-multiple-choice');
 
-    pieAuthor.setProperty('contentConfig', inlineChoiceItem);
+    setupInterceptPieCloud(page,  `@pie-element/inline-choice`);
+    pieAuthor.setProperty('config', inlineChoiceItem);
     await page.waitForChanges();
     await page.waitForSelector('pie-author pie-inline-choice-config:defined');
     const inlineChoiceModel = await page.$eval(

@@ -5,17 +5,13 @@ import {
   State,
   Element,
   Event,
-  EventEmitter,
-  Listen
+  EventEmitter
 } from '@stencil/core';
 import { PieContent, ItemConfig, ItemSession, PieElement, PieController} from '../../interface';
 import { PieLoader } from '../../pie-loader';
 import { pieContentFromConfig } from '../../utils/utils';
-// const  nanoid = require('nanoid');
-import {
-  SessionChangedEvent
-} from '@pie-framework/pie-player-events';
 
+const controllerErrorMessage: string = 'Error processing question configuration, verify the question model?';
 @Component({
   tag: 'pie-player',
   styleUrl: '../components.css',
@@ -26,11 +22,18 @@ export class Player {
 
   @Element() el: HTMLElement;
 
+  // Note - the below not handled, just added here for API docs
   /**
    * Emmitted when any interaction in the set of interactions being rendered has
    * been mutated by user action.
    */
-  @Event() sessionChanged: EventEmitter;
+  @Event({eventName: 'session-changed'}) sessionChanged: EventEmitter;
+
+  /**
+   * Emmitted if there is an error encountered while rendering.
+   * `event.detail` will be a string containing a message about the error.
+   */
+  @Event({eventName: 'player-error'}) playerError: EventEmitter;
 
   /**
    * TODO - Emmitted when any all interactions in a PIE Assessment Item have reported that a user 
@@ -56,6 +59,19 @@ export class Player {
    */
   @Prop() env: Object = { mode: 'gather', role: 'student' };
 
+  /**
+   * Indicates if player running in the context of a PIE hosting system.
+   * Do not modify the default value for this property if you are not implementing a PIE host.
+   * If true, the host is responsible for all model updates.
+   */
+  @Prop() hosted?: boolean = false;
+
+  /**
+   * If provided this url is used for loading the JS bundle for rendering the PIE Elements.
+   * If not provided the system will default to using the PIE Cloud service to locate and load JS bundles.
+   */
+  @Prop() jsBundleUrls?: string[];
+
   @State() pieContentModel: PieContent;
 
   pieLoader = new PieLoader();
@@ -68,7 +84,12 @@ export class Player {
     this.pieContentModel = pieContentFromConfig(newConfig);
     if (!this.elementsLoaded) {
       this.el.innerHTML = this.pieContentModel.markup;
-      await this.pieLoader.loadCloudPies(this.pieContentModel.elements, this.doc);
+      if (this.jsBundleUrls) {
+        await this.pieLoader.loadJs(this.jsBundleUrls, this.doc);
+        await this.pieLoader.defineElements(this.pieContentModel.elements);
+      } else {
+        await this.pieLoader.loadCloudPies(this.pieContentModel.elements, this.doc);
+      }
       this.elementsLoaded = await this.pieLoader.elementsHaveLoaded(this.el);
     } else {
       this.updateModels();
@@ -84,16 +105,29 @@ export class Player {
 
   @Watch('env')
   updateModels() {
-    if (this.pieContentModel &&  this.pieContentModel.models) {
+    if (this.pieContentModel && this.pieContentModel.models) {
       this.pieContentModel.models.forEach(async model => {
         const pieEl: PieElement = this.el.querySelector(`[id='${model.id}']`);      
-        const controller: PieController = this.pieLoader.getController(
-          pieEl.localName
-        );
         const session = this.findOrAddSession(this.session.data, model.id);
         pieEl.session = session;
         if (pieEl) {
-          pieEl.model = await controller.model(model, session, this.env);
+          if (!this.hosted) {
+            try {
+              // use local controllers
+              const controller: PieController = this.pieLoader.getController(
+                pieEl.localName
+              );
+              pieEl.model = await controller.model(model, session, this.env);
+            } catch (err) {
+              this.playerError.emit(`${controllerErrorMessage}  -  (${err})`);
+            }
+          } else {
+            if ((model as any).error) {
+              this.playerError.emit(`${controllerErrorMessage}  -  '${(model as any).error}'`);
+            }
+            pieEl.model = model;           
+          }
+          
         };   
       });
     }
@@ -104,26 +138,16 @@ export class Player {
   }
 
   render() {
-    return <div innerHTML={this.pieContentModel.markup} />;
+    return <div innerHTML={(this.pieContentModel && this.pieContentModel.markup) ? this.pieContentModel.markup : ""} />;
   }
 
   hostData() {
     return {
-      'class': { 'pie-loading': !this.elementsLoaded }
+      'class': { 'pie-loading': (this.pieContentModel && !this.elementsLoaded) }
     };
   }
 
-  /**
-   * TODO - just wrapping the underlying PIE events for now, and exposing a player-level api.
-   * Should get the `completed` flags and combine them to get an overall session completed 
-   * status, or emit a completed event. 
-   * 
-   */
-  @Listen('session-changed') // TODO - can't use SessionChanvedEvent.TYPE ?
-  handleSessionUpdate(ev: SessionChangedEvent){
-    ev.stopPropagation();
-    this.sessionChanged.emit(this.session);
-  }
+
 
   findOrAddSession(data: any[], id: string) {
     const s = data.find(d => d.id === id);
