@@ -131,6 +131,9 @@ export namespace Components {
     */
     'session'?: ItemSession;
   }
+
+  interface PieSpinner {}
+  interface PieSpinnerAttributes extends StencilHTMLAttributes {}
 }
 
 declare global {
@@ -138,12 +141,14 @@ declare global {
     'PieAuthor': Components.PieAuthor;
     'PieLoader': Components.PieLoader;
     'PiePlayer': Components.PiePlayer;
+    'PieSpinner': Components.PieSpinner;
   }
 
   interface StencilIntrinsicElements {
     'pie-author': Components.PieAuthorAttributes;
     'pie-loader': Components.PieLoaderAttributes;
     'pie-player': Components.PiePlayerAttributes;
+    'pie-spinner': Components.PieSpinnerAttributes;
   }
 
 
@@ -165,16 +170,24 @@ declare global {
     new (): HTMLPiePlayerElement;
   };
 
+  interface HTMLPieSpinnerElement extends Components.PieSpinner, HTMLStencilElement {}
+  var HTMLPieSpinnerElement: {
+    prototype: HTMLPieSpinnerElement;
+    new (): HTMLPieSpinnerElement;
+  };
+
   interface HTMLElementTagNameMap {
     'pie-author': HTMLPieAuthorElement
     'pie-loader': HTMLPieLoaderElement
     'pie-player': HTMLPiePlayerElement
+    'pie-spinner': HTMLPieSpinnerElement
   }
 
   interface ElementTagNameMap {
     'pie-author': HTMLPieAuthorElement;
     'pie-loader': HTMLPieLoaderElement;
     'pie-player': HTMLPiePlayerElement;
+    'pie-spinner': HTMLPieSpinnerElement;
   }
 
 

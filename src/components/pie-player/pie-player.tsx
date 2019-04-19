@@ -72,27 +72,32 @@ export class Player {
    */
   @Prop() jsBundleUrls?: string[];
 
+
   @State() pieContentModel: PieContent;
 
   pieLoader = new PieLoader();
 
   @Watch('config')
   async watchConfig(newConfig) {
-    if (!newConfig) {
-      return;
-    }
-    this.pieContentModel = pieContentFromConfig(newConfig);
-    if (!this.elementsLoaded) {
-      this.el.innerHTML = this.pieContentModel.markup;
-      if (this.jsBundleUrls) {
-        await this.pieLoader.loadJs(this.jsBundleUrls, this.doc);
-        await this.pieLoader.defineElements(this.pieContentModel.elements);
-      } else {
-        await this.pieLoader.loadCloudPies(this.pieContentModel.elements, this.doc);
+    try {
+      if (!newConfig) {
+        return;
       }
-      this.elementsLoaded = await this.pieLoader.elementsHaveLoaded(this.el);
-    } else {
-      this.updateModels();
+      this.pieContentModel = pieContentFromConfig(newConfig);
+      if (!this.elementsLoaded) {
+        this.el.innerHTML = this.pieContentModel.markup;
+        if (this.jsBundleUrls) {
+          await this.pieLoader.loadJs(this.jsBundleUrls, this.doc);
+          await this.pieLoader.defineElements(this.pieContentModel.elements);
+        } else {
+          await this.pieLoader.loadCloudPies(this.pieContentModel.elements, this.doc);
+        }
+        this.elementsLoaded = await this.pieLoader.elementsHaveLoaded(this.el);
+      } else {
+        this.updateModels();
+      }
+    } catch (err) {
+      this.playerError.emit(`problem loading item (${err})`)
     }
   }
 
@@ -107,7 +112,7 @@ export class Player {
   updateModels() {
     if (this.pieContentModel && this.pieContentModel.models) {
       this.pieContentModel.models.forEach(async model => {
-        const pieEl: PieElement = this.el.querySelector(`[id='${model.id}']`);      
+        const pieEl: PieElement = this.el.querySelector(`[id='${model.id}']`);   
         const session = this.findOrAddSession(this.session.data, model.id);
         pieEl.session = session;
         if (pieEl) {
@@ -138,14 +143,13 @@ export class Player {
   }
 
   render() {
-    return <div innerHTML={(this.pieContentModel && this.pieContentModel.markup) ? this.pieContentModel.markup : ""} />;
+    if (this.pieContentModel && !this.elementsLoaded) {
+      return <pie-spinner></pie-spinner>
+    } else {
+      return <div innerHTML={(this.pieContentModel && this.pieContentModel.markup) ? this.pieContentModel.markup : ""} />;
+    }
   }
 
-  hostData() {
-    return {
-      'class': { 'pie-loading': (this.pieContentModel && !this.elementsLoaded) }
-    };
-  }
 
 
 
