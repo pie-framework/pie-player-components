@@ -91,7 +91,7 @@ export namespace Components {
     /**
     * If provided this url is used for loading the JS bundle for rendering the PIE Elements. If not provided the system will default to using the PIE Cloud service to locate and load JS bundles.
     */
-    'jsBundleUrls'?: Object;
+    'jsBundleUrls'?: string[];
     /**
     * The Pie Session
     */
@@ -113,7 +113,7 @@ export namespace Components {
     /**
     * If provided this url is used for loading the JS bundle for rendering the PIE Elements. If not provided the system will default to using the PIE Cloud service to locate and load JS bundles.
     */
-    'jsBundleUrls'?: Object;
+    'jsBundleUrls'?: string[];
     /**
     * Emmitted if there is an error encountered while rendering. `event.detail` will be a string containing a message about the error.
     */
