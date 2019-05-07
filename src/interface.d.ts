@@ -33,6 +33,9 @@ interface PieModel  {
   id: string,
   /** The html Element tag name */
   element: string;
+  // supports 'excess' properties as may be defined in pie models
+  // https://github.com/Microsoft/TypeScript/wiki/Breaking-Changes#strict-object-literal-assignment-checking
+  [x: string]: any;
 }
 
 

@@ -7,9 +7,8 @@ import {
   Event,
   EventEmitter
 } from '@stencil/core';
-import { PieContent, ItemConfig, ItemSession, PieElement, PieController} from '../../interface';
+import { PieContent, ItemConfig, ItemSession, PieElement, PieController, AdvancedItemConfig} from '../../interface';
 import { PieLoader } from '../../pie-loader';
-import { pieContentFromConfig } from '../../utils/utils';
 
 const controllerErrorMessage: string = 'Error processing question configuration, verify the question model?';
 @Component({
@@ -75,6 +74,8 @@ export class Player {
 
   @State() pieContentModel: PieContent;
 
+  @State() stimulusItemModel: AdvancedItemConfig;
+
   pieLoader = new PieLoader();
 
   @Watch('config')
@@ -83,7 +84,24 @@ export class Player {
       if (!newConfig) {
         return;
       }
-      this.pieContentModel = pieContentFromConfig(newConfig);
+        try {
+        if (typeof newConfig == 'string')  {
+          newConfig = JSON.parse(newConfig);
+        }
+        if (newConfig.pie) {
+          this.stimulusItemModel = newConfig;
+          return; // if stimulus item 
+        } else if (newConfig.elements)  {
+          this.pieContentModel = newConfig
+        } else {
+          this.playerError.emit(`invalid pie data model`);
+          return;
+        }
+      } catch (err) {
+        this.playerError.emit(`exception processing content model - ${err.message}`);
+        return;  
+      }
+
       if (!this.elementsLoaded) {
         this.el.innerHTML = this.pieContentModel.markup;
         if (this.jsBundleUrls) {
@@ -122,7 +140,12 @@ export class Player {
               const controller: PieController = this.pieLoader.getController(
                 pieEl.localName
               );
-              pieEl.model = await controller.model(model, session, this.env);
+              if (controller) {
+                pieEl.model = await controller.model(model, session, this.env);
+              } else  {
+                // no controller provided
+                pieEl.model = model;
+              }
             } catch (err) {
               this.playerError.emit(`${controllerErrorMessage}  -  (${err})`);
             }
@@ -142,17 +165,6 @@ export class Player {
     this.watchConfig(this.config);
   }
 
-  render() {
-    if (this.pieContentModel && !this.elementsLoaded) {
-      return <pie-spinner></pie-spinner>
-    } else {
-      return <div innerHTML={(this.pieContentModel && this.pieContentModel.markup) ? this.pieContentModel.markup : ""} />;
-    }
-  }
-
-
-
-
   findOrAddSession(data: any[], id: string) {
     const s = data.find(d => d.id === id);
     if (s) {
@@ -162,5 +174,36 @@ export class Player {
     data.push(ss);
     return ss;
   };
+
+  render() {
+    if (this.stimulusItemModel) {
+      return  <pie-stimulus-layout>
+        <div slot="stimulus">
+          <pie-player 
+            id="stimulusPlayer" 
+            config={this.stimulusItemModel.stimulus}
+            hosted={this.hosted}
+            jsBundleUrls={this.jsBundleUrls}
+            session={this.session}
+            ></pie-player>
+        </div>
+        <div slot="item">
+          <pie-player 
+            id="itemPlayer" 
+            config={this.stimulusItemModel.pie}
+            hosted={this.hosted}
+            jsBundleUrls={this.jsBundleUrls}
+            session={this.session}></pie-player>
+        </div>
+      </pie-stimulus-layout>
+    } else {
+      if (this.pieContentModel && !this.elementsLoaded) {
+        return <pie-spinner></pie-spinner>
+      } else {
+        return <div innerHTML={(this.pieContentModel && this.pieContentModel.markup) ? this.pieContentModel.markup : ""} />;
+      }
+    }
+
+  }
 
 }

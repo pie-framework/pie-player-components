@@ -1,3 +1,4 @@
+(function(){
 function createContent(el) {
   const shadow = el.attachShadow({ mode: 'open' });
   const name = el.getAttribute('name');
@@ -50,6 +51,8 @@ class InlineChoice extends MockElement {}
 class InlineChoiceConfig extends MockConfig {}
 class MathInline extends MockElement {}
 class MathInlineConfig extends MockConfig {}
+class Passage extends MockElement {}
+
 
 
 window['pie'] = {
@@ -68,7 +71,11 @@ window['pie'] = {
       Element: MathInline,
       Configure: MathInlineConfig,
       controller
+    },
+    '@pie-element/passage': {
+      Element: Passage
     }
   }
 };
 
+})()
