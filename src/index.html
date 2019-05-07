@@ -11,21 +11,16 @@
   </head>
   <body>
  
-    <div>
-      <button id="update">update</button>
-    </div>
-   
-   
-    <!-- <pie-player id="player"></pie-player> -->
+     
+    <pie-player id="player"></pie-player>
 
-    <pie-author id="author"></pie-author>
+
 
     <script>
       const config = {
         id: '1',
         elements: {
-          'pie-multiple-choice': '@pie-element/multiple-choice@2.7.3',
-          'pie-number-line': '@pie-element/number-line@3.0.4'
+          'pie-multiple-choice': '@pie-element/multiple-choice@2.7.3'
         },
         models: [
           {
@@ -75,167 +70,26 @@
             partialScoringLabel: `Each correct response that is correctly checked and each incorrect response
             that is correctly unchecked will be worth 1 point.
             The maximum points is the total number of answer choices.`
-          },
-          {
-            id: '2',
-            element: 'pie-number-line',
-            correctResponse: [
-              {
-                type: 'point',
-                pointType: 'full',
-                domainPosition: 1
-              },
-              {
-                type: 'line',
-                leftPoint: 'full',
-                rightPoint: 'empty',
-                domainPosition: 1,
-                size: 2
-              }
-            ],
-            feedback: {
-              correct: {
-                type: 'default',
-                default: 'Correct'
-              },
-              partial: {
-                type: 'default',
-                default: 'Nearly'
-              },
-              incorrect: {
-                type: 'custom',
-                custom: '<h1>Incorrect</h1>'
-              }
-            },
-            allowPartialScoring: true,
-            partialScoring: [
-              {
-                numberOfCorrect: 1,
-                scorePercentage: 35
-              }
-            ],
-            config: {
-              width: 500,
-              height: 400,
-              domain: [-5, 5],
-              initialElements: [
-                {
-                  type: 'point',
-                  pointType: 'empty',
-                  domainPosition: -1
-                }
-              ],
-              maxNumberOfPoints: 20,
-              tickFrequency: 6,
-              showMinorTicks: true,
-              snapPerTick: 1,
-              tickLabelOverrides: [],
-              initialType: 'PF',
-              exhibitOnly: false,
-              availableTypes: {
-                PF: true,
-                PE: true,
-                LFF: true,
-                LEF: true,
-                LFE: true,
-                LEE: true,
-                RFN: true,
-                RFP: true,
-                REN: true,
-                REP: true
-              }
-            }
           }
         ],
         markup: `
-        <div style="padding: 15px;">
           <pie-multiple-choice id='1'></pie-multiple-choice>
-        </div>
-        <div>
-        <pie-number-line id='2'></pie-number-line>
-        </div>
         `
       };
 
-      const authorConfig =  {
-    "markup": "<br/><pie-ebsr pie-id=\"E10404\"></multiple-choice>",
-    "elements": {
-      "pie-ebsr": "@pie-element/ebsr@latest"
-    },
-    "buildInfo": [
-      {
-        "version": "2.1.0",
-        "name": "@pie-element/multiple-choice"
-      }
-    ],
-    "models": [
-    {
-        "id": "1",
-        "element": "pie-element-ebsr",
-        "mode": "advanced",
-        "partA": {
-            "prompt": "What color is the sky?",
-            "choiceMode": "radio",
-            "keyMode": "numbers",
-            "choices": [
-                { "value": "yellow", "label": "Yellow", "correct": false },
-                { "value": "green", "label": "Green", "correct": false },
-                { "correct": true, "value": "blue", "label": "Blue" }
-            ],
-            "partialScoring": false,
-            "partialScoringLabel": "Each correct response that is correctly checked and each incorrect response\n          that is correctly unchecked will be worth 1 point.\n          The maximum points is the total number of answer choices.",
-            "shuffle": false,
-            "showCorrect": false
-        },
-        "partB": {
-            "prompt": "What color do you get when you mix Red with your answer in Part 1?",
-            "choiceMode": "radio",
-            "keyMode": "numbers",
-            "choices": [
-                { "value": "orange", "label": "Orange", "correct": false },
-                { "correct": true, "value": "purple", "label": "Purple" },
-                { "value": "pink", "label": "Pink" },
-                { "value": "green", "label": "Green" }
-            ],
-            "partialScoring": false,
-            "partialScoringLabel": "Each correct response that is correctly checked and each incorrect response\n          that is correctly unchecked will be worth 1 point.\n          The maximum points is the total number of answer choices.",
-            "shuffle": false
-        }
-
-      }
-    ]
-  };
 
 
-      customElements.whenDefined('multiple-choice-configure').then(c => {
-        console.log('defined');
-      })
+
      
-      // const player = document.getElementById('player');
-      const author = document.getElementById('author');
-      const button = document.getElementById('update');
+      const player = document.getElementById('player');
 
-      button.onclick = ev => {
-        //var copy = Object.assign({}, authorConfig);
-        const copy = JSON.parse(JSON.stringify(authorConfig));
 
-        copy.models[0].choices[0].correct = !authorConfig.models[0].choices[0].correct;
-        copy.models[0].choices[3].correct = !authorConfig.models[0].choices[3].correct;
-        copy.models[0].choices.splice(1,1);
-     
-        author.config = copy;
-      }
 
-      // player.addEventListener('sessionChanged', event => {
-      //   console.log(event.type + ':' + JSON.stringify(event.detail));
-      // });
-
-      author.addEventListener('model.updated', event => {
-        console.log(event.type + ':' + JSON.stringify(author.config));
-        // console.log(event.type + ':' + JSON.stringify(event.detail));
+      player.addEventListener('sessionChanged', event => {
+        console.log(event.type + ':' + JSON.stringify(event.detail));
       });
-      author.config = authorConfig;
-      // player.config = config;
+
+      player.config = config;
     </script>
   </body>
 </html>
