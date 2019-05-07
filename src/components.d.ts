@@ -134,6 +134,9 @@ export namespace Components {
 
   interface PieSpinner {}
   interface PieSpinnerAttributes extends StencilHTMLAttributes {}
+
+  interface PieStimulusLayout {}
+  interface PieStimulusLayoutAttributes extends StencilHTMLAttributes {}
 }
 
 declare global {
@@ -142,6 +145,7 @@ declare global {
     'PieLoader': Components.PieLoader;
     'PiePlayer': Components.PiePlayer;
     'PieSpinner': Components.PieSpinner;
+    'PieStimulusLayout': Components.PieStimulusLayout;
   }
 
   interface StencilIntrinsicElements {
@@ -149,6 +153,7 @@ declare global {
     'pie-loader': Components.PieLoaderAttributes;
     'pie-player': Components.PiePlayerAttributes;
     'pie-spinner': Components.PieSpinnerAttributes;
+    'pie-stimulus-layout': Components.PieStimulusLayoutAttributes;
   }
 
 
@@ -176,11 +181,18 @@ declare global {
     new (): HTMLPieSpinnerElement;
   };
 
+  interface HTMLPieStimulusLayoutElement extends Components.PieStimulusLayout, HTMLStencilElement {}
+  var HTMLPieStimulusLayoutElement: {
+    prototype: HTMLPieStimulusLayoutElement;
+    new (): HTMLPieStimulusLayoutElement;
+  };
+
   interface HTMLElementTagNameMap {
     'pie-author': HTMLPieAuthorElement
     'pie-loader': HTMLPieLoaderElement
     'pie-player': HTMLPiePlayerElement
     'pie-spinner': HTMLPieSpinnerElement
+    'pie-stimulus-layout': HTMLPieStimulusLayoutElement
   }
 
   interface ElementTagNameMap {
@@ -188,6 +200,7 @@ declare global {
     'pie-loader': HTMLPieLoaderElement;
     'pie-player': HTMLPiePlayerElement;
     'pie-spinner': HTMLPieSpinnerElement;
+    'pie-stimulus-layout': HTMLPieStimulusLayoutElement;
   }
 
 

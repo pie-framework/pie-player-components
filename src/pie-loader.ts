@@ -220,7 +220,6 @@ export class PieLoader {
         customElements.define(k, Def);
       }
       return customElements.whenDefined(k).then(() => {
-        console.log(`${k} is defined!`);
       });
     });
     return Promise.all(promises);

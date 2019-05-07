@@ -2,7 +2,7 @@ import { Config } from '@stencil/core';
 
 export const config: Config = {
   namespace: 'pie-player-components',
-  bundles: [ { components: [ 'pie-author','pie-player','pie-loader','pie-spinner' ] } ],
+  bundles: [ { components: [ 'pie-author','pie-player','pie-loader','pie-spinner','pie-stimulus-layout' ] } ],
   copy: [
     { src: 'demo' }
   ],

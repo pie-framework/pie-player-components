@@ -29,6 +29,7 @@
   },
   "devDependencies": {
     "@pie-framework/pie-player-events": "^0.1.0",
+    "@release-it/conventional-changelog": "^1.0.0",
     "@stencil/core": "~0.18.0",
     "@types/jest": "23.3.14",
     "@types/lodash": "^4.14.121",
@@ -46,5 +47,11 @@
     "typescript": "^3.3.3",
     "yalc": "^1.0.0-pre.27"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "plugins": {
+    "@release-it/conventional-changelog": {
+      "preset": "angular",
+      "infile": "CHANGELOG.md"
+    }
+  }
 }

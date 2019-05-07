@@ -13,7 +13,6 @@ export class PieSpinner {
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 100 100"
             preserveAspectRatio="xMidYMid"
-            style="background: none;"
           >
             <g transform="rotate(0 50 50)">
               <rect

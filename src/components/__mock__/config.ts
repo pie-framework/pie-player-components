@@ -11,9 +11,22 @@ export const simplePieMock: PieContent = {
   markup: "<pie-multiple-choice id='1'></pie-multiple-choice>"
 }
 
+ 
 export const advancedPieMock: AdvancedItemConfig = {
   id: "1",
-  pie: simplePieMock
+  pie: simplePieMock,
+  stimulus: {
+    id: "1",
+    elements: {"pie-passage": "@pie-element/passage@latest"},
+    models: [
+      { 
+        id: "1",
+        element: "pie-passage",
+        title: "passage title",
+        content: "passage content"
+      }],
+    markup: "<pie-passage id='1'></pie-passage"
+  }
 }
 
 export const multipleChoiceItem = {
