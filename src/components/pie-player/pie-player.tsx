@@ -17,6 +17,12 @@ const controllerErrorMessage: string = 'Error processing question configuration,
   shadow: false
 })
 export class Player {
+
+  /**
+   * a reference to the active player when wrapping playert in stimulus layout
+   */
+  stimulusPlayer: HTMLElement;
+
   @Prop({ context: 'document' }) doc!: Document;
 
   @Element() el: HTMLElement;
@@ -78,8 +84,17 @@ export class Player {
 
   pieLoader = new PieLoader();
 
+  player() {
+   return this.stimulusPlayer ? this.stimulusPlayer : this;
+  }
+
   @Watch('config')
   async watchConfig(newConfig) {
+    // wrapping a player in stimulus layoute
+    if (this.stimulusPlayer) {
+      (this.stimulusPlayer as any).config = newConfig;
+      return;
+    }
     try {
       if (!newConfig) {
         return;
@@ -127,7 +142,12 @@ export class Player {
   }
 
   @Watch('env')
-  updateModels() {
+  updateModels(newEnv = this.env) {
+      // wrapping a player in stimulus layoute
+      if (this.stimulusPlayer) {
+        (this.stimulusPlayer as any).env = newEnv;
+        return;
+      }
     if (this.pieContentModel && this.pieContentModel.models) {
       this.pieContentModel.models.forEach(async model => {
         const pieEl: PieElement = this.el.querySelector(`[id='${model.id}']`);   
@@ -141,7 +161,7 @@ export class Player {
                 pieEl.localName
               );
               if (controller) {
-                pieEl.model = await controller.model(model, session, this.env);
+                pieEl.model = await controller.model(model, session, newEnv);
               } else  {
                 // no controller provided
                 pieEl.model = model;
@@ -193,7 +213,9 @@ export class Player {
             config={this.stimulusItemModel.pie}
             hosted={this.hosted}
             jsBundleUrls={this.jsBundleUrls}
-            session={this.session}></pie-player>
+            session={this.session}
+            ref={(el) => this.stimulusPlayer = el as HTMLElement}
+            ></pie-player>
         </div>
       </pie-stimulus-layout>
     } else {
