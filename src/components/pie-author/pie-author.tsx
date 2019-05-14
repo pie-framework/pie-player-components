@@ -182,14 +182,11 @@ export class Author {
     }
   }
 
-  hostData() {
-    return {
-      class: { 'pie-loading': !this.elementsLoaded }
-    };
-  }
   render() {
     if (this.pieContentModel && this.pieContentModel.markup) {
       return <div innerHTML={this.getRenderMarkup()} />;
+    } else {
+      return <pie-spinner></pie-spinner>;
     }
   }
 }
