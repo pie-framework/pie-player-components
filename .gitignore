@@ -1,5 +1,6 @@
 dist/
 www/
+.yalc
 .history/
 *~
 *.sw[mnpcod]
