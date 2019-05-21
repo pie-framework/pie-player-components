@@ -12,17 +12,17 @@ export const getPackageWithoutVersion = packages => {
 
 export const getPackageBundleUri = (pies: PieItemElement) => {
   return encodeURI(Object.values(pies).join('+'));
-}
+};
 
 export const pieContentFromConfig = (config: any): PieContent => {
   try {
-    if (typeof config == 'string')  {
+    if (typeof config == 'string') {
       config = JSON.parse(config);
     }
     if (config.pie) {
       const ac = config as AdvancedItemConfig;
       return ac.pie;
-    } else if (config.elements)  {
+    } else if (config.elements) {
       const pc = config as PieContent;
       return pc;
     } else {
@@ -31,6 +31,29 @@ export const pieContentFromConfig = (config: any): PieContent => {
     }
   } catch (err) {
     console.warn(`invalid pie model: ${JSON.stringify(config)}`);
-    return null;  
+    return null;
   }
+};
+
+export const patchMDCSwitchFocus = element => {
+  let lock = 0;
+  element.addEventListener(
+    'mouseup',
+    e => {
+      if (lock) return;
+      let { target } = e;
+      do {
+        if (
+          target.classList &&
+          target.classList.contains('mdc-ripple-upgraded--background-focused')
+        ) {
+          lock++;
+          target.classList.remove('mdc-ripple-upgraded--background-focused');
+          lock--;
+          return;
+        }
+      } while ((target = target.parentNode));
+    },
+    { passive: true }
+  );
 };

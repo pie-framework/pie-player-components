@@ -32,6 +32,25 @@ The class `pie-loading` will be added to the element while assets are being load
 | `session-changed`   | Emmitted when any interaction in the set of interactions being rendered has been mutated by user action.                                  | `CustomEvent<void>` |
 
 
+## Methods
+
+### `updateElementModel(update: PieModel) => Promise<void>`
+
+For previewing changes to an item. Updates the model for one question in the item model.
+
+#### Parameters
+
+| Name     | Type       | Description       |
+| -------- | ---------- | ----------------- |
+| `update` | `PieModel` | the updated model |
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
+
 ----------------------------------------------
 
 *Built with [StencilJS](https://stenciljs.com/)*

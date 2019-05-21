@@ -1,0 +1,43 @@
+$mdc-theme-primary: #0049FF;
+$mdc-theme-secondary: #0049FF;
+
+@import "@material/switch/mdc-switch";
+@import "@material/list/mdc-list";
+@import "@material/menu-surface/mdc-menu-surface";
+@import "@material/menu/mdc-menu";
+@import "@material/select/mdc-select";
+
+
+.preview-control-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-content: stretch;
+  align-items: stretch;
+}
+
+.pie-role-select {
+  order: 0;
+  flex: 0 0 auto;
+  align-self: flex-start;
+  width: 200px;
+  @include mdc-select-container-fill-color('surface')
+}
+
+
+.pie-check-answers {
+  order: 0;
+  flex: 0 0 auto;
+  align-self: flex-start;
+}
+
+.mdc-switch + label {
+  margin-left: 10px;
+  font-family: Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  font-size: 0.875rem;
+  line-height: 2.25rem;
+  font-weight: 300;
+  letter-spacing: 0.0892857143em;
+}

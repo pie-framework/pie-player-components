@@ -1,0 +1,41 @@
+$mdc-theme-primary: #0049FF;
+
+@import "@material/tab-bar/mdc-tab-bar";
+@import "@material/tab-scroller/mdc-tab-scroller";
+@import "@material/tab-indicator/mdc-tab-indicator";
+@import "@material/tab/mdc-tab";
+
+
+.author-preview-container {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-content: stretch;
+  align-items: flex-start;
+}
+
+.author-preview-tab-bar {
+  order: 0;
+  flex: 0 1 auto;
+  align-self: auto;
+  @include  mdc-tab-bar-width(20%);
+}
+
+.author-preview-tab-contents {
+  order: 0;
+  flex: 1 1 auto;
+  align-self: stretch;
+}
+
+
+.preview-control {
+  margin: 25px 0px 25px 0px;
+}
+
+.pie-player {
+  border: 1px solid #E0E1E6;
+  box-sizing: border-box;
+  border-radius: 5px;
+  padding: 27px;
+}
