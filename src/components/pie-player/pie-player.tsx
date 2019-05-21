@@ -5,12 +5,14 @@ import {
   State,
   Element,
   Event,
-  EventEmitter
+  EventEmitter,
+  Method
 } from '@stencil/core';
-import { PieContent, ItemConfig, ItemSession, PieElement, PieController, AdvancedItemConfig} from '../../interface';
+import { PieContent, ItemConfig, ItemSession, PieElement, PieController, AdvancedItemConfig, PieModel} from '../../interface';
 import { PieLoader } from '../../pie-loader';
 
 const controllerErrorMessage: string = 'Error processing question configuration, verify the question model?';
+
 @Component({
   tag: 'pie-player',
   styleUrl: '../components.css',
@@ -141,6 +143,25 @@ export class Player {
     }
   }
 
+
+  /**
+   * For previewing changes to an item. Updates the model for one question in the item model.
+   * @param update the updated model
+   */
+  @Method()
+  async updateElementModel(update: PieModel) {
+    if (this.pieContentModel && this.pieContentModel.models)  {
+      const index = this.pieContentModel.models.findIndex(
+        m => m.id === update.id
+      );
+  
+      if (index !== -1) {
+        this.pieContentModel.models.splice(index, 1, update);
+      }
+      await this.updateModels();
+    }
+  }
+
   @Watch('env')
   updateModels(newEnv = this.env) {
       // wrapping a player in stimulus layoute
@@ -196,6 +217,7 @@ export class Player {
   };
 
   render() {
+    console.log(`render called on player`)
     if (this.stimulusItemModel) {
       return  <pie-stimulus-layout>
         <div slot="stimulus">

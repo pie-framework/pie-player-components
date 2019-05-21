@@ -12,12 +12,14 @@ import {
   ItemConfig,
   ItemSession,
   PieItemElement,
+  PieModel,
 } from './interface';
 
 
 export namespace Components {
 
   interface PieAuthor {
+    'addPreview': boolean;
     /**
     * The Pie config model.
     */
@@ -28,6 +30,7 @@ export namespace Components {
     'configSettings'?: {[packageName:string]:Object};
   }
   interface PieAuthorAttributes extends StencilHTMLAttributes {
+    'addPreview'?: boolean;
     /**
     * The Pie config model.
     */
@@ -96,6 +99,10 @@ export namespace Components {
     * The Pie Session
     */
     'session': ItemSession;
+    /**
+    * For previewing changes to an item. Updates the model for one question in the item model.
+    */
+    'updateElementModel': (update: PieModel) => Promise<void>;
   }
   interface PiePlayerAttributes extends StencilHTMLAttributes {
     /**
@@ -132,6 +139,18 @@ export namespace Components {
     'session'?: ItemSession;
   }
 
+  interface PiePreviewControl {}
+  interface PiePreviewControlAttributes extends StencilHTMLAttributes {
+    'onEnvChanged'?: (event: CustomEvent) => void;
+  }
+
+  interface PiePreviewLayout {
+    'config': Object;
+  }
+  interface PiePreviewLayoutAttributes extends StencilHTMLAttributes {
+    'config'?: Object;
+  }
+
   interface PieSpinner {}
   interface PieSpinnerAttributes extends StencilHTMLAttributes {}
 
@@ -144,6 +163,8 @@ declare global {
     'PieAuthor': Components.PieAuthor;
     'PieLoader': Components.PieLoader;
     'PiePlayer': Components.PiePlayer;
+    'PiePreviewControl': Components.PiePreviewControl;
+    'PiePreviewLayout': Components.PiePreviewLayout;
     'PieSpinner': Components.PieSpinner;
     'PieStimulusLayout': Components.PieStimulusLayout;
   }
@@ -152,6 +173,8 @@ declare global {
     'pie-author': Components.PieAuthorAttributes;
     'pie-loader': Components.PieLoaderAttributes;
     'pie-player': Components.PiePlayerAttributes;
+    'pie-preview-control': Components.PiePreviewControlAttributes;
+    'pie-preview-layout': Components.PiePreviewLayoutAttributes;
     'pie-spinner': Components.PieSpinnerAttributes;
     'pie-stimulus-layout': Components.PieStimulusLayoutAttributes;
   }
@@ -175,6 +198,18 @@ declare global {
     new (): HTMLPiePlayerElement;
   };
 
+  interface HTMLPiePreviewControlElement extends Components.PiePreviewControl, HTMLStencilElement {}
+  var HTMLPiePreviewControlElement: {
+    prototype: HTMLPiePreviewControlElement;
+    new (): HTMLPiePreviewControlElement;
+  };
+
+  interface HTMLPiePreviewLayoutElement extends Components.PiePreviewLayout, HTMLStencilElement {}
+  var HTMLPiePreviewLayoutElement: {
+    prototype: HTMLPiePreviewLayoutElement;
+    new (): HTMLPiePreviewLayoutElement;
+  };
+
   interface HTMLPieSpinnerElement extends Components.PieSpinner, HTMLStencilElement {}
   var HTMLPieSpinnerElement: {
     prototype: HTMLPieSpinnerElement;
@@ -191,6 +226,8 @@ declare global {
     'pie-author': HTMLPieAuthorElement
     'pie-loader': HTMLPieLoaderElement
     'pie-player': HTMLPiePlayerElement
+    'pie-preview-control': HTMLPiePreviewControlElement
+    'pie-preview-layout': HTMLPiePreviewLayoutElement
     'pie-spinner': HTMLPieSpinnerElement
     'pie-stimulus-layout': HTMLPieStimulusLayoutElement
   }
@@ -199,6 +236,8 @@ declare global {
     'pie-author': HTMLPieAuthorElement;
     'pie-loader': HTMLPieLoaderElement;
     'pie-player': HTMLPiePlayerElement;
+    'pie-preview-control': HTMLPiePreviewControlElement;
+    'pie-preview-layout': HTMLPiePreviewLayoutElement;
     'pie-spinner': HTMLPieSpinnerElement;
     'pie-stimulus-layout': HTMLPieStimulusLayoutElement;
   }

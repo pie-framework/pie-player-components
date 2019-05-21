@@ -18,6 +18,8 @@ import _isEqual from 'lodash/isEqual';
 export class Author {
   @Prop({ context: 'document' }) doc!: Document;
 
+  @Prop() addPreview: boolean;
+
   @Element() el: HTMLElement;
 
   @State() elementsLoaded: boolean = false;
@@ -64,7 +66,7 @@ export class Author {
   @Watch('config')
   async watchConfig(newValue, oldValue) {
     
-    if (newValue && !_isEqual(newValue,oldValue)) {   
+    if (newValue && !_isEqual(newValue,oldValue)) { 
       try {
         this.elementsLoaded = false;
         this.pieContentModel = pieContentFromConfig(newValue);
@@ -160,7 +162,8 @@ export class Author {
             Object.assign(m, e.update);
           }
         });
-        e.stopPropagation();
+        // e.stopPropagation();
+        console.log(`emitting model updated`);
         this.modelUpdated.emit(this.pieContentModel)
       }  
     });
@@ -184,7 +187,13 @@ export class Author {
 
   render() {
     if (this.pieContentModel && this.pieContentModel.markup) {
-      return <div innerHTML={this.getRenderMarkup()} />;
+      if (this.addPreview) {
+        return <pie-preview-layout config={this.config} >
+          <div slot="configure" innerHTML={this.getRenderMarkup()} />
+        </pie-preview-layout>
+      } else {
+        return <div innerHTML={this.getRenderMarkup()} />;
+      }
     } else {
       return <pie-spinner></pie-spinner>;
     }
