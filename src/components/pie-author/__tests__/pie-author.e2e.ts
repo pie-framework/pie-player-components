@@ -6,10 +6,12 @@ describe('pie-author', () => {
   let pie;
   let page: E2EPage, pieAuthor: E2EElement; 
   beforeEach(async () => {
+    console.log(`before each called`);
     pie = '@pie-element/multiple-choice';
-    page = await newE2EPage()
-
+    page = await newE2EPage();
+    
   });
+  
 
   it.skip('renders', async () => {
     const element = await page.find('pie-author');
@@ -48,13 +50,20 @@ describe('pie-author', () => {
   });
 
   it('sets config settings if present', async () => {
- 
+    console.log(`setting up intercept`);
+    await setupInterceptPieCloud(page,  pie);
+    console.log(`finished setting up intercept`);
+
     await page.setContent('<pie-author config="evan"></pie-author>');
+    await page.evaluate(() => {debugger;}); 
     pieAuthor = await page.find('pie-author');
-    setupInterceptPieCloud(page,  pie);
+    
+    console.log(`setting config`);
     pieAuthor.setProperty('configSettings', {'@pie-element/multiple-choice': { "foo": "bar"} });
-    pieAuthor.setProperty('config', simplePieMock)
+    pieAuthor.setProperty('config', simplePieMock);
+    console.log(`waiting for changes`);
     await page.waitForChanges();
+    console.log(`after wait for changes`);
     const el = await page.waitForSelector('pie-author');
     expect(el).toBeDefined();
     const configEl = await page.find('pie-author pie-multiple-choice-config');

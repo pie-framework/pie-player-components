@@ -5,9 +5,7 @@
  */
 
 
-import '@stencil/core';
-
-
+import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
 import {
   ItemConfig,
   ItemSession,
@@ -17,7 +15,6 @@ import {
 
 
 export namespace Components {
-
   interface PieAuthor {
     'addPreview': boolean;
     /**
@@ -29,22 +26,6 @@ export namespace Components {
     */
     'configSettings'?: {[packageName:string]:Object};
   }
-  interface PieAuthorAttributes extends StencilHTMLAttributes {
-    'addPreview'?: boolean;
-    /**
-    * The Pie config model.
-    */
-    'config'?: ItemConfig;
-    /**
-    * To customize the standard behaviour provided by interaction configuration views you can  provide settings key-ed by the package name.  e.g.  `{ '@pie-element/inline-choice': { promptLabel: 'Item Stem' } }`  The settings that are configurable for each authoring view are documented in  the `@package-name/docs` folder for each package.
-    */
-    'configSettings'?: {[packageName:string]:Object};
-    /**
-    * Emmitted when the model for the content has been updated in the ui.
-    */
-    'onModelUpdated'?: (event: CustomEvent) => void;
-  }
-
   interface PieLoader {
     /**
     * Loads the custom elments defined by the PIEs, if they are not already loaded.
@@ -63,21 +44,6 @@ export namespace Components {
     */
     'retries': number;
   }
-  interface PieLoaderAttributes extends StencilHTMLAttributes {
-    /**
-    * If the bundle is not available yet, the maximum number of milliseconds  between two retries for downloading
-    */
-    'maxTimeout'?: number;
-    /**
-    * If the bundle is not available yet, number of milliseconds before starting  the first retry attempt.
-    */
-    'minTimeout'?: number;
-    /**
-    * If the bundle is not available yet, the number of re-try attempts to download.
-    */
-    'retries'?: number;
-  }
-
   interface PiePlayer {
     /**
     * The Pie config model.
@@ -104,7 +70,48 @@ export namespace Components {
     */
     'updateElementModel': (update: PieModel) => Promise<void>;
   }
-  interface PiePlayerAttributes extends StencilHTMLAttributes {
+  interface PiePreviewControl {}
+  interface PiePreviewLayout {
+    'config': Object;
+  }
+  interface PieRubricAuthor {
+    'rubricModel': Object;
+  }
+  interface PieSpinner {}
+  interface PieStimulusLayout {}
+}
+
+declare namespace LocalJSX {
+  interface PieAuthor extends JSXBase.HTMLAttributes {
+    'addPreview'?: boolean;
+    /**
+    * The Pie config model.
+    */
+    'config'?: ItemConfig;
+    /**
+    * To customize the standard behaviour provided by interaction configuration views you can  provide settings key-ed by the package name.  e.g.  `{ '@pie-element/inline-choice': { promptLabel: 'Item Stem' } }`  The settings that are configurable for each authoring view are documented in  the `@package-name/docs` folder for each package.
+    */
+    'configSettings'?: {[packageName:string]:Object};
+    /**
+    * Emmitted when the model for the content has been updated in the ui.
+    */
+    'onModelUpdated'?: (event: CustomEvent<any>) => void;
+  }
+  interface PieLoader extends JSXBase.HTMLAttributes {
+    /**
+    * If the bundle is not available yet, the maximum number of milliseconds  between two retries for downloading
+    */
+    'maxTimeout'?: number;
+    /**
+    * If the bundle is not available yet, number of milliseconds before starting  the first retry attempt.
+    */
+    'minTimeout'?: number;
+    /**
+    * If the bundle is not available yet, the number of re-try attempts to download.
+    */
+    'retries'?: number;
+  }
+  interface PiePlayer extends JSXBase.HTMLAttributes {
     /**
     * The Pie config model.
     */
@@ -124,60 +131,56 @@ export namespace Components {
     /**
     * Emmitted if there is an error encountered while rendering. `event.detail` will be a string containing a message about the error.
     */
-    'onPlayer-error'?: (event: CustomEvent) => void;
+    'onPlayer-error'?: (event: CustomEvent<any>) => void;
     /**
     * TODO - Emmitted when any all interactions in a PIE Assessment Item have reported that a user  has provided a response to the interaction.
     */
-    'onResponseCompleted'?: (event: CustomEvent) => void;
+    'onResponseCompleted'?: (event: CustomEvent<any>) => void;
     /**
     * Emmitted when any interaction in the set of interactions being rendered has been mutated by user action.
     */
-    'onSession-changed'?: (event: CustomEvent) => void;
+    'onSession-changed'?: (event: CustomEvent<any>) => void;
     /**
     * The Pie Session
     */
     'session'?: ItemSession;
   }
-
-  interface PiePreviewControl {}
-  interface PiePreviewControlAttributes extends StencilHTMLAttributes {
-    'onEnvChanged'?: (event: CustomEvent) => void;
+  interface PiePreviewControl extends JSXBase.HTMLAttributes {
+    'onEnvChanged'?: (event: CustomEvent<any>) => void;
   }
-
-  interface PiePreviewLayout {
-    'config': Object;
-  }
-  interface PiePreviewLayoutAttributes extends StencilHTMLAttributes {
+  interface PiePreviewLayout extends JSXBase.HTMLAttributes {
     'config'?: Object;
   }
+  interface PieRubricAuthor extends JSXBase.HTMLAttributes {
+    'rubricModel'?: Object;
+  }
+  interface PieSpinner extends JSXBase.HTMLAttributes {}
+  interface PieStimulusLayout extends JSXBase.HTMLAttributes {}
 
-  interface PieSpinner {}
-  interface PieSpinnerAttributes extends StencilHTMLAttributes {}
-
-  interface PieStimulusLayout {}
-  interface PieStimulusLayoutAttributes extends StencilHTMLAttributes {}
+  interface IntrinsicElements {
+    'pie-author': PieAuthor;
+    'pie-loader': PieLoader;
+    'pie-player': PiePlayer;
+    'pie-preview-control': PiePreviewControl;
+    'pie-preview-layout': PiePreviewLayout;
+    'pie-rubric-author': PieRubricAuthor;
+    'pie-spinner': PieSpinner;
+    'pie-stimulus-layout': PieStimulusLayout;
+  }
 }
 
-declare global {
-  interface StencilElementInterfaces {
-    'PieAuthor': Components.PieAuthor;
-    'PieLoader': Components.PieLoader;
-    'PiePlayer': Components.PiePlayer;
-    'PiePreviewControl': Components.PiePreviewControl;
-    'PiePreviewLayout': Components.PiePreviewLayout;
-    'PieSpinner': Components.PieSpinner;
-    'PieStimulusLayout': Components.PieStimulusLayout;
-  }
+export { LocalJSX as JSX };
 
-  interface StencilIntrinsicElements {
-    'pie-author': Components.PieAuthorAttributes;
-    'pie-loader': Components.PieLoaderAttributes;
-    'pie-player': Components.PiePlayerAttributes;
-    'pie-preview-control': Components.PiePreviewControlAttributes;
-    'pie-preview-layout': Components.PiePreviewLayoutAttributes;
-    'pie-spinner': Components.PieSpinnerAttributes;
-    'pie-stimulus-layout': Components.PieStimulusLayoutAttributes;
+
+declare module "@stencil/core" {
+  export namespace JSX {
+    interface IntrinsicElements extends LocalJSX.IntrinsicElements {}
   }
+}
+
+
+declare global {
+
 
 
   interface HTMLPieAuthorElement extends Components.PieAuthor, HTMLStencilElement {}
@@ -210,6 +213,12 @@ declare global {
     new (): HTMLPiePreviewLayoutElement;
   };
 
+  interface HTMLPieRubricAuthorElement extends Components.PieRubricAuthor, HTMLStencilElement {}
+  var HTMLPieRubricAuthorElement: {
+    prototype: HTMLPieRubricAuthorElement;
+    new (): HTMLPieRubricAuthorElement;
+  };
+
   interface HTMLPieSpinnerElement extends Components.PieSpinner, HTMLStencilElement {}
   var HTMLPieSpinnerElement: {
     prototype: HTMLPieSpinnerElement;
@@ -223,32 +232,16 @@ declare global {
   };
 
   interface HTMLElementTagNameMap {
-    'pie-author': HTMLPieAuthorElement
-    'pie-loader': HTMLPieLoaderElement
-    'pie-player': HTMLPiePlayerElement
-    'pie-preview-control': HTMLPiePreviewControlElement
-    'pie-preview-layout': HTMLPiePreviewLayoutElement
-    'pie-spinner': HTMLPieSpinnerElement
-    'pie-stimulus-layout': HTMLPieStimulusLayoutElement
-  }
-
-  interface ElementTagNameMap {
     'pie-author': HTMLPieAuthorElement;
     'pie-loader': HTMLPieLoaderElement;
     'pie-player': HTMLPiePlayerElement;
     'pie-preview-control': HTMLPiePreviewControlElement;
     'pie-preview-layout': HTMLPiePreviewLayoutElement;
+    'pie-rubric-author': HTMLPieRubricAuthorElement;
     'pie-spinner': HTMLPieSpinnerElement;
     'pie-stimulus-layout': HTMLPieStimulusLayoutElement;
   }
 
-
-  export namespace JSX {
-    export interface Element {}
-    export interface IntrinsicElements extends StencilIntrinsicElements {
-      [tagName: string]: any;
-    }
-  }
-  export interface HTMLAttributes extends StencilHTMLAttributes {}
-
+  interface ElementTagNameMap extends HTMLElementTagNameMap {}
 }
+

@@ -45,7 +45,7 @@ describe('pie-player', () => {
     expect(pieElModel.env.mode).toEqual('evaluate');
   });
 
-  it('loads with js, multiple times', async () => {
+  xit('loads with js, multiple times', async () => {
     setupInterceptPieCloud(page, '@pie-element/multiple-choice');
     await page.setContent(`<div id="player-holder"></div>`);
     await page.evaluate(loadPie, JSON.stringify(simplePieMock));

@@ -1,4 +1,4 @@
-import { Component, Element, Prop, State, Watch, Event, EventEmitter } from '@stencil/core';
+import { Component, Element, Prop, State, Watch, Event, EventEmitter, h } from '@stencil/core';
 import { PieContent, ItemConfig, PieElement } from '../../interface';
 import { PieLoader } from '../../pie-loader';
 import { pieContentFromConfig } from '../../utils/utils';
@@ -65,7 +65,7 @@ export class Author {
 
   @Watch('config')
   async watchConfig(newValue, oldValue) {
-    
+    debugger;
     if (newValue && !_isEqual(newValue,oldValue)) { 
       try {
         this.elementsLoaded = false;

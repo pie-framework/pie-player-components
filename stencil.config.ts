@@ -18,7 +18,7 @@ export const config: Config = {
   copy: [{ src: 'demo' }],
   outputTargets: [
     { type: 'dist' },
-    { type: 'docs' },
+    { type: 'docs-readme' },
     {
       type: 'www',
       serviceWorker: null // disable service workers

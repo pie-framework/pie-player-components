@@ -11,21 +11,34 @@ const resHeaders = {"Access-Control-Allow-Origin": "*",
 "Access-Control-Allow-Headers": "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With"
 };
 
-export const setupInterceptPieCloud = (page, match): Promise<void> => {
+export const setupInterceptPieCloud = async (page:E2EPage, match): Promise<void> => {
+  
+  
   page.on('request', request => {
+    console.log(`processing ${request.url()}`);
+    
     // mock the response from pie cloud
     if (request.url().match(match)) {
-      request.respond({
-        status: 200,
-        headers: resHeaders,
-        contentType: 'application/javascript',
-        body: mockPieCloudResponseContent
-      });
+      console.log(`found match for ${request.url()}`);
+      try {
+        console.log(`trying response`);
+       request.respond({
+          status: 200,
+          headers: resHeaders,
+          contentType: 'application/javascript',
+          body: mockPieCloudResponseContent
+        });
+      } catch(err) {
+        console.error(err);
+        
+      }
+      console.log('responded');
     } else {
+      console.log(`continuing ${request.url()}`);
       request.continue();
     }
   });
-  return page.setRequestInterception(true);
+  return await page.setRequestInterception(true);;
 };
 
 export const setupInterceptForRetry = (page: E2EPage, numberOfFailures = 4): Promise<void> => {

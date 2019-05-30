@@ -20,12 +20,6 @@
 
 Loads the custom elments defined by the PIEs, if they are not already loaded.
 
-#### Parameters
-
-| Name      | Type             | Description                                                            |
-| --------- | ---------------- | ---------------------------------------------------------------------- |
-| `pieHash` | `PieItemElement` | - The PIE elements to load. `key` = html element, `value`: npm package |
-
 #### Returns
 
 Type: `Promise<void>`

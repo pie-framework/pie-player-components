@@ -1,4 +1,4 @@
-import { Component } from '@stencil/core';
+import { Component, h } from '@stencil/core';
 
 @Component({ tag: 'pie-spinner' , styleUrl: 'pie-spinner.css'})
 export class PieSpinner {

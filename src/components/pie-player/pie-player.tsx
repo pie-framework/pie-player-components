@@ -6,7 +6,8 @@ import {
   Element,
   Event,
   EventEmitter,
-  Method
+  Method,
+  h
 } from '@stencil/core';
 import { PieContent, ItemConfig, ItemSession, PieElement, PieController, AdvancedItemConfig, PieModel} from '../../interface';
 import { PieLoader } from '../../pie-loader';

@@ -1,4 +1,4 @@
-import { Component, Event, EventEmitter } from '@stencil/core';
+import { Component, Event, EventEmitter, h } from '@stencil/core';
 import { MDCSelect } from '@material/select';
 import {MDCSwitch} from '@material/switch';
 import { patchMDCSwitchFocus } from '../../utils/utils';

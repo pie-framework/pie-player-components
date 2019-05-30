@@ -1,4 +1,4 @@
-import { Component, State, Watch, Prop } from '@stencil/core';
+import { Component, State, Watch, Prop, h } from '@stencil/core';
 import { MDCTabBar } from '@material/tab-bar';
 import { ItemConfig } from '../../interface';
 import { ModelUpdatedEvent } from '@pie-framework/pie-configure-events';
