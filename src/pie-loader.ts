@@ -45,12 +45,12 @@ export class PieLoader {
     };
 
   public elementsHaveLoaded = (el): Promise<boolean> => {
-    const undefinedElements = el.querySelectorAll(':not(:defined)');
+    let undefinedElements = el.querySelectorAll(':not(:defined)');
     if (undefinedElements.length == 0) {
       return Promise.resolve(true);
     } 
-
-    const promises = undefinedElements ?  [...undefinedElements].map(e =>
+    undefinedElements = Array.from(undefinedElements);
+    const promises = undefinedElements ?  undefinedElements.map(e =>
       customElements.whenDefined(e.localName)
     ) : [];
     return Promise.all(promises)
