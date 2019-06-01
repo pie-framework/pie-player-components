@@ -148,6 +148,7 @@ export class Author {
   async componentWillLoad() {
     if (this.config) {
       this.elementsLoaded = await this.pieLoader.elementsHaveLoaded(this.el);
+      this.updateModels();
     }
     this.watchConfig(this.config, {});
   }
@@ -182,6 +183,7 @@ export class Author {
         this.doc
       );
       this.elementsLoaded = await this.pieLoader.elementsHaveLoaded(this.el);
+      this.updateModels();
     }
   }
 
