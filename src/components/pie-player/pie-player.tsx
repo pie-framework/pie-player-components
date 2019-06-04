@@ -218,7 +218,6 @@ export class Player {
   };
 
   render() {
-    console.log(`render called on player`)
     if (this.stimulusItemModel) {
       return  <pie-stimulus-layout>
         <div slot="stimulus">
