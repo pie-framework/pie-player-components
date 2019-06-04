@@ -129,9 +129,8 @@ export class Player {
           await this.pieLoader.loadCloudPies(this.pieContentModel.elements, this.doc);
         }
         this.elementsLoaded = await this.pieLoader.elementsHaveLoaded(this.el);
-      } else {
-        this.updateModels();
       }
+      this.updateModels();
     } catch (err) {
       this.playerError.emit(`problem loading item (${err})`)
     }
@@ -204,7 +203,7 @@ export class Player {
   }
 
   async componentWillLoad() {
-    this.watchConfig(this.config);
+    await this.watchConfig(this.config);
   }
 
   findOrAddSession(data: any[], id: string) {
