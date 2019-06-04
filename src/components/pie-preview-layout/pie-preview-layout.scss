@@ -19,7 +19,7 @@ $mdc-theme-primary: #0049FF;
   order: 0;
   flex: 0 1 auto;
   align-self: auto;
-  @include  mdc-tab-bar-width(20%);
+  @include  mdc-tab-bar-width(30%);
 }
 
 .author-preview-tab-contents {

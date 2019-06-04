@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0"
+    />
+    <title>Rubric Demo</title>
+    <script src="/build/pie-player-components.js"></script>
+  </head>
+  <body>
+
+
+
+
+
+    <pie-author id="author" add-preview="true">
+
+    </pie-author>
+
+
+   
+    <script>
+
+      const author = document.getElementById('author');
+    
+      const config = {
+        "models": [
+          {
+            "id": "4028e4a23e1a7e7c013e28b2be2d1326",
+            "element": "extended-text-entry",
+            "height": "200px",
+            "showMathInput": false,
+            "width": "500px",
+            "prompt": "<p>A bag contains 7 red cubes, 8 green cubes, 3 yellow cubes, 5 blue cubes, and 2 white cubes. All of the cubes are exactly the same size.</p>\r\n<p>A. Create a table that represents the contents of the bag and shows the probability of choosing each color when a cube is drawn from the bag without looking. Express the probabilities as fractions.</p>\r\n<p></p>"
+          },
+          {
+            "id": "4028e4a23e1a7e7c013e28b6d228132d",
+            "element": "extended-text-entry",
+            "height": "200px",
+            "showMathInput": false,
+            "width": "500px",
+            "prompt": "<p>B. Determine the probability of randomly drawing a green cube, returning it to the bag, and then randomly drawing a blue cube.</p>\r\n<ul>\r\n    <li>Explain how you can use your table to find the probability.</li>\r\n    <li>Write and solve an equation that represents the calculation of the probability.</li>\r\n</ul>\r\n<p></p>"
+          },
+          {
+            "width": "500px",
+            "prompt": "<p>C. Explain whether it is more likely or less likely for the event described in part B to occur when the first cube is <span class=\"relative-emphasis\">not</span> returned to the bag before drawing the second. Use words, numbers, and/or diagrams to support your answer.</p>\r\n<p></p>",
+            "id": "4028e4a23e1a7e7c013e28bca5c91332",
+            "element": "extended-text-entry",
+            "height": "200px",
+            "showMathInput": false
+          },
+          {
+            "points": [
+              "<p>The response is completely incorrect, there is no response, or the response is off topic.</p>",
+              "<p>The response demonstrates minimal understanding. A level 1 response is characterized by:</p>\r\n<ul>\r\n    <li>A table in part A that exhibits up to 3 incorrect probabilities;</li>\r\n    <li>An explanation and an equation for part B that are incorrect, incomplete, or missing;</li>\r\n    <li>An explanation for part C that is incorrect, incomplete, or missing.</li>\r\n</ul>",
+              "<p>The response demonstrates a basic but incomplete understanding. A level 2 response is characterized by:</p>\r\n<ul>\r\n    <li>A table in part A that exhibits 1&#8211;2 incorrect probabilities;</li>\r\n    <li>An explanation for part B that is vague, incomplete, or missing;</li>\r\n    <li>An expression or equation for part B that is correctly derived from the table in part A but may be incorrectly solved;</li>\r\n    <li>An explanation for part C that is incomplete.</li>\r\n</ul>",
+              "<p>The response demonstrates a strong understanding, but the work contains minor errors. A level 3 response is characterized by:</p>\r\n<ul>\r\n    <li>A correctly drawn table in part A that may exhibit minor errors in labeling or organization;</li>\r\n    <li>An explanation for part B that contains minor flaws or is incomplete but correct;</li>\r\n    <li>An equation for part B that is solvable but may contain a minor flaw leading to an incorrect result;</li>\r\n    <li>An explanation in part C that indicates the event is more likely without replacement but may be incomplete or show inadequate supporting details OR leads to a well-supported conclusion that is consistent with calculation errors made in part B.</li>\r\n</ul>",
+              "<p>The response demonstrates a high level of understanding. A level 4 response is characterized by:</p>\r\n<ul>\r\n    <li>A correctly created and labeled table in part A, with probabilities expressed as fractions, similar to:</li>\r\n</ul>\r\n<p><img src=\"https://localhost:8443/ia/image/13d1a42cd5044dcab77b163343755157\" id=\"13d1a42cd5044dcab77b163343755157\" alt=\"image 13d1a42cd5044dcab77b163343755157\" /></p>\r\n<p>(Accept an unsimplified fraction (5/25) for the probability of Blue);</p>\r\n<ul>\r\n    <li>A correct explanation for part B indicating that the compound probability can be calculated as the product of the individual probabilities, similar to \"For the green cube you use the fraction 8/25 from the table, and for the blue cube you use the fraction 1/5 from the table. Then you multiply them together to get 8/125\";</li>\r\n    <li>A correct equation in part B, similar to 8/25&#160;&#215; 1/5 = <span class=\"variable\">p</span>, solved as 8/125;</li>\r\n    <li>A correct explanation with supporting work for part C indicating that the event is more likely when the green cube is not replaced. Justification should specify that without replacing the green cube the probability for the blue cube to be drawn second increases from 1/5 to 5/24; that the fraction 5/24 is greater than 1/5; and that there are fewer cubes in the box after the green cube is removed, so all cubes have a greater likelihood of being chosen on the second draw, or that the compound probability without replacing the green cube is 1/15, which is greater than 8/125. Accept correct models, such as tree diagrams or tables that clearly illustrate the increased likelihood and/or a clear comparison of equations and solutions representing the two events.</li>\r\n</ul>\r\n<p></p>"
+            ],
+            "id": "rubric-4028e4a23e1a7e7c013e28b2be2d1325",
+            "maxPoints": 4,
+            "excludeZero": false,
+            "element": "pie-rubric"
+          }
+        ],
+        "markup": "<extended-text-entry id=\"4028e4a23e1a7e7c013e28b2be2d1326\"></extended-text-entry><extended-text-entry id=\"4028e4a23e1a7e7c013e28b6d228132d\"></extended-text-entry><extended-text-entry id=\"4028e4a23e1a7e7c013e28bca5c91332\"></extended-text-entry>",
+        "elements": {
+          "pie-rubric": "@pie-element/rubric@latest",
+          "extended-text-entry": "@pie-element/extended-text-entry@latest"
+        }
+      };
+
+
+      author.config = config;
+    </script>
+
+  </body>
+</html>

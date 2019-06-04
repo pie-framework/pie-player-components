@@ -10,6 +10,7 @@ import {
 } from '@stencil/core';
 import { PieContent, ItemConfig, ItemSession, PieElement, PieController, AdvancedItemConfig, PieModel} from '../../interface';
 import { PieLoader } from '../../pie-loader';
+import { addRubric } from '../../rubric-defaults';
 
 const controllerErrorMessage: string = 'Error processing question configuration, verify the question model?';
 
@@ -109,7 +110,7 @@ export class Player {
           this.stimulusItemModel = newConfig;
           return; // if stimulus item 
         } else if (newConfig.elements)  {
-          this.pieContentModel = newConfig
+          this.pieContentModel = addRubric(newConfig)
         } else {
           this.playerError.emit(`invalid pie data model`);
           return;
@@ -216,7 +217,6 @@ export class Player {
   };
 
   render() {
-    console.log(`render called on player`)
     if (this.stimulusItemModel) {
       return  <pie-stimulus-layout>
         <div slot="stimulus">

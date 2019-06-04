@@ -53,11 +53,10 @@ export class Author {
   renderMarkup: String;
 
   getRenderMarkup(): string {
-    const c = this.pieContentModel;
-    let markup = "";
-    if (c.markup) {
-      Object.keys(c.elements).forEach(key => {
-        markup = c.markup.split(key).join( key+'-config');
+    let markup = this.pieContentModel ? this.pieContentModel.markup : "";
+    if (markup) {
+      Object.keys(this.pieContentModel.elements).forEach(key => {
+        markup = markup.split(key).join( key+'-config');
       });
       return markup;
     }

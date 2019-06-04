@@ -1,5 +1,5 @@
 import parseNpm from 'parse-package-name';
-import { PieContent, AdvancedItemConfig, PieItemElement } from '../interface';
+import { PieContent, AdvancedItemConfig, PieItemElement, PieModel } from '../interface';
 
 export const getPackageWithoutVersion = packages => {
   const packagesArray = packages.split('+');
@@ -8,6 +8,67 @@ export const getPackageWithoutVersion = packages => {
   packagesArray.forEach(p => newPackageArray.push(parseNpm(p).name));
 
   return newPackageArray.join('+');
+};
+
+/**
+ * See if the `PieContent.elements` set contains the provided package.
+ * 
+ * @param elements the elements dict
+ * @param npmPackage the npm package to locate
+ */
+export const elementsHasPackage = (
+  elements: PieItemElement,
+  npmPackage: string
+): boolean => {
+  if (elements) {
+    const packageToFind = parseNpm(npmPackage).name;
+    return Object.values(elements).find(
+      val => packageToFind === parseNpm(val).name
+    )
+      ? true
+      : false;
+  } else {
+    return false;
+  }
+};
+
+/**
+ * Gets all models defined for a given npmPacakge in `PieContent` 
+ * @param pieContent the pie content 
+ * @param npmPackage npm package name 
+ */
+export const modelsForPackage = (pieContent: PieContent, npmPackage: string): PieModel[] => {
+  if (pieContent && pieContent.models && pieContent.elements && npmPackage) {
+
+    const element = elementForPackage(pieContent, npmPackage);
+    return pieContent.models.filter(m => {
+     return element === m.element 
+    });
+    
+  } else {
+    return [];
+  }
+ 
+}
+
+/**
+ * Gets the element tag defined for a package.
+ * @param pieContent the pie content
+ * @param npmPackage npm package name
+ */
+export const elementForPackage = (pieContent: PieContent, npmPackage: string): string => {
+  const elems = (pieContent && pieContent.elements) ?
+   Object.keys(pieContent.elements).filter(
+    elTag => {
+      const pkg = pieContent.elements[elTag];
+      return parseNpm(npmPackage).name ===  parseNpm(pkg).name
+    }
+  ) : [];
+  if (elems.length > 1) {
+    throw(new Error('invalid item format: multiple elements for package.'));
+  } else {
+    return elems[0];
+  }
 };
 
 export const getPackageBundleUri = (pies: PieItemElement) => {
