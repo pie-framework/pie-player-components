@@ -203,7 +203,7 @@ export class Player {
   }
 
   async componentWillLoad() {
-    await this.watchConfig(this.config);
+    if (this.config) {this.watchConfig(this.config)}
   }
 
   findOrAddSession(data: any[], id: string) {
@@ -240,7 +240,7 @@ export class Player {
         </div>
       </pie-stimulus-layout>
     } else {
-      if (this.pieContentModel && !this.elementsLoaded) {
+      if (!this.elementsLoaded) {
         return <pie-spinner></pie-spinner>
       } else {
         return <div innerHTML={(this.pieContentModel && this.pieContentModel.markup) ? this.pieContentModel.markup : ""} />;
