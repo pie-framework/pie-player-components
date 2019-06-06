@@ -70,6 +70,7 @@ export class Author {
         this.elementsLoaded = false;
         this.pieContentModel = pieContentFromConfig(newValue);
         this.addConfigTags(this.pieContentModel);
+        this.loadPieElements();
       } catch (error) {
         console.log(`ERROR ${error}`);
       }
@@ -89,18 +90,13 @@ export class Author {
   }
 
   @Watch('elementsLoaded')
-  watchElementsLoaded(newValue: boolean, oldValue: boolean) {
-    if (
-      newValue &&
-      !oldValue &&
-      this.pieContentModel &&
-      this.pieContentModel.markup
-    ) {
-      this.updateModels();
+  async watchElementsLoaded(newValue: boolean, oldValue: boolean) {
+    if (newValue && !oldValue) {
+      await this.updateModels();
     }
   }
 
-  updateModels() {
+  async updateModels() {
     if (
       this.pieContentModel &&
       this.pieContentModel.elements &&
@@ -146,10 +142,8 @@ export class Author {
 
   async componentWillLoad() {
     if (this.config) {
-      this.elementsLoaded = await this.pieLoader.elementsHaveLoaded(this.el);
-      this.updateModels();
+      this.watchConfig(this.config, {});
     }
-    this.watchConfig(this.config, {});
   }
 
   async componentDidLoad() {
@@ -162,17 +156,10 @@ export class Author {
             Object.assign(m, e.update);
           }
         });
-        // e.stopPropagation();
-        console.log(`emitting model updated`);
         this.modelUpdated.emit(this.pieContentModel)
       }  
     });
 
-    this.loadPieElements();
-  }
-
-  async componentDidUpdate() {
-        this.loadPieElements();
   }
 
   async loadPieElements() {
@@ -182,7 +169,7 @@ export class Author {
         this.doc
       );
       this.elementsLoaded = await this.pieLoader.elementsHaveLoaded(this.el);
-      this.updateModels();
+      await this.updateModels();
     }
   }
 
@@ -190,10 +177,13 @@ export class Author {
     if (this.pieContentModel && this.pieContentModel.markup) {
       if (this.addPreview) {
         return <pie-preview-layout config={this.config} >
-          <div slot="configure" innerHTML={this.getRenderMarkup()} />
+          <div slot="configure">
+          <pie-spinner active={!this.elementsLoaded}><div innerHTML={this.getRenderMarkup()}></div>
+          </pie-spinner>
+          </div>
         </pie-preview-layout>
       } else {
-        return <div innerHTML={this.getRenderMarkup()} />;
+        return <pie-spinner active={!this.elementsLoaded}><div innerHTML={this.getRenderMarkup()} /></pie-spinner>;
       }
     } else {
       return <pie-spinner></pie-spinner>;

@@ -240,11 +240,7 @@ export class Player {
         </div>
       </pie-stimulus-layout>
     } else {
-      if (!this.elementsLoaded) {
-        return <pie-spinner></pie-spinner>
-      } else {
-        return <div innerHTML={(this.pieContentModel && this.pieContentModel.markup) ? this.pieContentModel.markup : ""} />;
-      }
+      return <pie-spinner active={!this.elementsLoaded}><div innerHTML={(this.pieContentModel && this.pieContentModel.markup) ? this.pieContentModel.markup : ""} /></pie-spinner>
     }
 
   }

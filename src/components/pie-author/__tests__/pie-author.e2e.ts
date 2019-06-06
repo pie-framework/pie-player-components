@@ -49,16 +49,20 @@ describe('pie-author', () => {
 
   it('sets config settings if present', async () => {
  
-    await page.setContent('<pie-author config="evan"></pie-author>');
+    await page.setContent('<pie-author></pie-author>');
     pieAuthor = await page.find('pie-author');
     setupInterceptPieCloud(page,  pie);
-    pieAuthor.setProperty('configSettings', {'@pie-element/multiple-choice': { "foo": "bar"} });
     pieAuthor.setProperty('config', simplePieMock)
+    pieAuthor.setProperty('configSettings', {'@pie-element/multiple-choice': { "foo": "bar"} });
+
     await page.waitForChanges();
     const el = await page.waitForSelector('pie-author');
     expect(el).toBeDefined();
-    const configEl = await page.find('pie-author pie-multiple-choice-config');
-    const configure = await configEl.getProperty('configure');
+    await page.waitForSelector('pie-author pie-multiple-choice-config:defined');
+    const configure = await page.$eval(
+      'pie-author pie-multiple-choice-config',
+      el => (el as any).configure
+    );    
     expect(configure.foo).toEqual("bar");
 
   });

@@ -37,7 +37,6 @@ export class PiePreviewLayout {
   }
 
   componentDidLoad() {
-    console.log(`component did load called`);
     this.tabBar = new MDCTabBar(this.tabElement);
     this.tabBar.useAutomaticActivation;
     this.tabBar.focusOnActivate = false;
@@ -51,7 +50,6 @@ export class PiePreviewLayout {
   }
 
   async handleModelUpdated(ev) {
-    console.log(`model updated caught`);
     const {reset, update} = ev.detail;
     reset === true;// TODO - not sure what reset true does
     

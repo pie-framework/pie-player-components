@@ -38,7 +38,6 @@ class MockConfig extends HTMLElement {
 
 const controller = {
   model: (config, session, env) => {
-    // console.log(`model conntroller called with ${JSON.stringify(config)}, ${JSON.stringify(session)}, ${JSON.stringify(env)}`)
     return {model:config, session, env};
   },
   outcome: (config, session, env) => {

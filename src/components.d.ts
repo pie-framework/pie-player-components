@@ -151,8 +151,18 @@ export namespace Components {
     'config'?: Object;
   }
 
-  interface PieSpinner {}
-  interface PieSpinnerAttributes extends StencilHTMLAttributes {}
+  interface PieSpinner {
+    /**
+    * Shows the spinner
+    */
+    'active': boolean;
+  }
+  interface PieSpinnerAttributes extends StencilHTMLAttributes {
+    /**
+    * Shows the spinner
+    */
+    'active'?: boolean;
+  }
 
   interface PieStimulusLayout {}
   interface PieStimulusLayoutAttributes extends StencilHTMLAttributes {}
