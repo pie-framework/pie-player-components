@@ -121,7 +121,6 @@ export class Player {
       }
 
       if (!this.elementsLoaded) {
-        this.el.innerHTML = this.pieContentModel.markup;
         if (this.jsBundleUrls) {
           await this.pieLoader.loadJs(this.jsBundleUrls, this.doc);
           await this.pieLoader.defineElements(this.pieContentModel.elements);
