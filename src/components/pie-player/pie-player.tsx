@@ -81,6 +81,12 @@ export class Player {
   @Prop() jsBundleUrls?: string[];
 
 
+  /**
+   * If the item contains a stimulus, the player will render it by default.
+   * Set this property to false to not render stimulus.
+   */
+  @Prop() renderStimulus: boolean = true;
+
   @State() pieContentModel: PieContent;
 
   @State() stimulusItemModel: AdvancedItemConfig;
@@ -217,7 +223,7 @@ export class Player {
 
   render() {
     if (this.stimulusItemModel) {
-      return  <pie-stimulus-layout>
+      return this.renderStimulus ?  <pie-stimulus-layout>
         <div slot="stimulus">
           <pie-player 
             id="stimulusPlayer" 
@@ -238,6 +244,14 @@ export class Player {
             ></pie-player>
         </div>
       </pie-stimulus-layout>
+      : 
+      <pie-player 
+            id="itemPlayer" 
+            config={this.stimulusItemModel.pie}
+            hosted={this.hosted}
+            jsBundleUrls={this.jsBundleUrls}
+            session={this.session}
+            ></pie-player>
     } else {
       return <pie-spinner active={!this.elementsLoaded}><div innerHTML={(this.pieContentModel && this.pieContentModel.markup) ? this.pieContentModel.markup : ""} /></pie-spinner>
     }

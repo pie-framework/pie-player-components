@@ -96,6 +96,10 @@ export namespace Components {
     */
     'jsBundleUrls'?: string[];
     /**
+    * If the item contains a stimulus, the player will render it by default. Set this property to false to not render stimulus.
+    */
+    'renderStimulus': boolean;
+    /**
     * The Pie Session
     */
     'session': ItemSession;
@@ -133,6 +137,10 @@ export namespace Components {
     * Emmitted when any interaction in the set of interactions being rendered has been mutated by user action.
     */
     'onSession-changed'?: (event: CustomEvent) => void;
+    /**
+    * If the item contains a stimulus, the player will render it by default. Set this property to false to not render stimulus.
+    */
+    'renderStimulus'?: boolean;
     /**
     * The Pie Session
     */

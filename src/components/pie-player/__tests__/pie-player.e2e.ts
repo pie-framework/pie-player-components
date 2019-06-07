@@ -77,7 +77,6 @@ describe('pie-player', () => {
     expect(piePlayer).toBeDefined();
     const stimulusLayout = await piePlayer.find('pie-stimulus-layout');
     expect(stimulusLayout).toBeDefined();
-    // const passageEl = await piePlayer.find('#stimulusPlayer pie-passage');
     const passageModel = await page.$eval('#stimulusPlayer pie-passage', el =>
       el.getAttribute('model')
     );
@@ -87,5 +86,17 @@ describe('pie-player', () => {
       el => el.getAttribute('model')
     );
     expect(questionModel).toBeTruthy();
+  });
+
+  it('does not render stimulus is renderStimulus is false', async () => {
+    setupInterceptPieCloud(page, '@pie-element');
+    await page.setContent(`<pie-player render-stimulus="false"></pie-player>`);
+    const piePlayer = await page.find('pie-player');
+    await piePlayer.setProperty('config', advancedPieMock);
+    await page.waitForChanges();
+    expect(piePlayer).toBeDefined();
+    const stimulusLayout = await piePlayer.find('pie-stimulus-layout');
+    expect(stimulusLayout).toBeNull();
+
   });
 });

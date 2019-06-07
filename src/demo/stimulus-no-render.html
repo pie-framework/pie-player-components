@@ -11,10 +11,7 @@
   </head>
   <body>
  
-     <div>  
-       <h2>render stimulus</h2>
-        <pie-player id="player"></pie-player>
-     </div>
+
      <div>  
         <h2>no stimulus</h2>
          <pie-player render-stimulus="false" id="nostimulus"></pie-player>
@@ -119,20 +116,13 @@
       }
       };
 
-      const player = document.getElementById('player');
       const noStimulus = document.getElementById('nostimulus');
 
-
-
-      player.addEventListener('sessionChanged', event => {
-        console.log(event.type + ':' + JSON.stringify(event.detail));
-      });
 
       noStimulus.addEventListener('sessionChanged', event => {
         console.log(event.type + ':' + JSON.stringify(event.detail));
       });
 
-      player.config = config;
       noStimulus.config = config;
     </script>
 
