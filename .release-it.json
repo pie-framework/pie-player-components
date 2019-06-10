@@ -1,4 +1,13 @@
 {
+  "hooks": {
+    "before:release": "npx auto-changelog -p"
+  },
+  "git": {
+    "changelog": "npx auto-changelog --stdout --commit-limit false --unreleased --template ./changelog-template.hbs"
+  },
+  "scripts": {
+    "beforeStage": "npx auto-changelog -p"
+  },
   "plugins": {
     "@release-it/conventional-changelog": {
       "preset": "angular",
