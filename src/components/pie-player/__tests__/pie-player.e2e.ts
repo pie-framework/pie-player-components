@@ -99,4 +99,15 @@ describe('pie-player', () => {
     expect(stimulusLayout).toBeNull();
 
   });
+
+
+  it('emits a load-complete event', async () => {
+    setupInterceptPieCloud(page, '@pie-element/multiple-choice');
+    await page.setContent(`<div id="player-holder"></div>`);
+    await page.evaluate(loadPie, JSON.stringify(simplePieMock));
+    const loadCompleteEvent = await page.waitForEvent('load-complete','document');
+    expect(loadCompleteEvent).toBeDefined();
+ 
+  });
+
 });

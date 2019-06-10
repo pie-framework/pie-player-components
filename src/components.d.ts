@@ -126,6 +126,10 @@ export namespace Components {
     */
     'jsBundleUrls'?: string[];
     /**
+    * Emitted when the content in the config has been loaded.
+    */
+    'onLoad-complete'?: (event: CustomEvent) => void;
+    /**
     * Emmitted if there is an error encountered while rendering. `event.detail` will be a string containing a message about the error.
     */
     'onPlayer-error'?: (event: CustomEvent) => void;
