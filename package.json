@@ -52,13 +52,5 @@
     "typescript": "^3.3.3",
     "yalc": "^1.0.0-pre.27"
   },
-  "license": "MIT",
-  "release-it": {
-    "plugins": {
-      "@release-it/conventional-changelog": {
-        "preset": "angular",
-        "infile": "CHANGELOG.md"
-      }
-    }
-  }
+  "license": "MIT"
 }
