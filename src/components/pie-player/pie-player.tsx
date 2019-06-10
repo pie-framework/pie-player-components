@@ -26,6 +26,8 @@ export class Player {
    */
   stimulusPlayer: HTMLElement;
 
+  _loadCompleteState:boolean = false;
+
   @Prop({ context: 'document' }) doc!: Document;
 
   @Element() el: HTMLElement;
@@ -48,6 +50,11 @@ export class Player {
    * has provided a response to the interaction. 
    */
   @Event() responseCompleted: EventEmitter;
+
+  /**
+   * Emitted when the content in the config has been loaded.
+   */
+  @Event({eventName: 'load-complete'}) loadComplete: EventEmitter;
 
   @State() elementsLoaded: boolean = false;
 
@@ -99,6 +106,7 @@ export class Player {
 
   @Watch('config')
   async watchConfig(newConfig) {
+    this._loadCompleteState = false;
     // wrapping a player in stimulus layoute
     if (this.stimulusPlayer) {
       (this.stimulusPlayer as any).config = newConfig;
@@ -201,7 +209,8 @@ export class Player {
             }
             pieEl.model = model;           
           }
-          
+          this._loadCompleteState = true;
+          this.loadComplete.emit();
         };   
       });
     }
