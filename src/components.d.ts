@@ -19,6 +19,9 @@ import {
 export namespace Components {
 
   interface PieAuthor {
+    /**
+    * Adds a preview view which will render the content in another tab as it may appear to a student or instructor.
+    */
     'addPreview': boolean;
     /**
     * The Pie config model.
@@ -30,6 +33,9 @@ export namespace Components {
     'configSettings'?: {[packageName:string]:Object};
   }
   interface PieAuthorAttributes extends StencilHTMLAttributes {
+    /**
+    * Adds a preview view which will render the content in another tab as it may appear to a student or instructor.
+    */
     'addPreview'?: boolean;
     /**
     * The Pie config model.

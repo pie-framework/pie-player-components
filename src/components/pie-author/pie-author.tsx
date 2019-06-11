@@ -18,7 +18,10 @@ import _isEqual from 'lodash/isEqual';
 export class Author {
   @Prop({ context: 'document' }) doc!: Document;
 
-  @Prop() addPreview: boolean;
+  /**
+   * Adds a preview view which will render the content in another tab as it may appear to a student or instructor.
+   */
+  @Prop() addPreview: boolean = false;
 
   @Element() el: HTMLElement;
 
