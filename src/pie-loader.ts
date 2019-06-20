@@ -44,7 +44,12 @@ export class PieLoader {
       set model(_) {}
     };
 
-  public elementsHaveLoaded = (el): Promise<boolean> => {
+  public elementsHaveLoaded = (el:Element): Promise<boolean> => {
+    const allElements: Array<any> = Array.from(el.children);
+    if (allElements.length == 0) {
+      return Promise.resolve(false);
+    }
+
     const undefinedElements: Array<any> = Array.from(el.querySelectorAll(':not(:defined)'));
     if (undefinedElements.length == 0) {
       return Promise.resolve(true);

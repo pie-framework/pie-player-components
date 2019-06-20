@@ -11,7 +11,7 @@ jobs:
   include:
   - stage: install
     script: npm install
-    script: npm build
+    script: npm run build
     skip_cleanup: true
   - stage: test
     script: npm run test
