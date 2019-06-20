@@ -184,6 +184,10 @@ export class Player {
       }
     if (this.pieContentModel && this.pieContentModel.models) {
       this.pieContentModel.models.forEach(async model => {
+        if (model && model.error) {
+          this.playerError.emit(`error loading question data`);
+          throw new Error(model.error);
+        }
         const pieEl: PieElement = this.el.querySelector(`[id='${model.id}']`);   
         const session = this.findOrAddSession(this.session.data, model.id);
         pieEl.session = session;
