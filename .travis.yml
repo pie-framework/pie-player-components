@@ -1,3 +1,5 @@
+branches:
+  only: ['master', 'develop']
 dist: trusty
 sudo: required
 language: node_js
@@ -23,4 +25,3 @@ jobs:
       skip_cleanup: true
       script:
       - npm run release
-    if: branch = master
