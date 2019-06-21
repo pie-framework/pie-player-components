@@ -44,8 +44,13 @@ export class PieLoader {
       set model(_) {}
     };
 
-  public elementsHaveLoaded = (el): Promise<boolean> => {
-    const undefinedElements = el.querySelectorAll(':not(:defined)');
+  public elementsHaveLoaded = (el:Element): Promise<boolean> => {
+    const allElements: Array<any> = Array.from(el.children);
+    if (allElements.length == 0) {
+      return Promise.resolve(false);
+    }
+
+    const undefinedElements: Array<any> = Array.from(el.querySelectorAll(':not(:defined)'));
     if (undefinedElements.length == 0) {
       return Promise.resolve(true);
     } 
@@ -109,12 +114,17 @@ export class PieLoader {
               this.registry[elName].element = customElements.get(elName);
               this.registry[elName].controller = pie.controller;
             });
-            // This fixes some cases where the pie build service fails
-            pie.Configure = isFunction(pie.Configure)
-              ? pie.Configure
-              : this.getEmptyConfigure();
 
-            const configElName = elName + '-config';
+          }
+
+          // This fixes some cases where the pie build service fails
+          pie.Configure = isFunction(pie.Configure)
+            ? pie.Configure
+            : this.getEmptyConfigure();
+        
+          const configElName = elName + '-config';
+          
+          if (!customElements.get(configElName)) {
             customElements.define(configElName, pie.Configure);
             customElements.whenDefined(configElName).then(async () => {
               this.registry[elName].config = customElements.get(configElName);

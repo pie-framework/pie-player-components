@@ -18,7 +18,10 @@ import _isEqual from 'lodash/isEqual';
 export class Author {
   @Prop({ context: 'document' }) doc!: Document;
 
-  @Prop() addPreview: boolean;
+  /**
+   * Adds a preview view which will render the content in another tab as it may appear to a student or instructor.
+   */
+  @Prop() addPreview: boolean = false;
 
   @Element() el: HTMLElement;
 
@@ -53,11 +56,10 @@ export class Author {
   renderMarkup: String;
 
   getRenderMarkup(): string {
-    const c = this.pieContentModel;
-    let markup = "";
-    if (c.markup) {
-      Object.keys(c.elements).forEach(key => {
-        markup = c.markup.split(key).join( key+'-config');
+    let markup = this.pieContentModel ? this.pieContentModel.markup : "";
+    if (markup) {
+      Object.keys(this.pieContentModel.elements).forEach(key => {
+        markup = markup.split(key).join( key+'-config');
       });
       return markup;
     }
@@ -71,6 +73,7 @@ export class Author {
         this.elementsLoaded = false;
         this.pieContentModel = pieContentFromConfig(newValue);
         this.addConfigTags(this.pieContentModel);
+        this.loadPieElements();
       } catch (error) {
         console.log(`ERROR ${error}`);
       }
@@ -90,18 +93,13 @@ export class Author {
   }
 
   @Watch('elementsLoaded')
-  watchElementsLoaded(newValue: boolean, oldValue: boolean) {
-    if (
-      newValue &&
-      !oldValue &&
-      this.pieContentModel &&
-      this.pieContentModel.markup
-    ) {
-      this.updateModels();
+  async watchElementsLoaded(newValue: boolean, oldValue: boolean) {
+    if (newValue && !oldValue) {
+      await this.updateModels();
     }
   }
 
-  updateModels() {
+  async updateModels() {
     if (
       this.pieContentModel &&
       this.pieContentModel.elements &&
@@ -147,9 +145,8 @@ export class Author {
 
   async componentWillLoad() {
     if (this.config) {
-      this.elementsLoaded = await this.pieLoader.elementsHaveLoaded(this.el);
+      this.watchConfig(this.config, {});
     }
-    this.watchConfig(this.config, {});
   }
 
   async componentDidLoad() {
@@ -162,17 +159,10 @@ export class Author {
             Object.assign(m, e.update);
           }
         });
-        // e.stopPropagation();
-        console.log(`emitting model updated`);
         this.modelUpdated.emit(this.pieContentModel)
       }  
     });
 
-    this.loadPieElements();
-  }
-
-  async componentDidUpdate() {
-        this.loadPieElements();
   }
 
   async loadPieElements() {
@@ -182,6 +172,7 @@ export class Author {
         this.doc
       );
       this.elementsLoaded = await this.pieLoader.elementsHaveLoaded(this.el);
+      await this.updateModels();
     }
   }
 
@@ -189,10 +180,13 @@ export class Author {
     if (this.pieContentModel && this.pieContentModel.markup) {
       if (this.addPreview) {
         return <pie-preview-layout config={this.config} >
-          <div slot="configure" innerHTML={this.getRenderMarkup()} />
+          <div slot="configure">
+          <pie-spinner active={!this.elementsLoaded}><div innerHTML={this.getRenderMarkup()}></div>
+          </pie-spinner>
+          </div>
         </pie-preview-layout>
       } else {
-        return <div innerHTML={this.getRenderMarkup()} />;
+        return <pie-spinner active={!this.elementsLoaded}><div innerHTML={this.getRenderMarkup()} /></pie-spinner>;
       }
     } else {
       return <pie-spinner></pie-spinner>;

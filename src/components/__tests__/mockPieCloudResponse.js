@@ -1,10 +1,7 @@
+
 (function(){
 function createContent(el) {
-  const shadow = el.attachShadow({ mode: 'open' });
-  const name = el.getAttribute('name');
-  const helloEl = document.createElement('div');
-  helloEl.textContent = "hello pie" + name;
-  shadow.appendChild(helloEl);
+  el.innerHTML = `<div id="pie-content">hello pie!</div>`
 }
 
 
@@ -32,13 +29,25 @@ class MockElement extends HTMLElement {
 class MockConfig extends HTMLElement {
   constructor() {
     super();
-    createContent(this);
+    this.innerHTML = `<div id="pie-content">hello pie!</div>`
+  }
+
+  set model(val) {
+    this._model = val;
+    if (val) {
+      this.setAttribute('model', 'true');
+      this.innerHTML = `<div id="pie-content">hello pie with model!</div>`
+    } else {
+      this.removeAttribute('model');
+    }
+  }
+  get model() {
+    return this._model;
   }
 }
 
 const controller = {
   model: (config, session, env) => {
-    // console.log(`model conntroller called with ${JSON.stringify(config)}, ${JSON.stringify(session)}, ${JSON.stringify(env)}`)
     return {model:config, session, env};
   },
   outcome: (config, session, env) => {

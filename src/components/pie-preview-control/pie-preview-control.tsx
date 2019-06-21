@@ -26,7 +26,6 @@ export class PiePreviewControl {
   @Event() envChanged: EventEmitter;
 
   componentDidLoad() {
-    console.log(`component did load called`);
     this.roleSelect = new MDCSelect(this.roleSelectElement);
     this.checkAnswers = new MDCSwitch(this.checkAnswersElement);
 
@@ -34,7 +33,6 @@ export class PiePreviewControl {
 
     this.checkAnswers.listen('change', () =>{
       this.checkAnswers.checked ? this.env.mode = 'evaluate' : this.env.mode = 'gather'; 
-      console.log('control env upated to' + JSON.stringify(this.env));
       this.envChanged.emit(this.env);
     });
 

@@ -11,38 +11,30 @@ function loadPie(itemConfig) {
 }
 
 describe('pie-player', () => {
-  let page: E2EPage, piePlayer: E2EElement;
+  let page: E2EPage;
   beforeEach(async () => {
     page = await newE2EPage();
   });
 
-  it('load pie-player element', async () => {
-    setupInterceptPieCloud(page, '@pie-element/multiple-choice');
-    await page.setContent(`<pie-player></pie-player>`);
-    piePlayer = await page.find('pie-player');
-    await piePlayer.setProperty('config', simplePieMock);
-    await page.waitForChanges();
-    expect(piePlayer).toBeDefined();
-
-    const model = await page.$eval('pie-player pie-multiple-choice', el =>
-      el.getAttribute('model')
-    );
-    expect(model).toBeTruthy();
-  });
 
   it('passes env chages to PIE', async () => {
     setupInterceptPieCloud(page, '@pie-element/multiple-choice');
-    await page.setContent(`<pie-player></pie-player>`);
-    piePlayer = await page.find('pie-player');
-    await piePlayer.setProperty('config', simplePieMock);
+    await page.setContent(`<div id="player-holder"></div>`);
+    await page.evaluate(loadPie, JSON.stringify(simplePieMock));
     await page.waitForChanges();
+    const piePlayer = await page.find('pie-player');
     expect(piePlayer).toBeDefined();
-    piePlayer.setProperty('env', { mode: 'evaluate', role: 'student' });
+    await piePlayer.setProperty('env', { mode: 'evaluate', role: 'student' });
     await page.waitForChanges();
-
-    const pieEl = await page.find('pie-player pie-multiple-choice');
-    const pieElModel = await pieEl.getProperty('model');
-    expect(pieElModel.env.mode).toEqual('evaluate');
+    const pieElement = await page.waitForSelector(
+      'pie-player pie-multiple-choice'
+    );
+    expect(pieElement).toBeDefined();
+    const model = await page.$eval('pie-player pie-multiple-choice', el =>
+      (el as any).model
+    );
+    expect(model.env.mode).toEqual('evaluate');
+ 
   });
 
   xit('loads with js, multiple times', async () => {
@@ -50,7 +42,7 @@ describe('pie-player', () => {
     await page.setContent(`<div id="player-holder"></div>`);
     await page.evaluate(loadPie, JSON.stringify(simplePieMock));
     await page.waitForChanges();
-    piePlayer = await page.find('pie-player');
+    const piePlayer = await page.find('pie-player');
     expect(piePlayer).toBeDefined();
     const pieElement = await page.waitForSelector(
       'pie-player pie-multiple-choice'
@@ -79,13 +71,12 @@ describe('pie-player', () => {
   it('loads an item with stimulus', async () => {
     setupInterceptPieCloud(page, '@pie-element');
     await page.setContent(`<pie-player></pie-player>`);
-    piePlayer = await page.find('pie-player');
+    const piePlayer = await page.find('pie-player');
     await piePlayer.setProperty('config', advancedPieMock);
     await page.waitForChanges();
     expect(piePlayer).toBeDefined();
     const stimulusLayout = await piePlayer.find('pie-stimulus-layout');
     expect(stimulusLayout).toBeDefined();
-    // const passageEl = await piePlayer.find('#stimulusPlayer pie-passage');
     const passageModel = await page.$eval('#stimulusPlayer pie-passage', el =>
       el.getAttribute('model')
     );
@@ -96,4 +87,27 @@ describe('pie-player', () => {
     );
     expect(questionModel).toBeTruthy();
   });
+
+  it('does not render stimulus is renderStimulus is false', async () => {
+    setupInterceptPieCloud(page, '@pie-element');
+    await page.setContent(`<pie-player render-stimulus="false"></pie-player>`);
+    const piePlayer = await page.find('pie-player');
+    await piePlayer.setProperty('config', advancedPieMock);
+    await page.waitForChanges();
+    expect(piePlayer).toBeDefined();
+    const stimulusLayout = await piePlayer.find('pie-stimulus-layout');
+    expect(stimulusLayout).toBeNull();
+
+  });
+
+
+  it('emits a load-complete event', async () => {
+    setupInterceptPieCloud(page, '@pie-element/multiple-choice');
+    await page.setContent(`<div id="player-holder"></div>`);
+    await page.evaluate(loadPie, JSON.stringify(simplePieMock));
+    const loadCompleteEvent = await page.waitForEvent('load-complete','document');
+    expect(loadCompleteEvent).toBeDefined();
+ 
+  });
+
 });

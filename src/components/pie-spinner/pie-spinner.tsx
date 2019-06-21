@@ -1,10 +1,19 @@
-import { Component, h } from '@stencil/core';
+import { Component, Prop, h } from '@stencil/core';
 
 @Component({ tag: 'pie-spinner' , styleUrl: 'pie-spinner.css'})
 export class PieSpinner {
+
+  /**
+   * Shows the spinner
+   */
+  @Prop() active: boolean = true;
+
   render() {
     return (
-      <div id="pie-spinner-container">
+      <div>
+        <slot/>
+        { this.active ? 
+        <div id="pie-spinner-container">
         <div id="pie-spinner">
           <svg
             class="lds-spinner"
@@ -256,6 +265,11 @@ export class PieSpinner {
             </g>
           </svg>
         </div>
+      </div> 
+        : 
+        <div></div>
+        }
+        
       </div>
     );
   }

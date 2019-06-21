@@ -1,0 +1,26 @@
+dist: trusty
+sudo: required
+language: node_js
+node_js:
+- "11"
+
+os:
+- linux
+
+jobs:
+  include:
+  - stage: install
+    script: npm install
+    script: npm run build
+    skip_cleanup: true
+  - stage: test
+    script: npm run test
+    skip_cleanup: true
+  - stage: release
+    node_js: lts/*
+    deploy:
+      provider: script
+      skip_cleanup: true
+      script:
+      - npm run release
+    if: branch = master

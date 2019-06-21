@@ -11,6 +11,7 @@ import {
 } from '@stencil/core';
 import { PieContent, ItemConfig, ItemSession, PieElement, PieController, AdvancedItemConfig, PieModel} from '../../interface';
 import { PieLoader } from '../../pie-loader';
+import { addRubric } from '../../rubric-defaults';
 
 const controllerErrorMessage: string = 'Error processing question configuration, verify the question model?';
 
@@ -25,6 +26,8 @@ export class Player {
    * a reference to the active player when wrapping playert in stimulus layout
    */
   stimulusPlayer: HTMLElement;
+
+  _loadCompleteState:boolean = false;
 
   @Prop({ context: 'document' }) doc!: Document;
 
@@ -48,6 +51,11 @@ export class Player {
    * has provided a response to the interaction. 
    */
   @Event() responseCompleted: EventEmitter;
+
+  /**
+   * Emitted when the content in the config has been loaded.
+   */
+  @Event({eventName: 'load-complete'}) loadComplete: EventEmitter;
 
   @State() elementsLoaded: boolean = false;
 
@@ -81,6 +89,12 @@ export class Player {
   @Prop() jsBundleUrls?: string[];
 
 
+  /**
+   * If the item contains a stimulus, the player will render it by default.
+   * Set this property to false to not render stimulus.
+   */
+  @Prop() renderStimulus: boolean = true;
+
   @State() pieContentModel: PieContent;
 
   @State() stimulusItemModel: AdvancedItemConfig;
@@ -93,6 +107,7 @@ export class Player {
 
   @Watch('config')
   async watchConfig(newConfig) {
+    this._loadCompleteState = false;
     // wrapping a player in stimulus layoute
     if (this.stimulusPlayer) {
       (this.stimulusPlayer as any).config = newConfig;
@@ -110,7 +125,7 @@ export class Player {
           this.stimulusItemModel = newConfig;
           return; // if stimulus item 
         } else if (newConfig.elements)  {
-          this.pieContentModel = newConfig
+          this.pieContentModel = addRubric(newConfig)
         } else {
           this.playerError.emit(`invalid pie data model`);
           return;
@@ -121,7 +136,6 @@ export class Player {
       }
 
       if (!this.elementsLoaded) {
-        this.el.innerHTML = this.pieContentModel.markup;
         if (this.jsBundleUrls) {
           await this.pieLoader.loadJs(this.jsBundleUrls, this.doc);
           await this.pieLoader.defineElements(this.pieContentModel.elements);
@@ -129,9 +143,8 @@ export class Player {
           await this.pieLoader.loadCloudPies(this.pieContentModel.elements, this.doc);
         }
         this.elementsLoaded = await this.pieLoader.elementsHaveLoaded(this.el);
-      } else {
-        this.updateModels();
       }
+      this.updateModels();
     } catch (err) {
       this.playerError.emit(`problem loading item (${err})`)
     }
@@ -172,6 +185,10 @@ export class Player {
       }
     if (this.pieContentModel && this.pieContentModel.models) {
       this.pieContentModel.models.forEach(async model => {
+        if (model && model.error) {
+          this.playerError.emit(`error loading question data`);
+          throw new Error(model.error);
+        }
         const pieEl: PieElement = this.el.querySelector(`[id='${model.id}']`);   
         const session = this.findOrAddSession(this.session.data, model.id);
         pieEl.session = session;
@@ -197,14 +214,15 @@ export class Player {
             }
             pieEl.model = model;           
           }
-          
+          this._loadCompleteState = true;
+          this.loadComplete.emit();
         };   
       });
     }
   }
 
   async componentWillLoad() {
-    this.watchConfig(this.config);
+    if (this.config) {this.watchConfig(this.config)}
   }
 
   findOrAddSession(data: any[], id: string) {
@@ -218,9 +236,8 @@ export class Player {
   };
 
   render() {
-    console.log(`render called on player`)
     if (this.stimulusItemModel) {
-      return  <pie-stimulus-layout>
+      return this.renderStimulus ?  <pie-stimulus-layout>
         <div slot="stimulus">
           <pie-player 
             id="stimulusPlayer" 
@@ -241,12 +258,16 @@ export class Player {
             ></pie-player>
         </div>
       </pie-stimulus-layout>
+      : 
+      <pie-player 
+            id="itemPlayer" 
+            config={this.stimulusItemModel.pie}
+            hosted={this.hosted}
+            jsBundleUrls={this.jsBundleUrls}
+            session={this.session}
+            ></pie-player>
     } else {
-      if (this.pieContentModel && !this.elementsLoaded) {
-        return <pie-spinner></pie-spinner>
-      } else {
-        return <div innerHTML={(this.pieContentModel && this.pieContentModel.markup) ? this.pieContentModel.markup : ""} />;
-      }
+      return <pie-spinner active={!this.elementsLoaded}><div innerHTML={(this.pieContentModel && this.pieContentModel.markup) ? this.pieContentModel.markup : ""} /></pie-spinner>
     }
 
   }

@@ -13,9 +13,11 @@ import {
   PieModel,
 } from './interface';
 
-
 export namespace Components {
   interface PieAuthor {
+    /**
+    * Adds a preview view which will render the content in another tab as it may appear to a student or instructor.
+    */
     'addPreview': boolean;
     /**
     * The Pie config model.
@@ -62,6 +64,10 @@ export namespace Components {
     */
     'jsBundleUrls'?: string[];
     /**
+    * If the item contains a stimulus, the player will render it by default. Set this property to false to not render stimulus.
+    */
+    'renderStimulus': boolean;
+    /**
     * The Pie Session
     */
     'session': ItemSession;
@@ -74,113 +80,16 @@ export namespace Components {
   interface PiePreviewLayout {
     'config': Object;
   }
-  interface PieRubricAuthor {
-    'rubricModel': Object;
+  interface PieSpinner {
+    /**
+    * Shows the spinner
+    */
+    'active': boolean;
   }
-  interface PieSpinner {}
   interface PieStimulusLayout {}
 }
 
-declare namespace LocalJSX {
-  interface PieAuthor extends JSXBase.HTMLAttributes {
-    'addPreview'?: boolean;
-    /**
-    * The Pie config model.
-    */
-    'config'?: ItemConfig;
-    /**
-    * To customize the standard behaviour provided by interaction configuration views you can  provide settings key-ed by the package name.  e.g.  `{ '@pie-element/inline-choice': { promptLabel: 'Item Stem' } }`  The settings that are configurable for each authoring view are documented in  the `@package-name/docs` folder for each package.
-    */
-    'configSettings'?: {[packageName:string]:Object};
-    /**
-    * Emmitted when the model for the content has been updated in the ui.
-    */
-    'onModelUpdated'?: (event: CustomEvent<any>) => void;
-  }
-  interface PieLoader extends JSXBase.HTMLAttributes {
-    /**
-    * If the bundle is not available yet, the maximum number of milliseconds  between two retries for downloading
-    */
-    'maxTimeout'?: number;
-    /**
-    * If the bundle is not available yet, number of milliseconds before starting  the first retry attempt.
-    */
-    'minTimeout'?: number;
-    /**
-    * If the bundle is not available yet, the number of re-try attempts to download.
-    */
-    'retries'?: number;
-  }
-  interface PiePlayer extends JSXBase.HTMLAttributes {
-    /**
-    * The Pie config model.
-    */
-    'config'?: ItemConfig;
-    /**
-    * Describes runtime environment for the player.
-    */
-    'env'?: Object;
-    /**
-    * Indicates if player running in the context of a PIE hosting system. Do not modify the default value for this property if you are not implementing a PIE host. If true, the host is responsible for all model updates.
-    */
-    'hosted'?: boolean;
-    /**
-    * If provided this url is used for loading the JS bundle for rendering the PIE Elements. If not provided the system will default to using the PIE Cloud service to locate and load JS bundles.
-    */
-    'jsBundleUrls'?: string[];
-    /**
-    * Emmitted if there is an error encountered while rendering. `event.detail` will be a string containing a message about the error.
-    */
-    'onPlayer-error'?: (event: CustomEvent<any>) => void;
-    /**
-    * TODO - Emmitted when any all interactions in a PIE Assessment Item have reported that a user  has provided a response to the interaction.
-    */
-    'onResponseCompleted'?: (event: CustomEvent<any>) => void;
-    /**
-    * Emmitted when any interaction in the set of interactions being rendered has been mutated by user action.
-    */
-    'onSession-changed'?: (event: CustomEvent<any>) => void;
-    /**
-    * The Pie Session
-    */
-    'session'?: ItemSession;
-  }
-  interface PiePreviewControl extends JSXBase.HTMLAttributes {
-    'onEnvChanged'?: (event: CustomEvent<any>) => void;
-  }
-  interface PiePreviewLayout extends JSXBase.HTMLAttributes {
-    'config'?: Object;
-  }
-  interface PieRubricAuthor extends JSXBase.HTMLAttributes {
-    'rubricModel'?: Object;
-  }
-  interface PieSpinner extends JSXBase.HTMLAttributes {}
-  interface PieStimulusLayout extends JSXBase.HTMLAttributes {}
-
-  interface IntrinsicElements {
-    'pie-author': PieAuthor;
-    'pie-loader': PieLoader;
-    'pie-player': PiePlayer;
-    'pie-preview-control': PiePreviewControl;
-    'pie-preview-layout': PiePreviewLayout;
-    'pie-rubric-author': PieRubricAuthor;
-    'pie-spinner': PieSpinner;
-    'pie-stimulus-layout': PieStimulusLayout;
-  }
-}
-
-export { LocalJSX as JSX };
-
-
-declare module "@stencil/core" {
-  export namespace JSX {
-    interface IntrinsicElements extends LocalJSX.IntrinsicElements {}
-  }
-}
-
-
 declare global {
-
 
 
   interface HTMLPieAuthorElement extends Components.PieAuthor, HTMLStencilElement {}
@@ -213,12 +122,6 @@ declare global {
     new (): HTMLPiePreviewLayoutElement;
   };
 
-  interface HTMLPieRubricAuthorElement extends Components.PieRubricAuthor, HTMLStencilElement {}
-  var HTMLPieRubricAuthorElement: {
-    prototype: HTMLPieRubricAuthorElement;
-    new (): HTMLPieRubricAuthorElement;
-  };
-
   interface HTMLPieSpinnerElement extends Components.PieSpinner, HTMLStencilElement {}
   var HTMLPieSpinnerElement: {
     prototype: HTMLPieSpinnerElement;
@@ -230,18 +133,124 @@ declare global {
     prototype: HTMLPieStimulusLayoutElement;
     new (): HTMLPieStimulusLayoutElement;
   };
-
   interface HTMLElementTagNameMap {
     'pie-author': HTMLPieAuthorElement;
     'pie-loader': HTMLPieLoaderElement;
     'pie-player': HTMLPiePlayerElement;
     'pie-preview-control': HTMLPiePreviewControlElement;
     'pie-preview-layout': HTMLPiePreviewLayoutElement;
-    'pie-rubric-author': HTMLPieRubricAuthorElement;
     'pie-spinner': HTMLPieSpinnerElement;
     'pie-stimulus-layout': HTMLPieStimulusLayoutElement;
   }
-
-  interface ElementTagNameMap extends HTMLElementTagNameMap {}
 }
+
+declare namespace LocalJSX {
+  interface PieAuthor extends JSXBase.HTMLAttributes<HTMLPieAuthorElement> {
+    /**
+    * Adds a preview view which will render the content in another tab as it may appear to a student or instructor.
+    */
+    'addPreview'?: boolean;
+    /**
+    * The Pie config model.
+    */
+    'config'?: ItemConfig;
+    /**
+    * To customize the standard behaviour provided by interaction configuration views you can  provide settings key-ed by the package name.  e.g.  `{ '@pie-element/inline-choice': { promptLabel: 'Item Stem' } }`  The settings that are configurable for each authoring view are documented in  the `@package-name/docs` folder for each package.
+    */
+    'configSettings'?: {[packageName:string]:Object};
+    /**
+    * Emmitted when the model for the content has been updated in the ui.
+    */
+    'onModelUpdated'?: (event: CustomEvent<any>) => void;
+  }
+  interface PieLoader extends JSXBase.HTMLAttributes<HTMLPieLoaderElement> {
+    /**
+    * If the bundle is not available yet, the maximum number of milliseconds  between two retries for downloading
+    */
+    'maxTimeout'?: number;
+    /**
+    * If the bundle is not available yet, number of milliseconds before starting  the first retry attempt.
+    */
+    'minTimeout'?: number;
+    /**
+    * If the bundle is not available yet, the number of re-try attempts to download.
+    */
+    'retries'?: number;
+  }
+  interface PiePlayer extends JSXBase.HTMLAttributes<HTMLPiePlayerElement> {
+    /**
+    * The Pie config model.
+    */
+    'config'?: ItemConfig;
+    /**
+    * Describes runtime environment for the player.
+    */
+    'env'?: Object;
+    /**
+    * Indicates if player running in the context of a PIE hosting system. Do not modify the default value for this property if you are not implementing a PIE host. If true, the host is responsible for all model updates.
+    */
+    'hosted'?: boolean;
+    /**
+    * If provided this url is used for loading the JS bundle for rendering the PIE Elements. If not provided the system will default to using the PIE Cloud service to locate and load JS bundles.
+    */
+    'jsBundleUrls'?: string[];
+    /**
+    * Emitted when the content in the config has been loaded.
+    */
+    'onLoad-complete'?: (event: CustomEvent<any>) => void;
+    /**
+    * Emmitted if there is an error encountered while rendering. `event.detail` will be a string containing a message about the error.
+    */
+    'onPlayer-error'?: (event: CustomEvent<any>) => void;
+    /**
+    * TODO - Emmitted when any all interactions in a PIE Assessment Item have reported that a user  has provided a response to the interaction.
+    */
+    'onResponseCompleted'?: (event: CustomEvent<any>) => void;
+    /**
+    * Emmitted when any interaction in the set of interactions being rendered has been mutated by user action.
+    */
+    'onSession-changed'?: (event: CustomEvent<any>) => void;
+    /**
+    * If the item contains a stimulus, the player will render it by default. Set this property to false to not render stimulus.
+    */
+    'renderStimulus'?: boolean;
+    /**
+    * The Pie Session
+    */
+    'session'?: ItemSession;
+  }
+  interface PiePreviewControl extends JSXBase.HTMLAttributes<HTMLPiePreviewControlElement> {
+    'onEnvChanged'?: (event: CustomEvent<any>) => void;
+  }
+  interface PiePreviewLayout extends JSXBase.HTMLAttributes<HTMLPiePreviewLayoutElement> {
+    'config'?: Object;
+  }
+  interface PieSpinner extends JSXBase.HTMLAttributes<HTMLPieSpinnerElement> {
+    /**
+    * Shows the spinner
+    */
+    'active'?: boolean;
+  }
+  interface PieStimulusLayout extends JSXBase.HTMLAttributes<HTMLPieStimulusLayoutElement> {}
+
+  interface IntrinsicElements {
+    'pie-author': PieAuthor;
+    'pie-loader': PieLoader;
+    'pie-player': PiePlayer;
+    'pie-preview-control': PiePreviewControl;
+    'pie-preview-layout': PiePreviewLayout;
+    'pie-spinner': PieSpinner;
+    'pie-stimulus-layout': PieStimulusLayout;
+  }
+}
+
+export { LocalJSX as JSX };
+
+
+declare module "@stencil/core" {
+  export namespace JSX {
+    interface IntrinsicElements extends LocalJSX.IntrinsicElements {}
+  }
+}
+
 
