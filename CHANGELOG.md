@@ -1,3 +1,11 @@
+## [0.8.4](https://github.com/pie-framework/pie-player-components/compare/v0.8.3...v0.8.4) (2019-06-21)
+
+
+### Bug Fixes
+
+* don't skip build step on release ([8168134](https://github.com/pie-framework/pie-player-components/commit/8168134))
+* fix ci build ([401932b](https://github.com/pie-framework/pie-player-components/commit/401932b))
+
 ## [0.8.3](https://github.com/pie-framework/pie-player-components/compare/v0.8.2...v0.8.3) (2019-06-20)
 
 
