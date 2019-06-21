@@ -1,3 +1,10 @@
+## [0.8.3](https://github.com/pie-framework/pie-player-components/compare/v0.8.2...v0.8.3) (2019-06-20)
+
+
+### Bug Fixes
+
+* emit error and log on model processing issue ([ffa3e4e](https://github.com/pie-framework/pie-player-components/commit/ffa3e4e))
+
 ### Changelog
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
