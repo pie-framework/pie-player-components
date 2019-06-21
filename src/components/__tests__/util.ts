@@ -15,13 +15,10 @@ export const setupInterceptPieCloud = async (page:E2EPage, match): Promise<void>
   
   
   page.on('request', request => {
-    console.log(`processing ${request.url()}`);
     
     // mock the response from pie cloud
     if (request.url().match(match)) {
-      console.log(`found match for ${request.url()}`);
       try {
-        console.log(`trying response`);
        request.respond({
           status: 200,
           headers: resHeaders,
@@ -32,9 +29,7 @@ export const setupInterceptPieCloud = async (page:E2EPage, match): Promise<void>
         console.error(err);
         
       }
-      console.log('responded');
     } else {
-      console.log(`continuing ${request.url()}`);
       request.continue();
     }
   });

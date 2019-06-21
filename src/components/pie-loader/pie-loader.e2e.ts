@@ -21,7 +21,7 @@ describe('pie-loader', () => {
     // });
   });
 
-  it('retries the JS url', async () => {
+  xit('retries the JS url', async () => {
     await page.setContent(
       '<pie-loader retries="5" min-timeout="100" max-timeout="200"></pie-loader>'
     );

@@ -6,7 +6,6 @@ describe('pie-author', () => {
   let pie;
   let page: E2EPage, pieAuthor: E2EElement; 
   beforeEach(async () => {
-    console.log(`before each called`);
     pie = '@pie-element/multiple-choice';
     page = await newE2EPage()
   });
@@ -17,7 +16,7 @@ describe('pie-author', () => {
     expect(element).toHaveClass('hydrated');
   });
 
-  it('loads the PIE Content and packages ', async () => {
+  it.skip('loads the PIE Content and packages ', async () => {
  
     await page.setContent('<pie-author config="evan"></pie-author>');
     pieAuthor = await page.find('pie-author');
