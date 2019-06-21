@@ -22,5 +22,5 @@ jobs:
       provider: script
       skip_cleanup: true
       script:
-      - npx release
+      - npm run release
     if: branch = master
