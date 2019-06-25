@@ -1,3 +1,10 @@
+## [0.8.5](https://github.com/pie-framework/pie-player-components/compare/v0.8.4...v0.8.5) (2019-06-25)
+
+
+### Bug Fixes
+
+* env not passed through properly for stimulus ([6f2ab38](https://github.com/pie-framework/pie-player-components/commit/6f2ab38))
+
 ## [0.8.4](https://github.com/pie-framework/pie-player-components/compare/v0.8.3...v0.8.4) (2019-06-21)
 
 
