@@ -241,6 +241,7 @@ export class Player {
           <pie-player 
             id="stimulusPlayer" 
             config={this.stimulusItemModel.stimulus}
+            env={this.env}
             hosted={this.hosted}
             jsBundleUrls={this.jsBundleUrls}
             session={this.session}
@@ -250,6 +251,7 @@ export class Player {
           <pie-player 
             id="itemPlayer" 
             config={this.stimulusItemModel.pie}
+            env={this.env}
             hosted={this.hosted}
             jsBundleUrls={this.jsBundleUrls}
             session={this.session}
@@ -261,6 +263,7 @@ export class Player {
       <pie-player 
             id="itemPlayer" 
             config={this.stimulusItemModel.pie}
+            env={this.env}
             hosted={this.hosted}
             jsBundleUrls={this.jsBundleUrls}
             session={this.session}
