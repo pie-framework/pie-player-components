@@ -1,6 +1,6 @@
 {
   "name": "@pie-framework/pie-player-components",
-  "version": "0.8.5",
+  "version": "0.8.6",
   "description": "Pie Player Components",
   "module": "dist/esm/index.js",
   "main": "dist/index.js",

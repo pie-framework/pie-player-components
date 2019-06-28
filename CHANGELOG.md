@@ -1,3 +1,10 @@
+## [0.8.6](https://github.com/pie-framework/pie-player-components/compare/v0.8.5...v0.8.6) (2019-06-28)
+
+
+### Bug Fixes
+
+* pie property name change for config settings ([67ed597](https://github.com/pie-framework/pie-player-components/commit/67ed597))
+
 ## [0.8.5](https://github.com/pie-framework/pie-player-components/compare/v0.8.4...v0.8.5) (2019-06-25)
 
 
