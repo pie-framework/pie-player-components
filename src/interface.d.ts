@@ -45,7 +45,7 @@ export type ItemConfig = PieContent | AdvancedItemConfig;
 interface PieElement extends HTMLElement {
   _model: Object,
   model: Object;
-  configure: Object,
+  configuration: Object,
   _configure: Object,
   session: Object;
   onModelChanged: Function;

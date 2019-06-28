@@ -136,7 +136,7 @@ export class Author {
               .name;
           pieEl.model = model;
           if (this.configSettings && this.configSettings[packageName]) {
-            pieEl.configure = this.configSettings[packageName]
+            pieEl.configuration = this.configSettings[packageName]
           }
         }
       });
