@@ -1,3 +1,10 @@
+## [0.8.7](https://github.com/pie-framework/pie-player-components/compare/v0.8.6...v0.8.7) (2019-07-07)
+
+
+### Bug Fixes
+
+* don't set session if pieEl is null ([76beb4c](https://github.com/pie-framework/pie-player-components/commit/76beb4c))
+
 ## [0.8.6](https://github.com/pie-framework/pie-player-components/compare/v0.8.5...v0.8.6) (2019-06-28)
 
 
