@@ -190,8 +190,9 @@ export class Player {
         }
         const pieEl: PieElement = this.el.querySelector(`[id='${model.id}']`);   
         const session = this.findOrAddSession(this.session.data, model.id);
-        pieEl.session = session;
+        
         if (pieEl) {
+          pieEl.session = session;
           if (!this.hosted) {
             try {
               // use local controllers
