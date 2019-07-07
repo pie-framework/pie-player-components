@@ -1,3 +1,10 @@
+## [0.8.8](https://github.com/pie-framework/pie-player-components/compare/v0.8.7...v0.8.8) (2019-07-07)
+
+
+### Bug Fixes
+
+* ensure model set after render ([74e13ae](https://github.com/pie-framework/pie-player-components/commit/74e13ae))
+
 ## [0.8.7](https://github.com/pie-framework/pie-player-components/compare/v0.8.6...v0.8.7) (2019-07-07)
 
 
