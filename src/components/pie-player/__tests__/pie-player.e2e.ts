@@ -2,10 +2,10 @@ import { newE2EPage, E2EElement, E2EPage } from '@stencil/core/testing';
 import { setupInterceptPieCloud } from '../../__tests__/util';
 import { simplePieMock, advancedPieMock } from '../../__mock__/config';
 
-function loadPie(itemConfig) {
+function loadPie(itemConfig, playerId:string = 'player') {
   var holder = document.querySelector('#player-holder');
   var player = document.createElement('pie-player');
-  player.setAttribute('id', 'player');
+  player.setAttribute('id', playerId);
   holder.appendChild(player);
   player.config = itemConfig;
 }
@@ -40,7 +40,7 @@ describe('pie-player', () => {
   it('loads with js, multiple times', async () => {
     setupInterceptPieCloud(page, '@pie-element/multiple-choice');
     await page.setContent(`<div id="player-holder"></div>`);
-    await page.evaluate(loadPie, JSON.stringify(simplePieMock));
+    await page.evaluate(loadPie, JSON.stringify(simplePieMock), 'player1');
     await page.waitForChanges();
     const piePlayer = await page.find('pie-player');
     expect(piePlayer).toBeDefined();
@@ -54,9 +54,11 @@ describe('pie-player', () => {
     expect(model).toBeTruthy();
 
     // load it again
-    await page.evaluate(loadPie, JSON.stringify(simplePieMock));
+    await page.evaluate(loadPie, JSON.stringify(simplePieMock), 'player2');
     await page.waitForChanges();
 
+    const secondPlayer = await page.find('pie-player');
+    expect(secondPlayer).toBeDefined();
     const secondPieElement = await page.waitForSelector(
       'pie-player:nth-child(2) pie-multiple-choice'
     );

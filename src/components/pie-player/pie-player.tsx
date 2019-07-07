@@ -141,7 +141,6 @@ export class Player {
         } else {
           await this.pieLoader.loadCloudPies(this.pieContentModel.elements, this.doc);
         }
-        this.elementsLoaded = await this.pieLoader.elementsHaveLoaded(this.el);
       }
       this.updateModels();
     } catch (err) {
@@ -178,11 +177,16 @@ export class Player {
   @Watch('env')
   updateModels(newEnv = this.env) {
       // wrapping a player in stimulus layoute
-      if (this.stimulusPlayer) {
-        (this.stimulusPlayer as any).env = newEnv;
-        return;
-      }
-    if (this.pieContentModel && this.pieContentModel.models) {
+    if (this.stimulusPlayer) {
+      (this.stimulusPlayer as any).env = newEnv;
+      return;
+    }
+
+    if (this.pieContentModel 
+      && this.pieContentModel.models 
+      && this.pieContentModel.markup
+      && this.elementsLoaded) {
+
       this.pieContentModel.models.forEach(async model => {
         if (model && model.error) {
           this.playerError.emit(`error loading question data`);
@@ -234,6 +238,22 @@ export class Player {
     data.push(ss);
     return ss;
   };
+
+  async afterRender() {
+    if (this.pieContentModel && this.pieContentModel.markup && !this.elementsLoaded) {
+        this.elementsLoaded = await this.pieLoader.elementsHaveLoaded(this.el);
+    }
+  }
+
+  async componentDidLoad() {
+    await this.afterRender();
+    this.updateModels();
+  }
+
+  async componentDidUpdate() {
+    await this.afterRender();
+    this.updateModels();
+  }
 
   render() {
     if (this.stimulusItemModel) {
