@@ -1,3 +1,10 @@
+# [0.9.0](https://github.com/pie-framework/pie-player-components/compare/v0.8.8...v0.9.0) (2019-07-10)
+
+
+### Features
+
+* add modelLoaded event for author ([a2ff6af](https://github.com/pie-framework/pie-player-components/commit/a2ff6af))
+
 ## [0.8.8](https://github.com/pie-framework/pie-player-components/compare/v0.8.7...v0.8.8) (2019-07-07)
 
 
