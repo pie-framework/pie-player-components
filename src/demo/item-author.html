@@ -74,7 +74,7 @@
 
       const author = document.getElementById('author');
 
-      author.addEventListener('model-updated', event => {
+      author.addEventListener('modelLoaded', event => {
         console.log(event.type + ':' + JSON.stringify(event.detail));
       });
 

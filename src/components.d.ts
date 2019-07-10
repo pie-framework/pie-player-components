@@ -46,7 +46,11 @@ export namespace Components {
     */
     'configSettings'?: {[packageName:string]:Object};
     /**
-    * Emmitted when the model for the content has been updated in the ui.
+    * Emmitted when the content models in the config have ben set on the content
+    */
+    'onModelLoaded'?: (event: CustomEvent) => void;
+    /**
+    * Emmitted when the model for the content has been updated within the ui due to user action.
     */
     'onModelUpdated'?: (event: CustomEvent) => void;
   }

@@ -34,10 +34,18 @@ export class Author {
 
 
   /**
-   * Emmitted when the model for the content has been updated in the ui.
+   * Emmitted when the model for the content has been updated within the ui due to user action.
    */
   @Event() modelUpdated: EventEmitter;
 
+
+  /**
+   * Emmitted when the content models in the config have ben set on the content 
+   */
+  @Event() modelLoaded: EventEmitter;
+
+
+ 
   /**
    * To customize the standard behaviour provided by interaction configuration views you can 
    * provide settings key-ed by the package name.  e.g.
@@ -150,7 +158,10 @@ export class Author {
   }
 
   async componentDidLoad() {
+    await this.afterRender();
+    await this.updateModels();
     this.el.addEventListener(ModelUpdatedEvent.TYPE, (e:ModelUpdatedEvent) =>  {
+      console.log(`got event ${e.detail}`)
       // set the internal model
       // emit a content-item level event with the model
       if (this.pieContentModel && e.update) {
@@ -165,14 +176,24 @@ export class Author {
 
   }
 
+  async componentDidUpdate() {
+    await this.afterRender();
+    await this.updateModels();
+    this.modelLoaded.emit(this.pieContentModel);
+  }
+
   async loadPieElements() {
     if (this.config) {
       await this.pieLoader.loadCloudPies(
         this.pieContentModel.elements,
         this.doc
       );
-      this.elementsLoaded = await this.pieLoader.elementsHaveLoaded(this.el);
-      await this.updateModels();
+    }
+  }
+
+  async afterRender() {
+    if (this.pieContentModel && this.pieContentModel.markup && !this.elementsLoaded) {
+        this.elementsLoaded = await this.pieLoader.elementsHaveLoaded(this.el);
     }
   }
 
