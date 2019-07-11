@@ -6,59 +6,46 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0"
     />
-    <title>Preview Layout Demo</title>
+    <title>Item</title>
     <script src="/build/pie-player-components.js"></script>
   </head>
   <body>
+    <pie-author id="author"></pie-author>
 
-
-
-
-
-    <pie-author id="author" add-preview="true">
-
-    </pie-author>
-
-
-   
     <script>
-
-      const author = document.getElementById('author');
-    
       const config = {
         id: '1',
         elements: {
-          'pie-multiple-choice': '@pie-element/multiple-choice@2.4.6'
+          'pie-multiple-choice': '@pie-element/multiple-choice@2.7.3'
         },
         models: [
           {
-            id:"1",
+            id: '1',
             element: 'pie-multiple-choice',
-            prompt:
-              'Which of these northern European countries are EU members?',
+            prompt: 'What is the theme of this poem?',
             choiceMode: 'checkbox',
             keyMode: 'numbers',
             choices: [
               {
                 correct: true,
-                value: 'sweden',
-                label: 'Sweden',
+                value: 'sorrow',
+                label: 'Sorrow',
                 feedback: {
                   type: 'none',
                   value: ''
                 }
               },
               {
-                value: 'iceland',
-                label: 'Iceland',
+                value: 'contemplation',
+                label: 'Contemplation',
                 feedback: {
                   type: 'none',
                   value: ''
                 }
               },
               {
-                value: 'norway',
-                label: 'Norway',
+                value: 'loneliness',
+                label: 'Loneliness',
                 feedback: {
                   type: 'none',
                   value: ''
@@ -66,8 +53,8 @@
               },
               {
                 correct: true,
-                value: 'finland',
-                label: 'Finland',
+                value: 'envy',
+                label: 'Envy',
                 feedback: {
                   type: 'none',
                   value: ''
@@ -75,21 +62,27 @@
               }
             ],
             partialScoring: false,
-            shuffle: false,
             partialScoringLabel: `Each correct response that is correctly checked and each incorrect response
-          that is correctly unchecked will be worth 1 point.
-          The maximum points is the total number of answer choices.`
+              that is correctly unchecked will be worth 1 point.
+              The maximum points is the total number of answer choices.`
           }
         ],
-        markup: "<pie-multiple-choice id='1'></pie-multiple-choice>"
+        markup: `
+            <pie-multiple-choice id='1'></pie-multiple-choice>
+          `
       };
+
+      const author = document.getElementById('author');
+
+      author.addEventListener('modelLoaded', event => {
+        console.log(event.type + ':' + JSON.stringify(event.detail));
+      });
 
       author.componentOnReady().then(() => {
         author.addRubricToConfig(config).then(newConf => {
           author.config = newConf;
-        })
+        });
       });
     </script>
-
   </body>
 </html>

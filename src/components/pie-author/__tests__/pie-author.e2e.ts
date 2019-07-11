@@ -1,13 +1,17 @@
 import { newE2EPage, E2EElement, E2EPage } from '@stencil/core/testing';
 import { setupInterceptPieCloud } from '../../__tests__/util';
 import { simplePieMock, multipleChoiceItem, inlineChoiceItem } from '../../__mock__/config';
+import cloneDeep from 'lodash/cloneDeep';
 
 describe('pie-author', () => {
   let pie;
   let page: E2EPage, pieAuthor: E2EElement; 
+  let pieMock
   beforeEach(async () => {
     pie = '@pie-element/multiple-choice';
-    page = await newE2EPage()
+    page = await newE2EPage();
+    pieMock = cloneDeep(simplePieMock);
+
   });
 
   it('renders', async () => {
@@ -21,7 +25,7 @@ describe('pie-author', () => {
     await page.setContent('<pie-author config="evan"></pie-author>');
     pieAuthor = await page.find('pie-author');
     await setupInterceptPieCloud(page,  pie);
-    pieAuthor.setProperty('config', simplePieMock)
+    pieAuthor.setProperty('config', pieMock)
     await page.waitForChanges();
     const el = await page.waitForSelector('pie-author');
     expect(el).toBeDefined();
@@ -35,7 +39,7 @@ describe('pie-author', () => {
     await page.setContent('<pie-author config="evan"></pie-author>');
     pieAuthor = await page.find('pie-author');
     await setupInterceptPieCloud(page,  pie);
-    pieAuthor.setProperty('config', simplePieMock)
+    pieAuthor.setProperty('config', pieMock)
     const spy = await page.spyOnEvent('modelLoaded');
     await page.waitForChanges();
     expect(spy).toHaveReceivedEvent();
@@ -46,7 +50,7 @@ describe('pie-author', () => {
     await page.setContent('<pie-author></pie-author>');
     pieAuthor = await page.find('pie-author');
     await setupInterceptPieCloud(page,  pie);
-    const emptyItem = simplePieMock;
+    const emptyItem = pieMock;
     emptyItem.models = null;
     await page.$eval('pie-author',
       (elm: any, prop) => {
@@ -74,7 +78,7 @@ describe('pie-author', () => {
         return elm;
       },
       {
-        config: simplePieMock, 
+        config: pieMock, 
         configSettings: {'@pie-element/multiple-choice': { "foo": "bar"} }
       } 
     );
@@ -86,6 +90,26 @@ describe('pie-author', () => {
     const configProp = await configEl.getProperty('configuration');
     
     expect(configProp.foo).toEqual("bar");
+  });
+
+  it('add a rubric before adding config', async () => {
+    await page.setContent('<pie-author></pie-author>');
+    pieAuthor = await page.find('pie-author');
+    await setupInterceptPieCloud(page, pie);
+    const rubricAdded = await pieAuthor.callMethod('addRubricToConfig', pieMock, {foo: 'bar'});
+    expect(Object.values(rubricAdded.elements)).toContain('@pie-element/rubric');
+
+    const tagName = Object.keys(rubricAdded.elements)[1];
+
+    pieAuthor.setProperty('config', rubricAdded);
+    await page.waitForChanges();
+    await page.waitForSelector(`pie-author ${tagName}-config:defined`);
+    const rubricModel = await page.$eval(
+      `pie-author ${tagName}-config`,
+      el => (el as any).model
+    );
+    expect(rubricModel.foo).toEqual('bar');
+
   });
 
   // TODO request intercetpion needs to be updated for this to work
@@ -102,7 +126,6 @@ describe('pie-author', () => {
     );
     expect(pieModel.element).toEqual('pie-multiple-choice');
 
-    console.log(`got past first item`)
     await setupInterceptPieCloud(page,  `@pie-element/inline-choice`);
     pieAuthor.setProperty('config', inlineChoiceItem);
     await page.waitForChanges();
