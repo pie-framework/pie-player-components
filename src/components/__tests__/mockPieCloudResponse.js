@@ -61,6 +61,8 @@ class InlineChoiceConfig extends MockConfig {}
 class MathInline extends MockElement {}
 class MathInlineConfig extends MockConfig {}
 class Passage extends MockElement {}
+class Rubric extends MockElement {}
+class RubricConfig extends MockConfig {}
 
 
 
@@ -79,6 +81,11 @@ window['pie'] = {
     '@pie-element/math-inline': {
       Element: MathInline,
       Configure: MathInlineConfig,
+      controller
+    },
+    '@pie-element/rubric': {
+      Element: Rubric,
+      Configure: RubricConfig,
       controller
     },
     '@pie-element/passage': {

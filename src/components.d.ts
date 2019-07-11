@@ -24,6 +24,14 @@ export namespace Components {
     */
     'addPreview': boolean;
     /**
+    * If set the player will add a rubric authoring interaction to the config
+    */
+    'addRubric': boolean;
+    /**
+    * Utility method to add a `@pie-element/rubric` section to an item config when creating an item should be used before setting the config.
+    */
+    'addRubricToConfig': (config: ItemConfig, rubricModel?: any) => Promise<ItemConfig>;
+    /**
     * The Pie config model.
     */
     'config': ItemConfig;
@@ -37,6 +45,10 @@ export namespace Components {
     * Adds a preview view which will render the content in another tab as it may appear to a student or instructor.
     */
     'addPreview'?: boolean;
+    /**
+    * If set the player will add a rubric authoring interaction to the config
+    */
+    'addRubric'?: boolean;
     /**
     * The Pie config model.
     */

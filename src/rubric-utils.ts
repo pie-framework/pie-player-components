@@ -1,14 +1,17 @@
-import { PieContent } from './interface';
+import { PieContent, PieModel } from './interface';
 import {
   modelsForPackage,
-  elementForPackage
+  elementForPackage,
+  pieShortIdGenerator,
+  elementsHasPackage
 } from './utils/utils';
+
 
 /**
  * Allows you to modify the markup for a package that is present in elements/model but
  * missing from markup.
  * @param content the pie content
- * @param npmPackage the npm pacakge
+ * @param npmPackage the npm package
  * @param template a callback function for modifing the markup
  */
 export const addMarkupForPackage = (
@@ -46,4 +49,26 @@ export const addRubric = (content: PieContent): PieContent => {
     `;
     }
   );
+};
+
+/**
+ * Adds the provided package to the provided PieContent Object's `elements` and `models` properties.
+ * 
+ * @param content the PieContent for rendering
+ * @param packageToAdd the NPM Package to add to the content config
+ * @param model optional the PieModel to add, `id` and `element` properties will be replaced by this function if present
+ */
+export const addPackageToContent = (content: PieContent, packageToAdd, model?:PieModel) => {
+
+  if (packageToAdd && !elementsHasPackage(content.elements, packageToAdd)) {
+    model = model ? model : {} as any;
+    // add package
+    model.id = pieShortIdGenerator();
+    const elementName = pieShortIdGenerator();
+    model.element = elementName;
+    content.models && content.models.push(model);
+    content.elements && (content.elements[elementName] = packageToAdd);
+    return content;
+  }
+  
 };
