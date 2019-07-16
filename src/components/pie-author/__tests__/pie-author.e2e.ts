@@ -11,7 +11,8 @@ describe('pie-author', () => {
   });
   
 
-  it.skip('renders', async () => {
+  it('renders', async () => {
+    await page.setContent('<pie-author config="evan"></pie-author>');
     const element = await page.find('pie-author');
     expect(element).toHaveClass('hydrated');
   });
@@ -30,10 +31,19 @@ describe('pie-author', () => {
 
   });
 
-  // TODO the following 2 tests intermittently fail so disabling for CI
-  // I believe stencil 1.0 might fix them, or perhaps can fix in this code, but this blocks ci builds.
-  // should manually run these tests to ensure they pass at least once - until this can be sorted out.
-  it.skip('TODO creates new models if models is empty ', async () => {
+  it('gets modelLoaded event', async () => {
+ 
+    await page.setContent('<pie-author config="evan"></pie-author>');
+    pieAuthor = await page.find('pie-author');
+    await setupInterceptPieCloud(page,  pie);
+    pieAuthor.setProperty('config', simplePieMock)
+    const spy = await page.spyOnEvent('modelLoaded');
+    await page.waitForChanges();
+    expect(spy).toHaveReceivedEvent();
+  
+  });
+
+  it('creates new models if models is empty ', async () => {
     await page.setContent('<pie-author></pie-author>');
     pieAuthor = await page.find('pie-author');
     await setupInterceptPieCloud(page,  pie);
@@ -52,7 +62,7 @@ describe('pie-author', () => {
     expect(model.id).toEqual('1');
   });
 
-  it.skip('TODO sets config settings if present', async () => {
+  it('sets config settings if present', async () => {
 
     await page.setContent('<pie-author></pie-author>');
     pieAuthor = await page.find('pie-author');
@@ -75,11 +85,12 @@ describe('pie-author', () => {
     await page.waitForChanges();
     await page.waitForSelector('pie-multiple-choice-config[model]')
     const configEl = await page.find('pie-multiple-choice-config');
-    const configProp = await configEl.getProperty('configure');
+    const configProp = await configEl.getProperty('configuration');
     
     expect(configProp.foo).toEqual("bar");
   });
 
+  // TODO request intercetpion needs to be updated for this to work
   it.skip('can switch items', async() => {
     await page.setContent('<pie-author config="evan"></pie-author>');
     await setupInterceptPieCloud(page,  pie);
@@ -93,6 +104,7 @@ describe('pie-author', () => {
     );
     expect(pieModel.element).toEqual('pie-multiple-choice');
 
+    console.log(`got past first item`)
     await setupInterceptPieCloud(page,  `@pie-element/inline-choice`);
     pieAuthor.setProperty('config', inlineChoiceItem);
     await page.waitForChanges();

@@ -142,7 +142,6 @@ export class Player {
         } else {
           await this.pieLoader.loadCloudPies(this.pieContentModel.elements, this.doc);
         }
-        this.elementsLoaded = await this.pieLoader.elementsHaveLoaded(this.el);
       }
       this.updateModels();
     } catch (err) {
@@ -179,11 +178,16 @@ export class Player {
   @Watch('env')
   updateModels(newEnv = this.env) {
       // wrapping a player in stimulus layoute
-      if (this.stimulusPlayer) {
-        (this.stimulusPlayer as any).env = newEnv;
-        return;
-      }
-    if (this.pieContentModel && this.pieContentModel.models) {
+    if (this.stimulusPlayer) {
+      (this.stimulusPlayer as any).env = newEnv;
+      return;
+    }
+
+    if (this.pieContentModel 
+      && this.pieContentModel.models 
+      && this.pieContentModel.markup
+      && this.elementsLoaded) {
+
       this.pieContentModel.models.forEach(async model => {
         if (model && model.error) {
           this.playerError.emit(`error loading question data`);
@@ -191,8 +195,9 @@ export class Player {
         }
         const pieEl: PieElement = this.el.querySelector(`[id='${model.id}']`);   
         const session = this.findOrAddSession(this.session.data, model.id);
-        pieEl.session = session;
+        
         if (pieEl) {
+          pieEl.session = session;
           if (!this.hosted) {
             try {
               // use local controllers
@@ -235,6 +240,22 @@ export class Player {
     return ss;
   };
 
+  async afterRender() {
+    if (this.pieContentModel && this.pieContentModel.markup && !this.elementsLoaded) {
+        this.elementsLoaded = await this.pieLoader.elementsHaveLoaded(this.el);
+    }
+  }
+
+  async componentDidLoad() {
+    await this.afterRender();
+    this.updateModels();
+  }
+
+  async componentDidUpdate() {
+    await this.afterRender();
+    this.updateModels();
+  }
+
   render() {
     if (this.stimulusItemModel) {
       return this.renderStimulus ?  <pie-stimulus-layout>
@@ -242,6 +263,7 @@ export class Player {
           <pie-player 
             id="stimulusPlayer" 
             config={this.stimulusItemModel.stimulus}
+            env={this.env}
             hosted={this.hosted}
             jsBundleUrls={this.jsBundleUrls}
             session={this.session}
@@ -251,6 +273,7 @@ export class Player {
           <pie-player 
             id="itemPlayer" 
             config={this.stimulusItemModel.pie}
+            env={this.env}
             hosted={this.hosted}
             jsBundleUrls={this.jsBundleUrls}
             session={this.session}
@@ -262,6 +285,7 @@ export class Player {
       <pie-player 
             id="itemPlayer" 
             config={this.stimulusItemModel.pie}
+            env={this.env}
             hosted={this.hosted}
             jsBundleUrls={this.jsBundleUrls}
             session={this.session}

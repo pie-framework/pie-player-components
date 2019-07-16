@@ -1,3 +1,46 @@
+# [0.9.0](https://github.com/pie-framework/pie-player-components/compare/v0.8.8...v0.9.0) (2019-07-10)
+
+
+### Features
+
+* add modelLoaded event for author ([a2ff6af](https://github.com/pie-framework/pie-player-components/commit/a2ff6af))
+
+## [0.8.8](https://github.com/pie-framework/pie-player-components/compare/v0.8.7...v0.8.8) (2019-07-07)
+
+
+### Bug Fixes
+
+* ensure model set after render ([74e13ae](https://github.com/pie-framework/pie-player-components/commit/74e13ae))
+
+## [0.8.7](https://github.com/pie-framework/pie-player-components/compare/v0.8.6...v0.8.7) (2019-07-07)
+
+
+### Bug Fixes
+
+* don't set session if pieEl is null ([76beb4c](https://github.com/pie-framework/pie-player-components/commit/76beb4c))
+
+## [0.8.6](https://github.com/pie-framework/pie-player-components/compare/v0.8.5...v0.8.6) (2019-06-28)
+
+
+### Bug Fixes
+
+* pie property name change for config settings ([67ed597](https://github.com/pie-framework/pie-player-components/commit/67ed597))
+
+## [0.8.5](https://github.com/pie-framework/pie-player-components/compare/v0.8.4...v0.8.5) (2019-06-25)
+
+
+### Bug Fixes
+
+* env not passed through properly for stimulus ([6f2ab38](https://github.com/pie-framework/pie-player-components/commit/6f2ab38))
+
+## [0.8.4](https://github.com/pie-framework/pie-player-components/compare/v0.8.3...v0.8.4) (2019-06-21)
+
+
+### Bug Fixes
+
+* don't skip build step on release ([8168134](https://github.com/pie-framework/pie-player-components/commit/8168134))
+* fix ci build ([401932b](https://github.com/pie-framework/pie-player-components/commit/401932b))
+
 ## [0.8.3](https://github.com/pie-framework/pie-player-components/compare/v0.8.2...v0.8.3) (2019-06-20)
 
 
