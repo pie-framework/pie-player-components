@@ -53,7 +53,7 @@ export class PieLoader {
     const undefinedElements: Array<any> = Array.from(el.querySelectorAll(':not(:defined)'));
     if (undefinedElements.length == 0) {
       return Promise.resolve(true);
-    } 
+    }
 
     const promises = undefinedElements ?  [...undefinedElements].map(e =>
       customElements.whenDefined(e.localName)
@@ -121,9 +121,9 @@ export class PieLoader {
           pie.Configure = isFunction(pie.Configure)
             ? pie.Configure
             : this.getEmptyConfigure();
-        
+
           const configElName = elName + '-config';
-          
+
           if (!customElements.get(configElName)) {
             customElements.define(configElName, pie.Configure);
             customElements.whenDefined(configElName).then(async () => {
@@ -153,7 +153,7 @@ export class PieLoader {
           }-config>`;
         });
         c.markup = tags.join('');
-      } 
+      }
     }
 
     return c;
@@ -165,7 +165,7 @@ export class PieLoader {
    *
    * @param elements - the elements to test against registry
    */
-  protected getElementsToLoad = (els: PieItemElement): PieItemElement => {
+  public getElementsToLoad = (els: PieItemElement): PieItemElement => {
     const rKeys = Object.keys(this.registry);
     const res = omit(els, rKeys);
     return res as PieItemElement;
