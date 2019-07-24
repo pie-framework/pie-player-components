@@ -28,32 +28,10 @@ export namespace Components {
     */
     'configSettings'?: {[packageName:string]:Object};
   }
-  interface PieAuthorAttributes extends StencilHTMLAttributes {
-    /**
-    * Adds a preview view which will render the content in another tab as it may appear to a student or instructor.
-    */
-    'addPreview'?: boolean;
-    /**
-    * The Pie config model.
-    */
-    'config'?: ItemConfig;
-    /**
-    * To customize the standard behaviour provided by interaction configuration views you can  provide settings key-ed by the package name.  e.g.  `{ '@pie-element/inline-choice': { promptLabel: 'Item Stem' } }`  The settings that are configurable for each authoring view are documented in  the `@package-name/docs` folder for each package.
-    */
-    'configSettings'?: {[packageName:string]:Object};
-    /**
-    * Emmitted when the content models in the config have ben set on the content
-    */
-    'onModelLoaded'?: (event: CustomEvent) => void;
-    /**
-    * Emmitted when the model for the content has been updated within the ui due to user action.
-    */
-    'onModelUpdated'?: (event: CustomEvent) => void;
-  }
-
   interface PieLoader {
     /**
     * Loads the custom elments defined by the PIEs, if they are not already loaded.
+    * @param pieHash - The PIE elements to load. `key` = html element, `value`: npm package
     */
     'loadPies': (pieHash: PieItemElement) => Promise<void>;
     /**
@@ -96,6 +74,7 @@ export namespace Components {
     'session': ItemSession;
     /**
     * For previewing changes to an item. Updates the model for one question in the item model.
+    * @param update the updated model
     */
     'updateElementModel': (update: PieModel) => Promise<void>;
   }
@@ -182,7 +161,11 @@ declare namespace LocalJSX {
     */
     'configSettings'?: {[packageName:string]:Object};
     /**
-    * Emmitted when the model for the content has been updated in the ui.
+    * Emmitted when the content models in the config have ben set on the content
+    */
+    'onModelLoaded'?: (event: CustomEvent<any>) => void;
+    /**
+    * Emmitted when the model for the content has been updated within the ui due to user action.
     */
     'onModelUpdated'?: (event: CustomEvent<any>) => void;
   }

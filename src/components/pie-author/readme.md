@@ -22,11 +22,31 @@ The class `pie-loading` will be added to the element while assets are being load
 
 ## Events
 
-| Event          | Description                                                                                | Type                |
-| -------------- | ------------------------------------------------------------------------------------------ | ------------------- |
-| `modelLoaded`  | Emmitted when the content models in the config have ben set on the content                 | `CustomEvent<void>` |
-| `modelUpdated` | Emmitted when the model for the content has been updated within the ui due to user action. | `CustomEvent<void>` |
+| Event          | Description                                                                                | Type               |
+| -------------- | ------------------------------------------------------------------------------------------ | ------------------ |
+| `modelLoaded`  | Emmitted when the content models in the config have ben set on the content                 | `CustomEvent<any>` |
+| `modelUpdated` | Emmitted when the model for the content has been updated within the ui due to user action. | `CustomEvent<any>` |
 
+
+## Dependencies
+
+### Depends on
+
+- [pie-preview-layout](../pie-preview-layout)
+- [pie-spinner](../pie-spinner)
+
+### Graph
+```mermaid
+graph TD;
+  pie-author --> pie-preview-layout
+  pie-author --> pie-spinner
+  pie-preview-layout --> pie-preview-control
+  pie-preview-layout --> pie-player
+  pie-player --> pie-stimulus-layout
+  pie-player --> pie-player
+  pie-player --> pie-spinner
+  style pie-author fill:#f9f,stroke:#333,stroke-width:4px
+```
 
 ----------------------------------------------
 

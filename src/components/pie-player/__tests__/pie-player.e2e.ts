@@ -1,5 +1,5 @@
 import { newE2EPage, E2EElement, E2EPage } from '@stencil/core/testing';
-import { setupInterceptPieCloud } from '../../__tests__/util';
+import { setupInterceptPieCloud } from '../../test-util/util';
 import { simplePieMock, advancedPieMock } from '../../__mock__/config';
 
 function loadPie(itemConfig, playerId:string = 'player') {
@@ -17,9 +17,9 @@ describe('pie-player', () => {
   });
 
  // TODO tests skipped while waiting for fix in stencil 1.0 for request interception
-  xit('passes env chages to PIE', async () => {
-    setupInterceptPieCloud(page, '@pie-element/multiple-choice');
+  it('passes env chages to PIE', async () => {
     await page.setContent(`<div id="player-holder"></div>`);
+    setupInterceptPieCloud(page, '@pie-element/multiple-choice');
     await page.evaluate(loadPie, JSON.stringify(simplePieMock));
     await page.waitForChanges();
     const piePlayer = await page.find('pie-player');
@@ -37,9 +37,10 @@ describe('pie-player', () => {
  
   });
 
-  xit('loads with js, multiple times', async () => {
-    setupInterceptPieCloud(page, '@pie-element/multiple-choice');
+  it('loads with js, multiple times', async () => {
     await page.setContent(`<div id="player-holder"></div>`);
+    setupInterceptPieCloud(page, '@pie-element/multiple-choice');
+
     await page.evaluate(loadPie, JSON.stringify(simplePieMock), 'player1');
     await page.waitForChanges();
     const piePlayer = await page.find('pie-player');
@@ -70,9 +71,10 @@ describe('pie-player', () => {
     expect(model2).toBeTruthy();
   });
 
-  xit('loads an item with stimulus', async () => {
-    setupInterceptPieCloud(page, '@pie-element');
+  it('loads an item with stimulus', async () => {
+    
     await page.setContent(`<pie-player></pie-player>`);
+    setupInterceptPieCloud(page, '@pie-element');
     const piePlayer = await page.find('pie-player');
     await piePlayer.setProperty('config', advancedPieMock);
     await page.waitForChanges();
@@ -90,9 +92,9 @@ describe('pie-player', () => {
     expect(questionModel).toBeTruthy();
   });
 
-  xit('does not render stimulus is renderStimulus is false', async () => {
-    setupInterceptPieCloud(page, '@pie-element');
+  it('does not render stimulus is renderStimulus is false', async () => {
     await page.setContent(`<pie-player render-stimulus="false"></pie-player>`);
+    setupInterceptPieCloud(page, '@pie-element');
     const piePlayer = await page.find('pie-player');
     await piePlayer.setProperty('config', advancedPieMock);
     await page.waitForChanges();
@@ -103,9 +105,9 @@ describe('pie-player', () => {
   });
 
 
-  xit('emits a load-complete event', async () => {
-    setupInterceptPieCloud(page, '@pie-element/multiple-choice');
+  it('emits a load-complete event', async () => {
     await page.setContent(`<div id="player-holder"></div>`);
+    setupInterceptPieCloud(page, '@pie-element/multiple-choice');
     await page.evaluate(loadPie, JSON.stringify(simplePieMock));
     const loadCompleteEvent = await page.waitForEvent('load-complete','document');
     expect(loadCompleteEvent).toBeDefined();

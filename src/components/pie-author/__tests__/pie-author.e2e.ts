@@ -1,5 +1,5 @@
 import { newE2EPage, E2EElement, E2EPage } from '@stencil/core/testing';
-import { setupInterceptPieCloud } from '../../__tests__/util';
+import { setupInterceptPieCloud } from '../../test-util/util';
 import { simplePieMock, multipleChoiceItem, inlineChoiceItem } from '../../__mock__/config';
 
 describe('pie-author', () => {
@@ -17,7 +17,7 @@ describe('pie-author', () => {
     expect(element).toHaveClass('hydrated');
   });
 
-  it.skip('loads the PIE Content and packages ', async () => {
+  it('loads the PIE Content and packages ', async () => {
  
     await page.setContent('<pie-author config="evan"></pie-author>');
     pieAuthor = await page.find('pie-author');

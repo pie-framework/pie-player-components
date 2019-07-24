@@ -1,4 +1,4 @@
-import { setupInterceptForRetry } from '../__tests__/util';
+import { setupInterceptForRetry } from '../test-util/util';
 import { newE2EPage, E2EElement, E2EPage } from '@stencil/core/testing';
 import { PieItemElement } from '../../interface';
 
@@ -21,7 +21,7 @@ describe('pie-loader', () => {
     // });
   });
 
-  xit('retries the JS url', async () => {
+  it('retries the JS url', async () => {
     await page.setContent(
       '<pie-loader retries="5" min-timeout="100" max-timeout="200"></pie-loader>'
     );
