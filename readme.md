@@ -2,7 +2,7 @@
 
 # Pie Player Components
 
-> STATUS - Pre-Alpha, this is a work in progress. Apis may change.
+> STATUS - Beta. Apis may change within minor versions while in beta phase.
 
 This package provides Custom Html Elements for using PIE Framework content.
 
@@ -90,18 +90,17 @@ It is now possible to use the tag provided by the pie components in any template
 ```
 
 
-### React
+# Development
 
-TODO
+`npm install`
 
+`npm run test`
 
+`npm run demo` - starts stencil in dev mode and launches a http server to serve files in `src/demo` folder
 
-# TODO
+### Debugging
 
-Element Registry
-This is not working yet. Goal is for these components to use a controller that maintains a registry of which custom elements are installed and only reach out to the bundle build service when it needs new one(s). 
+To debug client side code, run stencil tests with the `--devtools` flag and add a `debugger` statement in component.tsx code to pause execution. e.g.
 
+`npx stencil test --devtools --e2e src/components/pie-player`
 
-
-- [ ] pie-loader should handle the possiblity of two versions of a PIE being loaded (will probably need build service update to include version in global key)
-- [ ] handle re-setting of same player/author with a new config
