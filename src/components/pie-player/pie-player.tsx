@@ -11,7 +11,7 @@ import {
 } from '@stencil/core';
 import { PieContent, ItemConfig, ItemSession, PieElement, PieController, AdvancedItemConfig, PieModel} from '../../interface';
 import { PieLoader } from '../../pie-loader';
-import { addRubric } from '../../rubric-defaults';
+import { addRubric } from '../../rubric-utils';
 
 const controllerErrorMessage: string = 'Error processing question configuration, verify the question model?';
 

@@ -118,3 +118,15 @@ export const patchMDCSwitchFocus = element => {
     { passive: true }
   );
 };
+
+/**
+ * Creates short id for use within pie models.
+ * Can be used to create random element tag or model id.
+ */
+export const pieShortIdGenerator = () => {
+  // Not an advanced algorighm, but only need to be unique within the current model.
+  var S4 = function() {
+    return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
+  };
+  return `p-${S4() + S4()}`;
+}

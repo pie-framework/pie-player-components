@@ -1,10 +1,11 @@
-import { Component, Element, Prop, State, Watch, Event, EventEmitter, h } from '@stencil/core';
-import { PieContent, ItemConfig, PieElement } from '../../interface';
+import { Component, Element, Prop, State, Watch, Event, EventEmitter, Method, h } from '@stencil/core';
+import { PieContent, ItemConfig, PieElement, PieModel } from '../../interface';
 import { PieLoader } from '../../pie-loader';
 import { pieContentFromConfig } from '../../utils/utils';
 import parseNpm from 'parse-package-name';
 import { ModelUpdatedEvent } from '@pie-framework/pie-configure-events';
 import _isEqual from 'lodash/isEqual';
+import { addPackageToContent, addRubric } from '../../rubric-utils';
 
 /**
  * Pie Author will load a Pie Content model for authoring.
@@ -17,6 +18,13 @@ import _isEqual from 'lodash/isEqual';
 })
 export class Author {
   @Prop({ context: 'document' }) doc!: Document;
+
+
+  /**
+   * If set the player will add a rubric authoring interaction to the config
+   */
+  @Prop() addRubric: boolean;
+
 
   /**
    * Adds a preview view which will render the content in another tab as it may appear to a student or instructor.
@@ -161,7 +169,6 @@ export class Author {
     await this.afterRender();
     await this.updateModels();
     this.el.addEventListener(ModelUpdatedEvent.TYPE, (e:ModelUpdatedEvent) =>  {
-      console.log(`got event ${e.detail}`)
       // set the internal model
       // emit a content-item level event with the model
       if (this.pieContentModel && e.update) {
@@ -195,6 +202,36 @@ export class Author {
     if (this.pieContentModel && this.pieContentModel.markup && !this.elementsLoaded) {
         this.elementsLoaded = await this.pieLoader.elementsHaveLoaded(this.el);
     }
+  }
+
+  /**
+   * Utility method to add a `@pie-element/rubric` section to an item config when creating an item should be used before setting the config.
+   * 
+   * @deprecated this method is for temporary use, will be removed at next major release
+   * 
+   * @param config the item config to mutate
+   * @param rubricModel 
+   */
+  @Method()
+  async addRubricToConfig(config: ItemConfig, rubricModel?) {
+    if (!rubricModel) {
+      rubricModel = {
+        "id": "rubric",
+        "element": "pie-rubric",
+        "points": [
+          "",
+          "",        
+          "",        
+          ""        
+        ],
+        "maxPoints": 4,
+        "excludeZero": false
+      };
+    }
+    const configPieContent = pieContentFromConfig(config);
+    addPackageToContent(configPieContent, '@pie-element/rubric', rubricModel as PieModel);
+    addRubric(configPieContent);
+    return config;
   }
 
   render() {

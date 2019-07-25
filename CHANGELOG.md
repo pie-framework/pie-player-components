@@ -1,3 +1,10 @@
+# [0.10.0](https://github.com/pie-framework/pie-player-components/compare/v0.9.0...v0.10.0) (2019-07-11)
+
+
+### Features
+
+* add rubric author tool ([#7](https://github.com/pie-framework/pie-player-components/issues/7)) ([bd1847a](https://github.com/pie-framework/pie-player-components/commit/bd1847a))
+
 # [0.9.0](https://github.com/pie-framework/pie-player-components/compare/v0.8.8...v0.9.0) (2019-07-10)
 
 
