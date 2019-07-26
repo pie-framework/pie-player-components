@@ -1,3 +1,10 @@
+## [0.10.1](https://github.com/pie-framework/pie-player-components/compare/v0.10.0...v0.10.1) (2019-07-26)
+
+
+### Bug Fixes
+
+* get tests working in stencil 1.2.x ([2bae4eb](https://github.com/pie-framework/pie-player-components/commit/2bae4eb))
+
 # [0.10.0](https://github.com/pie-framework/pie-player-components/compare/v0.9.0...v0.10.0) (2019-07-11)
 
 
