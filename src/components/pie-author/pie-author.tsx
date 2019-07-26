@@ -83,7 +83,6 @@ export class Author {
 
   @Watch('config')
   async watchConfig(newValue, oldValue) {
-    debugger;
     if (newValue && !_isEqual(newValue,oldValue)) { 
       try {
         this.elementsLoaded = false;
