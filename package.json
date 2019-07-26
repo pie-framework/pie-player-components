@@ -52,7 +52,6 @@
     "@semantic-release/git": "^7.0.8",
     "@stencil/core": "^1.2.0",
     "@stencil/sass": "^1.0.0",
-    "@telerik/semantic-prerelease": "^1.2.1",
     "@types/jest": "24.0.15",
     "@types/lodash": "^4.14.121",
     "@types/puppeteer": "1.12.4",
@@ -68,25 +67,11 @@
     "prettier": "1.16.4",
     "puppeteer": "1.17.0",
     "release-it": "^10.1.0",
-    "semantic-release": "^15.13.12",
+    "semantic-release": "16.0.0-beta.22",
     "tslint": "^5.12.1",
     "tslint-config-prettier": "^1.18.0",
     "typescript": "^3.3.3",
     "yalc": "^1.0.0-pre.27"
   },
-  "license": "MIT",
-  "release": {
-    "debug": false,
-    "branchTags": {
-      "develop": "next"
-    },
-    "fallbackTags": {
-      "dev": "latest"
-    },
-    "analyzeCommits": "@telerik/semantic-prerelease/analyzeCommits",
-    "generateNotes": "@telerik/semantic-prerelease/generateNotes",
-    "getLastRelease": "@telerik/semantic-prerelease/getLastRelease",
-    "verifyConditions": "@telerik/semantic-prerelease/verifyConditions",
-    "verifyRelease": "@telerik/semantic-prerelease/verifyRelease"
-  }
+  "license": "MIT"
 }
