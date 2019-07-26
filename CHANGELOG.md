@@ -1,3 +1,10 @@
+## [0.10.2](https://github.com/pie-framework/pie-player-components/compare/v0.10.1...v0.10.2) (2019-07-26)
+
+
+### Bug Fixes
+
+* remove debugger flag ([1cf1c2a](https://github.com/pie-framework/pie-player-components/commit/1cf1c2a))
+
 ## [0.10.1](https://github.com/pie-framework/pie-player-components/compare/v0.10.0...v0.10.1) (2019-07-26)
 
 
