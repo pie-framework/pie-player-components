@@ -1,3 +1,10 @@
+## [0.11.1](https://github.com/pie-framework/pie-player-components/compare/v0.11.0...v0.11.1) (2019-07-29)
+
+
+### Bug Fixes
+
+* don't manage bundles directly ([d62e9a5](https://github.com/pie-framework/pie-player-components/commit/d62e9a5))
+
 # [0.11.0](https://github.com/pie-framework/pie-player-components/compare/v0.10.2...v0.11.0) (2019-07-29)
 
 
