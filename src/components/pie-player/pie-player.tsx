@@ -219,8 +219,12 @@ export class Player {
             }
             pieEl.model = model;           
           }
-          this._loadCompleteState = true;
-          this.loadComplete.emit();
+
+          if (this._loadCompleteState === false) {
+            this._loadCompleteState = true;
+            this.loadComplete.emit();
+          }
+
         };   
       });
     }

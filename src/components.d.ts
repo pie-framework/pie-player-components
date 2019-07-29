@@ -176,7 +176,7 @@ declare namespace LocalJSX {
     */
     'configSettings'?: {[packageName:string]:Object};
     /**
-    * Emmitted when the content models in the config have ben set on the content
+    * Emmitted when the content models in the config have been set on the content
     */
     'onModelLoaded'?: (event: CustomEvent<any>) => void;
     /**

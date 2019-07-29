@@ -43,7 +43,7 @@ describe('pie-author', () => {
     pieAuthor.setProperty('config', pieMock)
     const spy = await page.spyOnEvent('modelLoaded');
     await page.waitForChanges();
-    expect(spy).toHaveReceivedEvent();
+    expect(spy).toHaveReceivedEventTimes(1);
   
   });
 
@@ -138,5 +138,7 @@ describe('pie-author', () => {
     );
     expect(inlineChoiceModel.element).toEqual('pie-inline-choice');
   });
+
+
 
 });

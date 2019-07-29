@@ -17,6 +17,10 @@ import { addPackageToContent, addRubric } from '../../rubric-utils';
   shadow: false // shadow dom causes material ui problem
 })
 export class Author {
+
+
+  _modelLoadedState: boolean = false;
+
   @Prop({ context: 'document' }) doc!: Document;
 
 
@@ -48,7 +52,7 @@ export class Author {
 
 
   /**
-   * Emmitted when the content models in the config have ben set on the content 
+   * Emmitted when the content models in the config have been set on the content 
    */
   @Event() modelLoaded: EventEmitter;
 
@@ -86,6 +90,7 @@ export class Author {
     if (newValue && !_isEqual(newValue,oldValue)) { 
       try {
         this.elementsLoaded = false;
+        this._modelLoadedState = false;
         this.pieContentModel = pieContentFromConfig(newValue);
         this.addConfigTags(this.pieContentModel);
         this.loadPieElements();
@@ -155,6 +160,11 @@ export class Author {
           }
         }
       });
+      if (this._modelLoadedState === false) {
+        this._modelLoadedState = true;
+        this.modelLoaded.emit(this.pieContentModel);
+      }
+      
     }
   }
 
@@ -176,7 +186,9 @@ export class Author {
             Object.assign(m, e.update);
           }
         });
-        this.modelUpdated.emit(this.pieContentModel)
+        if (this._modelLoadedState) {
+          this.modelUpdated.emit(this.pieContentModel)
+        }
       }  
     });
 
@@ -185,7 +197,6 @@ export class Author {
   async componentDidUpdate() {
     await this.afterRender();
     await this.updateModels();
-    this.modelLoaded.emit(this.pieContentModel);
   }
 
   async loadPieElements() {
