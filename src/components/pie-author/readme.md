@@ -25,7 +25,7 @@ The class `pie-loading` will be added to the element while assets are being load
 
 | Event          | Description                                                                                | Type               |
 | -------------- | ------------------------------------------------------------------------------------------ | ------------------ |
-| `modelLoaded`  | Emmitted when the content models in the config have ben set on the content                 | `CustomEvent<any>` |
+| `modelLoaded`  | Emmitted when the content models in the config have been set on the content                | `CustomEvent<any>` |
 | `modelUpdated` | Emmitted when the model for the content has been updated within the ui due to user action. | `CustomEvent<any>` |
 
 
