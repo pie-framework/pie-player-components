@@ -1,3 +1,10 @@
+# [0.11.0](https://github.com/pie-framework/pie-player-components/compare/v0.10.2...v0.11.0) (2019-07-29)
+
+
+### Features
+
+* enhance loaded event behaviour ([#8](https://github.com/pie-framework/pie-player-components/issues/8)) ([0b1ac10](https://github.com/pie-framework/pie-player-components/commit/0b1ac10))
+
 ## [0.10.2](https://github.com/pie-framework/pie-player-components/compare/v0.10.1...v0.10.2) (2019-07-26)
 
 
