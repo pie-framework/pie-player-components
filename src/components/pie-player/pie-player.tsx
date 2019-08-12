@@ -47,8 +47,8 @@ export class Player {
   @Event({eventName: 'player-error'}) playerError: EventEmitter;
 
   /**
-   * TODO - Emmitted when any all interactions in a PIE Assessment Item have reported that a user 
-   * has provided a response to the interaction. 
+   * TODO - Emmitted when any all interactions in a PIE Assessment Item have reported that a user
+   * has provided a response to the interaction.
    */
   @Event() responseCompleted: EventEmitter;
 
@@ -107,6 +107,7 @@ export class Player {
 
   @Watch('config')
   async watchConfig(newConfig) {
+    this.elementsLoaded = false;
     this._loadCompleteState = false;
     // wrapping a player in stimulus layoute
     if (this.stimulusPlayer) {
@@ -123,7 +124,7 @@ export class Player {
         }
         if (newConfig.pie) {
           this.stimulusItemModel = newConfig;
-          return; // if stimulus item 
+          return; // if stimulus item
         } else if (newConfig.elements)  {
           this.pieContentModel = addRubric(newConfig)
         } else {
@@ -132,7 +133,7 @@ export class Player {
         }
       } catch (err) {
         this.playerError.emit(`exception processing content model - ${err.message}`);
-        return;  
+        return;
       }
 
       if (!this.elementsLoaded) {
@@ -167,7 +168,7 @@ export class Player {
       const index = this.pieContentModel.models.findIndex(
         m => m.id === update.id
       );
-  
+
       if (index !== -1) {
         this.pieContentModel.models.splice(index, 1, update);
       }
@@ -183,8 +184,8 @@ export class Player {
       return;
     }
 
-    if (this.pieContentModel 
-      && this.pieContentModel.models 
+    if (this.pieContentModel
+      && this.pieContentModel.models
       && this.pieContentModel.markup
       && this.elementsLoaded) {
 
@@ -193,9 +194,9 @@ export class Player {
           this.playerError.emit(`error loading question data`);
           throw new Error(model.error);
         }
-        const pieEl: PieElement = this.el.querySelector(`[id='${model.id}']`);   
+        const pieEl: PieElement = this.el.querySelector(`[id='${model.id}']`);
         const session = this.findOrAddSession(this.session.data, model.id);
-        
+
         if (pieEl) {
           pieEl.session = session;
           if (!this.hosted) {
@@ -217,7 +218,7 @@ export class Player {
             if ((model as any).error) {
               this.playerError.emit(`${controllerErrorMessage}  -  '${(model as any).error}'`);
             }
-            pieEl.model = model;           
+            pieEl.model = model;
           }
 
           if (this._loadCompleteState === false) {
@@ -225,7 +226,7 @@ export class Player {
             this.loadComplete.emit();
           }
 
-        };   
+        };
       });
     }
   }
@@ -264,8 +265,8 @@ export class Player {
     if (this.stimulusItemModel) {
       return this.renderStimulus ?  <pie-stimulus-layout>
         <div slot="stimulus">
-          <pie-player 
-            id="stimulusPlayer" 
+          <pie-player
+            id="stimulusPlayer"
             config={this.stimulusItemModel.stimulus}
             env={this.env}
             hosted={this.hosted}
@@ -274,8 +275,8 @@ export class Player {
             ></pie-player>
         </div>
         <div slot="item">
-          <pie-player 
-            id="itemPlayer" 
+          <pie-player
+            id="itemPlayer"
             config={this.stimulusItemModel.pie}
             env={this.env}
             hosted={this.hosted}
@@ -285,9 +286,9 @@ export class Player {
             ></pie-player>
         </div>
       </pie-stimulus-layout>
-      : 
-      <pie-player 
-            id="itemPlayer" 
+      :
+      <pie-player
+            id="itemPlayer"
             config={this.stimulusItemModel.pie}
             env={this.env}
             hosted={this.hosted}
