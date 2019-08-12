@@ -40,10 +40,13 @@ describe('pie-author', () => {
     await page.setContent('<pie-author config="evan"></pie-author>');
     pieAuthor = await page.find('pie-author');
     await setupInterceptPieCloud(page,  pie);
-    pieAuthor.setProperty('config', pieMock)
+    
     const spy = await page.spyOnEvent('modelLoaded');
+    const modelUpdatedSpy = await page.spyOnEvent('modelUpdated');
+    pieAuthor.setProperty('config', pieMock);
     await page.waitForChanges();
     expect(spy).toHaveReceivedEventTimes(1);
+    expect(modelUpdatedSpy).toHaveReceivedEventTimes(0);
   
   });
 
@@ -90,7 +93,7 @@ describe('pie-author', () => {
     await page.waitForSelector('pie-multiple-choice-config[model]')
     const configEl = await page.find('pie-multiple-choice-config');
     const configProp = await configEl.getProperty('configuration');
-    
+  
     expect(configProp.foo).toEqual("bar");
   });
 
@@ -114,10 +117,9 @@ describe('pie-author', () => {
 
   });
 
-  // TODO request intercetpion needs to be updated for this to work
-  it.skip('can switch items', async() => {
-    await page.setContent('<pie-author config="evan"></pie-author>');
-    await setupInterceptPieCloud(page,  pie);
+  it('can switch items', async() => {
+    await page.setContent('<pie-author add-preview="true" config="evan"></pie-author>');
+    await setupInterceptPieCloud(page,  '@pie-element');
     pieAuthor = await page.find('pie-author');
     pieAuthor.setProperty('config', multipleChoiceItem);
     await page.waitForChanges();
@@ -128,7 +130,9 @@ describe('pie-author', () => {
     );
     expect(pieModel.element).toEqual('pie-multiple-choice');
 
-    await setupInterceptPieCloud(page,  `@pie-element/inline-choice`);
+    const mcPreviewPlayer = await page.find('.pie-player pie-player pie-multiple-choice');
+    expect(mcPreviewPlayer.innerHTML).toEqualHtml('<div id="pie-content">hello pie!</div>');
+
     pieAuthor.setProperty('config', inlineChoiceItem);
     await page.waitForChanges();
     await page.waitForSelector('pie-author pie-inline-choice-config:defined');
@@ -136,7 +140,11 @@ describe('pie-author', () => {
       'pie-author pie-inline-choice-config',
       el => (el as any).model
     );
+    
     expect(inlineChoiceModel.element).toEqual('pie-inline-choice');
+
+    const icPreviewPlayer = await page.find('.pie-player pie-player pie-inline-choice');
+    expect(icPreviewPlayer.innerHTML).toEqualHtml('<div id="pie-content">hello pie!</div>');
   });
 
 

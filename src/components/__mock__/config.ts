@@ -43,7 +43,7 @@ export const multipleChoiceItem = {
 
 export const inlineChoiceItem = {
   id: '1',
-  elements: { 'pie-inline-choice': '@pie-element/pie-inline-choice@latest' },
+  elements: { 'pie-inline-choice': '@pie-element/inline-choice@latest' },
   models: [
     {
       id: '1',
