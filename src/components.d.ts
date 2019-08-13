@@ -224,7 +224,7 @@ declare namespace LocalJSX {
     */
     'onPlayer-error'?: (event: CustomEvent<any>) => void;
     /**
-    * TODO - Emmitted when any all interactions in a PIE Assessment Item have reported that a user  has provided a response to the interaction.
+    * TODO - Emmitted when any all interactions in a PIE Assessment Item have reported that a user has provided a response to the interaction.
     */
     'onResponseCompleted'?: (event: CustomEvent<any>) => void;
     /**

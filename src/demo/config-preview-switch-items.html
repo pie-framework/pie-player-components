@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0"
+    />
+    <title>Config Preview Switch Items</title>
+    <script nomodule src="/build/pie-player-components.js"></script>
+    <script type="module" src="/build/pie-player-components.esm.js"></script>
+  </head>
+  <body>
+
+
+
+
+    <a id="switchLink" href="#">switch</a>
+    <p></p>
+
+    <pie-author id="author" add-preview="true">
+
+    </pie-author>
+
+
+
+    <script>
+
+      const author = document.getElementById('author');
+
+      const config = {
+        id: '1',
+        elements: {
+          'pie-multiple-choice': '@pie-element/multiple-choice@2.4.6'
+        },
+        models: [
+          {
+            id:"1",
+            element: 'pie-multiple-choice',
+            prompt:
+              'Which of these northern European countries are EU members?',
+            choiceMode: 'checkbox',
+            keyMode: 'numbers',
+            choices: [
+              {
+                correct: true,
+                value: 'sweden',
+                label: 'Sweden',
+                feedback: {
+                  type: 'none',
+                  value: ''
+                }
+              },
+              {
+                value: 'iceland',
+                label: 'Iceland',
+                feedback: {
+                  type: 'none',
+                  value: ''
+                }
+              },
+              {
+                value: 'norway',
+                label: 'Norway',
+                feedback: {
+                  type: 'none',
+                  value: ''
+                }
+              },
+              {
+                correct: true,
+                value: 'finland',
+                label: 'Finland',
+                feedback: {
+                  type: 'none',
+                  value: ''
+                }
+              }
+            ],
+            partialScoring: false,
+            shuffle: false,
+            partialScoringLabel: `Each correct response that is correctly checked and each incorrect response
+          that is correctly unchecked will be worth 1 point.
+          The maximum points is the total number of answer choices.`
+          }
+        ],
+        markup: "<pie-multiple-choice id='1'></pie-multiple-choice>"
+      };
+
+      const ecrConfig = {
+        "id": "p-00000000",
+        "elements": {
+          "pie-explicit-constructed-response": "@pie-element/explicit-constructed-response@latest"
+        },
+        "models": [
+          {
+            "id": "p-00000000",
+            "element": "pie-explicit-constructed-response",
+            "disabled": false,
+            "mode": "gather",
+            "markup": "",
+            "prompt": "<div></div>",
+            "shuffle": true,
+            "choices": {},
+            "slateMarkup": "<div></div>"
+          }
+        ],
+        "markup": "<pie-explicit-constructed-response id=\"p-00000000\"></pie-explicit-constructed-response>"
+      };
+
+
+      author.config = config;
+
+
+      const link = document.getElementById('switchLink');
+      link.onclick = () => {
+        if (author.config.elements['pie-multiple-choice']) {
+          author.config = ecrConfig;
+        } else {
+          author.config = config;
+        }
+      }
+
+    </script>
+
+  </body>
+</html>
