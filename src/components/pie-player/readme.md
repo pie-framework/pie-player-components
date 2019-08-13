@@ -26,12 +26,12 @@ The class `pie-loading` will be added to the element while assets are being load
 
 ## Events
 
-| Event               | Description                                                                                                                               | Type               |
-| ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- | ------------------ |
-| `load-complete`     | Emitted when the content in the config has been loaded.                                                                                   | `CustomEvent<any>` |
-| `player-error`      | Emmitted if there is an error encountered while rendering. `event.detail` will be a string containing a message about the error.          | `CustomEvent<any>` |
-| `responseCompleted` | TODO - Emmitted when any all interactions in a PIE Assessment Item have reported that a user  has provided a response to the interaction. | `CustomEvent<any>` |
-| `session-changed`   | Emmitted when any interaction in the set of interactions being rendered has been mutated by user action.                                  | `CustomEvent<any>` |
+| Event               | Description                                                                                                                              | Type               |
+| ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- | ------------------ |
+| `load-complete`     | Emitted when the content in the config has been loaded.                                                                                  | `CustomEvent<any>` |
+| `player-error`      | Emmitted if there is an error encountered while rendering. `event.detail` will be a string containing a message about the error.         | `CustomEvent<any>` |
+| `responseCompleted` | TODO - Emmitted when any all interactions in a PIE Assessment Item have reported that a user has provided a response to the interaction. | `CustomEvent<any>` |
+| `session-changed`   | Emmitted when any interaction in the set of interactions being rendered has been mutated by user action.                                 | `CustomEvent<any>` |
 
 
 ## Methods
