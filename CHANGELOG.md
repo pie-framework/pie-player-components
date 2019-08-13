@@ -1,3 +1,10 @@
+## [0.11.2](https://github.com/pie-framework/pie-player-components/compare/v0.11.1...v0.11.2) (2019-08-13)
+
+
+### Bug Fixes
+
+* preview not loading when switching items ([#9](https://github.com/pie-framework/pie-player-components/issues/9)) ([ccbc6cb](https://github.com/pie-framework/pie-player-components/commit/ccbc6cb))
+
 ## [0.11.1](https://github.com/pie-framework/pie-player-components/compare/v0.11.0...v0.11.1) (2019-07-29)
 
 
