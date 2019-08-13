@@ -198,7 +198,6 @@ export class Player {
         const session = this.findOrAddSession(this.session.data, model.id);
 
         if (pieEl) {
-          pieEl.session = session;
           if (!this.hosted) {
             try {
               // use local controllers
@@ -220,6 +219,8 @@ export class Player {
             }
             pieEl.model = model;
           }
+
+          pieEl.session = session;
 
           if (this._loadCompleteState === false) {
             this._loadCompleteState = true;
