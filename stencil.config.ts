@@ -12,7 +12,9 @@ export const config: Config = {
           dest: '../docs/pie-author.md'
         },
         {
+        // top level in dist dir
           src: 'components/pie-player/readme.md',
+          // top level in dist dir
           dest: '../docs/pie-player.md'
         }
       ]
