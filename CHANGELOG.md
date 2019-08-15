@@ -1,3 +1,10 @@
+## [0.11.3](https://github.com/pie-framework/pie-player-components/compare/v0.11.2...v0.11.3) (2019-08-15)
+
+
+### Bug Fixes
+
+* include docs in dist ([ddc7fb2](https://github.com/pie-framework/pie-player-components/commit/ddc7fb2))
+
 ## [0.11.2](https://github.com/pie-framework/pie-player-components/compare/v0.11.1...v0.11.2) (2019-08-13)
 
 
