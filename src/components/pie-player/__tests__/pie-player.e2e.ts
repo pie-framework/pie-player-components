@@ -108,11 +108,12 @@ describe('pie-player', () => {
   it('emits a load-complete event once when config is loaded', async () => {
     await page.setContent(`<div id="player-holder"></div>`);
     setupInterceptPieCloud(page, '@pie-element/multiple-choice');
-
-    await page.evaluate(loadPie, JSON.stringify(simplePieMock));
+    await page.evaluate(loadPie, JSON.stringify(advancedPieMock));
     const loadCompleteSpy = await page.spyOnEvent('load-complete');
+    const sessionChangedSpy =  await page.spyOnEvent('session-changed');
     await page.waitForChanges();
     expect(loadCompleteSpy).toHaveReceivedEventTimes(1);
+    expect(sessionChangedSpy).toHaveReceivedEventTimes(0);
  
   });
 
