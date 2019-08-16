@@ -21,7 +21,7 @@ The class `pie-loading` will be added to the element while assets are being load
 | `hosted`         | `hosted`          | Indicates if player running in the context of a PIE hosting system. Do not modify the default value for this property if you are not implementing a PIE host. If true, the host is responsible for all model updates. | `boolean`                          | `false`                               |
 | `jsBundleUrls`   | --                | If provided this url is used for loading the JS bundle for rendering the PIE Elements. If not provided the system will default to using the PIE Cloud service to locate and load JS bundles.                          | `string[]`                         | `undefined`                           |
 | `renderStimulus` | `render-stimulus` | If the item contains a stimulus, the player will render it by default. Set this property to false to not render stimulus.                                                                                             | `boolean`                          | `true`                                |
-| `session`        | --                | The Pie Session                                                                                                                                                                                                       | `{ id: string; data: any[]; }`     | `{id: "", data:[]}`                   |
+| `session`        | --                | The Pie Session                                                                                                                                                                                                       | `{ id: string; data: any[]; }`     | `{ id: '', data: [] }`                |
 
 
 ## Events
