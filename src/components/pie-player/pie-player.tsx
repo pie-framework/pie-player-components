@@ -12,6 +12,7 @@ import {
 import { PieContent, ItemConfig, ItemSession, PieElement, PieController, AdvancedItemConfig, PieModel} from '../../interface';
 import { PieLoader } from '../../pie-loader';
 import { addRubric } from '../../rubric-utils';
+import {SessionChangedEvent} from '@pie-framework/pie-player-events';
 
 const controllerErrorMessage: string = 'Error processing question configuration, verify the question model?';
 
@@ -219,15 +220,17 @@ export class Player {
             }
             pieEl.model = model;
           }
-
-          pieEl.session = session;
-
-          if (this._loadCompleteState === false) {
+          // by setting session we will trigger session-changed from PIE
+          // block this event, and set/emit load complete on receipt to not block future events
+          pieEl.addEventListener(SessionChangedEvent.TYPE, ev => {
+            if (!this._loadCompleteState) {
+              ev.stopPropagation();
             this._loadCompleteState = true;
             this.loadComplete.emit();
           }
-
-        };
+          });
+          pieEl.session = session;
+        }
       });
     }
   }
