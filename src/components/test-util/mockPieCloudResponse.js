@@ -24,6 +24,19 @@ class MockElement extends HTMLElement {
   get model() {
     return this._model;
   }
+
+  set session(val) {
+    this._session = val;
+    if (val) {
+      this.setAttribute('session', 'true');
+      this.dispatchEvent(new CustomEvent('session-changed', {detail: "mock event"}));
+    } else {
+      this.removeAttribute('session');
+    }
+  }
+  get session() {
+    return this._sessionl;
+  }
 }
 
 class MockConfig extends HTMLElement {
