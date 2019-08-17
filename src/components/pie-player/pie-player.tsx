@@ -38,8 +38,6 @@ export class Player {
 
   _loadCompleteState: boolean = false;
 
-  _pies: PieElement[];
-
   @Prop({ context: 'document' }) doc!: Document;
 
   @Element() el: HTMLElement;
@@ -119,7 +117,6 @@ export class Player {
   async watchConfig(newConfig) {
     this.elementsLoaded = false;
     this._loadCompleteState = false;
-    this._pies = [];
     // wrapping a player in stimulus layoute
     if (this.stimulusPlayer) {
       (this.stimulusPlayer as any).config = newConfig;
@@ -205,14 +202,13 @@ export class Player {
       this.pieContentModel.markup &&
       this.elementsLoaded
     ) {
-      this.pieContentModel.models.forEach(async model => {
+      this.pieContentModel.models.forEach(async (model, index) => {
         if (model && model.error) {
           this.playerError.emit(`error loading question data`);
           throw new Error(model.error);
         }
         const pieEl: PieElement = this.el.querySelector(`[id='${model.id}']`);
         const session = this.findOrAddSession(this.session.data, model.id);
-        this._pies.push(pieEl);
 
         if (pieEl) {
           if (!this.hosted) {
@@ -243,10 +239,10 @@ export class Player {
           pieEl.addEventListener(SessionChangedEvent.TYPE, ev => {
             if (!this._loadCompleteState) {
               ev.stopPropagation();
-              this._loadCompleteState = this._pies.some((pie) => {  return !pie.session  });
-              if (this._loadCompleteState) {
+              if ((this.pieContentModel.models.length)  === (index +1)) {
+                this._loadCompleteState = true;
                 this.loadComplete.emit();
-              }           
+              }      
             }
           });
           pieEl.session = session;
