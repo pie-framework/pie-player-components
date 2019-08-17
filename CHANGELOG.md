@@ -1,3 +1,10 @@
+## [0.11.4](https://github.com/pie-framework/pie-player-components/compare/v0.11.3...v0.11.4) (2019-08-17)
+
+
+### Bug Fixes
+
+* don't emit load-complete before initialization ([#10](https://github.com/pie-framework/pie-player-components/issues/10)) ([ded808b](https://github.com/pie-framework/pie-player-components/commit/ded808b))
+
 ## [0.11.3](https://github.com/pie-framework/pie-player-components/compare/v0.11.2...v0.11.3) (2019-08-15)
 
 
