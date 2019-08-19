@@ -174,10 +174,8 @@ export class Author {
     }
   }
 
-  async componentDidLoad() {
-    await this.afterRender();
-    await this.updateModels();
-    this.el.addEventListener(ModelUpdatedEvent.TYPE, (e:ModelUpdatedEvent) =>  {
+  @Listen('model.updated')
+  modelUpdatedHandler(e: ModelUpdatedEvent) {
       // set the internal model
       // emit a content-item level event with the model
       if (this.pieContentModel && e.update) {
@@ -186,17 +184,18 @@ export class Author {
             Object.assign(m, e.update);
           }
         });
+    }
         if (this._modelLoadedState) {
-          this.modelUpdated.emit(this.pieContentModel)
+      this.modelUpdated.emit(this.pieContentModel);
         }
       }  
-    });
 
+  async componentDidLoad() {
+    await this.afterRender();
   }
 
   async componentDidUpdate() {
     await this.afterRender();
-    await this.updateModels();
   }
 
   async loadPieElements() {
