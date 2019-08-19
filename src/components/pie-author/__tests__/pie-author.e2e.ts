@@ -1,6 +1,6 @@
 import { newE2EPage, E2EElement, E2EPage } from '@stencil/core/testing';
 import { setupInterceptPieCloud } from '../../test-util/util';
-import { simplePieMock, multipleChoiceItem, inlineChoiceItem } from '../../__mock__/config';
+import { simplePieMock, multipleChoiceItem, inlineChoiceItem, multiPartItemWithPassage } from '../../__mock__/config';
 import cloneDeep from 'lodash/cloneDeep';
 
 describe('pie-author', () => {
@@ -43,7 +43,7 @@ describe('pie-author', () => {
     
     const spy = await page.spyOnEvent('modelLoaded');
     const modelUpdatedSpy = await page.spyOnEvent('modelUpdated');
-    pieAuthor.setProperty('config', pieMock);
+    pieAuthor.setProperty('config', multiPartItemWithPassage);
     await page.waitForChanges();
     expect(spy).toHaveReceivedEventTimes(1);
     expect(modelUpdatedSpy).toHaveReceivedEventTimes(0);

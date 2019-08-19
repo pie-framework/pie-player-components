@@ -52,3 +52,29 @@ export const inlineChoiceItem = {
   ],
   markup: "<pie-inline-choice id='1'></pie-inline-choice>"
 };
+
+export const multiPartItemWithPassage = {
+  id: '1',
+  elements: { 'pie-inline-choice': '@pie-element/inline-choice@latest',
+  'pie-multiple-choice': '@pie-element/multiple-choice@2.4.6', 
+  "pie-passage": "@pie-element/passage@latest"},
+  models: [
+    {
+      id: '1',
+      element: 'pie-inline-choice'
+    },
+    { 
+      id: "2",
+      element: "pie-passage",
+      title: "passage title",
+      content: "passage content"
+    }
+    ,
+    {
+      id: '3',
+      element: 'pie-multiple-choice'
+    }
+  ],
+  markup: "<pie-inline-choice id='1'></pie-inline-choice> <pie-passage id='3'></pie-passage> <pie-multiple-choice id='3'></pie-multiple-choice>"
+};
+
