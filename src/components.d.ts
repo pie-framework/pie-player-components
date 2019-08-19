@@ -35,9 +35,9 @@ export namespace Components {
     */
     'config': ItemConfig;
     /**
-    * To customize the standard behaviour provided by interaction configuration views you can  provide settings key-ed by the package name.  e.g.  `{ '@pie-element/inline-choice': { promptLabel: 'Item Stem' } }`  The settings that are configurable for each authoring view are documented in  the `@package-name/docs` folder for each package.
+    * To customize the standard behaviour provided by interaction configuration views you can provide settings key-ed by the package name.  e.g.  `{ '@pie-element/inline-choice': { promptLabel: 'Item Stem' } }`  The settings that are configurable for each authoring view are documented in the `@package-name/docs` folder for each package.
     */
-    'configSettings'?: {[packageName:string]:Object};
+    'configSettings'?: { [packageName: string]: Object };
   }
   interface PieLoader {
     /**
@@ -172,9 +172,9 @@ declare namespace LocalJSX {
     */
     'config'?: ItemConfig;
     /**
-    * To customize the standard behaviour provided by interaction configuration views you can  provide settings key-ed by the package name.  e.g.  `{ '@pie-element/inline-choice': { promptLabel: 'Item Stem' } }`  The settings that are configurable for each authoring view are documented in  the `@package-name/docs` folder for each package.
+    * To customize the standard behaviour provided by interaction configuration views you can provide settings key-ed by the package name.  e.g.  `{ '@pie-element/inline-choice': { promptLabel: 'Item Stem' } }`  The settings that are configurable for each authoring view are documented in the `@package-name/docs` folder for each package.
     */
-    'configSettings'?: {[packageName:string]:Object};
+    'configSettings'?: { [packageName: string]: Object };
     /**
     * Emmitted when the content models in the config have been set on the content
     */
