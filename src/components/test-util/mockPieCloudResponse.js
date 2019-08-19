@@ -42,14 +42,15 @@ class MockElement extends HTMLElement {
 class MockConfig extends HTMLElement {
   constructor() {
     super();
-    this.innerHTML = `<div id="pie-content">hello pie!</div>`
+    this.innerHTML = `<div id="pie-content">hello pie!</div>`;
   }
 
   set model(val) {
     this._model = val;
     if (val) {
       this.setAttribute('model', 'true');
-      this.innerHTML = `<div id="pie-content">hello pie with model!</div>`
+      this.innerHTML = `<div id="pie-content">hello pie with model!</div>`;
+      this.dispatchEvent(new CustomEvent('model.updated',{ bubbles: true, detail: { update:{}, reset:false } }));
     } else {
       this.removeAttribute('model');
     }
