@@ -1,4 +1,4 @@
-import { Component, Element, Prop, State, Watch, Event, EventEmitter, Method, h, Listen } from '@stencil/core';
+import { Component, Element, Prop, State, Watch, Event, EventEmitter, Method, h } from '@stencil/core';
 import { PieContent, ItemConfig, PieElement, PieModel } from '../../interface';
 import { PieLoader } from '../../pie-loader';
 import { pieContentFromConfig } from '../../utils/utils';
@@ -160,22 +160,22 @@ export class Author {
     if (this.config) {
       this.watchConfig(this.config, {});
     }
-  }
-
-  @Listen('model.updated')
-  modelUpdatedHandler(e: ModelUpdatedEvent) {
-    // set the internal model
-    // emit a content-item level event with the model
-    if (this.pieContentModel && e.update) {
-      this.pieContentModel.models.forEach(m => {
-        if (m.id === e.update.id) {
-          Object.assign(m, e.update);
-        }
-      });
-    }
-    if (this._modelLoadedState) {
-      this.modelUpdated.emit(this.pieContentModel);
-    }
+    // Note: cannot use the @Listen decorator as creates bundling problems due
+    // to `.` in event name.
+    this.el.addEventListener(ModelUpdatedEvent.TYPE, (e: ModelUpdatedEvent) => {
+      // set the internal model
+      // emit a content-item level event with the model
+      if (this.pieContentModel && e.update) {
+        this.pieContentModel.models.forEach(m => {
+          if (m.id === e.update.id) {
+            Object.assign(m, e.update);
+          }
+        });
+      }
+      if (this._modelLoadedState) {
+        this.modelUpdated.emit(this.pieContentModel);
+      }
+    });
   }
 
   async componentDidLoad() {
