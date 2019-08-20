@@ -1,3 +1,10 @@
+## [0.11.7](https://github.com/pie-framework/pie-player-components/compare/v0.11.6...v0.11.7) (2019-08-20)
+
+
+### Bug Fixes
+
+* fix dependencies ([5d5b883](https://github.com/pie-framework/pie-player-components/commit/5d5b883))
+
 ## [0.11.6](https://github.com/pie-framework/pie-player-components/compare/v0.11.5...v0.11.6) (2019-08-20)
 
 
