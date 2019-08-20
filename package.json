@@ -33,6 +33,15 @@
     "commit": "git-cz",
     "semantic-release": "semantic-release"
   },
+  "dependencies": {
+    "@material/select": "^2.2.0",
+    "@material/switch": "^2.1.1",
+    "@material/tab": "^2.2.0",
+    "@material/tab-bar": "^2.2.0",
+    "@pie-framework/pie-configure-events": "^1.2.0",
+    "async-retry": "^1.2.3",
+    "parse-package-name": "^0.1.0"
+  },
   "devDependencies": {
     "@commitlint/cli": "^8.0.0",
     "@commitlint/config-conventional": "^8.0.0",
