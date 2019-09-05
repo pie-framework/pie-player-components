@@ -12,6 +12,9 @@ import {
   PieItemElement,
   PieModel,
 } from './interface';
+import {
+  ExternalImageSupport,
+} from './components/pie-author/dataurl-image-support';
 
 export namespace Components {
   interface PieAuthor {
@@ -38,6 +41,10 @@ export namespace Components {
     * To customize the standard behaviour provided by interaction configuration views you can provide settings key-ed by the package name.  e.g.  `{ '@pie-element/inline-choice': { promptLabel: 'Item Stem' } }`  The settings that are configurable for each authoring view are documented in the `@package-name/docs` folder for each package.
     */
     'configSettings'?: { [packageName: string]: Object };
+    /**
+    * external providers can set this if they need to upload the assets to the cloud etc. by default we use data urls
+    */
+    'imageSupport': ExternalImageSupport;
   }
   interface PieLoader {
     /**
@@ -175,6 +182,10 @@ declare namespace LocalJSX {
     * To customize the standard behaviour provided by interaction configuration views you can provide settings key-ed by the package name.  e.g.  `{ '@pie-element/inline-choice': { promptLabel: 'Item Stem' } }`  The settings that are configurable for each authoring view are documented in the `@package-name/docs` folder for each package.
     */
     'configSettings'?: { [packageName: string]: Object };
+    /**
+    * external providers can set this if they need to upload the assets to the cloud etc. by default we use data urls
+    */
+    'imageSupport'?: ExternalImageSupport;
     /**
     * Emmitted when the content models in the config have been set on the content
     */

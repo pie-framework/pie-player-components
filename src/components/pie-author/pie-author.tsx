@@ -1,25 +1,46 @@
-import { Component, Element, Prop, State, Watch, Event, EventEmitter, Method, h } from '@stencil/core';
-import { PieContent, ItemConfig, PieElement, PieModel } from '../../interface';
-import { PieLoader } from '../../pie-loader';
-import { pieContentFromConfig } from '../../utils/utils';
-import parseNpm from 'parse-package-name';
-import { ModelUpdatedEvent } from '@pie-framework/pie-configure-events';
-import _isEqual from 'lodash/isEqual';
-import { addPackageToContent, addRubric } from '../../rubric-utils';
+import {
+  Component,
+  Element,
+  Prop,
+  State,
+  Watch,
+  Event,
+  EventEmitter,
+  Method,
+  h
+} from "@stencil/core";
+import range from "lodash/range";
+import { PieContent, ItemConfig, PieElement, PieModel } from "../../interface";
+import { PieLoader } from "../../pie-loader";
+import { pieContentFromConfig } from "../../utils/utils";
+import parseNpm from "parse-package-name";
+import _isEqual from "lodash/isEqual";
+import { addPackageToContent, addRubric } from "../../rubric-utils";
+
+import {
+  ModelUpdatedEvent,
+  InsertImageEvent,
+  DeleteImageEvent,
+  ImageHandler
+} from "@pie-framework/pie-configure-events";
+import {
+  DataURLImageSupport,
+  ExternalImageSupport
+} from "./dataurl-image-support";
 
 /**
  * Pie Author will load a Pie Content model for authoring.
  * It needs to be run in the context
  */
 @Component({
-  tag: 'pie-author',
-  styleUrl: '../components.css',
+  tag: "pie-author",
+  styleUrl: "../components.css",
   shadow: false // shadow dom causes material ui problem
 })
 export class Author {
   _modelLoadedState: boolean = false;
 
-  @Prop({ context: 'document' }) doc!: Document;
+  @Prop({ context: "document" }) doc!: Document;
 
   /**
    * If set the player will add a rubric authoring interaction to the config
@@ -67,17 +88,75 @@ export class Author {
 
   renderMarkup: String;
 
+  @State() fileInput: any = null;
+
+  imageHandler: ImageHandler = null;
+
+  handleFileInputChange: (e: Event) => void;
+  handleInsertImage: (e: InsertImageEvent) => void;
+  handleDeleteImage: (e: DeleteImageEvent) => void;
+  handleSetConfigElement: (e: CustomEvent) => void;
+
+  /** external providers can set this if they need to upload the assets to the cloud etc. by default we use data urls */
+  @Prop({ reflect: false })
+  imageSupport: ExternalImageSupport = new DataURLImageSupport();
+
+  constructor() {
+    this.handleFileInputChange = (e: Event) => {
+      const input = e.target;
+
+      if (!this.imageHandler) {
+        console.error("no image handler - but file input change triggered?");
+        return;
+      }
+
+      const files: FileList = (input as any).files;
+      if (files.length < 1 || !files[0]) {
+        this.imageHandler.cancel();
+        this.imageHandler = null;
+      } else {
+        const file: File = files[0];
+        this.imageHandler.fileChosen(file);
+        this.fileInput.value = "";
+        this.imageSupport.insert(
+          file,
+          (e: Error, src: string) => {
+            if (e) {
+              console.warn("error inserting image: ", e.message);
+              console.error(e);
+            }
+            this.imageHandler.done(e, src);
+            this.imageHandler = null;
+          },
+          (percent, bytes, total) =>
+            this.imageHandler.progress(percent, bytes, total)
+        );
+      }
+    };
+
+    this.handleInsertImage = (e: InsertImageEvent) => {
+      console.log("[handleInsertImage]", e);
+      this.imageHandler = e.detail;
+      this.fileInput.click();
+    };
+
+    this.handleDeleteImage = (e: DeleteImageEvent) => {
+      console.log("[handleDeleteImage ..]", e);
+      e.detail.done();
+    };
+  }
+
   getRenderMarkup(): string {
-    let markup = this.pieContentModel ? this.pieContentModel.markup : '';
+    let markup = this.pieContentModel ? this.pieContentModel.markup : "";
     if (markup) {
       Object.keys(this.pieContentModel.elements).forEach(key => {
-        markup = markup.split(key).join(key + '-config');
+        markup = markup.split(key).join(key + "-config");
       });
       return markup;
     }
   }
 
-  @Watch('config')
+  @Watch("config")
   async watchConfig(newValue, oldValue) {
     if (newValue && !_isEqual(newValue, oldValue)) {
       try {
@@ -97,11 +176,11 @@ export class Author {
       const tags = c.models.map(model => {
         return `<${model.element} id="${model.id}"></${model.element}-config>`;
       });
-      c.markup = tags.join('');
+      c.markup = tags.join("");
     }
   }
 
-  @Watch('elementsLoaded')
+  @Watch("elementsLoaded")
   async watchElementsLoaded(newValue: boolean, oldValue: boolean) {
     if (newValue && !oldValue) {
       await this.updateModels();
@@ -117,15 +196,15 @@ export class Author {
       if (!this.pieContentModel.models) {
         this.pieContentModel.models = [];
       }
-      const tempDiv = this.doc.createElement('div');
+      const tempDiv = this.doc.createElement("div");
       tempDiv.innerHTML = this.pieContentModel.markup;
-      const elsWithId = tempDiv.querySelectorAll('[id]');
+      const elsWithId = tempDiv.querySelectorAll("[id]");
       // set up a model for each pie defined in the markup
       elsWithId.forEach(el => {
-        const pieElName = el.tagName.toLowerCase().split('-config')[0];
+        const pieElName = el.tagName.toLowerCase().split("-config")[0];
         // initialize emtpy model if this is a pie
         if (this.pieContentModel.elements[pieElName]) {
-          const elementId = el.getAttribute('id');
+          const elementId = el.getAttribute("id");
           if (!this.pieContentModel.models.find(m => m.id === elementId)) {
             const model = { id: elementId, element: pieElName };
             this.pieContentModel.models.push(model);
@@ -140,7 +219,7 @@ export class Author {
         !pieEl && (pieEl = this.el.querySelector(`[pie-id='${model.id}']`));
 
         if (pieEl) {
-          const pieElName = pieEl.tagName.toLowerCase().split('-config')[0];
+          const pieElName = pieEl.tagName.toLowerCase().split("-config")[0];
           const packageName = parseNpm(this.pieContentModel.elements[pieElName])
             .name;
           pieEl.model = model;
@@ -154,6 +233,12 @@ export class Author {
         this.modelLoaded.emit(this.pieContentModel);
       }
     }
+  }
+
+  componentDidUnload() {
+    this.el.removeEventListener(InsertImageEvent.TYPE, this.handleInsertImage);
+    this.el.removeEventListener(DeleteImageEvent.TYPE, this.handleDeleteImage);
+    this.fileInput.removeEventListener("change", this.handleFileInputChange);
   }
 
   async componentWillLoad() {
@@ -176,6 +261,13 @@ export class Author {
         this.modelUpdated.emit(this.pieContentModel);
       }
     });
+
+    console.log(this.el);
+    this.el.addEventListener(DeleteImageEvent.TYPE, e => {
+      console.log("... ", e);
+    });
+    this.el.addEventListener(InsertImageEvent.TYPE, this.handleInsertImage);
+    this.el.addEventListener(DeleteImageEvent.TYPE, this.handleDeleteImage);
   }
 
   async componentDidLoad() {
@@ -184,6 +276,11 @@ export class Author {
 
   async componentDidUpdate() {
     await this.afterRender();
+
+    console.log("FFF fileInput:", this.fileInput);
+    if (this.fileInput) {
+      this.fileInput.addEventListener("change", this.handleFileInputChange);
+    }
   }
 
   async loadPieElements() {
@@ -217,9 +314,9 @@ export class Author {
   async addRubricToConfig(config: ItemConfig, rubricModel?) {
     if (!rubricModel) {
       rubricModel = {
-        id: 'rubric',
-        element: 'pie-rubric',
-        points: ['', '', '', ''],
+        id: "rubric",
+        element: "pie-rubric",
+        points: ["", "", "", ""],
         maxPoints: 4,
         excludeZero: false
       };
@@ -227,7 +324,7 @@ export class Author {
     const configPieContent = pieContentFromConfig(config);
     addPackageToContent(
       configPieContent,
-      '@pie-element/rubric',
+      "@pie-element/rubric",
       rubricModel as PieModel
     );
     addRubric(configPieContent);
@@ -244,12 +341,14 @@ export class Author {
                 <div innerHTML={this.getRenderMarkup()} />
               </pie-spinner>
             </div>
+            <input type="file" hidden ref={r => (this.fileInput = r)} />
           </pie-preview-layout>
         );
       } else {
         return (
           <pie-spinner active={!this.elementsLoaded}>
             <div innerHTML={this.getRenderMarkup()} />
+            <input type="file" hidden ref={r => (this.fileInput = r)} />
           </pie-spinner>
         );
       }
