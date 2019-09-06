@@ -55,5 +55,6 @@ interface PieElement extends HTMLElement {
 type PieController = {
   model: (config: Object, session: Object, env: Object) => Promise<Object>;
   score: (config: Object, session: Object, env: Object) => Promise<Object>;
+  createCorrectResponseSession: (config: Object, env: Object) => Promise<Object>;  
 };
 

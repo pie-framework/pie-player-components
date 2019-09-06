@@ -15,7 +15,6 @@ export const setupInterceptPieCloud = async (page:E2EPage, match): Promise<void>
   
   
   page.on('request', request => {
-    
     // mock the response from pie cloud
     if (request.url().match(match)) {
       try {

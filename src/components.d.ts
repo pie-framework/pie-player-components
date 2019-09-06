@@ -60,6 +60,10 @@ export namespace Components {
   }
   interface PiePlayer {
     /**
+    * Simulates a correct response for the item. This property will only have this effect if the `hosted` property is  false and player is running client-side-only.
+    */
+    'addCorrectResponse': boolean;
+    /**
     * The Pie config model.
     */
     'config': ItemConfig;
@@ -199,6 +203,10 @@ declare namespace LocalJSX {
     'retries'?: number;
   }
   interface PiePlayer extends JSXBase.HTMLAttributes<HTMLPiePlayerElement> {
+    /**
+    * Simulates a correct response for the item. This property will only have this effect if the `hosted` property is  false and player is running client-side-only.
+    */
+    'addCorrectResponse'?: boolean;
     /**
     * The Pie config model.
     */
