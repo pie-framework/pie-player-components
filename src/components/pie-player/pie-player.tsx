@@ -268,7 +268,11 @@ export class Player {
       if (this.elementsLoaded) {
         this.updateModels();
       } else {
-        this.elementsLoaded = await this.pieLoader.elementsHaveLoaded(this.el);
+        // Note: hard to verify but it appears that we need to resolve
+        // the value first rather than setting the promise directly on
+        // this state property - otherwise lifecycle re-render is triggered too early
+        const loaded = await this.pieLoader.elementsHaveLoaded(this.el);
+        this.elementsLoaded = loaded;
       }    
     } 
     
