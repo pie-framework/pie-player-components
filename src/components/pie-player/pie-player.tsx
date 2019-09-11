@@ -157,18 +157,11 @@ export class Player {
           );
         }
       }
-      this.updateModels();
     } catch (err) {
       this.playerError.emit(`problem loading item (${err})`);
     }
   }
 
-  @Watch('elementsLoaded')
-  watchElementsLoaded(newValue: boolean, oldValue: boolean) {
-    if (newValue && !oldValue) {
-      this.updateModels();
-    }
-  }
 
   /**
    * For previewing changes to an item. Updates the model for one question in the item model.
@@ -270,11 +263,15 @@ export class Player {
   async afterRender() {
     if (
       this.pieContentModel &&
-      this.pieContentModel.markup &&
-      !this.elementsLoaded
+      this.pieContentModel.markup
     ) {
-      this.elementsLoaded = await this.pieLoader.elementsHaveLoaded(this.el);
-    }
+      if (this.elementsLoaded) {
+        this.updateModels();
+      } else {
+        this.elementsLoaded = await this.pieLoader.elementsHaveLoaded(this.el);
+      }    
+    } 
+    
   }
 
   async componentDidLoad() {
