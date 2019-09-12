@@ -171,18 +171,11 @@ export class Player {
           );
         }
       }
-      this.updateModels();
     } catch (err) {
       this.playerError.emit(`problem loading item (${err})`);
     }
   }
 
-  @Watch('elementsLoaded')
-  watchElementsLoaded(newValue: boolean, oldValue: boolean) {
-    if (newValue && !oldValue) {
-      this.updateModels();
-    }
-  }
 
   /**
    * For previewing changes to an item. Updates the model for one question in the item model.
@@ -299,11 +292,19 @@ export class Player {
   async afterRender() {
     if (
       this.pieContentModel &&
-      this.pieContentModel.markup &&
-      !this.elementsLoaded
+      this.pieContentModel.markup
     ) {
-      this.elementsLoaded = await this.pieLoader.elementsHaveLoaded(this.el);
-    }
+      if (this.elementsLoaded) {
+        this.updateModels();
+      } else {
+        // Note: hard to verify but it appears that we need to resolve
+        // the value first rather than setting the promise directly on
+        // this state property - otherwise lifecycle re-render is triggered too early
+        const loaded = await this.pieLoader.elementsHaveLoaded(this.el);
+        this.elementsLoaded = loaded;
+      }    
+    } 
+    
   }
 
   async componentDidLoad() {
