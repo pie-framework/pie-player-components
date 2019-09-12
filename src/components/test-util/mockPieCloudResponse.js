@@ -35,7 +35,7 @@ class MockElement extends HTMLElement {
     }
   }
   get session() {
-    return this._sessionl;
+    return this._session;
   }
 }
 
@@ -65,6 +65,9 @@ const controller = {
     return {model:config, session, env};
   },
   outcome: (config, session, env) => {
+  },
+  createCorrectResponseSession: (config, env) => {
+    return  {correctResponse: true}
   }
 }
 

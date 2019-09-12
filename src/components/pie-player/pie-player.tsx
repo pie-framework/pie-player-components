@@ -74,6 +74,20 @@ export class Player {
   @Prop() config: ItemConfig;
 
   /**
+   * Simulates a correct response for the item.
+   * This property will only have this effect if the `hosted` property is 
+   * false and player is running client-side-only.
+   */
+  @Prop() addCorrectResponse: boolean = false;
+
+  @Watch('addCorrectResponse')
+  watchAddCorrectResponse(newValue, oldValue) {
+    if (newValue !== oldValue) {
+      this.updateModels();
+    }
+  }
+
+  /**
    * The Pie Session
    */
   @Prop() session: ItemSession = { id: '', data: [] };
@@ -201,7 +215,7 @@ export class Player {
           throw new Error(model.error);
         }
         const pieEl: PieElement = this.el.querySelector(`[id='${model.id}']`);
-        const session = this.findOrAddSession(this.session.data, model.id);
+        let session = this.findOrAddSession(this.session.data, model.id);
 
         if (pieEl) {
           if (!this.hosted) {
@@ -210,7 +224,19 @@ export class Player {
               const controller: PieController = this.pieLoader.getController(
                 pieEl.localName
               );
-              if (controller) {
+              if (controller) {             
+                if (
+                  this.addCorrectResponse &&
+                  controller.createCorrectResponseSession &&
+                  typeof controller.createCorrectResponseSession ===
+                    'function'
+                ) {
+                  session = controller.createCorrectResponseSession(
+                    model,
+                    newEnv
+                  );
+                }
+
                 pieEl.model = await controller.model(model, session, newEnv);
               } else {
                 // no controller provided
@@ -226,6 +252,9 @@ export class Player {
               );
             }
             pieEl.model = model;
+            if (this.addCorrectResponse) {
+              this.playerError.emit(`add-correct-response cannot be used in hosted environement`);
+            }
           }
           // by setting session we will trigger session-changed from PIE
           // block this event, and set/emit load complete on receipt to not block future events

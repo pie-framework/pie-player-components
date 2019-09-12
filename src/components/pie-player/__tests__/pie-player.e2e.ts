@@ -1,4 +1,4 @@
-import { newE2EPage, E2EElement, E2EPage } from '@stencil/core/testing';
+import { newE2EPage, E2EPage } from '@stencil/core/testing';
 import { setupInterceptPieCloud } from '../../test-util/util';
 import { simplePieMock, advancedPieMock } from '../../__mock__/config';
 
@@ -115,6 +115,29 @@ describe('pie-player', () => {
     expect(loadCompleteSpy).toHaveReceivedEventTimes(1);
     expect(sessionChangedSpy).toHaveReceivedEventTimes(0);
  
+  });
+
+  it('calls controler to set correct response', async () => {
+    await page.setContent(
+      `<pie-player add-correct-response="true"></pie-player>`
+    );
+    setupInterceptPieCloud(page, '@pie-element');
+    const piePlayer = await page.find('pie-player');
+    await piePlayer.setProperty('config', simplePieMock);
+
+    await page.waitForChanges();
+    expect(piePlayer).toBeDefined();
+
+    await page.waitForChanges();
+    const pieElement = await page.waitForSelector(
+      'pie-player pie-multiple-choice'
+    );
+    expect(pieElement).toBeDefined();
+    const session = await page.$eval(
+      'pie-player pie-multiple-choice',
+      el => (el as any).session
+    );
+    expect(session).toEqual({ correctResponse: true });
   });
 
 });
