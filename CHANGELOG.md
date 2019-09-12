@@ -1,3 +1,10 @@
+# [0.12.0](https://github.com/pie-framework/pie-player-components/compare/v0.11.8...v0.12.0) (2019-09-12)
+
+
+### Features
+
+* add add-correct-response attribute ([#15](https://github.com/pie-framework/pie-player-components/issues/15)) ([5b619c1](https://github.com/pie-framework/pie-player-components/commit/5b619c1))
+
 ## [0.11.8](https://github.com/pie-framework/pie-player-components/compare/v0.11.7...v0.11.8) (2019-09-11)
 
 
