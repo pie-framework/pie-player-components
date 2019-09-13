@@ -1,3 +1,10 @@
+## [0.12.2](https://github.com/pie-framework/pie-player-components/compare/v0.12.1...v0.12.2) (2019-09-13)
+
+
+### Bug Fixes
+
+* Fixed "can not set property config of undefined". ([#17](https://github.com/pie-framework/pie-player-components/issues/17)) ([218c7bc](https://github.com/pie-framework/pie-player-components/commit/218c7bc))
+
 ## [0.12.1](https://github.com/pie-framework/pie-player-components/compare/v0.12.0...v0.12.1) (2019-09-13)
 
 
