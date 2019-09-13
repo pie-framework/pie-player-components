@@ -1,3 +1,10 @@
+## [0.12.1](https://github.com/pie-framework/pie-player-components/compare/v0.12.0...v0.12.1) (2019-09-13)
+
+
+### Bug Fixes
+
+* update docs for session changed complete ([#16](https://github.com/pie-framework/pie-player-components/issues/16)) ([089bc07](https://github.com/pie-framework/pie-player-components/commit/089bc07))
+
 # [0.12.0](https://github.com/pie-framework/pie-player-components/compare/v0.11.8...v0.12.0) (2019-09-12)
 
 
