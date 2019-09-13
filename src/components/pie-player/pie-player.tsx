@@ -46,6 +46,12 @@ export class Player {
   /**
    * Emmitted when any interaction in the set of interactions being rendered has
    * been mutated by user action.
+   * 
+   * The `Event.detail` property contains a `complete` property.
+   * If true, this indicates that enough data has been gathered by the interaciton to constitute a response.
+   * For example, in a plot line questsion where a user had to plot three points to plot the line, 
+   * the `complete` propery would be false if 1 or 2 points had been added, but true if all three had.
+   * 
    */
   @Event({ eventName: 'session-changed' }) sessionChanged: EventEmitter;
 
