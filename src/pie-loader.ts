@@ -127,7 +127,9 @@ export class PieLoader {
           if (!customElements.get(configElName)) {
             customElements.define(configElName, pie.Configure);
             customElements.whenDefined(configElName).then(async () => {
-              this.registry[elName].config = customElements.get(configElName);
+              if (this.registry[elName]) {
+                this.registry[elName].config = customElements.get(configElName);
+              }
             });
           }
         });
