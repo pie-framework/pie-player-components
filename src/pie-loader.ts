@@ -14,6 +14,16 @@ export interface Entry {
   element?: Element;
 }
 
+interface LoadedElementsQuery {
+  name: string;
+  tag: string;
+}
+
+interface LoadedElementsResp {
+  elements: LoadedElementsQuery[];
+  val: boolean;
+}
+
 export enum Status {
   loading = 'loading',
   loaded = 'loaded'
@@ -44,26 +54,15 @@ export class PieLoader {
       set model(_) {}
     };
 
-  public elementsHaveLoaded = (el:Element): Promise<boolean> => {
-    const allElements: Array<any> = Array.from(el.children);
-    if (allElements.length == 0) {
-      return Promise.resolve(false);
-    }
+  public elementsHaveLoaded = (els:LoadedElementsQuery[]): Promise<LoadedElementsResp> => {
+    const promises = els.map((el) => customElements.whenDefined(el.tag));
 
-    const undefinedElements: Array<any> = Array.from(el.querySelectorAll(':not(:defined)'));
-    if (undefinedElements.length == 0) {
-      return Promise.resolve(true);
-    } 
-
-    const promises = undefinedElements ?  [...undefinedElements].map(e =>
-      customElements.whenDefined(e.localName)
-    ) : [];
     return Promise.all(promises)
       .then(() => {
-        return Promise.resolve(true);
+        return Promise.resolve({ elements: els, val: true });
       })
       .catch(() => {
-        return Promise.resolve(false);
+        return Promise.resolve({ elements: els, val: false });
       });
   };
 
@@ -121,9 +120,9 @@ export class PieLoader {
           pie.Configure = isFunction(pie.Configure)
             ? pie.Configure
             : this.getEmptyConfigure();
-        
+
           const configElName = elName + '-config';
-          
+
           if (!customElements.get(configElName)) {
             customElements.define(configElName, pie.Configure);
             customElements.whenDefined(configElName).then(async () => {
@@ -155,7 +154,7 @@ export class PieLoader {
           }-config>`;
         });
         c.markup = tags.join('');
-      } 
+      }
     }
 
     return c;
