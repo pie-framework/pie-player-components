@@ -201,7 +201,12 @@ export class Author {
       this.pieContentModel.markup &&
       !this.elementsLoaded
     ) {
-      this.elementsLoaded = await this.pieLoader.elementsHaveLoaded(this.el);
+      const elements = Object.keys(this.pieContentModel.elements).map(el => ({ name: el, tag: `${el}-config` }));
+      const loadedInfo = await this.pieLoader.elementsHaveLoaded(elements);
+
+      if (loadedInfo.val && !!loadedInfo.elements.find((el) => this.pieContentModel.elements[el.name])) {
+        this.elementsLoaded = true;
+      }
     }
   }
 

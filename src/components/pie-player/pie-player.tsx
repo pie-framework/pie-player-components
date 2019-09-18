@@ -46,12 +46,12 @@ export class Player {
   /**
    * Emmitted when any interaction in the set of interactions being rendered has
    * been mutated by user action.
-   * 
+   *
    * The `Event.detail` property contains a `complete` property.
    * If true, this indicates that enough data has been gathered by the interaciton to constitute a response.
-   * For example, in a plot line questsion where a user had to plot three points to plot the line, 
+   * For example, in a plot line questsion where a user had to plot three points to plot the line,
    * the `complete` propery would be false if 1 or 2 points had been added, but true if all three had.
-   * 
+   *
    */
   @Event({ eventName: 'session-changed' }) sessionChanged: EventEmitter;
 
@@ -81,7 +81,7 @@ export class Player {
 
   /**
    * Simulates a correct response for the item.
-   * This property will only have this effect if the `hosted` property is 
+   * This property will only have this effect if the `hosted` property is
    * false and player is running client-side-only.
    */
   @Prop() addCorrectResponse: boolean = false;
@@ -230,7 +230,7 @@ export class Player {
               const controller: PieController = this.pieLoader.getController(
                 pieEl.localName
               );
-              if (controller) {             
+              if (controller) {
                 if (
                   this.addCorrectResponse &&
                   controller.createCorrectResponseSession &&
@@ -270,7 +270,7 @@ export class Player {
               if ((this.pieContentModel.models.length)  === (index +1)) {
                 this._loadCompleteState = true;
                 this.loadComplete.emit();
-              }      
+              }
             }
           });
           pieEl.session = session;
@@ -303,14 +303,19 @@ export class Player {
       if (this.elementsLoaded) {
         this.updateModels();
       } else {
+        const elements = Object.keys(this.pieContentModel.elements).map(el => ({ name: el, tag: el }));
+
         // Note: hard to verify but it appears that we need to resolve
         // the value first rather than setting the promise directly on
         // this state property - otherwise lifecycle re-render is triggered too early
-        const loaded = await this.pieLoader.elementsHaveLoaded(this.el);
-        this.elementsLoaded = loaded;
-      }    
-    } 
-    
+        const loadedInfo = await this.pieLoader.elementsHaveLoaded(elements);
+
+        if (loadedInfo.val && !!loadedInfo.elements.find((el) => this.pieContentModel.elements[el.name])) {
+          this.elementsLoaded = true;
+        }
+      }
+    }
+
   }
 
   async componentDidLoad() {
