@@ -168,10 +168,10 @@ export class Player {
 
       if (!this.elementsLoaded) {
         if (this.jsBundleUrls) {
+          // TODO - js response should be refactored to not return array
           await this.pieLoader.loadCloudPies(this.pieContentModel.elements, 
             this.doc,
             this.jsBundleUrls[0]);
-          // await this.pieLoader.defineElements(this.pieContentModel.elements);
         } else {
           await this.pieLoader.loadCloudPies(
             this.pieContentModel.elements,
