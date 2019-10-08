@@ -46,7 +46,7 @@ export class Loader {
    */
   @Method()
   async loadPies(pieHash: PieItemElement) {
-    return await this.loader.loadCloudPies(pieHash, this.doc, {
+    return await this.loader.loadCloudPies(pieHash, this.doc, null, {
       retries: this.retries,
       minTimeout: this.minTimeout,
       maxTimeout: this.maxTimeout

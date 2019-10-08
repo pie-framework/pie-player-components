@@ -35,7 +35,7 @@ export class DataURLImageSupport implements ExternalImageSupport {
     // if external asset support .. add reader.readAsArrayBuffer ..
     reader.readAsDataURL(file);
   }
-  delete(src: string, done: (e?: Error) => void) {
+  delete(_src: string, done: (e?: Error) => void) {
     done();
   }
 }

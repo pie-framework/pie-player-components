@@ -67,7 +67,7 @@ export namespace Components {
   }
   interface PiePlayer {
     /**
-    * Simulates a correct response for the item. This property will only have this effect if the `hosted` property is  false and player is running client-side-only.
+    * Simulates a correct response for the item. This property will only have this effect if the `hosted` property is false and player is running client-side-only.
     */
     'addCorrectResponse': boolean;
     /**
@@ -215,7 +215,7 @@ declare namespace LocalJSX {
   }
   interface PiePlayer extends JSXBase.HTMLAttributes<HTMLPiePlayerElement> {
     /**
-    * Simulates a correct response for the item. This property will only have this effect if the `hosted` property is  false and player is running client-side-only.
+    * Simulates a correct response for the item. This property will only have this effect if the `hosted` property is false and player is running client-side-only.
     */
     'addCorrectResponse'?: boolean;
     /**
@@ -247,7 +247,7 @@ declare namespace LocalJSX {
     */
     'onResponseCompleted'?: (event: CustomEvent<any>) => void;
     /**
-    * Emmitted when any interaction in the set of interactions being rendered has been mutated by user action.  The `Event.detail` property contains a `complete` property. If true, this indicates that enough data has been gathered by the interaciton to constitute a response. For example, in a plot line questsion where a user had to plot three points to plot the line,  the `complete` propery would be false if 1 or 2 points had been added, but true if all three had.
+    * Emmitted when any interaction in the set of interactions being rendered has been mutated by user action.  The `Event.detail` property contains a `complete` property. If true, this indicates that enough data has been gathered by the interaciton to constitute a response. For example, in a plot line questsion where a user had to plot three points to plot the line, the `complete` propery would be false if 1 or 2 points had been added, but true if all three had.
     */
     'onSession-changed'?: (event: CustomEvent<any>) => void;
     /**

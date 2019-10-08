@@ -14,62 +14,66 @@
 
     <script>
       const config = {
-        id: '1',
-        elements: {
-          'pie-multiple-choice': '@pie-element/multiple-choice@2.7.3'
+        "bundle": {
+          "hash": "1525816454",
+          "appVersion": "3.1.0",
+          "status": "completed",
+          "originalElements": {
+            "multiple-choice-element": "@pie-element/multiple-choice@latest"
+          },
+          "deps": [
+            {
+              "name": "@pie-element/multiple-choice",
+              "version": "4.1.0"
+            }
+          ],
+          "created": "2019-09-27T10:08:36.465Z"
         },
-        models: [
+        "models": [
           {
-            id: '1',
-            element: 'pie-multiple-choice',
-            prompt: 'What is the theme of this poem?',
-            choiceMode: 'checkbox',
-            keyMode: 'numbers',
-            choices: [
+            "studentInstructions": false,
+            "partialScoring": false,
+            "choices": [
               {
-                correct: true,
-                value: 'sorrow',
-                label: 'Sorrow',
-                feedback: {
-                  type: 'none',
-                  value: ''
-                }
+                "correct": true,
+                "value": "15349720",
+                "label": "<p>\n  It costs $72 to produce two chairs.\n</p>"
               },
               {
-                value: 'contemplation',
-                label: 'Contemplation',
-                feedback: {
-                  type: 'none',
-                  value: ''
-                }
+                "correct": false,
+                "value": "15349721",
+                "label": "<div class=\"choice_label\">\n  <label for=\"answer_choice_15315895\">&nbsp;</label>\n</div>\n<div class=\"item_text item_choice\">\n  <p>\n    It costs $120 to produce five chairs.&nbsp;\n  </p>\n</div>\n<div class=\"choice_input\">\n  &nbsp;\n</div>\n<div class=\"item_text item_choice\">\n  <p>\n    &nbsp;\n  </p>\n</div>"
               },
               {
-                value: 'loneliness',
-                label: 'Loneliness',
-                feedback: {
-                  type: 'none',
-                  value: ''
-                }
+                "correct": false,
+                "value": "15349722",
+                "label": "<div class=\"choice_input\">\n  It costs $720 to produce ten chairs.&nbsp;\n</div>\n<div class=\"choice_input\">\n  &nbsp;\n</div>"
               },
               {
-                correct: true,
-                value: 'envy',
-                label: 'Envy',
-                feedback: {
-                  type: 'none',
-                  value: ''
-                }
+                "value": "15349723",
+                "label": "<div class=\"choice_input\">\n  It costs $1008 to produce forty chairs\n</div>",
+                "correct": false
               }
             ],
-            partialScoring: false,
-            partialScoringLabel: `Each correct response that is correctly checked and each incorrect response
-              that is correctly unchecked will be worth 1 point.
-              The maximum points is the total number of answer choices.`
+            "choicePrefix": "letters",
+            "id": "4024571",
+            "element": "multiple-choice-element",
+            "choiceMode": "radio",
+            "prompt": "<div class=\"item_question_div\">\n  <div class=\"item_text item_stem\">\n    <p>\n      RLN Manufacturing has fixed costs and variable costs for producing the handmade wooden chairs that they sell. &nbsp;They model these costs with the equation f(x) = 22x + 28, where x represents the amount of chairs produced. &nbsp;Which statement is correct?&nbsp;\n    </p>\n  </div>\n  <div class=\"“clearfix”\">\n    &nbsp;\n  </div>\n</div>",
+            "scoringType": "auto",
+            "lockChoiceOrder": false
           }
         ],
-        markup: `
-            <pie-multiple-choice id='1'></pie-multiple-choice>
-          `
+        "markup": "<multiple-choice-element id=\"4024571\"></multiple-choice-element>",
+        "elements": {
+          "multiple-choice-element": "@pie-element/multiple-choice@4.1.0"
+        },
+        "buildInfo": [
+          {
+            "version": "latest",
+            "name": "@pie-element/multiple-choice"
+          }
+        ]
       };
 
       const player = document.getElementById('player');

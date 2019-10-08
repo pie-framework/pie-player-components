@@ -9,7 +9,6 @@ import {
   Method,
   h
 } from "@stencil/core";
-import range from "lodash/range";
 import { PieContent, ItemConfig, PieElement, PieModel } from "../../interface";
 import { PieLoader } from "../../pie-loader";
 import { pieContentFromConfig } from "../../utils/utils";

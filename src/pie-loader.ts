@@ -75,6 +75,7 @@ export class PieLoader {
   public loadCloudPies = async (
     elements: PieItemElement,
     doc,
+    _scriptUrl?: string,
     retryOptions = {
       retries: 10,
       minTimeout: 1000,
@@ -83,14 +84,21 @@ export class PieLoader {
     base_url = BUILD_SERVICE_BASE
   ) => {
     const head = doc.getElementsByTagName('head')[0];
-    const piesToLoad = this.getElementsToLoad(elements);
-    const bundleUri = getPackageBundleUri(piesToLoad);
-    if (!bundleUri) {
-      return;
-    }
     const script = doc.createElement('script');
-    const scriptUrl = base_url + bundleUri + '/editor.js';
-    await this.scriptBuildReady(scriptUrl,retryOptions);
+    const piesToLoad = this.getElementsToLoad(elements);
+    let scriptUrl;
+
+    if (_scriptUrl) {
+      scriptUrl = _scriptUrl;
+    } else {
+      const bundleUri = getPackageBundleUri(piesToLoad);
+      if (!bundleUri) {
+        return;
+      }
+      scriptUrl = base_url + bundleUri + '/editor.js';
+      await this.scriptBuildReady(scriptUrl,retryOptions);
+    }
+
 
     const onloadFn = (_pies => {
       return () => {
@@ -135,9 +143,8 @@ export class PieLoader {
       };
     })(piesToLoad);
 
-    script.id = bundleUri;
     script.onload = onloadFn;
-    script.src = base_url + bundleUri + '/editor.js';
+    script.src = scriptUrl;
     head.appendChild(script);
   };
 
