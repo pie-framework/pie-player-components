@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0"
+    />
+    <title>Item With Stimulus</title>
+    <script nomodule src="/build/pie-player-components.js"></script>
+    <script type="module" src="/build/pie-player-components.esm.js"></script>
+  </head>
+  <body>
+    <div>
+      <h2>render stimulus</h2>
+      <!--
+            config={this.playerInfo.item}
+          session={this.playerInfo.session}
+          renderStimulus={this.renderStimulus}
+          ref={(el) => this.player = el as HTMLPiePlayerElement}
+        jsBundleUrls="{this.playerInfo.js.view}"
+          -->
+      <pie-player renderStimulus="true"> </pie-player>
+    </div>
+
+    <script>
+      const data = {
+        session: {
+          id: "fb3b0b03-1bb1-4040-9637-dfc2fe87f63b",
+          createdAt: "2019-10-08T08:55:13.526Z",
+          data: [],
+          contentItemId: "8a80808163e9a4a80163ebd1d6b763ce",
+          mode: "gather"
+        },
+        js: {
+          view: [
+            "http://pits-dot-pie-dev-221718.appspot.com/bundles/@pie-element/ebsr@latest+@pie-element/passage@1.2.12/player.js"
+          ]
+        },
+        item: {
+          pie: {
+            models: [
+              {
+                disabled: false,
+                mode: "gather",
+                partA: {
+                  element: "multiple-choice",
+                  choiceMode: "radio",
+                  prompt: null,
+                  lockChoiceOrder: true,
+                  keyMode: "none",
+                  choices: [
+                    {
+                      label:
+                        "<p>Plants must have roots in order to survive.</p>",
+                      value: "8a80808163e9a4a80163ebd1d6b763d2",
+                      rationale: null
+                    },
+                    {
+                      label:
+                        "<p>If a plant has small roots, it has a taproot system.</p>",
+                      value: "8a80808163e9a4a80163ebd1d6b763d3",
+                      rationale: null
+                    },
+                    {
+                      label:
+                        "<p>A plant with a fibrous root system has a harder time being pulled out of the ground.</p>",
+                      value: "8a80808163e9a4a80163ebd1d6b763d4",
+                      rationale: null
+                    },
+                    {
+                      label:
+                        "<p>An onion plant with fibrous roots will collect nutrients more quickly than a carrot plant with a taproot.</p>",
+                      value: "8a80808163e9a4a80163ebd1d6b763d5",
+                      rationale: null
+                    }
+                  ],
+                  id: "8a80808163e9a4a80163ebd1d6b763d1",
+                  disabled: false,
+                  complete: { min: 1 },
+                  teacherInstructions: null
+                },
+                partB: {
+                  keyMode: "none",
+                  choices: [
+                    {
+                      label:
+                        "<p>Most plants of the world have one of two main types of root systems.</p>",
+                      value: "8a80808163e9a4a80163ebd1d6b763d7",
+                      rationale: null
+                    },
+                    {
+                      label:
+                        "<p>Smaller roots often grow off of the taproot sideways.</p>",
+                      value: "8a80808163e9a4a80163ebd1d6b763d8",
+                      rationale: null
+                    },
+                    {
+                      label:
+                        "<p>The taproot works like an anchor to hold the plant firmly in place.</p>",
+                      value: "8a80808163e9a4a80163ebd1d6b763d9",
+                      rationale: null
+                    },
+                    {
+                      label:
+                        "<p>The type of plants that grow fibrous roots usually grow in areas where they need to absorb nutrients quickly.</p>",
+                      value: "8a80808163e9a4a80163ebd1d6b763da",
+                      rationale: null
+                    }
+                  ],
+                  id: "8a80808163e9a4a80163ebd1d6b763d6",
+                  element: "multiple-choice",
+                  choiceMode: "radio",
+                  prompt: null,
+                  lockChoiceOrder: true,
+                  disabled: false,
+                  complete: { min: 1 },
+                  teacherInstructions: null
+                },
+                element: "pie-ebsr",
+                id: "8a80808163e9a4a80163ebd1d6b763ce"
+              }
+            ],
+            elements: { "pie-ebsr": "@pie-element/ebsr@latest" },
+            id: "d3936f9b-4fa2-48c4-974b-803dbc133d60",
+            markup:
+              '<pie-ebsr id="8a80808163e9a4a80163ebd1d6b763ce"></pie-ebsr>'
+          },
+          stimulus: {
+            markup:
+              '<pie-passage id="8a80808163e9a6940163ebd1b0885dec"></pie-passage>',
+            id: "8a80808163e9a6940163ebd1b0885dec",
+            elements: { "pie-passage": "@pie-element/passage@1.2.12" },
+            models: [
+              {
+                id: "8a80808163e9a6940163ebd1b0885dec",
+                passages: [
+                  {
+                    title: "Root Systems",
+                    text:
+                      '<h3>Root Systems</h3><video width="500" height="500" controls="">  <source src="https://storage.googleapis.com/pie-prod-221718-assets/video/f537205e-32d8-44f2-9648-271921ac5500" type="video/mp4">  <span class="kds-noprint">Your browser does not support the video tag.</span></video>'
+                  }
+                ],
+                element: "pie-passage"
+              }
+            ],
+            buildInfo: [{ name: "@pie-element/passage", version: "latest" }],
+            bundle: {
+              created: "2019-07-18T21:40:55.871Z",
+              hash: "521720055",
+              appVersion: "2.14.0",
+              status: "completed",
+              originalElements: {
+                "pie-passage": "@pie-element/passage@latest"
+              },
+              deps: [{ version: "1.2.12", name: "@pie-element/passage" }]
+            },
+            layout: "left"
+          }
+        }
+      };
+
+      ////////////////////////
+
+      // const config = {
+      //   pie: {
+      //     id: "1",
+      //     elements: {
+      //       "pie-multiple-choice": "@pie-element/multiple-choice@2.7.3"
+      //     },
+      //     models: [
+      //       {
+      //         id: "1",
+      //         element: "pie-multiple-choice",
+      //         prompt: "What is the theme of this poem?",
+      //         choiceMode: "checkbox",
+      //         keyMode: "numbers",
+      //         choices: [
+      //           {
+      //             correct: true,
+      //             value: "sorrow",
+      //             label: "Sorrow",
+      //             feedback: {
+      //               type: "none",
+      //               value: ""
+      //             }
+      //           },
+      //           {
+      //             value: "contemplation",
+      //             label: "Contemplation",
+      //             feedback: {
+      //               type: "none",
+      //               value: ""
+      //             }
+      //           },
+      //           {
+      //             value: "loneliness",
+      //             label: "Loneliness",
+      //             feedback: {
+      //               type: "none",
+      //               value: ""
+      //             }
+      //           },
+      //           {
+      //             correct: true,
+      //             value: "envy",
+      //             label: "Envy",
+      //             feedback: {
+      //               type: "none",
+      //               value: ""
+      //             }
+      //           }
+      //         ],
+      //         partialScoring: false,
+      //         partialScoringLabel: `Each correct response that is correctly checked and each incorrect response
+      //         that is correctly unchecked will be worth 1 point.
+      //         The maximum points is the total number of answer choices.`
+      //       }
+      //     ],
+      //     markup: `
+      //       <pie-multiple-choice id='1'></pie-multiple-choice>
+      //     `
+      //   },
+      //   stimulus: {
+      //     id: "1",
+      //     elements: {
+      //       "pie-passage": "@pie-element/passage@latest"
+      //     },
+      //     models: [
+      //       {
+      //         id: "1",
+      //         element: "pie-passage",
+      //         passages: [
+      //           {
+      //             title: "Ineskeen Road, July Evening",
+      //             text: `The bicycles go by in twos and threes -<br/>
+      //         There's a dance in Billy Brennan's barn tonight,<br/>
+      //         And there's the half-talk code of mysteries<br/>
+      //         And the wink-and-elbow language of delight.<br/>
+      //         Half-past eight and there is not a spot<br/>
+      //         Upon a mile of road, no shadow thrown<br/>
+      //         That might turn out a man or woman, not<br/>
+      //         A footfall tapping secrecies of stone. <br/>
+      //         <p/>
+      //         I have what every poet hates in spite<br/>
+      //         Of all the solemn talk of contemplation.<br/>
+      //         Oh, Alexander Selkirk knew the plight<br/>
+      //         Of being king and government and nation.<br/>
+      //         A road, a mile of kingdom. I am king<br/>
+      //         Of banks and stones and every blooming thing.<br/>
+      //         `
+      //           }
+      //         ]
+      //       }
+      //     ],
+      //     markup: `
+      //       <pie-passage id='1'></pie-passage>
+      //     `
+      //   }
+      // };
+
+      const player = document.querySelector("pie-player");
+      player.jsBundleUrls = [
+        "http://pits-dot-pie-ed-dev-221718.appspot.com/bundles/@pie-element/ebsr@latest+@pie-element/passage@1.2.12/player.js"
+      ];
+      // const noStimulus = document.getElementById("nostimulus");
+
+      // player.addEventListener("sessionChanged", event => {
+      //   console.log(event.type + ":" + JSON.stringify(event.detail));
+      // });
+
+      // noStimulus.addEventListener("sessionChanged", event => {
+      //   console.log(event.type + ":" + JSON.stringify(event.detail));
+      // });
+
+      player.config = data.item;
+      player.env = { mode: "gather", role: "student" };
+    </script>
+  </body>
+</html>
