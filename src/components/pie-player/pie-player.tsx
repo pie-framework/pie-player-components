@@ -333,8 +333,8 @@ export class Player {
   render() {
     if (this.stimulusItemModel) {
       return this.renderStimulus ? (
-        <div class="stimulus-container">
-          {/* <pie-player
+        <div class="">
+          <pie-player
             id="stimulusPlayer"
             config={this.stimulusItemModel.stimulus}
             env={this.env}
@@ -342,7 +342,7 @@ export class Player {
             jsBundleUrls={this.jsBundleUrls}
             session={this.session}
             ref={el => (this.stimulusPlayer = el as HTMLElement)}
-          /> */}
+          />
           <pie-player
             id="itemPlayer"
             config={this.stimulusItemModel.pie}
