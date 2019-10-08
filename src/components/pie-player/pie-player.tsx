@@ -8,7 +8,7 @@ import {
   EventEmitter,
   Method,
   h
-} from '@stencil/core';
+} from "@stencil/core";
 import {
   PieContent,
   ItemConfig,
@@ -17,17 +17,17 @@ import {
   PieController,
   AdvancedItemConfig,
   PieModel
-} from '../../interface';
-import { PieLoader } from '../../pie-loader';
-import { addRubric } from '../../rubric-utils';
-import {SessionChangedEvent} from '@pie-framework/pie-player-events';
+} from "../../interface";
+import { PieLoader } from "../../pie-loader";
+import { addRubric } from "../../rubric-utils";
+import { SessionChangedEvent } from "@pie-framework/pie-player-events";
 
 const controllerErrorMessage: string =
-  'Error processing question configuration, verify the question model?';
+  "Error processing question configuration, verify the question model?";
 
 @Component({
-  tag: 'pie-player',
-  styleUrl: '../components.css',
+  tag: "pie-player",
+  styleUrl: "../components.css",
   shadow: false
 })
 export class Player {
@@ -38,7 +38,7 @@ export class Player {
 
   _loadCompleteState: boolean = false;
 
-  @Prop({ context: 'document' }) doc!: Document;
+  @Prop({ context: "document" }) doc!: Document;
 
   @Element() el: HTMLElement;
 
@@ -53,13 +53,13 @@ export class Player {
    * the `complete` propery would be false if 1 or 2 points had been added, but true if all three had.
    *
    */
-  @Event({ eventName: 'session-changed' }) sessionChanged: EventEmitter;
+  @Event({ eventName: "session-changed" }) sessionChanged: EventEmitter;
 
   /**
    * Emmitted if there is an error encountered while rendering.
    * `event.detail` will be a string containing a message about the error.
    */
-  @Event({ eventName: 'player-error' }) playerError: EventEmitter;
+  @Event({ eventName: "player-error" }) playerError: EventEmitter;
 
   /**
    * TODO - Emmitted when any all interactions in a PIE Assessment Item have reported that a user
@@ -70,7 +70,7 @@ export class Player {
   /**
    * Emitted when the content in the config has been loaded.
    */
-  @Event({ eventName: 'load-complete' }) loadComplete: EventEmitter;
+  @Event({ eventName: "load-complete" }) loadComplete: EventEmitter;
 
   @State() elementsLoaded: boolean = false;
 
@@ -86,7 +86,7 @@ export class Player {
    */
   @Prop() addCorrectResponse: boolean = false;
 
-  @Watch('addCorrectResponse')
+  @Watch("addCorrectResponse")
   watchAddCorrectResponse(newValue, oldValue) {
     if (newValue !== oldValue) {
       this.updateModels();
@@ -96,13 +96,13 @@ export class Player {
   /**
    * The Pie Session
    */
-  @Prop() session: ItemSession = { id: '', data: [] };
+  @Prop() session: ItemSession = { id: "", data: [] };
 
   /**
    * Describes runtime environment for the player.
    *
    */
-  @Prop() env: Object = { mode: 'gather', role: 'student' };
+  @Prop() env: Object = { mode: "gather", role: "student" };
 
   /**
    * Indicates if player running in the context of a PIE hosting system.
@@ -133,7 +133,7 @@ export class Player {
     return this.stimulusPlayer ? this.stimulusPlayer : this;
   }
 
-  @Watch('config')
+  @Watch("config")
   async watchConfig(newConfig) {
     this.elementsLoaded = false;
     this._loadCompleteState = false;
@@ -147,7 +147,7 @@ export class Player {
         return;
       }
       try {
-        if (typeof newConfig == 'string') {
+        if (typeof newConfig == "string") {
           newConfig = JSON.parse(newConfig);
         }
         if (newConfig.pie) {
@@ -182,7 +182,6 @@ export class Player {
     }
   }
 
-
   /**
    * For previewing changes to an item. Updates the model for one question in the item model.
    * @param update the updated model
@@ -201,7 +200,7 @@ export class Player {
     }
   }
 
-  @Watch('env')
+  @Watch("env")
   updateModels(newEnv = this.env) {
     // wrapping a player in stimulus layoute
     if (this.stimulusPlayer) {
@@ -234,8 +233,7 @@ export class Player {
                 if (
                   this.addCorrectResponse &&
                   controller.createCorrectResponseSession &&
-                  typeof controller.createCorrectResponseSession ===
-                    'function'
+                  typeof controller.createCorrectResponseSession === "function"
                 ) {
                   session = controller.createCorrectResponseSession(
                     model,
@@ -259,7 +257,9 @@ export class Player {
             }
             pieEl.model = model;
             if (this.addCorrectResponse) {
-              this.playerError.emit(`add-correct-response cannot be used in hosted environement`);
+              this.playerError.emit(
+                `add-correct-response cannot be used in hosted environement`
+              );
             }
           }
           // by setting session we will trigger session-changed from PIE
@@ -267,7 +267,7 @@ export class Player {
           pieEl.addEventListener(SessionChangedEvent.TYPE, ev => {
             if (!this._loadCompleteState) {
               ev.stopPropagation();
-              if ((this.pieContentModel.models.length)  === (index +1)) {
+              if (this.pieContentModel.models.length === index + 1) {
                 this._loadCompleteState = true;
                 this.loadComplete.emit();
               }
@@ -296,26 +296,30 @@ export class Player {
   }
 
   async afterRender() {
-    if (
-      this.pieContentModel &&
-      this.pieContentModel.markup
-    ) {
+    if (this.pieContentModel && this.pieContentModel.markup) {
       if (this.elementsLoaded) {
         this.updateModels();
       } else {
-        const elements = Object.keys(this.pieContentModel.elements).map(el => ({ name: el, tag: el }));
+        const elements = Object.keys(this.pieContentModel.elements).map(el => ({
+          name: el,
+          tag: el
+        }));
 
         // Note: hard to verify but it appears that we need to resolve
         // the value first rather than setting the promise directly on
         // this state property - otherwise lifecycle re-render is triggered too early
         const loadedInfo = await this.pieLoader.elementsHaveLoaded(elements);
 
-        if (loadedInfo.val && !!loadedInfo.elements.find((el) => this.pieContentModel.elements[el.name])) {
+        if (
+          loadedInfo.val &&
+          !!loadedInfo.elements.find(
+            el => this.pieContentModel.elements[el.name]
+          )
+        ) {
           this.elementsLoaded = true;
         }
       }
     }
-
   }
 
   async componentDidLoad() {
@@ -329,29 +333,25 @@ export class Player {
   render() {
     if (this.stimulusItemModel) {
       return this.renderStimulus ? (
-        <pie-stimulus-layout>
-          <div slot="stimulus">
-            <pie-player
-              id="stimulusPlayer"
-              config={this.stimulusItemModel.stimulus}
-              env={this.env}
-              hosted={this.hosted}
-              jsBundleUrls={this.jsBundleUrls}
-              session={this.session}
-            />
-          </div>
-          <div slot="item">
-            <pie-player
-              id="itemPlayer"
-              config={this.stimulusItemModel.pie}
-              env={this.env}
-              hosted={this.hosted}
-              jsBundleUrls={this.jsBundleUrls}
-              session={this.session}
-              ref={el => (this.stimulusPlayer = el as HTMLElement)}
-            />
-          </div>
-        </pie-stimulus-layout>
+        <div class="stimulus-container">
+          {/* <pie-player
+            id="stimulusPlayer"
+            config={this.stimulusItemModel.stimulus}
+            env={this.env}
+            hosted={this.hosted}
+            jsBundleUrls={this.jsBundleUrls}
+            session={this.session}
+            ref={el => (this.stimulusPlayer = el as HTMLElement)}
+          /> */}
+          <pie-player
+            id="itemPlayer"
+            config={this.stimulusItemModel.pie}
+            env={this.env}
+            hosted={this.hosted}
+            jsBundleUrls={this.jsBundleUrls}
+            session={this.session}
+          />
+        </div>
       ) : (
         <pie-player
           id="itemPlayer"
@@ -369,7 +369,7 @@ export class Player {
             innerHTML={
               this.pieContentModel && this.pieContentModel.markup
                 ? this.pieContentModel.markup
-                : ''
+                : ""
             }
           />
         </pie-spinner>
