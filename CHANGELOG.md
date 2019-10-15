@@ -1,3 +1,10 @@
+## [0.13.1](https://github.com/pie-framework/pie-player-components/compare/v0.13.0...v0.13.1) (2019-10-15)
+
+
+### Bug Fixes
+
+* Ch4866 check for `forEach` before call  ([#21](https://github.com/pie-framework/pie-player-components/issues/21)) ([4110918](https://github.com/pie-framework/pie-player-components/commit/4110918))
+
 # [0.13.0](https://github.com/pie-framework/pie-player-components/compare/v0.12.2...v0.13.0) (2019-10-07)
 
 
