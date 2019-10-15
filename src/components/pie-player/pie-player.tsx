@@ -212,6 +212,7 @@ export class Player {
     if (
       this.pieContentModel &&
       this.pieContentModel.models &&
+      typeof (this.pieContentModel.models.forEach) === 'function' &&
       this.pieContentModel.markup &&
       this.elementsLoaded
     ) {
