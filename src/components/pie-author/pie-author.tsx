@@ -276,7 +276,6 @@ export class Author {
   async componentDidUpdate() {
     await this.afterRender();
 
-    console.log("FFF fileInput:", this.fileInput);
     if (this.fileInput) {
       this.fileInput.addEventListener("change", this.handleFileInputChange);
     }

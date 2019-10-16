@@ -1,3 +1,22 @@
+## [0.13.1](https://github.com/pie-framework/pie-player-components/compare/v0.13.0...v0.13.1) (2019-10-15)
+
+
+### Bug Fixes
+
+* Ch4866 check for `forEach` before call  ([#21](https://github.com/pie-framework/pie-player-components/issues/21)) ([4110918](https://github.com/pie-framework/pie-player-components/commit/4110918))
+
+# [0.13.0](https://github.com/pie-framework/pie-player-components/compare/v0.12.2...v0.13.0) (2019-10-07)
+
+
+### Bug Fixes
+
+* **components:** config switch issue when not waiting [ch3915] ([#18](https://github.com/pie-framework/pie-player-components/issues/18)) ([f89b85d](https://github.com/pie-framework/pie-player-components/commit/f89b85d))
+
+
+### Features
+
+* add image support ([#13](https://github.com/pie-framework/pie-player-components/issues/13)) [ch1750] ([058e7e4](https://github.com/pie-framework/pie-player-components/commit/058e7e4))
+
 ## [0.12.2](https://github.com/pie-framework/pie-player-components/compare/v0.12.1...v0.12.2) (2019-09-13)
 
 
