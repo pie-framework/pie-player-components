@@ -137,6 +137,7 @@ export class Player {
   async watchConfig(newConfig) {
     this.elementsLoaded = false;
     this._loadCompleteState = false;
+
     // wrapping a player in stimulus layoute
     if (this.stimulusPlayer) {
       (this.stimulusPlayer as any).config = newConfig;
@@ -202,7 +203,7 @@ export class Player {
 
   @Watch("env")
   updateModels(newEnv = this.env) {
-    // wrapping a player in stimulus layoute
+    // wrapping a player in stimulus layout
     if (this.stimulusPlayer) {
       (this.stimulusPlayer as any).env = newEnv;
       return;
@@ -211,7 +212,7 @@ export class Player {
     if (
       this.pieContentModel &&
       this.pieContentModel.models &&
-      typeof (this.pieContentModel.models.forEach) === 'function' &&
+      typeof this.pieContentModel.models.forEach === "function" &&
       this.pieContentModel.markup &&
       this.elementsLoaded
     ) {
@@ -222,7 +223,6 @@ export class Player {
         }
         const pieEl: PieElement = this.el.querySelector(`[id='${model.id}']`);
         let session = this.findOrAddSession(this.session.data, model.id);
-
         if (pieEl) {
           if (!this.hosted) {
             try {
@@ -236,7 +236,7 @@ export class Player {
                   controller.createCorrectResponseSession &&
                   typeof controller.createCorrectResponseSession === "function"
                 ) {
-                  session = controller.createCorrectResponseSession(
+                  session = await controller.createCorrectResponseSession(
                     model,
                     newEnv
                   );
@@ -346,6 +346,7 @@ export class Player {
           />
           <pie-player
             id="itemPlayer"
+            addCorrectResponse={this.addCorrectResponse}
             config={this.stimulusItemModel.pie}
             env={this.env}
             hosted={this.hosted}
@@ -356,6 +357,7 @@ export class Player {
       ) : (
         <pie-player
           id="itemPlayer"
+          addCorrectResponse={this.addCorrectResponse}
           config={this.stimulusItemModel.pie}
           env={this.env}
           hosted={this.hosted}
@@ -364,8 +366,8 @@ export class Player {
         />
       );
     } else {
-      return (
-        <pie-spinner active={!this.elementsLoaded}>
+      if (this.elementsLoaded) {
+        return (
           <div
             innerHTML={
               this.pieContentModel && this.pieContentModel.markup
@@ -373,8 +375,10 @@ export class Player {
                 : ""
             }
           />
-        </pie-spinner>
-      );
+        );
+      }
+
+      return <pie-spinner />;
     }
   }
 }
