@@ -364,8 +364,8 @@ export class Player {
         />
       );
     } else {
-      return (
-        <pie-spinner active={!this.elementsLoaded}>
+      if (this.elementsLoaded) {
+        return (
           <div
             innerHTML={
               this.pieContentModel && this.pieContentModel.markup
@@ -373,8 +373,10 @@ export class Player {
                 : ''
             }
           />
-        </pie-spinner>
-      );
+        );
+      }
+
+      return <pie-spinner />;
     }
   }
 }
