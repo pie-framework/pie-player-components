@@ -137,7 +137,25 @@ describe('pie-player', () => {
       'pie-player pie-multiple-choice',
       el => (el as any).session
     );
-    expect(session).toEqual({ correctResponse: true });
+    expect(session).toEqual({ id: "1", correctResponse: true });
+  });
+
+  it('handles correct response in stimulus mode', async () => {
+    
+    await page.setContent(`<pie-player add-correct-response="true"></pie-player>`);
+    setupInterceptPieCloud(page, '@pie-element');
+    const piePlayer = await page.find('pie-player');
+    await piePlayer.setProperty('config', advancedPieMock);
+    await page.waitForChanges();
+    expect(piePlayer).toBeDefined();
+    const stimulusLayout = await piePlayer.find('pie-stimulus-layout');
+    expect(stimulusLayout).toBeDefined();
+
+    const session = await page.$eval(
+      '#itemPlayer pie-multiple-choice',
+      el => (el as any).session
+    );
+    expect(session).toEqual({ id: "1", correctResponse: true });
   });
 
 });
