@@ -17,13 +17,11 @@ export class DataURLImageSupport implements ExternalImageSupport {
   ) {
     const reader = new FileReader();
     reader.onload = () => {
-      console.log("[reader.onload]");
       const dataURL = reader.result;
       setTimeout(() => {
         done(null, dataURL.toString());
       }, 2000);
     };
-    console.log("call readAsDataUrl...", file);
     let progress = 0;
     progressFn(progress, 0, 100);
     range(1, 100).forEach(n => {
@@ -35,7 +33,7 @@ export class DataURLImageSupport implements ExternalImageSupport {
     // if external asset support .. add reader.readAsArrayBuffer ..
     reader.readAsDataURL(file);
   }
-  delete(_src: string, done: (e?: Error) => void) {
+  delete(src: string, done: (e?: Error) => void) {
     done();
   }
 }
