@@ -134,13 +134,11 @@ export class Author {
     };
 
     this.handleInsertImage = (e: InsertImageEvent) => {
-      console.log("[handleInsertImage]", e);
       this.imageHandler = e.detail;
       this.fileInput.click();
     };
 
     this.handleDeleteImage = (e: DeleteImageEvent) => {
-      console.log("[handleDeleteImage ..]", e);
       e.detail.done();
     };
   }
@@ -261,9 +259,7 @@ export class Author {
       }
     });
 
-    console.log(this.el);
     this.el.addEventListener(DeleteImageEvent.TYPE, e => {
-      console.log("... ", e);
     });
     this.el.addEventListener(InsertImageEvent.TYPE, this.handleInsertImage);
     this.el.addEventListener(DeleteImageEvent.TYPE, this.handleDeleteImage);
@@ -276,7 +272,6 @@ export class Author {
   async componentDidUpdate() {
     await this.afterRender();
 
-    console.log("FFF fileInput:", this.fileInput);
     if (this.fileInput) {
       this.fileInput.addEventListener("change", this.handleFileInputChange);
     }
