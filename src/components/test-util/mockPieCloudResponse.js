@@ -67,7 +67,7 @@ const controller = {
   outcome: (config, session, env) => {
   },
   createCorrectResponseSession: (config, env) => {
-    return  {correctResponse: true}
+    return  Promise.resolve({correctResponse: true});
   }
 }
 

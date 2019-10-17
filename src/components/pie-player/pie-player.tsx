@@ -239,26 +239,12 @@ export class Player {
                   controller.createCorrectResponseSession &&
                   typeof controller.createCorrectResponseSession ===
                     'function'
-                ) {
-                  // const s = await controller.createCorrectResponseSession(
-                  //   model,
-                  //   newEnv
-                  // );
-                  
-                  // session = s;
-                
-                  try {
-                    let correct = await controller.createCorrectResponseSession(
-                      model,
-                      newEnv
-                    );
-                    session = correct && session;
-                  } catch (err) {
-                    console.log(err);
-                  } finally {
-                    console.log('did we make it this far?');
-                  }
-    
+                ) {            
+                  let correct = await controller.createCorrectResponseSession(
+                    model,
+                    newEnv
+                  );         
+                  session = {...correct, ...{id: model.id}};
                 }
               } else {
                 // no controller provided
