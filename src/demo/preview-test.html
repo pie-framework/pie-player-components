@@ -1,0 +1,26 @@
+<html>
+  <head>
+    <!-- <script src="https://unpkg.com/@pie-api/pie-api-components@latest/dist/pie-api-components.js"></script> -->
+
+    <script type="module" src="/build/pie-api-components.esm.js"></script>
+    <script nomodule src="/build/pie-api-components.js"></script>
+  </head>
+
+  <pie-api-player
+    id="player"
+    item-id="ca817fa9-ae69-11e9-9e5a-32b165a1ab43"
+    preview="true"
+    render-stimulus="false"
+    initial-role="instructor"
+    token="bad token"
+    api-url="https://stage.pie-api.io/services"
+  >
+  </pie-api-player>
+
+  <script>
+    const player = document.getElementById("player");
+    // player.componentOnReady().then(()=> {
+    //   player.env = { mode: 'evaluate' }
+    // });
+  </script>
+</html>
