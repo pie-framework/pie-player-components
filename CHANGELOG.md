@@ -1,3 +1,15 @@
+# [0.14.0](https://github.com/pie-framework/pie-player-components/compare/v0.13.2...v0.14.0) (2019-10-22)
+
+
+### Bug Fixes
+
+* build error fix ([#25](https://github.com/pie-framework/pie-player-components/issues/25)) ([5a389dd](https://github.com/pie-framework/pie-player-components/commit/5a389dd1fa6ba6cd699a4e0196970f7672668772))
+
+
+### Features
+
+* support preview loading [ch2776] ([#24](https://github.com/pie-framework/pie-player-components/issues/24)) ([c2659bc](https://github.com/pie-framework/pie-player-components/commit/c2659bcf02e03b68e7fa1147a409115649ba279a))
+
 ## [0.13.2](https://github.com/pie-framework/pie-player-components/compare/v0.13.1...v0.13.2) (2019-10-16)
 
 
