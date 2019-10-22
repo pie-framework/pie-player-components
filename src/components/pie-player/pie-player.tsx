@@ -89,7 +89,6 @@ export class Player {
   @Watch("addCorrectResponse")
   watchAddCorrectResponse(newValue, oldValue) {
     if (newValue !== oldValue) {
-      console.log("new value!!! ", newValue, oldValue);
       this.updateModels();
     }
   }
@@ -139,7 +138,6 @@ export class Player {
     this.elementsLoaded = false;
     this._loadCompleteState = false;
 
-    console.log("[watchConfig] config:", newConfig);
     // wrapping a player in stimulus layoute
     if (this.stimulusPlayer) {
       (this.stimulusPlayer as any).config = newConfig;
@@ -205,10 +203,6 @@ export class Player {
 
   @Watch("env")
   updateModels(newEnv = this.env) {
-    console.log(
-      "[updateModels] this.addCorrectResponse? ",
-      this.addCorrectResponse
-    );
     // wrapping a player in stimulus layout
     if (this.stimulusPlayer) {
       (this.stimulusPlayer as any).env = newEnv;
@@ -338,10 +332,6 @@ export class Player {
   }
 
   render() {
-    console.log(
-      "pie-player - RENDERRRRRRR - add correct Response? ",
-      this.addCorrectResponse
-    );
     if (this.stimulusItemModel) {
       return this.renderStimulus ? (
         <div class="">
