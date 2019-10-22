@@ -261,10 +261,6 @@ export class Author {
       }
     });
 
-    console.log(this.el);
-    this.el.addEventListener(DeleteImageEvent.TYPE, e => {
-      console.log("... ", e);
-    });
     this.el.addEventListener(InsertImageEvent.TYPE, this.handleInsertImage);
     this.el.addEventListener(DeleteImageEvent.TYPE, this.handleDeleteImage);
   }
