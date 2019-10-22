@@ -1,143 +1,152 @@
-import { newE2EPage, E2EPage } from '@stencil/core/testing';
-import { setupInterceptPieCloud } from '../../test-util/util';
-import { simplePieMock, advancedPieMock } from '../../__mock__/config';
+import { newE2EPage, E2EPage } from "@stencil/core/testing";
+import { setupInterceptPieCloud } from "../../test-util/util";
+import { simplePieMock, advancedPieMock } from "../../__mock__/config";
 
-function loadPie(itemConfig, playerId:string = 'player') {
-  var holder = document.querySelector('#player-holder');
-  var player = document.createElement('pie-player');
-  player.setAttribute('id', playerId);
+function loadPie(itemConfig, playerId: string = "player") {
+  var holder = document.querySelector("#player-holder");
+  var player = document.createElement("pie-player");
+  player.setAttribute("id", playerId);
   holder.appendChild(player);
   player.config = itemConfig;
 }
 
-describe('pie-player', () => {
+describe("pie-player", () => {
   let page: E2EPage;
   beforeEach(async () => {
     page = await newE2EPage();
   });
 
- // TODO tests skipped while waiting for fix in stencil 1.0 for request interception
-  it('passes env chages to PIE', async () => {
+  it("passes env chages to PIE", async () => {
     await page.setContent(`<div id="player-holder"></div>`);
-    setupInterceptPieCloud(page, '@pie-element/multiple-choice');
+    setupInterceptPieCloud(page, "@pie-element/multiple-choice");
     await page.evaluate(loadPie, JSON.stringify(simplePieMock));
     await page.waitForChanges();
-    const piePlayer = await page.find('pie-player');
+    const piePlayer = await page.find("pie-player");
     expect(piePlayer).toBeDefined();
-    await piePlayer.setProperty('env', { mode: 'evaluate', role: 'student' });
+    await piePlayer.setProperty("env", { mode: "evaluate", role: "student" });
     await page.waitForChanges();
     const pieElement = await page.waitForSelector(
-      'pie-player pie-multiple-choice'
+      "pie-player pie-multiple-choice"
     );
     expect(pieElement).toBeDefined();
-    const model = await page.$eval('pie-player pie-multiple-choice', el =>
-      (el as any).model
+    const model = await page.$eval(
+      "pie-player pie-multiple-choice",
+      el => (el as any).model
     );
-    expect(model.env.mode).toEqual('evaluate');
- 
+    expect(model.env.mode).toEqual("evaluate");
   });
 
-  it('loads with js, multiple times', async () => {
+  it("loads with js, multiple times", async () => {
     await page.setContent(`<div id="player-holder"></div>`);
-    setupInterceptPieCloud(page, '@pie-element/multiple-choice');
+    setupInterceptPieCloud(page, "@pie-element/multiple-choice");
 
-    await page.evaluate(loadPie, JSON.stringify(simplePieMock), 'player1');
+    await page.evaluate(loadPie, JSON.stringify(simplePieMock), "player1");
     await page.waitForChanges();
-    const piePlayer = await page.find('pie-player');
+    const piePlayer = await page.find("pie-player");
     expect(piePlayer).toBeDefined();
     const pieElement = await page.waitForSelector(
-      'pie-player pie-multiple-choice'
+      "pie-player pie-multiple-choice"
     );
     expect(pieElement).toBeDefined();
-    const model = await page.$eval('pie-player pie-multiple-choice', el =>
-      el.getAttribute('model')
+    const model = await page.$eval("pie-player pie-multiple-choice", el =>
+      el.getAttribute("model")
     );
     expect(model).toBeTruthy();
 
     // load it again
-    await page.evaluate(loadPie, JSON.stringify(simplePieMock), 'player2');
+    await page.evaluate(loadPie, JSON.stringify(simplePieMock), "player2");
     await page.waitForChanges();
 
-    const secondPlayer = await page.find('pie-player');
+    const secondPlayer = await page.find("pie-player");
     expect(secondPlayer).toBeDefined();
     const secondPieElement = await page.waitForSelector(
-      'pie-player:nth-child(2) pie-multiple-choice'
+      "pie-player:nth-child(2) pie-multiple-choice"
     );
     expect(secondPieElement).toBeDefined();
     const model2 = await page.$eval(
-      'pie-player:nth-child(2) pie-multiple-choice',
-      el => el.getAttribute('model')
+      "pie-player:nth-child(2) pie-multiple-choice",
+      el => el.getAttribute("model")
     );
     expect(model2).toBeTruthy();
   });
 
-  it('loads an item with stimulus', async () => {
-    
+  describe("preview mode", () => {
+    it.only("loads item with preview", async () => {
+      await page.setContent(`<pie-player></pie-player>`);
+      setupInterceptPieCloud(page, "@pie-element");
+      const piePlayer = await page.find("pie-player");
+      await piePlayer.setProperty("addCorrectResponse", true);
+      await piePlayer.setProperty("config", simplePieMock);
+      await page.waitForChanges();
+      await page.waitForSelector("pie-player pie-multiple-choice:defined");
+      const el = await page.find("pie-player pie-multiple-choice");
+      const d = JSON.parse(el.innerHTML);
+      expect(d.session).toEqual({ correctResponse: true });
+    });
+  });
+
+  it("loads an item with stimulus", async () => {
     await page.setContent(`<pie-player></pie-player>`);
-    setupInterceptPieCloud(page, '@pie-element');
-    const piePlayer = await page.find('pie-player');
-    await piePlayer.setProperty('config', advancedPieMock);
+    setupInterceptPieCloud(page, "@pie-element");
+    const piePlayer = await page.find("pie-player");
+    await piePlayer.setProperty("config", advancedPieMock);
     await page.waitForChanges();
     expect(piePlayer).toBeDefined();
-    const stimulusLayout = await piePlayer.find('pie-stimulus-layout');
+    const stimulusLayout = await piePlayer.find("pie-stimulus-layout");
     expect(stimulusLayout).toBeDefined();
-    const passageModel = await page.$eval('#stimulusPlayer pie-passage', el =>
-      el.getAttribute('model')
+    const passageModel = await page.$eval("#stimulusPlayer pie-passage", el =>
+      el.getAttribute("model")
     );
     expect(passageModel).toBeTruthy();
     const questionModel = await page.$eval(
-      '#itemPlayer pie-multiple-choice',
-      el => el.getAttribute('model')
+      "#itemPlayer pie-multiple-choice",
+      el => el.getAttribute("model")
     );
     expect(questionModel).toBeTruthy();
   });
 
-  it('does not render stimulus is renderStimulus is false', async () => {
+  it("does not render stimulus is renderStimulus is false", async () => {
     await page.setContent(`<pie-player render-stimulus="false"></pie-player>`);
-    setupInterceptPieCloud(page, '@pie-element');
-    const piePlayer = await page.find('pie-player');
-    await piePlayer.setProperty('config', advancedPieMock);
+    setupInterceptPieCloud(page, "@pie-element");
+    const piePlayer = await page.find("pie-player");
+    await piePlayer.setProperty("config", advancedPieMock);
     await page.waitForChanges();
     expect(piePlayer).toBeDefined();
-    const stimulusLayout = await piePlayer.find('pie-stimulus-layout');
+    const stimulusLayout = await piePlayer.find("pie-stimulus-layout");
     expect(stimulusLayout).toBeNull();
-
   });
 
-
-  it('emits a load-complete event once when config is loaded', async () => {
+  it("emits a load-complete event once when config is loaded", async () => {
     await page.setContent(`<div id="player-holder"></div>`);
-    setupInterceptPieCloud(page, '@pie-element/multiple-choice');
+    setupInterceptPieCloud(page, "@pie-element/multiple-choice");
     await page.evaluate(loadPie, JSON.stringify(advancedPieMock));
-    const loadCompleteSpy = await page.spyOnEvent('load-complete');
-    const sessionChangedSpy =  await page.spyOnEvent('session-changed');
+    const loadCompleteSpy = await page.spyOnEvent("load-complete");
+    const sessionChangedSpy = await page.spyOnEvent("session-changed");
     await page.waitForChanges();
     expect(loadCompleteSpy).toHaveReceivedEventTimes(1);
     expect(sessionChangedSpy).toHaveReceivedEventTimes(0);
- 
   });
 
-  it('calls controler to set correct response', async () => {
+  it("calls controler to set correct response", async () => {
     await page.setContent(
       `<pie-player add-correct-response="true"></pie-player>`
     );
-    setupInterceptPieCloud(page, '@pie-element');
-    const piePlayer = await page.find('pie-player');
-    await piePlayer.setProperty('config', simplePieMock);
+    setupInterceptPieCloud(page, "@pie-element");
+    const piePlayer = await page.find("pie-player");
+    await piePlayer.setProperty("config", simplePieMock);
 
     await page.waitForChanges();
     expect(piePlayer).toBeDefined();
 
     await page.waitForChanges();
     const pieElement = await page.waitForSelector(
-      'pie-player pie-multiple-choice'
+      "pie-player pie-multiple-choice"
     );
     expect(pieElement).toBeDefined();
     const session = await page.$eval(
-      'pie-player pie-multiple-choice',
+      "pie-player pie-multiple-choice",
       el => (el as any).session
     );
     expect(session).toEqual({ correctResponse: true });
   });
-
 });
