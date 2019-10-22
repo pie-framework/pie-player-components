@@ -229,7 +229,6 @@ export class Player {
         }
         const pieEl: PieElement = this.el.querySelector(`[id='${model.id}']`);
         let session = this.findOrAddSession(this.session.data, model.id);
-        console.log("addCorrectResponse??? ", this.addCorrectResponse);
         if (pieEl) {
           if (!this.hosted) {
             try {
