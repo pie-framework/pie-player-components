@@ -1,3 +1,10 @@
+# [0.15.0](https://github.com/pie-framework/pie-player-components/compare/v0.14.0...v0.15.0) (2019-10-23)
+
+
+### Features
+
+* make bundle url part of config ([#27](https://github.com/pie-framework/pie-player-components/issues/27)) ([b5009e1](https://github.com/pie-framework/pie-player-components/commit/b5009e16e716e42a438e4d503f96f91f30857b3d))
+
 # [0.14.0](https://github.com/pie-framework/pie-player-components/compare/v0.13.2...v0.14.0) (2019-10-22)
 
 
