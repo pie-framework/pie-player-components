@@ -78,7 +78,9 @@
 
       const player = document.getElementById("player");
 
-      player.addEventListener("sessionChanged", event => {
+      document.addEventListener("session-changed", e => console.log(">", e));
+
+      player.addEventListener("session-changed", event => {
         console.log(event.type + ":" + JSON.stringify(event.detail));
       });
 
