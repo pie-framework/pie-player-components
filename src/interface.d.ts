@@ -10,7 +10,13 @@ interface PieContent {
   models: PieModel[]
 
   markup: string;
+
+  bundle?: BundleInfo;
 }
+
+export type BundleInfo = {
+  url: string;
+};
 
 export type ItemSession = {
   id: string;

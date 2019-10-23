@@ -10,7 +10,7 @@ import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
 import {
   ItemConfig,
   ItemSession,
-  PieItemElement,
+  PieContent,
   PieModel,
 } from './interface';
 import {
@@ -52,7 +52,7 @@ export namespace Components {
     * Loads the custom elments defined by the PIEs, if they are not already loaded.
     * @param pieHash - The PIE elements to load. `key` = html element, `value`: npm package
     */
-    'loadPies': (pieHash: PieItemElement) => Promise<void>;
+    'loadPies': (pieContent: PieContent) => Promise<void>;
     /**
     * If the bundle is not available yet, the maximum number of milliseconds  between two retries for downloading
     */
@@ -83,10 +83,6 @@ export namespace Components {
     * Indicates if player running in the context of a PIE hosting system. Do not modify the default value for this property if you are not implementing a PIE host. If true, the host is responsible for all model updates.
     */
     'hosted'?: boolean;
-    /**
-    * If provided this url is used for loading the JS bundle for rendering the PIE Elements. If not provided the system will default to using the PIE Cloud service to locate and load JS bundles.
-    */
-    'jsBundleUrls'?: string[];
     /**
     * If the item contains a stimulus, the player will render it by default. Set this property to false to not render stimulus.
     */
@@ -231,10 +227,6 @@ declare namespace LocalJSX {
     * Indicates if player running in the context of a PIE hosting system. Do not modify the default value for this property if you are not implementing a PIE host. If true, the host is responsible for all model updates.
     */
     'hosted'?: boolean;
-    /**
-    * If provided this url is used for loading the JS bundle for rendering the PIE Elements. If not provided the system will default to using the PIE Cloud service to locate and load JS bundles.
-    */
-    'jsBundleUrls'?: string[];
     /**
     * Emitted when the content in the config has been loaded.
     */

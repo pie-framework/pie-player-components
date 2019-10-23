@@ -280,7 +280,7 @@ export class Author {
   async loadPieElements() {
     if (this.config) {
       await this.pieLoader.loadCloudPies(
-        this.pieContentModel.elements,
+        this.pieContentModel,
         this.doc
       );
     }
