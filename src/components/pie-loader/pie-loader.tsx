@@ -3,7 +3,7 @@ import {
   Method,
   Prop
 } from '@stencil/core';
-import { PieItemElement} from '../../interface';
+import { PieContent } from '../../interface';
 import { PieLoader } from '../../pie-loader';
 
 /**
@@ -45,8 +45,8 @@ export class Loader {
    * @param {Object<string,string>} pieHash - The PIE elements to load. `key` = html element, `value`: npm package
    */
   @Method()
-  async loadPies(pieHash: PieItemElement) {
-    return await this.loader.loadCloudPies(pieHash, this.doc, {
+  async loadPies(pieContent: PieContent) {
+    return await this.loader.loadCloudPies(pieContent, this.doc, {
       retries: this.retries,
       minTimeout: this.minTimeout,
       maxTimeout: this.maxTimeout

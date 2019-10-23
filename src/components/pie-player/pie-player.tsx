@@ -111,11 +111,6 @@ export class Player {
    */
   @Prop() hosted?: boolean = false;
 
-  /**
-   * If provided this url is used for loading the JS bundle for rendering the PIE Elements.
-   * If not provided the system will default to using the PIE Cloud service to locate and load JS bundles.
-   */
-  @Prop() jsBundleUrls?: string[];
 
   /**
    * If the item contains a stimulus, the player will render it by default.
@@ -168,15 +163,9 @@ export class Player {
       }
 
       if (!this.elementsLoaded) {
-        if (this.jsBundleUrls) {
-          await this.pieLoader.loadJs(this.jsBundleUrls, this.doc);
-          await this.pieLoader.defineElements(this.pieContentModel.elements);
-        } else {
-          await this.pieLoader.loadCloudPies(
-            this.pieContentModel.elements,
-            this.doc
-          );
-        }
+
+        await this.pieLoader.loadCloudPies(this.pieContentModel, 
+              this.doc);
       }
     } catch (err) {
       this.playerError.emit(`problem loading item (${err})`);
@@ -340,7 +329,6 @@ export class Player {
             config={this.stimulusItemModel.stimulus}
             env={this.env}
             hosted={this.hosted}
-            jsBundleUrls={this.jsBundleUrls}
             session={this.session}
             ref={el => (this.stimulusPlayer = el as HTMLElement)}
           />
@@ -350,7 +338,6 @@ export class Player {
             config={this.stimulusItemModel.pie}
             env={this.env}
             hosted={this.hosted}
-            jsBundleUrls={this.jsBundleUrls}
             session={this.session}
           />
         </div>
@@ -361,7 +348,6 @@ export class Player {
           config={this.stimulusItemModel.pie}
           env={this.env}
           hosted={this.hosted}
-          jsBundleUrls={this.jsBundleUrls}
           session={this.session}
         />
       );

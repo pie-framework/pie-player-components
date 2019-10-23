@@ -16,7 +16,7 @@
 
 ## Methods
 
-### `loadPies(pieHash: PieItemElement) => Promise<void>`
+### `loadPies(pieContent: PieContent) => Promise<void>`
 
 Loads the custom elments defined by the PIEs, if they are not already loaded.
 
