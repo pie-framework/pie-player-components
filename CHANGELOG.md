@@ -1,3 +1,10 @@
+## [0.15.1](https://github.com/pie-framework/pie-player-components/compare/v0.15.0...v0.15.1) (2019-10-25)
+
+
+### Bug Fixes
+
+* block 'session-changed' for a duration ([#26](https://github.com/pie-framework/pie-player-components/issues/26)) ([0874095](https://github.com/pie-framework/pie-player-components/commit/0874095c089ed23123ddbab81ec93008f14e45b8))
+
 # [0.15.0](https://github.com/pie-framework/pie-player-components/compare/v0.14.0...v0.15.0) (2019-10-23)
 
 
