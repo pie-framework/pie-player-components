@@ -36,8 +36,6 @@ export class Player {
    */
   stimulusPlayer: HTMLElement;
 
-  _loadCompleteState: boolean = false;
-
   @Prop({ context: "document" }) doc!: Document;
 
   @Element() el: HTMLElement;
@@ -131,7 +129,6 @@ export class Player {
   @Watch("config")
   async watchConfig(newConfig) {
     this.elementsLoaded = false;
-    this._loadCompleteState = false;
 
     // wrapping a player in stimulus layoute
     if (this.stimulusPlayer) {
@@ -205,6 +202,16 @@ export class Player {
       this.pieContentModel.markup &&
       this.elementsLoaded
     ) {
+      /**
+       * Block session changed events while we set model/session on the elements.
+       * TODO: The elements should *not* be firing 'session-changed' when the session is set.
+       * They should only fire this if a user has made a change. Can we guarantee that?
+       */
+      this.el.addEventListener(
+        SessionChangedEvent.TYPE,
+        this.stopEventFromPropagating
+      );
+
       this.pieContentModel.models.forEach(async (model, index) => {
         if (model && model.error) {
           this.playerError.emit(`error loading question data`);
@@ -252,21 +259,23 @@ export class Player {
               );
             }
           }
-          // by setting session we will trigger session-changed from PIE
-          // block this event, and set/emit load complete on receipt to not block future events
-          pieEl.addEventListener(SessionChangedEvent.TYPE, ev => {
-            if (!this._loadCompleteState) {
-              ev.stopPropagation();
-              if (this.pieContentModel.models.length === index + 1) {
-                this._loadCompleteState = true;
-                this.loadComplete.emit();
-              }
-            }
-          });
           pieEl.session = session;
         }
       });
+      setTimeout(() => {
+        /** remove the event blocker - see above */
+        this.el.removeEventListener(
+          SessionChangedEvent.TYPE,
+          this.stopEventFromPropagating
+        );
+        //TODO: is this needed anymore? maybe it should be using 'model-set' instead of 'session-changed' which is what it was using.
+        this.loadComplete.emit();
+      }, 150);
     }
+  }
+
+  private stopEventFromPropagating(e: CustomEvent) {
+    e.stopPropagation();
   }
 
   async componentWillLoad() {
