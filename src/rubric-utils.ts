@@ -1,11 +1,11 @@
-import { PieContent, PieModel } from './interface';
+import { PieContent, PieModel } from "./interface";
 import {
   modelsForPackage,
   elementForPackage,
   pieShortIdGenerator,
   elementsHasPackage
-} from './utils/utils';
-
+} from "./utils/utils";
+import cloneDeep from "lodash/cloneDeep";
 
 /**
  * Allows you to modify the markup for a package that is present in elements/model but
@@ -19,17 +19,18 @@ export const addMarkupForPackage = (
   npmPackage: string,
   template: (id, tag: string, markup: string) => string
 ): PieContent => {
-  const elem = content && elementForPackage(content, npmPackage);
-  if (elem && modelsForPackage(content, npmPackage).length > 0) {
-    if (content.markup !== null && !content.markup.match(/elem/)) {
-      const id =
-        content.models && content.models.find(m => m.element === elem).id;
+  const out = cloneDeep(content);
+  const elem = out && elementForPackage(out, npmPackage);
+  if (elem && modelsForPackage(out, npmPackage).length > 0) {
+    const match = out.markup.match(new RegExp(elem));
+    if (out.markup !== null && !match) {
+      const id = out.models && out.models.find(m => m.element === elem).id;
       if (id) {
-        content.markup = template(id, elem, content.markup);
+        out.markup = template(id, elem, out.markup);
       }
     }
   }
-  return content;
+  return out;
 };
 
 /**
@@ -38,8 +39,8 @@ export const addMarkupForPackage = (
  */
 export const addRubric = (content: PieContent): PieContent => {
   return addMarkupForPackage(
-    content,
-    '@pie-element/rubric',
+    cloneDeep(content),
+    "@pie-element/rubric",
     (id, tag, markup) => {
       return `
     ${markup}
@@ -53,15 +54,18 @@ export const addRubric = (content: PieContent): PieContent => {
 
 /**
  * Adds the provided package to the provided PieContent Object's `elements` and `models` properties.
- * 
+ *
  * @param content the PieContent for rendering
  * @param packageToAdd the NPM Package to add to the content config
  * @param model optional the PieModel to add, `id` and `element` properties will be replaced by this function if present
  */
-export const addPackageToContent = (content: PieContent, packageToAdd, model?:PieModel) => {
-
+export const addPackageToContent = (
+  content: PieContent,
+  packageToAdd,
+  model?: PieModel
+) => {
   if (packageToAdd && !elementsHasPackage(content.elements, packageToAdd)) {
-    model = model ? model : {} as any;
+    model = model ? model : ({} as any);
     // add package
     model.id = pieShortIdGenerator();
     const elementName = pieShortIdGenerator();
@@ -70,5 +74,4 @@ export const addPackageToContent = (content: PieContent, packageToAdd, model?:Pi
     content.elements && (content.elements[elementName] = packageToAdd);
     return content;
   }
-  
 };
