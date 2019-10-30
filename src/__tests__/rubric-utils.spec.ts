@@ -49,7 +49,7 @@ describe("rubric utils", () => {
       expect(handled.markup).toMatch(/pie-rubric/);
     });
 
-    it.only("do nothing if in markup", () => {
+    it("do nothing if in markup", () => {
       const content = {
         ...pieContent,
         markup: '<pie-rubric id="x"></pie-rubric>'

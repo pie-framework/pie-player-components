@@ -21,8 +21,12 @@ export const addMarkupForPackage = (
 ): PieContent => {
   const out = cloneDeep(content);
   const elem = out && elementForPackage(out, npmPackage);
+  console.log("elem:", elem);
   if (elem && modelsForPackage(out, npmPackage).length > 0) {
-    if (out.markup !== null && !out.markup.match(/elem/)) {
+    // const match = out.markup.match(/elem/);
+    const match = out.markup.match(new RegExp(elem));
+    // console.log("match:", match, "fMatch", fMatch);
+    if (out.markup !== null && !match) {
       const id = out.models && out.models.find(m => m.element === elem).id;
       if (id) {
         out.markup = template(id, elem, out.markup);
