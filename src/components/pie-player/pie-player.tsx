@@ -109,7 +109,6 @@ export class Player {
    */
   @Prop() hosted?: boolean = false;
 
-
   /**
    * If the item contains a stimulus, the player will render it by default.
    * Set this property to false to not render stimulus.
@@ -147,12 +146,16 @@ export class Player {
           this.stimulusItemModel = newConfig;
           return; // if stimulus item
         } else if (newConfig.elements) {
-          this.pieContentModel = addRubric(newConfig);
+          console.log("!!newConfig:", newConfig);
+          const wRub = addRubric(newConfig);
+          console.log("!!! with rubric:", wRub);
+          this.pieContentModel = wRub;
         } else {
           this.playerError.emit(`invalid pie data model`);
           return;
         }
       } catch (err) {
+        console.error(err);
         this.playerError.emit(
           `exception processing content model - ${err.message}`
         );
@@ -160,11 +163,10 @@ export class Player {
       }
 
       if (!this.elementsLoaded) {
-
-        await this.pieLoader.loadCloudPies(this.pieContentModel, 
-              this.doc);
+        await this.pieLoader.loadCloudPies(this.pieContentModel, this.doc);
       }
     } catch (err) {
+      console.error(err);
       this.playerError.emit(`problem loading item (${err})`);
     }
   }
@@ -308,7 +310,7 @@ export class Player {
         // the value first rather than setting the promise directly on
         // this state property - otherwise lifecycle re-render is triggered too early
         const loadedInfo = await this.pieLoader.elementsHaveLoaded(elements);
-
+        console.log("loaded info:", loadedInfo);
         if (
           loadedInfo.val &&
           !!loadedInfo.elements.find(
@@ -330,6 +332,7 @@ export class Player {
   }
 
   render() {
+    console.log("[render]", this.pieContentModel);
     if (this.stimulusItemModel) {
       return this.renderStimulus ? (
         <div class="">
@@ -361,6 +364,7 @@ export class Player {
         />
       );
     } else {
+      console.log("elements loaded?", this.elementsLoaded);
       if (this.elementsLoaded) {
         return (
           <div

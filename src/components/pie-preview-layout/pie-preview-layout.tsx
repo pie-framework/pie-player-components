@@ -123,9 +123,10 @@ export class PiePreviewLayout {
               />
             </div>
             <div class="pie-player">
-              {/* <pie-player
-                  ref={(el) => this.piePlayerElement = el as HTMLPiePlayerElement}
-                  config={this.config as ItemConfig}></pie-player> */}
+              <pie-player
+                ref={el => (this.piePlayerElement = el as HTMLPiePlayerElement)}
+                config={this.config as ItemConfig}
+              />
             </div>
           </div>
         </div>
