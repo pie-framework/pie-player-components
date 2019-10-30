@@ -71,7 +71,7 @@ describe("pie-player", () => {
   });
 
   describe("preview mode", () => {
-    it.only("loads item with preview", async () => {
+    it("loads item with preview", async () => {
       await page.setContent(`<pie-player></pie-player>`);
       setupInterceptPieCloud(page, "@pie-element");
       const piePlayer = await page.find("pie-player");

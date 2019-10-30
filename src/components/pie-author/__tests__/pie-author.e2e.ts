@@ -95,7 +95,7 @@ describe("pie-author", () => {
     expect(configProp.foo).toEqual("bar");
   });
 
-  it.only("add a rubric before adding config", async () => {
+  it("add a rubric before adding config", async () => {
     await page.setContent("<pie-author></pie-author>");
     pieAuthor = await page.find("pie-author");
     await setupInterceptPieCloud(page, pie);
