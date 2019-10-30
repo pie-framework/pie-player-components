@@ -279,10 +279,7 @@ export class Author {
 
   async loadPieElements() {
     if (this.config) {
-      await this.pieLoader.loadCloudPies(
-        this.pieContentModel,
-        this.doc
-      );
+      await this.pieLoader.loadCloudPies(this.pieContentModel, this.doc);
     }
   }
 
@@ -332,18 +329,18 @@ export class Author {
       "@pie-element/rubric",
       rubricModel as PieModel
     );
-    addRubric(configPieContent);
-    return config;
+    return addRubric(configPieContent);
   }
 
   render() {
     if (this.pieContentModel && this.pieContentModel.markup) {
+      const markup = this.getRenderMarkup();
       if (this.addPreview) {
         return (
           <pie-preview-layout config={this.config}>
             <div slot="configure">
               <pie-spinner active={!this.elementsLoaded}>
-                <div innerHTML={this.getRenderMarkup()} />
+                <div innerHTML={markup} />
               </pie-spinner>
             </div>
             <input type="file" hidden ref={r => (this.fileInput = r)} />
@@ -352,7 +349,7 @@ export class Author {
       } else {
         return (
           <pie-spinner active={!this.elementsLoaded}>
-            <div innerHTML={this.getRenderMarkup()} />
+            <div innerHTML={markup} />
             <input type="file" hidden ref={r => (this.fileInput = r)} />
           </pie-spinner>
         );

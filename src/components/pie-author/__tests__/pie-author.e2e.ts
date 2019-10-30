@@ -95,7 +95,7 @@ describe("pie-author", () => {
     expect(configProp.foo).toEqual("bar");
   });
 
-  it("add a rubric before adding config", async () => {
+  it.only("add a rubric before adding config", async () => {
     await page.setContent("<pie-author></pie-author>");
     pieAuthor = await page.find("pie-author");
     await setupInterceptPieCloud(page, pie);
@@ -112,7 +112,10 @@ describe("pie-author", () => {
 
     pieAuthor.setProperty("config", rubricAdded);
     await page.waitForChanges();
-    await page.waitForSelector(`pie-author ${tagName}-config:defined`);
+    await page.waitForSelector(`pie-author ${tagName}-config:defined`, {
+      timeout: 1000
+    });
+
     const rubricModel = await page.$eval(
       `pie-author ${tagName}-config`,
       el => (el as any).model

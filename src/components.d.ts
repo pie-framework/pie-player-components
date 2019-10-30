@@ -33,7 +33,7 @@ export namespace Components {
     * @param config the item config to mutate
     * @param rubricModel
     */
-    'addRubricToConfig': (config: ItemConfig, rubricModel?: any) => Promise<ItemConfig>;
+    'addRubricToConfig': (config: ItemConfig, rubricModel?: any) => Promise<PieContent>;
     /**
     * The Pie config model.
     */
