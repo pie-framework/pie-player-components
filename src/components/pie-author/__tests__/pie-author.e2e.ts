@@ -69,6 +69,42 @@ describe("pie-author", () => {
     expect(model.id).toEqual("1");
   });
 
+
+  it("doesn't maintain stale data when  prop updates", async () => {
+    await page.setContent("<pie-author></pie-author>");
+    pieAuthor = await page.find("pie-author");
+    await setupInterceptPieCloud(page, pie);
+    const item = pieMock;
+    const copy = cloneDeep(pieMock);
+    item.models[0].test = "test";
+    
+    await page.$eval(
+      "pie-author",
+      (elm: any, prop) => {
+        elm.config = prop;
+      },
+      item
+    );
+
+    await page.waitForChanges();
+    const configEl = await page.find("pie-author pie-multiple-choice-config");
+    const model = await configEl.getProperty("model");
+    expect(model.test).toEqual("test");
+
+    await page.$eval(
+      "pie-author",
+      (elm: any, prop) => {
+        elm.config = prop;
+      },
+      copy
+    );
+    await page.waitForChanges();
+    const copyConfigEl = await page.find("pie-author pie-multiple-choice-config");
+    const copyModel = await copyConfigEl.getProperty("model");
+    expect(copyModel.test).toBeUndefined();
+
+  });
+
   it("sets config settings if present", async () => {
     await page.setContent("<pie-author></pie-author>");
     pieAuthor = await page.find("pie-author");
