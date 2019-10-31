@@ -1,3 +1,12 @@
+## [0.15.2](https://github.com/pie-framework/pie-player-components/compare/v0.15.1...v0.15.2) (2019-10-31)
+
+
+### Bug Fixes
+
+* addRubricToConfig return result of addRubric ([b753be2](https://github.com/pie-framework/pie-player-components/commit/b753be2c7c7d8b064cab95528daccac25787fd73))
+* create interpolated regex properly ([05951ee](https://github.com/pie-framework/pie-player-components/commit/05951eec99adc0aba4d086d9b7415057beba9730))
+* element not rendering when rubric added [ch3725] ([2d6513d](https://github.com/pie-framework/pie-player-components/commit/2d6513d6dd052d08a0ad91174a683c9228a05b5f))
+
 ## [0.15.1](https://github.com/pie-framework/pie-player-components/compare/v0.15.0...v0.15.1) (2019-10-25)
 
 
