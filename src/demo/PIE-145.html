@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0"
+    />
+    <title>Stencil Component Starter</title>
+    <script nomodule src="/build/pie-player-components.js"></script>
+    <script type="module" src="/build/pie-player-components.esm.js"></script>
+  </head>
+  <body>
+    <pie-player id="player"></pie-player>
+
+    <script>
+      const config = {
+        models: [
+          {
+            disabled: false,
+            mode: "gather",
+            prompt:
+              "Logan draws a circle with a radius of 1 inch. &nbsp;She then draws two central angles on this circle. &nbsp;Central angle <em>A</em> has a measure of 60° and central angle <em>B</em> has a measure of 325°.<br><br>Part A:<br><br>Which of the following actions could Logan take to find the radian measure of central angle <em>A</em>?",
+            choiceMode: "radio",
+            shuffle: false,
+            choices: [
+              {
+                label:
+                  'Determine <table class="kds-fraction">    <tbody><tr> <td class="kds-numerator">1</td></tr>    <tr><td class="kds-denominator">3</td></tr></tbody></table> of the circle\'s circumference.',
+                value: "1",
+                rationale: null
+              },
+              {
+                label:
+                  'Determine <table class="kds-fraction">    <tbody><tr> <td class="kds-numerator">1</td></tr>    <tr><td class="kds-denominator">6</td></tr></tbody></table> of the circle\'s circumference.',
+                value: "2",
+                rationale: null
+              },
+              {
+                label:
+                  'Determine <table class="kds-fraction">    <tbody><tr> <td class="kds-numerator">1</td></tr>    <tr><td class="kds-denominator">60</td></tr></tbody></table> of the circle\'s circumference.',
+                value: "3",
+                rationale: null
+              },
+              {
+                label:
+                  'Determine <table class="kds-fraction">    <tbody><tr> <td class="kds-numerator">1</td></tr>    <tr><td class="kds-denominator">180</td></tr></tbody></table> of the circle\'s circumference.',
+                value: "4",
+                rationale: null
+              }
+            ],
+            feedbackEnabled: true,
+            complete: {
+              min: 1
+            },
+            teacherInstructions: null,
+            element: "multiple-choice",
+            id: "2c8b005f-7faa-4d41-9be5-0ebfa8cb4490"
+          },
+          {
+            config: {
+              feedbackEnabled: true,
+              promptEnabled: true,
+              rationaleEnabled: true,
+              teacherInstructionsEnabled: true,
+              studentInstructionsEnabled: true,
+              id: "1",
+              element: "math-inline",
+              customKeys: [
+                "<",
+                "\\le",
+                "\\ge",
+                ">",
+                "\\frac{}{}",
+                "x^{}",
+                "\\left(\\right)",
+                "\\abs{}",
+                "\\sqrt{}",
+                "\\sqrt[n]{}",
+                "\\pi",
+                "\\iota",
+                "\\sin",
+                "\\cos",
+                "\\tan",
+                "\\arcsin",
+                "\\arccos",
+                "\\arctan"
+              ],
+              responseType: "Advanced Multi",
+              expression: "{{response}}",
+              equationEditor: "everything",
+              responses: [
+                {
+                  validation: "symbolic",
+                  id: "1",
+                  allowSpaces: true,
+                  alternates: {},
+                  answer: "\\frac{65\\pi}{36}"
+                }
+              ]
+            },
+            disabled: false,
+            view: false,
+            correctResponse: {},
+            rationale: null,
+            teacherInstructions: null,
+            element: "math-inline",
+            id: "1"
+          }
+        ],
+        elements: {
+          "multiple-choice": "@pie-element/multiple-choice@latest",
+          "math-inline": "@pie-element/math-inline@latest"
+        },
+        id: "cd067f52-291c-4af5-bd11-b08152dc17c0",
+        markup:
+          '<multiple-choice id="2c8b005f-7faa-4d41-9be5-0ebfa8cb4490"></multiple-choice><br/>nullPart B:<br /><br />What is the radian measure of central angle <em>B</em>? &#160;Express your answer as a single fraction.<br /><br /> <math-inline id="1"></math-inline><br/>'
+      };
+      // const config = {
+      //   id: "1",
+      //   elements: {
+      //     "pie-multiple-choice": "@pie-element/multiple-choice@2.7.3"
+      //   },
+      //   models: [
+      //     {
+      //       id: "1",
+      //       element: "pie-multiple-choice",
+      //       prompt:
+      //         "Which of these northern European countries are EU members?",
+      //       choiceMode: "checkbox",
+      //       keyMode: "numbers",
+      //       choices: [
+      //         {
+      //           correct: true,
+      //           value: "sweden",
+      //           label: "Sweden",
+      //           feedback: {
+      //             type: "none",
+      //             value: ""
+      //           }
+      //         },
+      //         {
+      //           value: "iceland",
+      //           label: "Iceland",
+      //           feedback: {
+      //             type: "none",
+      //             value: ""
+      //           }
+      //         },
+      //         {
+      //           value: "norway",
+      //           label: "Norway",
+      //           feedback: {
+      //             type: "none",
+      //             value: ""
+      //           }
+      //         },
+      //         {
+      //           correct: true,
+      //           value: "finland",
+      //           label: "Finland",
+      //           feedback: {
+      //             type: "none",
+      //             value: ""
+      //           }
+      //         }
+      //       ],
+      //       partialScoring: false,
+      //       partialScoringLabel: `Each correct response that is correctly checked and each incorrect response
+      //       that is correctly unchecked will be worth 1 point.
+      //       The maximum points is the total number of answer choices.`
+      //     }
+      //   ],
+      //   markup: `
+      //     <pie-multiple-choice id='1'></pie-multiple-choice>
+      //   `
+      // };
+
+      // const config = {};
+
+      const player = document.getElementById("player");
+      document.addEventListener("session-changed", e => {
+        console.log(e);
+      });
+
+      player.addEventListener("sessionChanged", event => {
+        console.log(event.type + ":" + JSON.stringify(event.detail));
+      });
+
+      player.config = config;
+    </script>
+  </body>
+</html>
