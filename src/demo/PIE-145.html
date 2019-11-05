@@ -17,6 +17,56 @@
       const config = {
         models: [
           {
+            config: {
+              feedbackEnabled: true,
+              promptEnabled: true,
+              rationaleEnabled: true,
+              teacherInstructionsEnabled: true,
+              studentInstructionsEnabled: true,
+              id: "1",
+              element: "math-inline",
+              customKeys: [
+                "<",
+                "\\le",
+                "\\ge",
+                ">",
+                "\\frac{}{}",
+                "x^{}",
+                "\\left(\\right)",
+                "\\abs{}",
+                "\\sqrt{}",
+                "\\sqrt[n]{}",
+                "\\pi",
+                "\\iota",
+                "\\sin",
+                "\\cos",
+                "\\tan",
+                "\\arcsin",
+                "\\arccos",
+                "\\arctan"
+              ],
+              responseType: "Advanced Multi",
+              expression: "{{response}}",
+              equationEditor: "everything",
+              responses: [
+                {
+                  alternates: {},
+                  answer: "\\frac{65\\pi}{36}",
+                  validation: "symbolic",
+                  id: "1",
+                  allowSpaces: true
+                }
+              ]
+            },
+            disabled: false,
+            view: false,
+            correctResponse: {},
+            rationale: null,
+            teacherInstructions: null,
+            element: "math-inline",
+            id: "1"
+          },
+          {
             disabled: false,
             mode: "gather",
             prompt:
@@ -56,53 +106,53 @@
             teacherInstructions: null,
             element: "multiple-choice",
             id: "2c8b005f-7faa-4d41-9be5-0ebfa8cb4490"
-          },
-          {
-            feedbackEnabled: true,
-            promptEnabled: true,
-            rationaleEnabled: true,
-            teacherInstructionsEnabled: true,
-            studentInstructionsEnabled: true,
-            customKeys: [
-              "<",
-              "\\le",
-              "\\ge",
-              ">",
-              "\\frac{}{}",
-              "x^{}",
-              "\\left(\\right)",
-              "\\abs{}",
-              "\\sqrt{}",
-              "\\sqrt[n]{}",
-              "\\pi",
-              "\\iota",
-              "\\sin",
-              "\\cos",
-              "\\tan",
-              "\\arcsin",
-              "\\arccos",
-              "\\arctan"
-            ],
-            expression: "{{response}}",
-            equationEditor: "everything",
-            responses: [
-              {
-                validation: "symbolic",
-                id: "1",
-                allowSpaces: true,
-                alternates: {},
-                answer: "\\frac{65\\pi}{36}"
-              }
-            ],
-            disabled: false,
-            responseType: "Advanced Multi",
-            view: false,
-            correctResponse: {},
-            rationale: null,
-            teacherInstructions: null,
-            element: "math-inline",
-            id: "1"
           }
+          // {
+          //   feedbackEnabled: true,
+          //   promptEnabled: true,
+          //   rationaleEnabled: true,
+          //   teacherInstructionsEnabled: true,
+          //   studentInstructionsEnabled: true,
+          //   customKeys: [
+          //     "<",
+          //     "\\le",
+          //     "\\ge",
+          //     ">",
+          //     "\\frac{}{}",
+          //     "x^{}",
+          //     "\\left(\\right)",
+          //     "\\abs{}",
+          //     "\\sqrt{}",
+          //     "\\sqrt[n]{}",
+          //     "\\pi",
+          //     "\\iota",
+          //     "\\sin",
+          //     "\\cos",
+          //     "\\tan",
+          //     "\\arcsin",
+          //     "\\arccos",
+          //     "\\arctan"
+          //   ],
+          //   expression: "{{response}}",
+          //   equationEditor: "everything",
+          //   responses: [
+          //     {
+          //       validation: "symbolic",
+          //       id: "1",
+          //       allowSpaces: true,
+          //       alternates: {},
+          //       answer: "\\frac{65\\pi}{36}"
+          //     }
+          //   ],
+          //   disabled: false,
+          //   responseType: "Advanced Multi",
+          //   view: false,
+          //   correctResponse: {},
+          //   rationale: null,
+          //   teacherInstructions: null,
+          //   element: "math-inline",
+          //   id: "1"
+          // }
         ],
         elements: {
           "multiple-choice": "@pie-element/multiple-choice@latest",
