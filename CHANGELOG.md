@@ -1,3 +1,10 @@
+## [0.15.3](https://github.com/pie-framework/pie-player-components/compare/v0.15.2...v0.15.3) (2019-11-06)
+
+
+### Bug Fixes
+
+* authoring view not loading PIE-155 ([27cba06](https://github.com/pie-framework/pie-player-components/commit/27cba06b0fb86d311e353177c4b4503d7f5b5ec3))
+
 ## [0.15.2](https://github.com/pie-framework/pie-player-components/compare/v0.15.1...v0.15.2) (2019-10-31)
 
 
