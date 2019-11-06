@@ -88,6 +88,10 @@ export class PieLoader {
            },
            base_url = BUILD_SERVICE_BASE
          ) => {
+           // TODO useRegistry disables PIE_REGISTRY as a cache, this is a temprorary workaround
+           // to handle that registry isn't accounting for the three constructors that may or
+           // may not be present in the PITs bundles: controller, Config, Element
+           let useRegistry = true;
            const elements = content.elements;
            const head = doc.getElementsByTagName('head')[0];
            const script = doc.createElement('script');
@@ -96,6 +100,7 @@ export class PieLoader {
 
            if (content.bundle && content.bundle.url) {
              scriptUrl = content.bundle.url;
+             useRegistry = false;
            } else {
              const bundleUri = getPackageBundleUri(piesToLoad);
              if (!bundleUri) {
@@ -118,19 +123,29 @@ export class PieLoader {
                  const elName = key;
                  if (!customElements.get(elName)) {
                    customElements.define(elName, pie.Element);
-                   this.registry[elName] = {
-                     package: _pies[key],
-                     status: Status.loading,
-                     tagName: elName
-                   };
-
-                   customElements.whenDefined(elName).then(async () => {
-                     this.registry[elName].status = Status.loaded;
-                     this.registry[elName].element = customElements.get(
-                       elName
-                     );
-                     this.registry[elName].controller = pie.controller;
-                   });
+                   if (useRegistry) {
+                    this.registry[elName] = {
+                      package: _pies[key],
+                      status: Status.loading,
+                      tagName: elName
+                    };
+                   }
+                   customElements
+                     .whenDefined(elName)
+                     .then(async () => {
+                       if (useRegistry) {
+                         this.registry[elName].status =
+                           Status.loaded;
+                         this.registry[
+                           elName
+                         ].element = customElements.get(
+                           elName
+                         );
+                         this.registry[elName].controller =
+                           pie.controller;
+                       }
+                     });
+                  
                  }
 
                  // This fixes some cases where the pie build service fails
@@ -145,7 +160,7 @@ export class PieLoader {
                    customElements
                      .whenDefined(configElName)
                      .then(async () => {
-                       if (this.registry[elName]) {
+                       if (this.registry[elName] && useRegistry) {
                          this.registry[
                            elName
                          ].config = customElements.get(configElName);
