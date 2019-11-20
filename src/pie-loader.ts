@@ -117,9 +117,12 @@ export class PieLoader {
                pieKeys.forEach(key => {
                  const packagesWithoutVersion = getPackageWithoutVersion(
                    _pies[key]
-                 );
-                 const pie =
-                   window['pie'].default[packagesWithoutVersion];
+                 );           
+                 const pie = window['pie'] && window['pie'].default ? window['pie'].default[packagesWithoutVersion] : null;
+                 if (!pie) {
+                   console.log(`pie constructor not found for ${key}`);
+                   return;
+                 }
                  const elName = key;
                  if (!customElements.get(elName)) {
                    customElements.define(elName, pie.Element);
