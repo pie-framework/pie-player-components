@@ -1,3 +1,10 @@
+# [0.16.0](https://github.com/pie-framework/pie-player-components/compare/v0.15.4...v0.16.0) (2019-11-21)
+
+
+### Features
+
+* call imageSupport.delete function ([#31](https://github.com/pie-framework/pie-player-components/issues/31)) ([945e7ae](https://github.com/pie-framework/pie-player-components/commit/945e7ae45c08989d01b6e869a41c184374209392))
+
 ## [0.15.4](https://github.com/pie-framework/pie-player-components/compare/v0.15.3...v0.15.4) (2019-11-21)
 
 
