@@ -1,3 +1,10 @@
+## [0.15.4](https://github.com/pie-framework/pie-player-components/compare/v0.15.3...v0.15.4) (2019-11-21)
+
+
+### Bug Fixes
+
+* **player:** added stimulus loading back as it should be [ch5691] ([e76d026](https://github.com/pie-framework/pie-player-components/commit/e76d0263100ff8575e0dff8d1995c22ba9469b69))
+
 ## [0.15.3](https://github.com/pie-framework/pie-player-components/compare/v0.15.2...v0.15.3) (2019-11-06)
 
 
