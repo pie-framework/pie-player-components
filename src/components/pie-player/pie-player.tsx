@@ -161,7 +161,7 @@ export class Player {
 
       if (!this.elementsLoaded) {
 
-        await this.pieLoader.loadCloudPies(this.pieContentModel, 
+        await this.pieLoader.loadCloudPies(this.pieContentModel,
               this.doc);
       }
     } catch (err) {
@@ -332,24 +332,28 @@ export class Player {
   render() {
     if (this.stimulusItemModel) {
       return this.renderStimulus ? (
-        <div class="">
-          <pie-player
-            id="stimulusPlayer"
-            config={this.stimulusItemModel.stimulus}
-            env={this.env}
-            hosted={this.hosted}
-            session={this.session}
-            ref={el => (this.stimulusPlayer = el as HTMLElement)}
-          />
-          <pie-player
-            id="itemPlayer"
-            addCorrectResponse={this.addCorrectResponse}
-            config={this.stimulusItemModel.pie}
-            env={this.env}
-            hosted={this.hosted}
-            session={this.session}
-          />
-        </div>
+        <pie-stimulus-layout>
+          <div slot="stimulus">
+            <pie-player
+              id="stimulusPlayer"
+              config={this.stimulusItemModel.stimulus}
+              env={this.env}
+              hosted={this.hosted}
+              session={this.session}
+              ref={el => (this.stimulusPlayer = el as HTMLElement)}
+            />
+          </div>
+          <div slot="item">
+            <pie-player
+              id="itemPlayer"
+              addCorrectResponse={this.addCorrectResponse}
+              config={this.stimulusItemModel.pie}
+              env={this.env}
+              hosted={this.hosted}
+              session={this.session}
+            />
+          </div>
+        </pie-stimulus-layout>
       ) : (
         <pie-player
           id="itemPlayer"
