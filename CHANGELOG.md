@@ -1,3 +1,10 @@
+## [0.16.1](https://github.com/pie-framework/pie-player-components/compare/v0.16.0...v0.16.1) (2019-11-21)
+
+
+### Bug Fixes
+
+* handle and log if constructor not found ([#32](https://github.com/pie-framework/pie-player-components/issues/32)) ([a7043ca](https://github.com/pie-framework/pie-player-components/commit/a7043ca507b0d6861e40888ef583624644b7a323))
+
 # [0.16.0](https://github.com/pie-framework/pie-player-components/compare/v0.15.4...v0.16.0) (2019-11-21)
 
 
