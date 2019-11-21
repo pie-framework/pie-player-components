@@ -109,7 +109,6 @@ export class Player {
    */
   @Prop() hosted?: boolean = false;
 
-
   /**
    * If the item contains a stimulus, the player will render it by default.
    * Set this property to false to not render stimulus.
@@ -160,9 +159,7 @@ export class Player {
       }
 
       if (!this.elementsLoaded) {
-
-        await this.pieLoader.loadCloudPies(this.pieContentModel,
-              this.doc);
+        await this.pieLoader.loadCloudPies(this.pieContentModel, this.doc);
       }
     } catch (err) {
       this.playerError.emit(`problem loading item (${err})`);
@@ -237,7 +234,6 @@ export class Player {
                     newEnv
                   );
                 }
-
                 pieEl.model = await controller.model(model, session, newEnv);
               } else {
                 // no controller provided

@@ -141,7 +141,7 @@ export class Author {
 
     this.handleDeleteImage = (e: DeleteImageEvent) => {
       console.log("[handleDeleteImage ..]", e);
-      e.detail.done();
+      this.imageSupport.delete(e.detail.src, e.detail.done);
     };
   }
 
