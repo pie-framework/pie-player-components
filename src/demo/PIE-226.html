@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0"
+    />
+    <title>Stencil Component Starter</title>
+    <script nomodule src="/build/pie-player-components.js"></script>
+    <script type="module" src="/build/pie-player-components.esm.js"></script>
+  </head>
+  <body>
+    <pie-player addCorrectResponse="true" id="player"></pie-player>
+
+    <script>
+      const config = {
+        models: [
+          {
+            rationale: "",
+            prompt:
+              '<div>What is <span data-latex="" data-raw="\\frac{1}{4}\\div\\frac{1}{3}">\\frac{1}{4}\\div\\frac{1}{3}</span>?</div>',
+            scoringType: "auto",
+            equationEditor: "3",
+            feedbackEnabled: false,
+            response: { answer: "", validation: "literal" },
+            studentInstructionsEnabled: false,
+            partialScoring: false,
+            rationaleEnabled: false,
+            teacherInstructionsEnabled: false,
+            id: "p-00000000",
+            promptEnabled: true,
+            responseType: "Simple",
+            expression: "",
+            feedback: {
+              correct: { default: "Correct", type: "none" },
+              partial: { default: "Nearly", type: "none" },
+              incorrect: { default: "Incorrect", type: "none" }
+            },
+            responses: [
+              { answer: "\\frac{3}{4}", validation: "symbolic", id: "1" }
+            ],
+            element: "pie-math-inline",
+            customKeys: ["\\left(\\right)", "\\frac{}{}", "x\\frac{}{}"]
+          }
+        ],
+        markup: '<pie-math-inline id="p-00000000"></pie-math-inline>',
+        id: "p-00000000",
+        elements: { "pie-math-inline": "@pie-element/math-inline@5.0.6" }
+      };
+
+      const player = document.getElementById("player");
+      document.addEventListener("session-changed", e => {
+        console.log(e);
+      });
+
+      player.addEventListener("sessionChanged", event => {
+        console.log(event.type + ":" + JSON.stringify(event.detail));
+      });
+      player.env = { mode: "gather", role: "instructor" };
+      player.addCorrectResponse = true;
+      player.config = config;
+    </script>
+  </body>
+</html>
