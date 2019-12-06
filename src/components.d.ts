@@ -16,6 +16,9 @@ import {
 import {
   ExternalImageSupport,
 } from './components/pie-author/dataurl-image-support';
+import {
+  BundleEndpoints,
+} from './pie-loader';
 
 export namespace Components {
   interface PieAuthor {
@@ -54,11 +57,11 @@ export namespace Components {
     */
     'loadPies': (pieContent: PieContent) => Promise<void>;
     /**
-    * If the bundle is not available yet, the maximum number of milliseconds  between two retries for downloading
+    * If the bundle is not available yet, the maximum number of milliseconds between two retries for downloading
     */
     'maxTimeout': number;
     /**
-    * If the bundle is not available yet, number of milliseconds before starting  the first retry attempt.
+    * If the bundle is not available yet, number of milliseconds before starting the first retry attempt.
     */
     'minTimeout': number;
     /**
@@ -71,6 +74,14 @@ export namespace Components {
     * Simulates a correct response for the item. This property will only have this effect if the `hosted` property is false and player is running client-side-only.
     */
     'addCorrectResponse': boolean;
+    /**
+    * Provide this property override the default endpoints used by the player to retrieve JS  bundles. Must be set before setting the config property. Most users will not need to use this property.
+    */
+    'bundleEndpoints'?: BundleEndpoints;
+    /**
+    * Optionally specifies the back-end that builds and hosts javascript bundles for rendering assessment items. This property lets you choose which environment to use, from 'dev' , 'stage' or 'prod' environments. Until 1.0 will default to 'stage'.
+    */
+    'bundleHost'?: string;
     /**
     * The Pie config model.
     */
@@ -198,11 +209,11 @@ declare namespace LocalJSX {
   }
   interface PieLoader {
     /**
-    * If the bundle is not available yet, the maximum number of milliseconds  between two retries for downloading
+    * If the bundle is not available yet, the maximum number of milliseconds between two retries for downloading
     */
     'maxTimeout'?: number;
     /**
-    * If the bundle is not available yet, number of milliseconds before starting  the first retry attempt.
+    * If the bundle is not available yet, number of milliseconds before starting the first retry attempt.
     */
     'minTimeout'?: number;
     /**
@@ -215,6 +226,14 @@ declare namespace LocalJSX {
     * Simulates a correct response for the item. This property will only have this effect if the `hosted` property is false and player is running client-side-only.
     */
     'addCorrectResponse'?: boolean;
+    /**
+    * Provide this property override the default endpoints used by the player to retrieve JS  bundles. Must be set before setting the config property. Most users will not need to use this property.
+    */
+    'bundleEndpoints'?: BundleEndpoints;
+    /**
+    * Optionally specifies the back-end that builds and hosts javascript bundles for rendering assessment items. This property lets you choose which environment to use, from 'dev' , 'stage' or 'prod' environments. Until 1.0 will default to 'stage'.
+    */
+    'bundleHost'?: string;
     /**
     * The Pie config model.
     */

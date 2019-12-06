@@ -1,4 +1,4 @@
-import { BUILD_SERVICE_BASE } from "../../defaults";
+import { DEFAULT_ENDPOINTS } from "../../pie-loader";
 import { E2EPage } from "@stencil/core/dist/testing";
 
 const fs = require('fs');
@@ -52,7 +52,7 @@ export const setupInterceptForRetry = (page: E2EPage, numberOfFailures = 4): Pro
   page.on('request', request => {
     count++;
     ;
-    if (request.url().match(BUILD_SERVICE_BASE)) {
+    if (request.url().match(DEFAULT_ENDPOINTS.prod.buildServiceBase)) {
       // fail the pre-flights
       if (count <= numberOfFailures && request.method() === "OPTIONS") {
         request.respond(failResponse);

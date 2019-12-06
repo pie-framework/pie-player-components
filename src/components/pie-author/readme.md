@@ -32,13 +32,13 @@ The class `pie-loading` will be added to the element while assets are being load
 
 ## Methods
 
-### `addRubricToConfig(config: ItemConfig, rubricModel?: any) => Promise<ItemConfig>`
+### `addRubricToConfig(config: ItemConfig, rubricModel?: any) => Promise<PieContent>`
 
 <span style="color:red">**[DEPRECATED]**</span> this method is for temporary use, will be removed at next major release<br/><br/>Utility method to add a `@pie-element/rubric` section to an item config when creating an item should be used before setting the config.
 
 #### Returns
 
-Type: `Promise<ItemConfig>`
+Type: `Promise<PieContent>`
 
 
 
@@ -57,6 +57,7 @@ graph TD;
   pie-author --> pie-spinner
   pie-preview-layout --> pie-preview-control
   pie-preview-layout --> pie-player
+  pie-player --> pie-stimulus-layout
   pie-player --> pie-player
   pie-player --> pie-spinner
   style pie-author fill:#f9f,stroke:#333,stroke-width:4px
