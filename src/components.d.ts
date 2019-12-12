@@ -8,6 +8,9 @@
 
 import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
 import {
+  BundleEndpoints,
+} from './pie-loader';
+import {
   ItemConfig,
   ItemSession,
   PieContent,
@@ -16,9 +19,6 @@ import {
 import {
   ExternalImageSupport,
 } from './components/pie-author/dataurl-image-support';
-import {
-  BundleEndpoints,
-} from './pie-loader';
 
 export namespace Components {
   interface PieAuthor {
@@ -38,6 +38,14 @@ export namespace Components {
     */
     'addRubricToConfig': (config: ItemConfig, rubricModel?: any) => Promise<PieContent>;
     /**
+    * Provide this property override the default endpoints used by the player to retrieve JS  bundles. Must be set before setting the config property. Most users will not need to use this property.
+    */
+    'bundleEndpoints'?: BundleEndpoints;
+    /**
+    * Optionally specifies the back-end that builds and hosts javascript bundles for rendering assessment items. This property lets you choose which environment to use, from 'dev' , 'stage' or 'prod' environments. Until 1.0 will default to 'stage'.
+    */
+    'bundleHost'?: string;
+    /**
     * The Pie config model.
     */
     'config': ItemConfig;
@@ -45,6 +53,10 @@ export namespace Components {
     * To customize the standard behaviour provided by interaction configuration views you can provide settings key-ed by the package name.  e.g.  `{ '@pie-element/inline-choice': { promptLabel: 'Item Stem' } }`  The settings that are configurable for each authoring view are documented in the `@package-name/docs` folder for each package.
     */
     'configSettings'?: { [packageName: string]: Object };
+    /**
+    * Allows disabling of the default behaviour which is to look up and load the JS bundle that define the Custom Elements used by the item config. This if for advanced use cases when using the pie-player in a container that is managing loading of Custom Elements and Controllers.
+    */
+    'disableBundler': boolean;
     /**
     * external providers can set this if they need to upload the assets to the cloud etc. by default we use data urls
     */
@@ -86,6 +98,10 @@ export namespace Components {
     * The Pie config model.
     */
     'config': ItemConfig;
+    /**
+    * Allows disabling of the default behaviour which is to look up and load the JS bundle that define the Custom Elements used by the item config. This if for advanced use cases when using the pie-player in a container that is managing loading of Custom Elements and Controllers.
+    */
+    'disableBundler': boolean;
     /**
     * Describes runtime environment for the player.
     */
@@ -187,6 +203,14 @@ declare namespace LocalJSX {
     */
     'addRubric'?: boolean;
     /**
+    * Provide this property override the default endpoints used by the player to retrieve JS  bundles. Must be set before setting the config property. Most users will not need to use this property.
+    */
+    'bundleEndpoints'?: BundleEndpoints;
+    /**
+    * Optionally specifies the back-end that builds and hosts javascript bundles for rendering assessment items. This property lets you choose which environment to use, from 'dev' , 'stage' or 'prod' environments. Until 1.0 will default to 'stage'.
+    */
+    'bundleHost'?: string;
+    /**
     * The Pie config model.
     */
     'config'?: ItemConfig;
@@ -194,6 +218,10 @@ declare namespace LocalJSX {
     * To customize the standard behaviour provided by interaction configuration views you can provide settings key-ed by the package name.  e.g.  `{ '@pie-element/inline-choice': { promptLabel: 'Item Stem' } }`  The settings that are configurable for each authoring view are documented in the `@package-name/docs` folder for each package.
     */
     'configSettings'?: { [packageName: string]: Object };
+    /**
+    * Allows disabling of the default behaviour which is to look up and load the JS bundle that define the Custom Elements used by the item config. This if for advanced use cases when using the pie-player in a container that is managing loading of Custom Elements and Controllers.
+    */
+    'disableBundler'?: boolean;
     /**
     * external providers can set this if they need to upload the assets to the cloud etc. by default we use data urls
     */
@@ -238,6 +266,10 @@ declare namespace LocalJSX {
     * The Pie config model.
     */
     'config'?: ItemConfig;
+    /**
+    * Allows disabling of the default behaviour which is to look up and load the JS bundle that define the Custom Elements used by the item config. This if for advanced use cases when using the pie-player in a container that is managing loading of Custom Elements and Controllers.
+    */
+    'disableBundler'?: boolean;
     /**
     * Describes runtime environment for the player.
     */

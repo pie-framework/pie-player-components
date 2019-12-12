@@ -123,6 +123,7 @@ export class PiePreviewLayout {
               <div class="pie-player">
                 <pie-player
                   ref={(el) => this.piePlayerElement = el as HTMLPiePlayerElement}
+                  disableBundler={true}
                   config={this.config as ItemConfig}></pie-player>
               </div>
             </div>

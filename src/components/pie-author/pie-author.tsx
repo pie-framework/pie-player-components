@@ -10,7 +10,7 @@ import {
   h
 } from "@stencil/core";
 import { PieContent, ItemConfig, PieElement, PieModel } from "../../interface";
-import { PieLoader } from "../../pie-loader";
+import { PieLoader, BundleEndpoints, DEFAULT_ENDPOINTS } from "../../pie-loader";
 import { pieContentFromConfig } from "../../utils/utils";
 import parseNpm from "parse-package-name";
 import _isEqual from "lodash/isEqual";
@@ -40,6 +40,27 @@ export class Author {
   _modelLoadedState: boolean = false;
 
   @Prop({ context: "document" }) doc!: Document;
+
+  /**
+   * Optionally specifies the back-end that builds and hosts javascript bundles for rendering assessment items.
+   * This property lets you choose which environment to use, from 'dev' , 'stage' or 'prod' environments.
+   * Until 1.0 will default to 'stage'.
+   */
+  @Prop() bundleHost?: string;
+
+  /**
+   * Provide this property override the default endpoints used by the player to retrieve JS 
+   * bundles. Must be set before setting the config property.
+   * Most users will not need to use this property.
+   */
+  @Prop() bundleEndpoints?: BundleEndpoints;
+
+  /**
+   * Allows disabling of the default behaviour which is to look up and load the JS bundle that define the Custom Elements
+   * used by the item config.
+   * This if for advanced use cases when using the pie-player in a container that is managing loading of Custom Elements and Controllers.
+   */
+  @Prop() disableBundler: boolean = false;
 
   /**
    * If set the player will add a rubric authoring interaction to the config
@@ -278,8 +299,15 @@ export class Author {
   }
 
   async loadPieElements() {
-    if (this.config) {
-      await this.pieLoader.loadCloudPies({content: this.pieContentModel, doc:this.doc});
+    if (this.config && !this.disableBundler) {
+      let endpoints = DEFAULT_ENDPOINTS.stage;
+      if (this.bundleHost && ['dev','stage','prod'].includes(this.bundleHost)) {
+        endpoints = DEFAULT_ENDPOINTS[this.bundleHost];
+      } 
+      if (this.bundleEndpoints) {
+        endpoints = this.bundleEndpoints;
+      }
+      await this.pieLoader.loadCloudPies({content: this.pieContentModel, doc:this.doc, endpoints});
     }
   }
 

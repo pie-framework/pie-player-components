@@ -52,6 +52,13 @@ export class Player {
    */
   @Prop() bundleEndpoints?: BundleEndpoints;
 
+  /**
+   * Allows disabling of the default behaviour which is to look up and load the JS bundle that define the Custom Elements
+   * used by the item config.
+   * This if for advanced use cases when using the pie-player in a container that is managing loading of Custom Elements and Controllers.
+   */
+  @Prop() disableBundler: boolean = false;
+
   @Element() el: HTMLElement;
 
   // Note - the below not handled, just added here for API docs
@@ -172,7 +179,7 @@ export class Player {
         return;
       }
 
-      if (!this.elementsLoaded) {
+      if (!this.elementsLoaded && !this.disableBundler) {
         let endpoints = DEFAULT_ENDPOINTS.stage;
         if (this.bundleHost && ['dev','stage','prod'].includes(this.bundleHost)) {
           endpoints = DEFAULT_ENDPOINTS[this.bundleHost];
@@ -261,7 +268,7 @@ export class Player {
                 ) {
                   session = await controller.createCorrectResponseSession(
                     model,
-                    newEnv
+                    {...newEnv, ...{role:'instructor'}}
                   );
                 }
                 pieEl.model = await controller.model(model, session, newEnv);

@@ -1,20 +1,20 @@
 import isFunction from "lodash/isFunction";
 import { getPackageWithoutVersion, getPackageBundleUri } from "./utils/utils";
 import { PieItemElement, PieContent } from "./interface";
-import omit from "lodash/omit";
+import omitBy from "lodash/omitBy";
 import retry from "async-retry";
 
 export const DEFAULT_ENDPOINTS = {
   prod: {
-    bundleBase: "https://storage.googleapis.com/pie-pits-prod/bundles/",
+    bundleBase: "https://pits-cdn.pie-api.io//bundles/",
     buildServiceBase: "https://pits-dot-pie-221718.appspot.com/bundles/"
   },
   stage: {
-    bundleBase: "https://storage.googleapis.com/pie-pits-staging/bundles/",
+    bundleBase: "https://pits-cdn-staging.pie-api.io/bundles/",
     buildServiceBase: "https://pits-dot-pie-staging-221718.appspot.com/bundles/"
   },
   dev: {
-    bundleBase: "https://storage.googleapis.com/pie-pits-staging/bundles/",
+    bundleBase: "https://pits-cdn-dev.pie-api.io/bundles/",
     buildServiceBase: "https://pits-dot-pie-dev-221718.appspot.com/bundles/"
   }
 };
@@ -67,8 +67,8 @@ export class PieLoader {
    */
   constructor(_endpoints?: BundleEndpoints) {
     if (!_endpoints) {
-      console.log(`setting endpoints to ${DEFAULT_ENDPOINTS.prod}`);
-      this.endpoints = DEFAULT_ENDPOINTS.prod;
+      console.log(`setting endpoints to ${DEFAULT_ENDPOINTS.stage}`);
+      this.endpoints = DEFAULT_ENDPOINTS.stage;
     } else {
       this.endpoints = _endpoints;
     } 
@@ -80,8 +80,8 @@ export class PieLoader {
     this.registry = PieLoader._registry;
   }
 
-  private static _registry: Map<string, Entry>;
-  protected registry: Map<string, Entry>;
+  private static _registry: { [elementName: string]: Entry };
+  protected registry:  { [elementName: string]: Entry };
 
   public getController = (pieTagName: string) => {
     return this.registry[pieTagName]
@@ -125,33 +125,24 @@ export class PieLoader {
       };
       endpoints?: BundleEndpoints;
       bundle?: BundleType
-    } = {
-      doc: null,
-      content: null,
-      retryOptions: {
-        retries: 10,
-        minTimeout: 1000,
-        maxTimeout: 5000
-      },
-      bundle: BundleType.editor
-    }
+    } 
   ) => {
     if (!options.endpoints) {
       options.endpoints = this.endpoints;
     }
-    // TODO useRegistry disables PIE_REGISTRY as a cache, this is a temprorary workaround
-    // to handle that registry isn't accounting for the three constructors that may or
-    // may not be present in the PITs bundles: controller, Config, Element
-    let useRegistry = options.bundle === BundleType.editor ? true : false;
+    if (!options.bundle) {
+      options.bundle = BundleType.editor;
+    }
+    
+
     const elements = options.content.elements;
     const head = options.doc.getElementsByTagName("head")[0];
     const script = options.doc.createElement("script");
-    const piesToLoad = this.getElementsToLoad(elements);
+    const piesToLoad = this.getElementsToLoad(elements, options.bundle, this.registry);
     let scriptUrl;
 
     if (options.content.bundle && options.content.bundle.url) {
       scriptUrl = options.content.bundle.url;
-      useRegistry = false;
     } else if (options.content.bundle && options.content.bundle.hash) {
       scriptUrl = options.endpoints.bundleBase + options.content.bundle.hash + "/" + options.bundle;
     } else {
@@ -180,19 +171,16 @@ export class PieLoader {
           const elName = key;
           if (!customElements.get(elName)) {
             customElements.define(elName, pie.Element);
-            if (useRegistry) {
-              this.registry[elName] = {
-                package: _pies[key],
-                status: Status.loading,
-                tagName: elName
-              };
-            }
+            this.registry[elName] = {
+              package: _pies[key],
+              status: Status.loading,
+              tagName: elName
+            };
+            
             customElements.whenDefined(elName).then(async () => {
-              if (useRegistry) {
-                this.registry[elName].status = Status.loaded;
-                this.registry[elName].element = customElements.get(elName);
-                this.registry[elName].controller = pie.controller;
-              }
+              this.registry[elName].status = Status.loaded;
+              this.registry[elName].element = customElements.get(elName);
+              this.registry[elName].controller = pie.controller;            
             });
           }
 
@@ -206,7 +194,7 @@ export class PieLoader {
           if (!customElements.get(configElName)) {
             customElements.define(configElName, pie.Configure);
             customElements.whenDefined(configElName).then(async () => {
-              if (this.registry[elName] && useRegistry) {
+              if (this.registry[elName]) {
                 this.registry[elName].config = customElements.get(configElName);
               }
             });
@@ -252,9 +240,22 @@ export class PieLoader {
    *
    * @param elements - the elements to test against registry
    */
-  protected getElementsToLoad = (els: PieItemElement): PieItemElement => {
-    const rKeys = Object.keys(this.registry);
-    const res = omit(els, rKeys);
+  protected getElementsToLoad = (els: PieItemElement, bundle: BundleType = BundleType.editor, registry): PieItemElement => {
+    const res = omitBy(els, (el, key) => {
+      const regEntry:Entry = registry[key];
+      if (!regEntry) {
+        return false;
+      }
+      if ((bundle === BundleType.editor) && (regEntry.config && regEntry.controller && regEntry.element)) {
+        return true;
+      } else if ((bundle === BundleType.clientPlayer) && (regEntry.controller && regEntry.element))  {
+        return true;
+      } else if ((bundle === BundleType.player) && (regEntry.element)) {
+        return true;
+      } else {
+        return false;
+      }
+    });
     return res as PieItemElement;
   };
 
