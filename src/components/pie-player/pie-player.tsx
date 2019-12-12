@@ -1,26 +1,27 @@
+import { SessionChangedEvent } from "@pie-framework/pie-player-events";
+import mr from "@pie-lib/math-rendering";
 import {
   Component,
-  Prop,
-  Watch,
-  State,
   Element,
   Event,
   EventEmitter,
+  h,
   Method,
-  h
+  Prop,
+  State,
+  Watch
 } from "@stencil/core";
 import {
-  PieContent,
+  AdvancedItemConfig,
   ItemConfig,
   ItemSession,
-  PieElement,
+  PieContent,
   PieController,
-  AdvancedItemConfig,
+  PieElement,
   PieModel
 } from "../../interface";
 import { PieLoader } from "../../pie-loader";
 import { addRubric } from "../../rubric-utils";
-import { SessionChangedEvent } from "@pie-framework/pie-player-events";
 
 const controllerErrorMessage: string =
   "Error processing question configuration, verify the question model?";
@@ -290,10 +291,17 @@ export class Player {
     return ss;
   }
 
+  private renderMath() {
+    setTimeout(() => {
+      mr.renderMath(this.el);
+    }, 50);
+  }
+
   async afterRender() {
     if (this.pieContentModel && this.pieContentModel.markup) {
       if (this.elementsLoaded) {
         this.updateModels();
+        this.renderMath();
       } else {
         const elements = Object.keys(this.pieContentModel.elements).map(el => ({
           name: el,
