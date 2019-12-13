@@ -1,3 +1,190 @@
+## [0.16.1](https://github.com/pie-framework/pie-player-components/compare/v0.16.0...v0.16.1) (2019-11-21)
+
+
+### Bug Fixes
+
+* handle and log if constructor not found ([#32](https://github.com/pie-framework/pie-player-components/issues/32)) ([a7043ca](https://github.com/pie-framework/pie-player-components/commit/a7043ca507b0d6861e40888ef583624644b7a323))
+
+# [0.16.0](https://github.com/pie-framework/pie-player-components/compare/v0.15.4...v0.16.0) (2019-11-21)
+
+
+### Features
+
+* call imageSupport.delete function ([#31](https://github.com/pie-framework/pie-player-components/issues/31)) ([945e7ae](https://github.com/pie-framework/pie-player-components/commit/945e7ae45c08989d01b6e869a41c184374209392))
+
+## [0.15.4](https://github.com/pie-framework/pie-player-components/compare/v0.15.3...v0.15.4) (2019-11-21)
+
+
+### Bug Fixes
+
+* **player:** added stimulus loading back as it should be [ch5691] ([e76d026](https://github.com/pie-framework/pie-player-components/commit/e76d0263100ff8575e0dff8d1995c22ba9469b69))
+
+## [0.15.3](https://github.com/pie-framework/pie-player-components/compare/v0.15.2...v0.15.3) (2019-11-06)
+
+
+### Bug Fixes
+
+* authoring view not loading PIE-155 ([27cba06](https://github.com/pie-framework/pie-player-components/commit/27cba06b0fb86d311e353177c4b4503d7f5b5ec3))
+
+## [0.15.2](https://github.com/pie-framework/pie-player-components/compare/v0.15.1...v0.15.2) (2019-10-31)
+
+
+### Bug Fixes
+
+* addRubricToConfig return result of addRubric ([b753be2](https://github.com/pie-framework/pie-player-components/commit/b753be2c7c7d8b064cab95528daccac25787fd73))
+* create interpolated regex properly ([05951ee](https://github.com/pie-framework/pie-player-components/commit/05951eec99adc0aba4d086d9b7415057beba9730))
+* element not rendering when rubric added [ch3725] ([2d6513d](https://github.com/pie-framework/pie-player-components/commit/2d6513d6dd052d08a0ad91174a683c9228a05b5f))
+
+## [0.15.1](https://github.com/pie-framework/pie-player-components/compare/v0.15.0...v0.15.1) (2019-10-25)
+
+
+### Bug Fixes
+
+* block 'session-changed' for a duration ([#26](https://github.com/pie-framework/pie-player-components/issues/26)) ([0874095](https://github.com/pie-framework/pie-player-components/commit/0874095c089ed23123ddbab81ec93008f14e45b8))
+
+# [0.15.0](https://github.com/pie-framework/pie-player-components/compare/v0.14.0...v0.15.0) (2019-10-23)
+
+
+### Features
+
+* make bundle url part of config ([#27](https://github.com/pie-framework/pie-player-components/issues/27)) ([b5009e1](https://github.com/pie-framework/pie-player-components/commit/b5009e16e716e42a438e4d503f96f91f30857b3d))
+
+# [0.14.0](https://github.com/pie-framework/pie-player-components/compare/v0.13.2...v0.14.0) (2019-10-22)
+
+
+### Bug Fixes
+
+* build error fix ([#25](https://github.com/pie-framework/pie-player-components/issues/25)) ([5a389dd](https://github.com/pie-framework/pie-player-components/commit/5a389dd1fa6ba6cd699a4e0196970f7672668772))
+
+
+### Features
+
+* support preview loading [ch2776] ([#24](https://github.com/pie-framework/pie-player-components/issues/24)) ([c2659bc](https://github.com/pie-framework/pie-player-components/commit/c2659bcf02e03b68e7fa1147a409115649ba279a))
+
+## [0.13.2](https://github.com/pie-framework/pie-player-components/compare/v0.13.1...v0.13.2) (2019-10-16)
+
+
+### Bug Fixes
+
+* **player:** fixed loading issue [ch3714] ([#22](https://github.com/pie-framework/pie-player-components/issues/22)) ([69f955c](https://github.com/pie-framework/pie-player-components/commit/69f955c))
+
+## [0.13.1](https://github.com/pie-framework/pie-player-components/compare/v0.13.0...v0.13.1) (2019-10-15)
+
+
+### Bug Fixes
+
+* Ch4866 check for `forEach` before call  ([#21](https://github.com/pie-framework/pie-player-components/issues/21)) ([4110918](https://github.com/pie-framework/pie-player-components/commit/4110918))
+
+# [0.13.0](https://github.com/pie-framework/pie-player-components/compare/v0.12.2...v0.13.0) (2019-10-07)
+
+
+### Bug Fixes
+
+* **components:** config switch issue when not waiting [ch3915] ([#18](https://github.com/pie-framework/pie-player-components/issues/18)) ([f89b85d](https://github.com/pie-framework/pie-player-components/commit/f89b85d))
+
+
+### Features
+
+* add image support ([#13](https://github.com/pie-framework/pie-player-components/issues/13)) [ch1750] ([058e7e4](https://github.com/pie-framework/pie-player-components/commit/058e7e4))
+
+## [0.12.2](https://github.com/pie-framework/pie-player-components/compare/v0.12.1...v0.12.2) (2019-09-13)
+
+
+### Bug Fixes
+
+* Fixed "can not set property config of undefined". ([#17](https://github.com/pie-framework/pie-player-components/issues/17)) ([218c7bc](https://github.com/pie-framework/pie-player-components/commit/218c7bc))
+
+## [0.12.1](https://github.com/pie-framework/pie-player-components/compare/v0.12.0...v0.12.1) (2019-09-13)
+
+
+### Bug Fixes
+
+* update docs for session changed complete ([#16](https://github.com/pie-framework/pie-player-components/issues/16)) ([089bc07](https://github.com/pie-framework/pie-player-components/commit/089bc07))
+
+# [0.12.0](https://github.com/pie-framework/pie-player-components/compare/v0.11.8...v0.12.0) (2019-09-12)
+
+
+### Features
+
+* add add-correct-response attribute ([#15](https://github.com/pie-framework/pie-player-components/issues/15)) ([5b619c1](https://github.com/pie-framework/pie-player-components/commit/5b619c1))
+
+## [0.11.8](https://github.com/pie-framework/pie-player-components/compare/v0.11.7...v0.11.8) (2019-09-11)
+
+
+### Bug Fixes
+
+* modify sequence of how model update is called ([#14](https://github.com/pie-framework/pie-player-components/issues/14)) ([d5bf504](https://github.com/pie-framework/pie-player-components/commit/d5bf504))
+
+## [0.11.7](https://github.com/pie-framework/pie-player-components/compare/v0.11.6...v0.11.7) (2019-08-20)
+
+
+### Bug Fixes
+
+* fix dependencies ([5d5b883](https://github.com/pie-framework/pie-player-components/commit/5d5b883))
+
+## [0.11.6](https://github.com/pie-framework/pie-player-components/compare/v0.11.5...v0.11.6) (2019-08-20)
+
+
+### Bug Fixes
+
+* fix __extends already declared bundle error ([#12](https://github.com/pie-framework/pie-player-components/issues/12)) ([ebc2104](https://github.com/pie-framework/pie-player-components/commit/ebc2104))
+
+## [0.11.5](https://github.com/pie-framework/pie-player-components/compare/v0.11.4...v0.11.5) (2019-08-19)
+
+
+### Bug Fixes
+
+* updateModels event should be fired on initialization ([#11](https://github.com/pie-framework/pie-player-components/issues/11)) ([56c95df](https://github.com/pie-framework/pie-player-components/commit/56c95df))
+
+## [0.11.4](https://github.com/pie-framework/pie-player-components/compare/v0.11.3...v0.11.4) (2019-08-17)
+
+
+### Bug Fixes
+
+* don't emit load-complete before initialization ([#10](https://github.com/pie-framework/pie-player-components/issues/10)) ([ded808b](https://github.com/pie-framework/pie-player-components/commit/ded808b))
+
+## [0.11.3](https://github.com/pie-framework/pie-player-components/compare/v0.11.2...v0.11.3) (2019-08-15)
+
+
+### Bug Fixes
+
+* include docs in dist ([ddc7fb2](https://github.com/pie-framework/pie-player-components/commit/ddc7fb2))
+
+## [0.11.2](https://github.com/pie-framework/pie-player-components/compare/v0.11.1...v0.11.2) (2019-08-13)
+
+
+### Bug Fixes
+
+* preview not loading when switching items ([#9](https://github.com/pie-framework/pie-player-components/issues/9)) ([ccbc6cb](https://github.com/pie-framework/pie-player-components/commit/ccbc6cb))
+
+## [0.11.1](https://github.com/pie-framework/pie-player-components/compare/v0.11.0...v0.11.1) (2019-07-29)
+
+
+### Bug Fixes
+
+* don't manage bundles directly ([d62e9a5](https://github.com/pie-framework/pie-player-components/commit/d62e9a5))
+
+# [0.11.0](https://github.com/pie-framework/pie-player-components/compare/v0.10.2...v0.11.0) (2019-07-29)
+
+
+### Features
+
+* enhance loaded event behaviour ([#8](https://github.com/pie-framework/pie-player-components/issues/8)) ([0b1ac10](https://github.com/pie-framework/pie-player-components/commit/0b1ac10))
+
+## [0.10.2](https://github.com/pie-framework/pie-player-components/compare/v0.10.1...v0.10.2) (2019-07-26)
+
+
+### Bug Fixes
+
+* remove debugger flag ([1cf1c2a](https://github.com/pie-framework/pie-player-components/commit/1cf1c2a))
+
+## [0.10.1](https://github.com/pie-framework/pie-player-components/compare/v0.10.0...v0.10.1) (2019-07-26)
+
+
+### Bug Fixes
+
+* get tests working in stencil 1.2.x ([2bae4eb](https://github.com/pie-framework/pie-player-components/commit/2bae4eb))
+
 # [0.10.0](https://github.com/pie-framework/pie-player-components/compare/v0.9.0...v0.10.0) (2019-07-11)
 
 

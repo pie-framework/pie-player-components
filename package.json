@@ -1,6 +1,6 @@
 {
   "name": "@pie-framework/pie-player-components",
-  "version": "0.10.0",
+  "version": "0.16.1",
   "description": "Pie Player Components",
   "module": "dist/index.mjs",
   "main": "dist/index.js",
@@ -40,53 +40,47 @@
     "@material/tab-bar": "^2.2.0",
     "@pie-framework/pie-configure-events": "^1.2.0",
     "async-retry": "^1.2.3",
+    "lodash": "^4.17.15",
     "parse-package-name": "^0.1.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^8.0.0",
     "@commitlint/config-conventional": "^8.0.0",
     "@commitlint/prompt": "^8.0.0",
+    "@material/select": "^2.2.0",
+    "@material/switch": "^2.1.1",
+    "@material/tab": "^2.2.0",
+    "@material/tab-bar": "^2.2.0",
+    "@pie-framework/pie-configure-events": "^1.2.0",
     "@pie-framework/pie-player-events": "^0.1.0",
     "@release-it/conventional-changelog": "^1.0.0",
     "@semantic-release/changelog": "^3.0.2",
-    "@semantic-release/git": "^7.0.8",
-    "@stencil/core": "^1.2.0",
+    "@semantic-release/git": "7.1.0-beta.3",
+    "@stencil/core": "1.7.3",
     "@stencil/sass": "^1.0.0",
-    "@telerik/semantic-prerelease": "^1.2.1",
     "@types/jest": "24.0.15",
     "@types/lodash": "^4.14.121",
-    "@types/puppeteer": "1.12.4",
+    "@types/puppeteer": "1.19.1",
+    "async-retry": "^1.2.3",
     "auto-changelog": "^1.13.0",
+    "chokidar": "^3.2.2",
     "commitizen": "^3.1.1",
     "http-server": "^0.11.1",
     "husky": "^2.4.1",
     "jest": "24.8.0",
-    "jest-cli": "^24.8.0",
+    "jest-cli": "24.8.0",
     "jest-environment-node-debug": "^2.0.0",
     "lint-staged": "^8.2.0",
     "lodash": "^4.17.11",
+    "parse-package-name": "^0.1.0",
     "prettier": "1.16.4",
-    "puppeteer": "1.17.0",
+    "puppeteer": "1.19.0",
     "release-it": "^10.1.0",
-    "semantic-release": "^15.13.12",
+    "semantic-release": "16.0.0-beta.22",
     "tslint": "^5.12.1",
     "tslint-config-prettier": "^1.18.0",
     "typescript": "^3.3.3",
     "yalc": "^1.0.0-pre.27"
   },
-  "license": "MIT",
-  "release": {
-    "debug": false,
-    "branchTags": {
-      "develop": "next"
-    },
-    "fallbackTags": {
-      "dev": "latest"
-    },
-    "analyzeCommits": "@telerik/semantic-prerelease/analyzeCommits",
-    "generateNotes": "@telerik/semantic-prerelease/generateNotes",
-    "getLastRelease": "@telerik/semantic-prerelease/getLastRelease",
-    "verifyConditions": "@telerik/semantic-prerelease/verifyConditions",
-    "verifyRelease": "@telerik/semantic-prerelease/verifyRelease"
-  }
+  "license": "MIT"
 }

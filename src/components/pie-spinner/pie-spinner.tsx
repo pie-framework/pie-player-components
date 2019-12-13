@@ -11,8 +11,8 @@ export class PieSpinner {
   render() {
     return (
       <div>
-        <slot/>
-        { this.active ? 
+        {!this.active && <slot/>}
+        { this.active ?
         <div id="pie-spinner-container">
         <div id="pie-spinner">
           <svg
@@ -265,11 +265,11 @@ export class PieSpinner {
             </g>
           </svg>
         </div>
-      </div> 
-        : 
+      </div>
+        :
         <div></div>
         }
-        
+
       </div>
     );
   }

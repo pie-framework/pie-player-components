@@ -10,7 +10,14 @@ interface PieContent {
   models: PieModel[]
 
   markup: string;
+
+  bundle?: BundleInfo;
 }
+
+export type BundleInfo = {
+  url: string;
+  hash: string;
+};
 
 export type ItemSession = {
   id: string;
@@ -55,5 +62,6 @@ interface PieElement extends HTMLElement {
 type PieController = {
   model: (config: Object, session: Object, env: Object) => Promise<Object>;
   score: (config: Object, session: Object, env: Object) => Promise<Object>;
+  createCorrectResponseSession: (config: Object, env: Object) => Promise<Object>;  
 };
 
