@@ -16,6 +16,7 @@ interface PieContent {
 
 export type BundleInfo = {
   url: string;
+  hash: string;
 };
 
 export type ItemSession = {

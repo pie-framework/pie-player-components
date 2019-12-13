@@ -12,15 +12,13 @@ import { PieLoader } from '../../pie-loader';
  * or `pie-author` components.
  */
 @Component({
-  tag: 'pie-loader',
+  tag: "pie-loader",
   shadow: false
 })
 export class Loader {
-
   loader = new PieLoader();
 
-  @Prop({ context: 'document' }) doc!: Document;
-
+  @Prop({ context: "document" }) doc!: Document;
 
   /**
    * If the bundle is not available yet, the number of re-try attempts
@@ -29,13 +27,13 @@ export class Loader {
   @Prop() retries: number = 10;
 
   /**
-   * If the bundle is not available yet, number of milliseconds before starting 
+   * If the bundle is not available yet, number of milliseconds before starting
    * the first retry attempt.
    */
   @Prop() minTimeout: number = 1000;
 
-   /**
-   * If the bundle is not available yet, the maximum number of milliseconds 
+  /**
+   * If the bundle is not available yet, the maximum number of milliseconds
    * between two retries for downloading
    */
   @Prop() maxTimeout: number = 2000;
@@ -46,11 +44,14 @@ export class Loader {
    */
   @Method()
   async loadPies(pieContent: PieContent) {
-    return await this.loader.loadCloudPies(pieContent, this.doc, {
-      retries: this.retries,
-      minTimeout: this.minTimeout,
-      maxTimeout: this.maxTimeout
-    })
+    return await this.loader.loadCloudPies({
+      content: pieContent,
+      doc: this.doc,
+      retryOptions: {
+        retries: this.retries,
+        minTimeout: this.minTimeout,
+        maxTimeout: this.maxTimeout
+      }
+    });
   }
-
 }
