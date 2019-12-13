@@ -67,7 +67,6 @@ export class PieLoader {
    */
   constructor(_endpoints?: BundleEndpoints) {
     if (!_endpoints) {
-      console.log(`setting endpoints to ${DEFAULT_ENDPOINTS.stage}`);
       this.endpoints = DEFAULT_ENDPOINTS.stage;
     } else {
       this.endpoints = _endpoints;
