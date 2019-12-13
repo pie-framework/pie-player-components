@@ -1,3 +1,10 @@
+# [0.17.0](https://github.com/pie-framework/pie-player-components/compare/v0.16.1...v0.17.0) (2019-12-13)
+
+
+### Features
+
+* ch5179 optimizations ([#35](https://github.com/pie-framework/pie-player-components/issues/35)) ([18ba8bc](https://github.com/pie-framework/pie-player-components/commit/18ba8bc3127d62f2f226d45ebecfdc5ffb1095ae))
+
 ## [0.16.1](https://github.com/pie-framework/pie-player-components/compare/v0.16.0...v0.16.1) (2019-11-21)
 
 
