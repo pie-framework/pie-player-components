@@ -11,20 +11,30 @@
     <script type="module" src="/build/pie-player-components.esm.js"></script>
   </head>
   <body>
-    <pie-player id="player"></pie-player>
+    <pie-author></pie-author>
 
     <script>
       const config = {
         id: "1",
         elements: {
-          "pie-multiple-choice": "@pie-element/multiple-choice@2.7.3"
+          "pie-multiple-choice": "@pie-element/multiple-choice@5.0.7"
         },
         models: [
           {
             id: "1",
             element: "pie-multiple-choice",
-            prompt:
-              "Which of these northern European countries are EU members?",
+            prompt: `<math> <mrow>
+   <msup>
+     <mfenced>
+       <mrow>
+         <mi>a</mi>
+         <mo>+</mo>
+         <mi>b</mi>
+       </mrow>
+     </mfenced>
+     <mn>2</mn>
+   </msup>
+ </mrow></math>`,
             choiceMode: "checkbox",
             keyMode: "numbers",
             choices: [
@@ -39,7 +49,19 @@
               },
               {
                 value: "iceland",
-                label: `Iceland <math style="display: block;"> <mtable columnalign="right center left"> <mtr> <mtd> <msup> <mrow> <mo> ( </mo> <mi> a </mi> <mo> + </mo> <mi> b </mi> <mo> ) </mo> </mrow> <mn> 2 </mn> </msup> </mtd> <mtd> <mo> = </mo> </mtd> <mtd> <msup><mi> c </mi><mn>2</mn></msup> <mo> + </mo> <mn> 4 </mn> <mo> ⋅ </mo> <mo>(</mo> <mfrac> <mn> 1 </mn> <mn> 2 </mn> </mfrac> <mi> a </mi><mi> b </mi> <mo>)</mo>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;</mtd> </mtr> <mtr> <mtd> <msup><mi> a </mi><mn>2</mn></msup> <mo> + </mo> <mn> 2 </mn><mi> a </mi><mi> b </mi> <mo> + </mo> <msup><mi> b </mi><mn>2</mn></msup> </mtd> <mtd> <mo> = </mo> </mtd> <mtd> <msup><mi> c </mi><mn>2</mn></msup> <mo> + </mo> <mn> 2 </mn><mi> a </mi><mi> b</mi></mtd></mtr><mtr><mtd></mtd></mtr><mtr><mtd><msup><mi>a </mi><mn>2</mn></msup> <mo> + </mo> <msup><mi> b </mi><mn>2</mn></msup> </mtd> <mtd> <mo> = </mo> </mtd> <mtd> <msup><mi> c </mi><mn>2</mn></msup> </mtd> </mtr> </mtable> </math>`,
+                label: `Iceland <math xmlns="http://www.w3.org/1998/Math/MathML">   <mrow>
+   <msup>
+     <mfenced>
+       <mrow>
+         <mi>a</mi>
+         <mo>+</mo>
+         <mi>b</mi>
+       </mrow>
+     </mfenced>
+     <mn>2</mn>
+   </msup>
+ </mrow> </math>`,
+                //label: `Iceland <math style="display: block;"> <mtable columnalign="right center left"> <mtr> <mtd> <msup> <mrow> <mo> ( </mo> <mi> a </mi> <mo> + </mo> <mi> b </mi> <mo> ) </mo> </mrow> <mn> 2 </mn> </msup> </mtd> <mtd> <mo> = </mo> </mtd> <mtd> <msup><mi> c </mi><mn>2</mn></msup> <mo> + </mo> <mn> 4 </mn> <mo> ⋅ </mo> <mo>(</mo> <mfrac> <mn> 1 </mn> <mn> 2 </mn> </mfrac> <mi> a </mi><mi> b </mi> <mo>)</mo>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;</mtd> </mtr> <mtr> <mtd> <msup><mi> a </mi><mn>2</mn></msup> <mo> + </mo> <mn> 2 </mn><mi> a </mi><mi> b </mi> <mo> + </mo> <msup><mi> b </mi><mn>2</mn></msup> </mtd> <mtd> <mo> = </mo> </mtd> <mtd> <msup><mi> c </mi><mn>2</mn></msup> <mo> + </mo> <mn> 2 </mn><mi> a </mi><mi> b</mi></mtd></mtr><mtr><mtd></mtd></mtr><mtr><mtd><msup><mi>a </mi><mn>2</mn></msup> <mo> + </mo> <msup><mi> b </mi><mn>2</mn></msup> </mtd> <mtd> <mo> = </mo> </mtd> <mtd> <msup><mi> c </mi><mn>2</mn></msup> </mtd> </mtr> </mtable> </math>`,
                 feedback: {
                   type: "none",
                   value: ""
@@ -78,15 +100,15 @@
 
       // const config = {};
 
-      const player = document.getElementById("player");
+      const author = document.querySelector("pie-author");
 
-      document.addEventListener("session-changed", e => console.log(">", e));
+      // document.addEventListener("session-changed", e => console.log(">", e));
 
-      player.addEventListener("session-changed", event => {
-        console.log(event.type + ":" + JSON.stringify(event.detail));
-      });
+      // player.addEventListener("session-changed", event => {
+      //   console.log(event.type + ":" + JSON.stringify(event.detail));
+      // });
 
-      player.config = config;
+      author.config = config;
     </script>
   </body>
 </html>

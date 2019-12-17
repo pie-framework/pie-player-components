@@ -9,6 +9,9 @@ import {
   Method,
   h
 } from "@stencil/core";
+
+import mr from "@pie-lib/math-rendering";
+
 import { PieContent, ItemConfig, PieElement, PieModel } from "../../interface";
 import { PieLoader, BundleEndpoints, DEFAULT_ENDPOINTS } from "../../pie-loader";
 import { pieContentFromConfig } from "../../utils/utils";
@@ -311,6 +314,12 @@ export class Author {
     }
   }
 
+  private renderMath() {
+    setTimeout(() => {
+      mr.renderMath(this.el);
+    }, 50);
+  }
+
   async afterRender() {
     if (
       this.pieContentModel &&
@@ -328,6 +337,8 @@ export class Author {
         !!loadedInfo.elements.find(el => this.pieContentModel.elements[el.name])
       ) {
         this.elementsLoaded = true;
+
+        this.renderMath();
       }
     }
   }
