@@ -1,3 +1,10 @@
+# [0.18.0](https://github.com/pie-framework/pie-player-components/compare/v0.17.0...v0.18.0) (2019-12-17)
+
+
+### Features
+
+* add math-rendering ch5507 ([a25c574](https://github.com/pie-framework/pie-player-components/commit/a25c5748432a722af32266d8a28478d28b3be16a))
+
 # [0.17.0](https://github.com/pie-framework/pie-player-components/compare/v0.16.1...v0.17.0) (2019-12-13)
 
 
