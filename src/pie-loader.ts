@@ -123,7 +123,8 @@ export class PieLoader {
         maxTimeout: number;
       };
       endpoints?: BundleEndpoints;
-      bundle?: BundleType
+      bundle?: BundleType;
+      useCdn: boolean
     } 
   ) => {
     if (!options.endpoints) {
@@ -142,7 +143,7 @@ export class PieLoader {
 
     if (options.content.bundle && options.content.bundle.url) {
       scriptUrl = options.content.bundle.url;
-    } else if (options.content.bundle && options.content.bundle.hash) {
+    } else if (options.useCdn && options.content.bundle && options.content.bundle.hash) {
       scriptUrl = options.endpoints.bundleBase + options.content.bundle.hash + "/" + options.bundle;
     } else {
       const bundleUri = getPackageBundleUri(piesToLoad);

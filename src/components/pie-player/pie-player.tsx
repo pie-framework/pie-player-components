@@ -195,8 +195,10 @@ export class Player {
           endpoints: endpoints,
           bundle: this.hosted
             ? BundleType.player
-            : BundleType.clientPlayer
+            : BundleType.clientPlayer,
+          useCdn: false
         },
+        
         );
       }
     } catch (err) {

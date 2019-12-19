@@ -47,11 +47,13 @@ export class Loader {
     return await this.loader.loadCloudPies({
       content: pieContent,
       doc: this.doc,
+      useCdn: false,
       retryOptions: {
         retries: this.retries,
         minTimeout: this.minTimeout,
         maxTimeout: this.maxTimeout
       }
+      
     });
   }
 }
