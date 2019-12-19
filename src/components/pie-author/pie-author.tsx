@@ -310,7 +310,7 @@ export class Author {
       if (this.bundleEndpoints) {
         endpoints = this.bundleEndpoints;
       }
-      await this.pieLoader.loadCloudPies({content: this.pieContentModel, doc:this.doc, endpoints});
+      await this.pieLoader.loadCloudPies({content: this.pieContentModel, doc:this.doc, endpoints, useCdn: false});
     }
   }
 
