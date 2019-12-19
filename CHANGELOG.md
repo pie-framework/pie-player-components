@@ -1,3 +1,10 @@
+# [0.19.0](https://github.com/pie-framework/pie-player-components/compare/v0.18.0...v0.19.0) (2019-12-19)
+
+
+### Features
+
+* make use of hash with  pie cdn an option ([#36](https://github.com/pie-framework/pie-player-components/issues/36)) ([74b7e07](https://github.com/pie-framework/pie-player-components/commit/74b7e070180695e8d620aca3ff7446eb050a7193))
+
 # [0.18.0](https://github.com/pie-framework/pie-player-components/compare/v0.17.0...v0.18.0) (2019-12-17)
 
 
