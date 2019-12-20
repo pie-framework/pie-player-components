@@ -62,25 +62,6 @@ export namespace Components {
     */
     'imageSupport': ExternalImageSupport;
   }
-  interface PieLoader {
-    /**
-    * Loads the custom elments defined by the PIEs, if they are not already loaded.
-    * @param pieHash - The PIE elements to load. `key` = html element, `value`: npm package
-    */
-    'loadPies': (pieContent: PieContent) => Promise<void>;
-    /**
-    * If the bundle is not available yet, the maximum number of milliseconds between two retries for downloading
-    */
-    'maxTimeout': number;
-    /**
-    * If the bundle is not available yet, number of milliseconds before starting the first retry attempt.
-    */
-    'minTimeout': number;
-    /**
-    * If the bundle is not available yet, the number of re-try attempts to download.
-    */
-    'retries': number;
-  }
   interface PiePlayer {
     /**
     * Simulates a correct response for the item. This property will only have this effect if the `hosted` property is false and player is running client-side-only.
@@ -146,12 +127,6 @@ declare global {
     new (): HTMLPieAuthorElement;
   };
 
-  interface HTMLPieLoaderElement extends Components.PieLoader, HTMLStencilElement {}
-  const HTMLPieLoaderElement: {
-    prototype: HTMLPieLoaderElement;
-    new (): HTMLPieLoaderElement;
-  };
-
   interface HTMLPiePlayerElement extends Components.PiePlayer, HTMLStencilElement {}
   const HTMLPiePlayerElement: {
     prototype: HTMLPiePlayerElement;
@@ -183,7 +158,6 @@ declare global {
   };
   interface HTMLElementTagNameMap {
     'pie-author': HTMLPieAuthorElement;
-    'pie-loader': HTMLPieLoaderElement;
     'pie-player': HTMLPiePlayerElement;
     'pie-preview-control': HTMLPiePreviewControlElement;
     'pie-preview-layout': HTMLPiePreviewLayoutElement;
@@ -234,20 +208,6 @@ declare namespace LocalJSX {
     * Emmitted when the model for the content has been updated within the ui due to user action.
     */
     'onModelUpdated'?: (event: CustomEvent<any>) => void;
-  }
-  interface PieLoader {
-    /**
-    * If the bundle is not available yet, the maximum number of milliseconds between two retries for downloading
-    */
-    'maxTimeout'?: number;
-    /**
-    * If the bundle is not available yet, number of milliseconds before starting the first retry attempt.
-    */
-    'minTimeout'?: number;
-    /**
-    * If the bundle is not available yet, the number of re-try attempts to download.
-    */
-    'retries'?: number;
   }
   interface PiePlayer {
     /**
@@ -319,7 +279,6 @@ declare namespace LocalJSX {
 
   interface IntrinsicElements {
     'pie-author': PieAuthor;
-    'pie-loader': PieLoader;
     'pie-player': PiePlayer;
     'pie-preview-control': PiePreviewControl;
     'pie-preview-layout': PiePreviewLayout;
@@ -335,7 +294,6 @@ declare module "@stencil/core" {
   export namespace JSX {
     interface IntrinsicElements {
       'pie-author': LocalJSX.PieAuthor & JSXBase.HTMLAttributes<HTMLPieAuthorElement>;
-      'pie-loader': LocalJSX.PieLoader & JSXBase.HTMLAttributes<HTMLPieLoaderElement>;
       'pie-player': LocalJSX.PiePlayer & JSXBase.HTMLAttributes<HTMLPiePlayerElement>;
       'pie-preview-control': LocalJSX.PiePreviewControl & JSXBase.HTMLAttributes<HTMLPiePreviewControlElement>;
       'pie-preview-layout': LocalJSX.PiePreviewLayout & JSXBase.HTMLAttributes<HTMLPiePreviewLayoutElement>;
