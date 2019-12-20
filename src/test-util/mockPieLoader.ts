@@ -11,8 +11,4 @@ export class MockPieLoader extends PieLoader {
   public _registry() {
     return this.registry;
   }
-
-  public _getScriptBuildReady() {
-    return this.scriptBuildReady;
-  }
 }

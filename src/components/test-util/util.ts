@@ -1,4 +1,3 @@
-import { DEFAULT_ENDPOINTS } from "../../pie-loader";
 import { E2EPage } from "@stencil/core/dist/testing";
 
 const fs = require('fs');
@@ -35,34 +34,4 @@ export const setupInterceptPieCloud = async (page:E2EPage, match): Promise<void>
   return await page.setRequestInterception(true);;
 };
 
-export const setupInterceptForRetry = (page: E2EPage, numberOfFailures = 4): Promise<void> => {
-
-  const successResponse = {
-    status: 200,
-    contentType: 'application/javascript',
-    headers: resHeaders,
-    body: mockPieCloudResponseContent
-  }
-  const failResponse = {
-    headers: resHeaders,
-    status: 503
-  }
-
-  let count = 0;
-  page.on('request', request => {
-    count++;
-    ;
-    if (request.url().match(DEFAULT_ENDPOINTS.prod.buildServiceBase)) {
-      // fail the pre-flights
-      if (count <= numberOfFailures && request.method() === "OPTIONS") {
-        request.respond(failResponse);
-      } else {
-        request.respond(successResponse);
-      }
-      
-    } 
-
-  });
-  return page.setRequestInterception(true);
-};
 

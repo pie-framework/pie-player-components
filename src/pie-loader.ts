@@ -2,7 +2,6 @@ import isFunction from "lodash/isFunction";
 import { getPackageWithoutVersion, getPackageBundleUri } from "./utils/utils";
 import { PieItemElement, PieContent } from "./interface";
 import omitBy from "lodash/omitBy";
-import retry from "async-retry";
 
 export const DEFAULT_ENDPOINTS = {
   prod: {
@@ -116,12 +115,7 @@ export class PieLoader {
   public loadCloudPies = async (
     options: {
       content: PieContent;
-      doc;
-      retryOptions?: {
-        retries: number;
-        minTimeout: number;
-        maxTimeout: number;
-      };
+      doc: Document;
       endpoints?: BundleEndpoints;
       bundle?: BundleType;
       useCdn: boolean
@@ -136,8 +130,11 @@ export class PieLoader {
     
 
     const elements = options.content.elements;
-    const head = options.doc.getElementsByTagName("head")[0];
-    const script = options.doc.createElement("script");
+    let head:HTMLElement = options.doc.getElementsByTagName("head")[0];
+    if (!head) {
+      head = options.doc.createElement('head')
+      options.doc.appendChild(head);
+    };
     const piesToLoad = this.getElementsToLoad(elements, options.bundle, this.registry);
     let scriptUrl;
 
@@ -151,8 +148,16 @@ export class PieLoader {
         return;
       }
       scriptUrl = options.endpoints.buildServiceBase + bundleUri + "/" + options.bundle;
-      await this.scriptBuildReady(scriptUrl, options.retryOptions);
     }
+
+
+    const loadedScripts = [...head.getElementsByTagName('script')];
+    if (loadedScripts.find(s => {return s.src === scriptUrl})) {
+      return;
+    }
+
+    const script = options.doc.createElement("script");
+
 
     const onloadFn = (_pies => {
       return () => {
@@ -259,32 +264,5 @@ export class PieLoader {
     return res as PieItemElement;
   };
 
-  protected async scriptBuildReady(
-    scriptUrl,
-    opts = {
-      retries: 10,
-      minTimeout: 1000,
-      maxTimeout: 2000
-    }
-  ) {
-    return await retry(
-      async bail => {
-        // if anything throws retry will occur
-        const res = await fetch(scriptUrl, {
-          method: "GET",
-          mode: "cors",
-          headers: {
-            "Content-Type": "application/text"
-          }
-        });
-        if (res.status.toString().match("4..")) {
-          bail("page error");
-        }
-        return res;
-      },
-      {
-        ...opts
-      }
-    );
-  }
+
 }
