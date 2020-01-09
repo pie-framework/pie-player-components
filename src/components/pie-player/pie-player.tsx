@@ -28,6 +28,7 @@ import {
   BundleEndpoints
 } from "../../pie-loader";
 import { addRubric } from "../../rubric-utils";
+import { VERSION } from "../../version";
 
 const controllerErrorMessage: string =
   "Error processing question configuration, verify the question model?";
@@ -145,6 +146,9 @@ export class Player {
    * Set this property to false to not render stimulus.
    */
   @Prop() renderStimulus: boolean = true;
+
+  @Prop({ mutable: false })
+  version: string = VERSION;
 
   @State() pieContentModel: PieContent;
 

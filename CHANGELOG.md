@@ -1,3 +1,17 @@
+# [0.21.0](https://github.com/pie-framework/pie-player-components/compare/v0.20.1...v0.21.0) (2020-01-09)
+
+
+### Features
+
+* add version to player/author ([7329454](https://github.com/pie-framework/pie-player-components/commit/7329454f7f51bc4efbe4ae35a2a67a28e2cd4748))
+
+## [0.20.1](https://github.com/pie-framework/pie-player-components/compare/v0.20.0...v0.20.1) (2020-01-09)
+
+
+### Bug Fixes
+
+* write version ([c7f0ff3](https://github.com/pie-framework/pie-player-components/commit/c7f0ff395c73b15427c36f94b5f7a8d6c4104251))
+
 # [0.20.0](https://github.com/pie-framework/pie-player-components/compare/v0.19.0...v0.20.0) (2019-12-20)
 
 
