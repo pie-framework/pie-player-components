@@ -27,7 +27,7 @@
     "start": "stencil build --dev --es5 --watch --serve",
     "test": "stencil test --spec --e2e",
     "test.watch": "stencil test --spec --e2e --watchAll",
-    "release": "npm run build && semantic-release",
+    "release": "semantic-release",
     "demo": "npm run start & http-server www",
     "yalc": "yalc push",
     "commit": "git-cz",

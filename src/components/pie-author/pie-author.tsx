@@ -13,7 +13,11 @@ import {
 import mr from "@pie-lib/math-rendering";
 
 import { PieContent, ItemConfig, PieElement, PieModel } from "../../interface";
-import { PieLoader, BundleEndpoints, DEFAULT_ENDPOINTS } from "../../pie-loader";
+import {
+  PieLoader,
+  BundleEndpoints,
+  DEFAULT_ENDPOINTS
+} from "../../pie-loader";
 import { pieContentFromConfig } from "../../utils/utils";
 import parseNpm from "parse-package-name";
 import _isEqual from "lodash/isEqual";
@@ -29,6 +33,7 @@ import {
   DataURLImageSupport,
   ExternalImageSupport
 } from "./dataurl-image-support";
+import { VERSION } from "../../version";
 
 /**
  * Pie Author will load a Pie Content model for authoring.
@@ -52,7 +57,7 @@ export class Author {
   @Prop() bundleHost?: string;
 
   /**
-   * Provide this property override the default endpoints used by the player to retrieve JS 
+   * Provide this property override the default endpoints used by the player to retrieve JS
    * bundles. Must be set before setting the config property.
    * Most users will not need to use this property.
    */
@@ -123,6 +128,9 @@ export class Author {
   /** external providers can set this if they need to upload the assets to the cloud etc. by default we use data urls */
   @Prop({ reflect: false })
   imageSupport: ExternalImageSupport = new DataURLImageSupport();
+
+  @Prop({ mutable: false, reflect: false })
+  version: string = VERSION;
 
   constructor() {
     this.handleFileInputChange = (e: Event) => {
@@ -304,13 +312,21 @@ export class Author {
   async loadPieElements() {
     if (this.config && !this.disableBundler) {
       let endpoints = DEFAULT_ENDPOINTS.stage;
-      if (this.bundleHost && ['dev','stage','prod'].includes(this.bundleHost)) {
+      if (
+        this.bundleHost &&
+        ["dev", "stage", "prod"].includes(this.bundleHost)
+      ) {
         endpoints = DEFAULT_ENDPOINTS[this.bundleHost];
-      } 
+      }
       if (this.bundleEndpoints) {
         endpoints = this.bundleEndpoints;
       }
-      await this.pieLoader.loadCloudPies({content: this.pieContentModel, doc:this.doc, endpoints, useCdn: false});
+      await this.pieLoader.loadCloudPies({
+        content: this.pieContentModel,
+        doc: this.doc,
+        endpoints,
+        useCdn: false
+      });
     }
   }
 
