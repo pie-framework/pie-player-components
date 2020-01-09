@@ -1,6 +1,5 @@
 import { SessionChangedEvent } from "@pie-framework/pie-player-events";
 import mr from "@pie-lib/math-rendering";
-import pkg from "../../../package.json";
 import {
   Component,
   Element,
@@ -113,9 +112,6 @@ export class Player {
    */
   @Prop() addCorrectResponse: boolean = false;
 
-  @Prop({ mutable: false })
-  version: string = pkg.version;
-
   @Watch("addCorrectResponse")
   watchAddCorrectResponse(newValue, oldValue) {
     if (newValue !== oldValue) {
@@ -147,7 +143,7 @@ export class Player {
    */
   @Prop() renderStimulus: boolean = true;
 
-  @Prop({ mutable: false })
+  @Prop({ mutable: false, reflect: false })
   version: string = VERSION;
 
   @State() pieContentModel: PieContent;

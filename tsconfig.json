@@ -11,9 +11,8 @@
     "noUnusedLocals": true,
     "noUnusedParameters": false,
     "jsx": "react",
-    "jsxFactory": "h",
-    "resolveJsonModule": true
+    "jsxFactory": "h"
   },
-  "include": ["src", "types/jsx.d.ts", "package.json"],
+  "include": ["src", "types/jsx.d.ts"],
   "exclude": ["node_modules"]
 }
