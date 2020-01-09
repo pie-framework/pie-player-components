@@ -1,5 +1,6 @@
 import { SessionChangedEvent } from "@pie-framework/pie-player-events";
 import mr from "@pie-lib/math-rendering";
+import pkg from "../../../package.json";
 import {
   Component,
   Element,
@@ -20,7 +21,12 @@ import {
   PieElement,
   PieModel
 } from "../../interface";
-import { PieLoader, BundleType, DEFAULT_ENDPOINTS, BundleEndpoints } from "../../pie-loader";
+import {
+  PieLoader,
+  BundleType,
+  DEFAULT_ENDPOINTS,
+  BundleEndpoints
+} from "../../pie-loader";
 import { addRubric } from "../../rubric-utils";
 
 const controllerErrorMessage: string =
@@ -47,7 +53,7 @@ export class Player {
   @Prop() bundleHost?: string;
 
   /**
-   * Provide this property override the default endpoints used by the player to retrieve JS 
+   * Provide this property override the default endpoints used by the player to retrieve JS
    * bundles. Must be set before setting the config property.
    * Most users will not need to use this property.
    */
@@ -105,6 +111,9 @@ export class Player {
    * false and player is running client-side-only.
    */
   @Prop() addCorrectResponse: boolean = false;
+
+  @Prop({ mutable: false })
+  version: string = pkg.version;
 
   @Watch("addCorrectResponse")
   watchAddCorrectResponse(newValue, oldValue) {
@@ -182,9 +191,12 @@ export class Player {
 
       if (!this.elementsLoaded && !this.disableBundler) {
         let endpoints = DEFAULT_ENDPOINTS.stage;
-        if (this.bundleHost && ['dev','stage','prod'].includes(this.bundleHost)) {
+        if (
+          this.bundleHost &&
+          ["dev", "stage", "prod"].includes(this.bundleHost)
+        ) {
           endpoints = DEFAULT_ENDPOINTS[this.bundleHost];
-        } 
+        }
         if (this.bundleEndpoints) {
           endpoints = this.bundleEndpoints;
         }
@@ -193,13 +205,9 @@ export class Player {
           content: this.pieContentModel,
           doc: this.doc,
           endpoints: endpoints,
-          bundle: this.hosted
-            ? BundleType.player
-            : BundleType.clientPlayer,
+          bundle: this.hosted ? BundleType.player : BundleType.clientPlayer,
           useCdn: false
-        },
-        
-        );
+        });
       }
     } catch (err) {
       this.playerError.emit(`problem loading item (${err})`);
@@ -271,7 +279,7 @@ export class Player {
                 ) {
                   session = await controller.createCorrectResponseSession(
                     model,
-                    {...newEnv, ...{role:'instructor'}}
+                    { ...newEnv, ...{ role: "instructor" } }
                   );
                 }
                 pieEl.model = await controller.model(model, session, newEnv);

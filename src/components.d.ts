@@ -68,7 +68,7 @@ export namespace Components {
     */
     'addCorrectResponse': boolean;
     /**
-    * Provide this property override the default endpoints used by the player to retrieve JS  bundles. Must be set before setting the config property. Most users will not need to use this property.
+    * Provide this property override the default endpoints used by the player to retrieve JS bundles. Must be set before setting the config property. Most users will not need to use this property.
     */
     'bundleEndpoints'?: BundleEndpoints;
     /**
@@ -104,6 +104,7 @@ export namespace Components {
     * @param update the updated model
     */
     'updateElementModel': (update: PieModel) => Promise<void>;
+    'version': string;
   }
   interface PiePreviewControl {}
   interface PiePreviewLayout {
@@ -215,7 +216,7 @@ declare namespace LocalJSX {
     */
     'addCorrectResponse'?: boolean;
     /**
-    * Provide this property override the default endpoints used by the player to retrieve JS  bundles. Must be set before setting the config property. Most users will not need to use this property.
+    * Provide this property override the default endpoints used by the player to retrieve JS bundles. Must be set before setting the config property. Most users will not need to use this property.
     */
     'bundleEndpoints'?: BundleEndpoints;
     /**
@@ -262,6 +263,7 @@ declare namespace LocalJSX {
     * The Pie Session
     */
     'session'?: ItemSession;
+    'version'?: string;
   }
   interface PiePreviewControl {
     'onEnvChanged'?: (event: CustomEvent<any>) => void;
