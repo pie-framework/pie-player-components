@@ -1,3 +1,10 @@
+## [0.21.1](https://github.com/pie-framework/pie-player-components/compare/v0.21.0...v0.21.1) (2020-01-09)
+
+
+### Bug Fixes
+
+* log version in set-version.sh ([6733200](https://github.com/pie-framework/pie-player-components/commit/6733200ef43184e8e307478ba1b2e8497145a00d))
+
 # [0.21.0](https://github.com/pie-framework/pie-player-components/compare/v0.20.1...v0.21.0) (2020-01-09)
 
 
