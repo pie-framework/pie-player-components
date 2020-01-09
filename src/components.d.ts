@@ -38,7 +38,7 @@ export namespace Components {
     */
     'addRubricToConfig': (config: ItemConfig, rubricModel?: any) => Promise<PieContent>;
     /**
-    * Provide this property override the default endpoints used by the player to retrieve JS  bundles. Must be set before setting the config property. Most users will not need to use this property.
+    * Provide this property override the default endpoints used by the player to retrieve JS bundles. Must be set before setting the config property. Most users will not need to use this property.
     */
     'bundleEndpoints'?: BundleEndpoints;
     /**
@@ -61,6 +61,7 @@ export namespace Components {
     * external providers can set this if they need to upload the assets to the cloud etc. by default we use data urls
     */
     'imageSupport': ExternalImageSupport;
+    'version': string;
   }
   interface PiePlayer {
     /**
@@ -68,7 +69,7 @@ export namespace Components {
     */
     'addCorrectResponse': boolean;
     /**
-    * Provide this property override the default endpoints used by the player to retrieve JS  bundles. Must be set before setting the config property. Most users will not need to use this property.
+    * Provide this property override the default endpoints used by the player to retrieve JS bundles. Must be set before setting the config property. Most users will not need to use this property.
     */
     'bundleEndpoints'?: BundleEndpoints;
     /**
@@ -104,6 +105,7 @@ export namespace Components {
     * @param update the updated model
     */
     'updateElementModel': (update: PieModel) => Promise<void>;
+    'version': string;
   }
   interface PiePreviewControl {}
   interface PiePreviewLayout {
@@ -177,7 +179,7 @@ declare namespace LocalJSX {
     */
     'addRubric'?: boolean;
     /**
-    * Provide this property override the default endpoints used by the player to retrieve JS  bundles. Must be set before setting the config property. Most users will not need to use this property.
+    * Provide this property override the default endpoints used by the player to retrieve JS bundles. Must be set before setting the config property. Most users will not need to use this property.
     */
     'bundleEndpoints'?: BundleEndpoints;
     /**
@@ -208,6 +210,7 @@ declare namespace LocalJSX {
     * Emmitted when the model for the content has been updated within the ui due to user action.
     */
     'onModelUpdated'?: (event: CustomEvent<any>) => void;
+    'version'?: string;
   }
   interface PiePlayer {
     /**
@@ -215,7 +218,7 @@ declare namespace LocalJSX {
     */
     'addCorrectResponse'?: boolean;
     /**
-    * Provide this property override the default endpoints used by the player to retrieve JS  bundles. Must be set before setting the config property. Most users will not need to use this property.
+    * Provide this property override the default endpoints used by the player to retrieve JS bundles. Must be set before setting the config property. Most users will not need to use this property.
     */
     'bundleEndpoints'?: BundleEndpoints;
     /**
@@ -262,6 +265,7 @@ declare namespace LocalJSX {
     * The Pie Session
     */
     'session'?: ItemSession;
+    'version'?: string;
   }
   interface PiePreviewControl {
     'onEnvChanged'?: (event: CustomEvent<any>) => void;
