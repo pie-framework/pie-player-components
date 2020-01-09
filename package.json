@@ -31,7 +31,8 @@
     "demo": "npm run start & http-server www",
     "yalc": "yalc push",
     "commit": "git-cz",
-    "semantic-release": "semantic-release"
+    "semantic-release": "semantic-release",
+    "postinstall": "echo 'export const VERSION = \"Will be added during release\";' > ./src/version.ts"
   },
   "dependencies": {
     "@material/select": "^2.2.0",
