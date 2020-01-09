@@ -5,6 +5,12 @@ module.exports = {
     "@semantic-release/changelog",
     "@semantic-release/npm",
     [
+      "@semantic-release/exec",
+      {
+        prepareCmd: "./set-version.sh ${nextRelease.version}"
+      }
+    ],
+    [
       "@semantic-release/git",
       {
         assets: ["package.json", "CHANGELOG.md"],
