@@ -1,44 +1,62 @@
 import { BundleType, needToLoad, PieLoader } from "../pie-loader";
-import { emptyConfigure } from "../components/empty-configure";
 import { PieContent } from "../interface";
 import { JSDOM } from "jsdom";
 const reg = (extras: any = {}) => ({ ...extras });
 
+const KEY = "pie-element";
+
 describe("needToLoad", () => {
-  const assertNeedToLoad = (
+  const assertNeedToLoad = (bundleType: BundleType) => (
     label: string,
     registry,
-    bundleType: BundleType,
-    key: string,
     expected: boolean
   ) => {
     it(label, () => {
-      const result = needToLoad(registry, bundleType)(`${key}@1.0.0`, key);
+      const result = needToLoad(registry, bundleType)(`${KEY}@1.0.0`, KEY);
       expect(result).toEqual(expected);
     });
   };
 
-  assertNeedToLoad("empty reg", reg(), BundleType.editor, "pie-element", true);
-  assertNeedToLoad(
-    "with empty reg object",
-    reg({ "pie-element": {} }),
-    BundleType.editor,
-    "pie-element",
-    true
-  );
+  const assertEditor = assertNeedToLoad(BundleType.editor);
+  const assertClientPlayer = assertNeedToLoad(BundleType.clientPlayer);
+  const assertPlayer = assertNeedToLoad(BundleType.player);
+  assertEditor("undefined reg", undefined, true);
+  assertEditor("empty reg", reg(), true);
+  assertEditor("with empty reg object", reg({ [KEY]: {} }), true);
 
-  assertNeedToLoad(
+  assertEditor(
     "with 3 objects",
     reg({
-      "pie-element": {
+      [KEY]: {
         config: {},
         controller: {},
         element: {}
       }
     }),
-    BundleType.editor,
-    "pie-element",
     false
+  );
+
+  assertClientPlayer(
+    "clientPlayer - missing element",
+    reg({ [KEY]: { controller: {} } }),
+    true
+  );
+  assertClientPlayer(
+    "clientPlayer - missing controller",
+    reg({ [KEY]: { element: {} } }),
+    true
+  );
+  assertClientPlayer(
+    "clientPlayer - ok",
+    reg({ [KEY]: { controller: {}, element: {} } }),
+    false
+  );
+
+  assertPlayer("player - ok", reg({ [KEY]: { element: {} } }), false);
+  assertPlayer(
+    "player - no element",
+    reg({ [KEY]: { element: undefined } }),
+    true
   );
 });
 

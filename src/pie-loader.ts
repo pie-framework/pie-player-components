@@ -58,6 +58,9 @@ export const needToLoad = (registry: any, bundle: BundleType) => (
   el: string,
   key: string
 ): boolean => {
+  if (!registry) {
+    return true;
+  }
   const regEntry: Entry = registry[key];
 
   if (!regEntry) {
@@ -65,15 +68,16 @@ export const needToLoad = (registry: any, bundle: BundleType) => (
   }
 
   const { config, controller, element } = regEntry;
-
-  if (bundle === BundleType.editor) {
-    return !config || !controller || !element;
-  } else if (bundle === BundleType.clientPlayer && (controller && element)) {
-    return false;
-  } else if (bundle === BundleType.player && element) {
-    return false;
+  switch (bundle) {
+    case BundleType.editor:
+      return !config || !controller || !element;
+    case BundleType.clientPlayer:
+      return !controller || !element;
+    case BundleType.player:
+      return !element;
+    default:
+      true;
   }
-  return true;
 };
 
 /**
@@ -220,6 +224,7 @@ export class PieLoader {
           }
 
           if (options.bundle === BundleType.editor) {
+            // This fixes some cases where the pie build service fails
             pie.Configure = isFunction(pie.Configure)
               ? pie.Configure
               : emptyConfigure(elName);
@@ -237,7 +242,6 @@ export class PieLoader {
               });
             }
           }
-          // This fixes some cases where the pie build service fails
         });
       };
     })(piesToLoad);
