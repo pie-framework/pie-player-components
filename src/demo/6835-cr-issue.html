@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0"
+    />
+    <title>6825</title>
+    <script
+      type="text/javascript"
+      src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.15/lodash.js"
+    ></script>
+    <script nomodule src="/build/pie-player-components.js"></script>
+    <script type="module" src="/build/pie-player-components.esm.js"></script>
+    <style>
+      .error {
+        color: red;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Steps to repro:</h1>
+    <ol>
+      <li>Add author el</li>
+      <li>Set CR Config</li>
+      <li>Delete Author El</li>
+      <li>Add Author El</li>
+      <li>Set CR Config</li>
+      <li>Delete Author El</li>
+      <li>Add Author El</li>
+      <li class="error">Set CR Config</li>
+    </ol>
+    <button id="add">Add Author El</button>
+    <button id="delete">Delete Author El</button>
+    <hr />
+    <button id="set-cr-config">Set CR Config</button>
+    <button id="set-mc-config">Set Mc Config</button>
+
+    <div id="holder">holder</div>
+    <script type="module">
+      import { authorSettings } from "./item-configs.js";
+
+      console.log(authorSettings);
+      let author;
+      const holder = document.querySelector("#holder");
+
+      document.querySelector("#add").addEventListener("click", () => {
+        author = document.createElement("pie-author");
+        holder.appendChild(author);
+      });
+      document.querySelector("#delete").addEventListener("click", () => {
+        if (author) {
+          author.remove();
+        }
+      });
+      document.querySelector("#set-cr-config").addEventListener("click", () => {
+        // get clean copy of configs
+        let contentConfig = _.cloneDeep(authorSettings["constructed_response"])
+          .contentConfig;
+        let configSettings = _.cloneDeep(
+          authorSettings["constructed_response"].configSettings
+        );
+
+        author.configSettings = configSettings;
+
+        author
+          .addRubricToConfig(contentConfig)
+          .then(rubricModel => {
+            author.config = rubricModel;
+          })
+          .catch(error => {
+            console.error(error);
+          });
+      });
+    </script>
+  </body>
+</html>
