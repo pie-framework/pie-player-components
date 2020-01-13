@@ -1,7 +1,8 @@
 import isFunction from "lodash/isFunction";
 import { getPackageWithoutVersion, getPackageBundleUri } from "./utils/utils";
 import { PieItemElement, PieContent } from "./interface";
-import omitBy from "lodash/omitBy";
+import pickBy from "lodash/pickBy";
+import { emptyConfigure } from "./components/empty-configure";
 
 export const DEFAULT_ENDPOINTS = {
   prod: {
@@ -67,6 +68,32 @@ const whenDefined = (el: string, timeout: number = 4000) => {
     customElements.whenDefined(el)
   ]);
 };
+export const needToLoad = (registry: any, bundle: BundleType) => (
+  el: string,
+  key: string
+): boolean => {
+  if (!registry) {
+    return true;
+  }
+  const regEntry: Entry = registry[key];
+
+  if (!regEntry) {
+    return true;
+  }
+
+  const { config, controller, element } = regEntry;
+  switch (bundle) {
+    case BundleType.editor:
+      return !config || !controller || !element;
+    case BundleType.clientPlayer:
+      return !controller || !element;
+    case BundleType.player:
+      return !element;
+    default:
+      true;
+  }
+};
+
 /**
  * Pie Registry contols the loading of all PIEs from the pie build service
  */
@@ -100,11 +127,6 @@ export class PieLoader {
       ? this.registry[pieTagName].controller
       : null;
   };
-
-  private getEmptyConfigure = () =>
-    class extends HTMLElement {
-      set model(_) {}
-    };
 
   public elementsHaveLoaded = (
     els: LoadedElementsQuery[]
@@ -154,7 +176,7 @@ export class PieLoader {
       this.registry
     );
 
-    console.log("-------------- piesToLoad:", piesToLoad);
+    console.log("[loadCloudPies] -------------- piesToLoad:", piesToLoad);
     let scriptUrl;
 
     if (options.content.bundle && options.content.bundle.url) {
@@ -178,16 +200,14 @@ export class PieLoader {
         options.endpoints.buildServiceBase + bundleUri + "/" + options.bundle;
     }
 
-    const loadedScripts = [...head.getElementsByTagName("script")];
-    if (
-      loadedScripts.find(s => {
-        return s.src === scriptUrl;
-      })
-    ) {
-      return;
-    }
-
-    const script = options.doc.createElement("script");
+    // const loadedScripts = [...head.getElementsByTagName("script")];
+    // if (
+    //   loadedScripts.find(s => {
+    //     return s.src === scriptUrl;
+    //   })
+    // ) {
+    //   return;
+    // }
 
     const onloadFn = (_pies => {
       return () => {
@@ -206,6 +226,7 @@ export class PieLoader {
           }
           const elName = key;
           if (!customElements.get(elName)) {
+            console.log(">> define", elName);
             customElements.define(elName, pie.Element);
             this.registry[elName] = {
               package: _pies[key],
@@ -220,29 +241,43 @@ export class PieLoader {
             });
           }
 
-          // This fixes some cases where the pie build service fails
-          pie.Configure = isFunction(pie.Configure)
-            ? pie.Configure
-            : this.getEmptyConfigure();
+          if (options.bundle === BundleType.editor) {
+            // This fixes some cases where the pie build service fails
+            pie.Configure = isFunction(pie.Configure)
+              ? pie.Configure
+              : emptyConfigure(elName);
 
-          const configElName = elName + "-config";
+            const configElName = elName + "-config";
 
-          if (!customElements.get(configElName)) {
-            console.log("---------- define config el: ", configElName);
-            customElements.define(configElName, pie.Configure);
-            customElements.whenDefined(configElName).then(async () => {
-              if (this.registry[elName]) {
-                this.registry[elName].config = customElements.get(configElName);
-              }
-            });
+            if (!customElements.get(configElName)) {
+              console.log(">> define", configElName);
+              customElements.define(configElName, pie.Configure);
+              customElements.whenDefined(configElName).then(async () => {
+                if (this.registry[elName]) {
+                  this.registry[elName].config = customElements.get(
+                    configElName
+                  );
+                }
+              });
+            }
           }
         });
       };
     })(piesToLoad);
 
-    script.onload = onloadFn;
-    script.src = scriptUrl;
-    head.appendChild(script);
+    const existingScript = document.querySelector(`script[src="${scriptUrl}"]`);
+
+    if (existingScript) {
+      // can't call onload and define custom elemnts cos they'be already been assigned to a tag.
+      console.log(">> we have alread loaded a script for this: ", scriptUrl);
+      //onloadFn();
+    } else {
+      const script = options.doc.createElement("script");
+      script.onload = onloadFn;
+      console.log(">>>>>>>>>>>> scriptUrl: ", scriptUrl);
+      script.src = scriptUrl;
+      head.appendChild(script);
+    }
   };
 
   public convertPieContent = (
@@ -282,27 +317,6 @@ export class PieLoader {
     bundle: BundleType = BundleType.editor,
     registry
   ): PieItemElement => {
-    const res = omitBy(els, (el, key) => {
-      const regEntry: Entry = registry[key];
-      if (!regEntry) {
-        return false;
-      }
-      if (
-        bundle === BundleType.editor &&
-        (regEntry.config && regEntry.controller && regEntry.element)
-      ) {
-        return true;
-      } else if (
-        bundle === BundleType.clientPlayer &&
-        (regEntry.controller && regEntry.element)
-      ) {
-        return true;
-      } else if (bundle === BundleType.player && regEntry.element) {
-        return true;
-      } else {
-        return false;
-      }
-    });
-    return res as PieItemElement;
+    return pickBy(els, needToLoad(registry, bundle));
   };
 }

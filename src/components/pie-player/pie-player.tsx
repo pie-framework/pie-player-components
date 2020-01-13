@@ -143,7 +143,7 @@ export class Player {
    */
   @Prop() renderStimulus: boolean = true;
 
-  @Prop({ mutable: false })
+  @Prop({ mutable: false, reflect: false })
   version: string = VERSION;
 
   @State() pieContentModel: PieContent;
