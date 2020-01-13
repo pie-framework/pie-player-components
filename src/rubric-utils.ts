@@ -68,6 +68,7 @@ export const addPackageToContent = (
     model = model ? model : ({} as any);
     // add package
     model.id = pieShortIdGenerator();
+    // const elementName = packageToAdd.replace(/\//g, "-").replace(/\@/g, "");
     const elementName = pieShortIdGenerator();
     model.element = elementName;
     content.models && content.models.push(model);

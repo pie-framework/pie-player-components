@@ -53,6 +53,20 @@ export enum BundleType {
   editor = "editor.js"
 }
 
+const wait = (time: number, msg: string) =>
+  new Promise((resolve, reject) => {
+    setTimeout(() => {
+      reject(new Error(msg));
+    }, time);
+  });
+
+const whenDefined = (el: string, timeout: number = 4000) => {
+  console.log(`------------------- whenDefined ${el}`);
+  return Promise.race([
+    wait(timeout, `Element ${el} not defined within ${timeout} millis`),
+    customElements.whenDefined(el)
+  ]);
+};
 /**
  * Pie Registry contols the loading of all PIEs from the pie build service
  */
@@ -69,7 +83,7 @@ export class PieLoader {
       this.endpoints = DEFAULT_ENDPOINTS.stage;
     } else {
       this.endpoints = _endpoints;
-    } 
+    }
     // read from global in case >1 instance loaded.
     window["PIE_REGISTRY"] = window["PIE_REGISTRY"]
       ? window["PIE_REGISTRY"]
@@ -79,7 +93,7 @@ export class PieLoader {
   }
 
   private static _registry: { [elementName: string]: Entry };
-  protected registry:  { [elementName: string]: Entry };
+  protected registry: { [elementName: string]: Entry };
 
   public getController = (pieTagName: string) => {
     return this.registry[pieTagName]
@@ -95,13 +109,15 @@ export class PieLoader {
   public elementsHaveLoaded = (
     els: LoadedElementsQuery[]
   ): Promise<LoadedElementsResp> => {
-    const promises = els.map(el => customElements.whenDefined(el.tag));
+    console.log("elementsHavLoaded: ", els);
+    const promises = els.map(el => whenDefined(el.tag));
 
     return Promise.all(promises)
       .then(() => {
         return Promise.resolve({ elements: els, val: true });
       })
-      .catch(() => {
+      .catch(e => {
+        console.warn(e);
         return Promise.resolve({ elements: els, val: false });
       });
   };
@@ -112,56 +128,71 @@ export class PieLoader {
    * @param {HTMLDocument} doc - the document to load the scripts
    * @param {string} base_url - default base url for cloud service
    */
-  public loadCloudPies = async (
-    options: {
-      content: PieContent;
-      doc: Document;
-      endpoints?: BundleEndpoints;
-      bundle?: BundleType;
-      useCdn: boolean
-    } 
-  ) => {
+  public loadCloudPies = async (options: {
+    content: PieContent;
+    doc: Document;
+    endpoints?: BundleEndpoints;
+    bundle?: BundleType;
+    useCdn: boolean;
+  }) => {
     if (!options.endpoints) {
       options.endpoints = this.endpoints;
     }
     if (!options.bundle) {
       options.bundle = BundleType.editor;
     }
-    
 
     const elements = options.content.elements;
-    let head:HTMLElement = options.doc.getElementsByTagName("head")[0];
+    let head: HTMLElement = options.doc.getElementsByTagName("head")[0];
     if (!head) {
-      head = options.doc.createElement('head')
+      head = options.doc.createElement("head");
       options.doc.appendChild(head);
-    };
-    const piesToLoad = this.getElementsToLoad(elements, options.bundle, this.registry);
+    }
+    const piesToLoad = this.getElementsToLoad(
+      elements,
+      options.bundle,
+      this.registry
+    );
+
+    console.log("-------------- piesToLoad:", piesToLoad);
     let scriptUrl;
 
     if (options.content.bundle && options.content.bundle.url) {
       scriptUrl = options.content.bundle.url;
-    } else if (options.useCdn && options.content.bundle && options.content.bundle.hash) {
-      scriptUrl = options.endpoints.bundleBase + options.content.bundle.hash + "/" + options.bundle;
+    } else if (
+      options.useCdn &&
+      options.content.bundle &&
+      options.content.bundle.hash
+    ) {
+      scriptUrl =
+        options.endpoints.bundleBase +
+        options.content.bundle.hash +
+        "/" +
+        options.bundle;
     } else {
       const bundleUri = getPackageBundleUri(piesToLoad);
       if (!bundleUri) {
         return;
       }
-      scriptUrl = options.endpoints.buildServiceBase + bundleUri + "/" + options.bundle;
+      scriptUrl =
+        options.endpoints.buildServiceBase + bundleUri + "/" + options.bundle;
     }
 
-
-    const loadedScripts = [...head.getElementsByTagName('script')];
-    if (loadedScripts.find(s => {return s.src === scriptUrl})) {
+    const loadedScripts = [...head.getElementsByTagName("script")];
+    if (
+      loadedScripts.find(s => {
+        return s.src === scriptUrl;
+      })
+    ) {
       return;
     }
 
     const script = options.doc.createElement("script");
 
-
     const onloadFn = (_pies => {
       return () => {
         const pieKeys = Object.keys(_pies);
+        console.log("----- onLoad !!!! - keys:", pieKeys);
 
         pieKeys.forEach(key => {
           const packagesWithoutVersion = getPackageWithoutVersion(_pies[key]);
@@ -181,11 +212,11 @@ export class PieLoader {
               status: Status.loading,
               tagName: elName
             };
-            
+
             customElements.whenDefined(elName).then(async () => {
               this.registry[elName].status = Status.loaded;
               this.registry[elName].element = customElements.get(elName);
-              this.registry[elName].controller = pie.controller;            
+              this.registry[elName].controller = pie.controller;
             });
           }
 
@@ -197,6 +228,7 @@ export class PieLoader {
           const configElName = elName + "-config";
 
           if (!customElements.get(configElName)) {
+            console.log("---------- define config el: ", configElName);
             customElements.define(configElName, pie.Configure);
             customElements.whenDefined(configElName).then(async () => {
               if (this.registry[elName]) {
@@ -245,17 +277,27 @@ export class PieLoader {
    *
    * @param elements - the elements to test against registry
    */
-  protected getElementsToLoad = (els: PieItemElement, bundle: BundleType = BundleType.editor, registry): PieItemElement => {
+  protected getElementsToLoad = (
+    els: PieItemElement,
+    bundle: BundleType = BundleType.editor,
+    registry
+  ): PieItemElement => {
     const res = omitBy(els, (el, key) => {
-      const regEntry:Entry = registry[key];
+      const regEntry: Entry = registry[key];
       if (!regEntry) {
         return false;
       }
-      if ((bundle === BundleType.editor) && (regEntry.config && regEntry.controller && regEntry.element)) {
+      if (
+        bundle === BundleType.editor &&
+        (regEntry.config && regEntry.controller && regEntry.element)
+      ) {
         return true;
-      } else if ((bundle === BundleType.clientPlayer) && (regEntry.controller && regEntry.element))  {
+      } else if (
+        bundle === BundleType.clientPlayer &&
+        (regEntry.controller && regEntry.element)
+      ) {
         return true;
-      } else if ((bundle === BundleType.player) && (regEntry.element)) {
+      } else if (bundle === BundleType.player && regEntry.element) {
         return true;
       } else {
         return false;
@@ -263,6 +305,4 @@ export class PieLoader {
     });
     return res as PieItemElement;
   };
-
-
 }

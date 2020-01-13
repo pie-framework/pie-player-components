@@ -11,7 +11,7 @@ import {
 } from "@stencil/core";
 
 import mr from "@pie-lib/math-rendering";
-
+import get from "lodash/get";
 import { PieContent, ItemConfig, PieElement, PieModel } from "../../interface";
 import {
   PieLoader,
@@ -269,7 +269,9 @@ export class Author {
   componentDidUnload() {
     this.el.removeEventListener(InsertImageEvent.TYPE, this.handleInsertImage);
     this.el.removeEventListener(DeleteImageEvent.TYPE, this.handleDeleteImage);
-    this.fileInput.removeEventListener("change", this.handleFileInputChange);
+    if (this.fileInput) {
+      this.fileInput.removeEventListener("change", this.handleFileInputChange);
+    }
   }
 
   async componentWillLoad() {
@@ -337,26 +339,49 @@ export class Author {
   }
 
   async afterRender() {
-    if (
-      this.pieContentModel &&
-      this.pieContentModel.markup &&
-      !this.elementsLoaded
-    ) {
-      const elements = Object.keys(this.pieContentModel.elements).map(el => ({
+    console.log("[afterRender]...", this.elementsLoaded, this.pieContentModel);
+
+    if (!this.elementsLoaded) {
+      const elementMap = get(this.pieContentModel, "elements") || {};
+
+      console.log("elements:", elementMap);
+      const elements = Object.keys(elementMap).map(el => ({
         name: el,
         tag: `${el}-config`
       }));
+      console.log("elements:", elements);
       const loadedInfo = await this.pieLoader.elementsHaveLoaded(elements);
-
+      console.log("loadedInfo:", loadedInfo);
       if (
         loadedInfo.val &&
         !!loadedInfo.elements.find(el => this.pieContentModel.elements[el.name])
       ) {
+        console.log("[afterRender]...set elementsLoaded to true");
         this.elementsLoaded = true;
-
         this.renderMath();
+      } else {
+        console.error("elements not loaded?");
       }
     }
+    // if (
+    //   (this.pieContentModel && this.pieContentModel.markup) ||
+    //   !this.elementsLoaded
+    // ) {
+    //   const elements = Object.keys(this.pieContentModel.elements).map(el => ({
+    //     name: el,
+    //     tag: `${el}-config`
+    //   }));
+    //   const loadedInfo = await this.pieLoader.elementsHaveLoaded(elements);
+    //   console.log("loadedInfo:", loadedInfo);
+    //   if (
+    //     loadedInfo.val &&
+    //     !!loadedInfo.elements.find(el => this.pieContentModel.elements[el.name])
+    //   ) {
+    //     console.log("[afterRender]...set elementsLoaded to true");
+    //     this.elementsLoaded = true;
+    //     this.renderMath();
+    //   }
+    // }
   }
 
   /**
@@ -388,6 +413,7 @@ export class Author {
   }
 
   render() {
+    console.log("[render] ", this.elementsLoaded, this.pieContentModel);
     if (this.pieContentModel && this.pieContentModel.markup) {
       const markup = this.getRenderMarkup();
       if (this.addPreview) {
@@ -405,7 +431,6 @@ export class Author {
         return (
           <pie-spinner active={!this.elementsLoaded}>
             <div innerHTML={markup} />
-            <input type="file" hidden ref={r => (this.fileInput = r)} />
           </pie-spinner>
         );
       }

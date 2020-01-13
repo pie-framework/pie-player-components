@@ -31,6 +31,7 @@
       <li>Add Author El</li>
       <li class="error">Set CR Config</li>
     </ol>
+    <button id="run-steps">Run all Steps...</button>
     <button id="add">Add Author El</button>
     <button id="delete">Delete Author El</button>
     <hr />
@@ -45,17 +46,50 @@
       let author;
       const holder = document.querySelector("#holder");
 
-      document.querySelector("#add").addEventListener("click", () => {
+      const addAuthor = () => {
+        console.log("add author..");
         author = document.createElement("pie-author");
         holder.appendChild(author);
+      };
+
+      const sleep = amount => {
+        console.log("sleep..");
+
+        return new Promise((resolve, reject) => {
+          setTimeout(() => {
+            console.log("sleep.done");
+            resolve();
+          }, amount);
+        });
+      };
+
+      document
+        .querySelector("#run-steps")
+        .addEventListener("click", async () => {
+          addAuthor();
+          await sleep(1000);
+          await setCrConfig();
+          author.remove();
+          await sleep(1000);
+          addAuthor();
+          await sleep(1000);
+          await setCrConfig();
+          author.remove();
+          await sleep(1000);
+          addAuthor();
+          await setCrConfig();
+        });
+
+      document.querySelector("#add").addEventListener("click", () => {
+        addAuthor();
       });
+
       document.querySelector("#delete").addEventListener("click", () => {
         if (author) {
           author.remove();
         }
       });
-      document.querySelector("#set-cr-config").addEventListener("click", () => {
-        // get clean copy of configs
+      const setCrConfig = () => {
         let contentConfig = _.cloneDeep(authorSettings["constructed_response"])
           .contentConfig;
         let configSettings = _.cloneDeep(
@@ -63,15 +97,20 @@
         );
 
         author.configSettings = configSettings;
-
-        author
+        console.log("... set config...");
+        return author
           .addRubricToConfig(contentConfig)
           .then(rubricModel => {
             author.config = rubricModel;
+            console.log("new author config:", author.config);
           })
           .catch(error => {
             console.error(error);
           });
+      };
+      document.querySelector("#set-cr-config").addEventListener("click", () => {
+        // get clean copy of configs
+        setCrConfig();
       });
     </script>
   </body>
