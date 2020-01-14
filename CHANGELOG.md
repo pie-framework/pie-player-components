@@ -1,3 +1,10 @@
+## [0.21.6](https://github.com/pie-framework/pie-player-components/compare/v0.21.5...v0.21.6) (2020-01-14)
+
+
+### Bug Fixes
+
+* only call if file set-version.sh is present ([4bb2518](https://github.com/pie-framework/pie-player-components/commit/4bb25188ff5babdd787e1ec00b47e22324fb46c8))
+
 ## [0.21.5](https://github.com/pie-framework/pie-player-components/compare/v0.21.4...v0.21.5) (2020-01-14)
 
 
