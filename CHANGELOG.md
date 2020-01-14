@@ -1,3 +1,11 @@
+## [0.21.8](https://github.com/pie-framework/pie-player-components/compare/v0.21.7...v0.21.8) (2020-01-14)
+
+
+### Bug Fixes
+
+* postinstall syntax ([473230d](https://github.com/pie-framework/pie-player-components/commit/473230d))
+* typo postinstall ([c251922](https://github.com/pie-framework/pie-player-components/commit/c251922))
+
 ## [0.21.7](https://github.com/pie-framework/pie-player-components/compare/v0.21.6...v0.21.7) (2020-01-14)
 
 
