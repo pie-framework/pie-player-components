@@ -1,3 +1,10 @@
+## [0.21.2](https://github.com/pie-framework/pie-player-components/compare/v0.21.1...v0.21.2) (2020-01-14)
+
+
+### Bug Fixes
+
+* use latest math-rendering ([0b80dcc](https://github.com/pie-framework/pie-player-components/commit/0b80dcca6a856017df7e0046e2878df702f5cea7))
+
 ## [0.21.1](https://github.com/pie-framework/pie-player-components/compare/v0.21.0...v0.21.1) (2020-01-09)
 
 
