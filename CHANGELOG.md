@@ -1,3 +1,10 @@
+## [0.21.3](https://github.com/pie-framework/pie-player-components/compare/v0.21.2...v0.21.3) (2020-01-14)
+
+
+### Bug Fixes
+
+* postinstall when not root repo ([99cee17](https://github.com/pie-framework/pie-player-components/commit/99cee1770214ca74b6b7c83e77259a47ff412f5d))
+
 ## [0.21.2](https://github.com/pie-framework/pie-player-components/compare/v0.21.1...v0.21.2) (2020-01-14)
 
 
