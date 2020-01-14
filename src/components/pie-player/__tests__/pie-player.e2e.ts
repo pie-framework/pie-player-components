@@ -26,11 +26,11 @@ describe("pie-player", () => {
     await piePlayer.setProperty("env", { mode: "evaluate", role: "student" });
     await page.waitForChanges();
     const pieElement = await page.waitForSelector(
-      "pie-player pie-multiple-choice"
+      "pie-player pp-pie-element-multiple-choice"
     );
     expect(pieElement).toBeDefined();
     const model = await page.$eval(
-      "pie-player pie-multiple-choice",
+      "pie-player pp-pie-element-multiple-choice",
       el => (el as any).model
     );
     expect(model.env.mode).toEqual("evaluate");
@@ -45,10 +45,10 @@ describe("pie-player", () => {
     const piePlayer = await page.find("pie-player");
     expect(piePlayer).toBeDefined();
     const pieElement = await page.waitForSelector(
-      "pie-player pie-multiple-choice"
+      "pie-player pp-pie-element-multiple-choice"
     );
     expect(pieElement).toBeDefined();
-    const model = await page.$eval("pie-player pie-multiple-choice", el =>
+    const model = await page.$eval("pie-player pp-pie-element-multiple-choice", el =>
       el.getAttribute("model")
     );
     expect(model).toBeTruthy();
@@ -60,11 +60,11 @@ describe("pie-player", () => {
     const secondPlayer = await page.find("pie-player");
     expect(secondPlayer).toBeDefined();
     const secondPieElement = await page.waitForSelector(
-      "pie-player:nth-child(2) pie-multiple-choice"
+      "pie-player:nth-child(2) pp-pie-element-multiple-choice"
     );
     expect(secondPieElement).toBeDefined();
     const model2 = await page.$eval(
-      "pie-player:nth-child(2) pie-multiple-choice",
+      "pie-player:nth-child(2) pp-pie-element-multiple-choice",
       el => el.getAttribute("model")
     );
     expect(model2).toBeTruthy();
@@ -78,8 +78,8 @@ describe("pie-player", () => {
       await piePlayer.setProperty("addCorrectResponse", true);
       await piePlayer.setProperty("config", simplePieMock);
       await page.waitForChanges();
-      await page.waitForSelector("pie-player pie-multiple-choice:defined");
-      const el = await page.find("pie-player pie-multiple-choice");
+      await page.waitForSelector("pie-player pp-pie-element-multiple-choice:defined");
+      const el = await page.find("pie-player pp-pie-element-multiple-choice");
       const d = JSON.parse(el.innerHTML);
       expect(d.session).toEqual({ correctResponse: true });
     });
@@ -94,12 +94,12 @@ describe("pie-player", () => {
     expect(piePlayer).toBeDefined();
     const stimulusLayout = await piePlayer.find("pie-stimulus-layout");
     expect(stimulusLayout).toBeDefined();
-    const passageModel = await page.$eval("#stimulusPlayer pie-passage", el =>
+    const passageModel = await page.$eval("#stimulusPlayer pp-pie-element-passage", el =>
       el.getAttribute("model")
     );
     expect(passageModel).toBeTruthy();
     const questionModel = await page.$eval(
-      "#itemPlayer pie-multiple-choice",
+      "#itemPlayer pp-pie-element-multiple-choice",
       el => el.getAttribute("model")
     );
     expect(questionModel).toBeTruthy();
@@ -141,11 +141,11 @@ describe("pie-player", () => {
 
     await page.waitForChanges();
     const pieElement = await page.waitForSelector(
-      "pie-player pie-multiple-choice"
+      "pie-player pp-pie-element-multiple-choice"
     );
     expect(pieElement).toBeDefined();
     const session = await page.$eval(
-      "pie-player pie-multiple-choice",
+      "pie-player pp-pie-element-multiple-choice",
       el => (el as any).session
     );
     expect(session).toEqual({ correctResponse: true });

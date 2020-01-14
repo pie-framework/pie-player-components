@@ -1,6 +1,52 @@
 import parseNpm from 'parse-package-name';
 import { PieContent, AdvancedItemConfig, PieItemElement, PieModel } from '../interface';
 
+
+/**
+ * Replaces all user-defined element name mappings with ones derived from 
+ * the NPM package name.
+ * @param content the content to normalize
+ */
+export const normalizeContentElements = (content: PieContent): PieContent => {
+  if (!content || (content && !content.elements)) return content;
+  let markup = content.markup;
+  Object.keys(content.elements).forEach(key =>{
+    const tag = key;
+    const npmPkg = content.elements[key];
+    // prefix new tag with pp- for pie player and to ensure custom element validity
+    const newTag = 'pp-' + packageToElementName(npmPkg);
+    markup = markup.split(tag).join(newTag);
+    if (content.models) {
+      content.models.forEach(model => {
+        if (model.element === key) {
+          model.element = newTag;
+        }
+      });
+    }
+    if (key !== newTag) {
+      content.elements[newTag] = npmPkg;
+      delete content.elements[key];
+    }
+    
+  });
+  content.markup = markup;
+  return content;
+}
+
+/**
+ * Convert an npm package to html valid element name by replacing 
+ * all special chars with `-`
+ * @param npmPackage npm package to convert
+ */
+export const packageToElementName = (npmPackage: string) : string => {
+  const parsed = parseNpm(npmPackage);
+  if (parsed) {
+    let tag = parsed.name.replace(/\/|\./g, '-') ;
+    tag = tag.replace('@','');
+    return tag ;
+  }
+}
+
 export const getPackageWithoutVersion = packages => {
   const packagesArray = packages.split('+');
   const newPackageArray = [];
@@ -82,10 +128,10 @@ export const pieContentFromConfig = (config: any): PieContent => {
     }
     if (config.pie) {
       const ac = config as AdvancedItemConfig;
-      return ac.pie;
+      return normalizeContentElements(ac.pie);
     } else if (config.elements) {
       const pc = config as PieContent;
-      return pc;
+      return normalizeContentElements(pc);
     } else {
       console.warn(`invalid pie data model: ${JSON.stringify(config)}`);
       return null;

@@ -251,31 +251,8 @@ export class PieLoader {
     head.appendChild(script);
   };
 
-  public convertPieContent = (
-    content: PieContent,
-    forAuthoring = true
-  ): PieContent => {
-    let c = content;
-    if (forAuthoring) {
-      if (!c.markup && c.models) {
-        const tags = content.models.map(model => {
-          return `<${model.element} id="${model.id}"></${
-            model.element
-          }-config>`;
-        });
-        c.markup = tags.join("");
-      }
-    }
+  
 
-    return c;
-  };
-
-  /**
-   *
-   * @param content the `PieContent` to process
-   * @param useVersions whether different (major) versions of elements will be managed separately
-   */
-  public normalizeElements(content: PieContent, useVersions: true) {}
 
   /**
    * Given a defintion of elements, will check the registry

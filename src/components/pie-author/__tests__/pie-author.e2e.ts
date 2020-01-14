@@ -64,7 +64,7 @@ describe("pie-author", () => {
     );
 
     await page.waitForChanges();
-    const configEl = await page.find("pie-author pie-multiple-choice-config");
+    const configEl = await page.find("pie-author pp-pie-element-multiple-choice-config");
     const model = await configEl.getProperty("model");
     expect(model.id).toEqual("1");
   });
@@ -87,7 +87,7 @@ describe("pie-author", () => {
     );
 
     await page.waitForChanges();
-    const configEl = await page.find("pie-author pie-multiple-choice-config");
+    const configEl = await page.find("pie-author pp-pie-element-multiple-choice-config");
     const model = await configEl.getProperty("model");
     expect(model.test).toEqual("test");
 
@@ -99,7 +99,7 @@ describe("pie-author", () => {
       copy
     );
     await page.waitForChanges();
-    const copyConfigEl = await page.find("pie-author pie-multiple-choice-config");
+    const copyConfigEl = await page.find("pie-author pp-pie-element-multiple-choice-config");
     const copyModel = await copyConfigEl.getProperty("model");
     expect(copyModel.test).toBeUndefined();
 
@@ -124,8 +124,8 @@ describe("pie-author", () => {
     );
 
     await page.waitForChanges();
-    await page.waitForSelector("pie-multiple-choice-config[model]");
-    const configEl = await page.find("pie-multiple-choice-config");
+    await page.waitForSelector("pp-pie-element-multiple-choice-config[model]");
+    const configEl = await page.find("pp-pie-element-multiple-choice-config");
     const configProp = await configEl.getProperty("configuration");
 
     expect(configProp.foo).toEqual("bar");
@@ -144,16 +144,14 @@ describe("pie-author", () => {
       "@pie-element/rubric"
     );
 
-    const tagName = Object.keys(rubricAdded.elements)[1];
-
     pieAuthor.setProperty("config", rubricAdded);
     await page.waitForChanges();
-    await page.waitForSelector(`pie-author ${tagName}-config:defined`, {
+    await page.waitForSelector(`pp-pie-element-rubric-config:defined`, {
       timeout: 1000
     });
 
     const rubricModel = await page.$eval(
-      `pie-author ${tagName}-config`,
+      `pie-author pp-pie-element-rubric-config`,
       el => (el as any).model
     );
     expect(rubricModel.foo).toEqual("bar");
@@ -167,39 +165,39 @@ describe("pie-author", () => {
     pieAuthor = await page.find("pie-author");
     pieAuthor.setProperty("config", multipleChoiceItem);
     await page.waitForChanges();
-    await page.waitForSelector("pie-author pie-multiple-choice-config:defined");
+    await page.waitForSelector("pie-author pp-pie-element-multiple-choice-config:defined");
     const pieModel = await page.$eval(
-      "pie-author pie-multiple-choice-config",
+      "pie-author pp-pie-element-multiple-choice-config",
       el => (el as any).model
     );
-    expect(pieModel.element).toEqual("pie-multiple-choice");
+    expect(pieModel.element).toEqual("pp-pie-element-multiple-choice");
 
     const mcPreviewPlayer = await page.find(
-      ".pie-player pie-player pie-multiple-choice"
+      ".pie-player pie-player pp-pie-element-multiple-choice"
     );
 
     const o = JSON.parse(mcPreviewPlayer.innerHTML);
     expect(o.model).toMatchObject({
-      model: { id: "1", element: "pie-multiple-choice" }
+      model: { id: "1", element: "pp-pie-element-multiple-choice" }
     });
 
     pieAuthor.setProperty("config", inlineChoiceItem);
     await page.waitForChanges();
-    await page.waitForSelector("pie-author pie-inline-choice-config:defined");
+    await page.waitForSelector("pie-author pp-pie-element-inline-choice-config:defined");
     const inlineChoiceModel = await page.$eval(
-      "pie-author pie-inline-choice-config",
+      "pie-author pp-pie-element-inline-choice-config",
       el => (el as any).model
     );
 
-    expect(inlineChoiceModel.element).toEqual("pie-inline-choice");
+    expect(inlineChoiceModel.element).toEqual("pp-pie-element-inline-choice");
 
     const icPreviewPlayer = await page.find(
-      ".pie-player pie-player pie-inline-choice"
+      ".pie-player pie-player pp-pie-element-inline-choice"
     );
 
     const switched = JSON.parse(icPreviewPlayer.innerHTML);
     expect(switched.model).toMatchObject({
-      model: { id: "1", element: "pie-inline-choice" }
+      model: { id: "1", element: "pp-pie-element-inline-choice" }
     });
   });
 });
