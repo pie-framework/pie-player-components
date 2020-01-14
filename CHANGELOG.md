@@ -1,3 +1,10 @@
+## [0.21.5](https://github.com/pie-framework/pie-player-components/compare/v0.21.4...v0.21.5) (2020-01-14)
+
+
+### Bug Fixes
+
+* use INIT_CWD ([4b642b7](https://github.com/pie-framework/pie-player-components/commit/4b642b7114b5adbfca51a579e43fd7650c35678c))
+
 ## [0.21.4](https://github.com/pie-framework/pie-player-components/compare/v0.21.3...v0.21.4) (2020-01-14)
 
 
