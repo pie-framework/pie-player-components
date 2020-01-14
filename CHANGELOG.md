@@ -1,3 +1,10 @@
+## [0.21.4](https://github.com/pie-framework/pie-player-components/compare/v0.21.3...v0.21.4) (2020-01-14)
+
+
+### Bug Fixes
+
+* only run if script present ([a16270a](https://github.com/pie-framework/pie-player-components/commit/a16270a5378934ab94a7e0658a3c9134d8c7edd4))
+
 ## [0.21.3](https://github.com/pie-framework/pie-player-components/compare/v0.21.2...v0.21.3) (2020-01-14)
 
 
