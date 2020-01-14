@@ -35,7 +35,7 @@
     "yalc": "yalc push",
     "commit": "git-cz",
     "semantic-release": "semantic-release",
-    "postinstall": "echo $INIT_CWD && $INIT_CWD/set-version.sh"
+    "postinstall": "echo $INIT_CWD && $INIT_CWD/set-version.sh $npm_package_version"
   },
   "dependencies": {
     "@material/select": "^2.2.0",
