@@ -1,3 +1,10 @@
+## [0.21.7](https://github.com/pie-framework/pie-player-components/compare/v0.21.6...v0.21.7) (2020-01-14)
+
+
+### Bug Fixes
+
+* rm INIT_CMD ([342c7f3](https://github.com/pie-framework/pie-player-components/commit/342c7f3))
+
 ## [0.21.6](https://github.com/pie-framework/pie-player-components/compare/v0.21.5...v0.21.6) (2020-01-14)
 
 
