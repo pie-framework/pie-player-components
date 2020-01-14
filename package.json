@@ -22,6 +22,9 @@
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
   },
+  "config": {
+    "foo": "bar"
+  },
   "scripts": {
     "build": "stencil build --docs-readme",
     "start": "stencil build --dev --es5 --watch --serve",
@@ -32,7 +35,7 @@
     "yalc": "yalc push",
     "commit": "git-cz",
     "semantic-release": "semantic-release",
-    "postinstall": "[ -f ./set-version.sh ] && ./set-version.sh $npm_package_version"
+    "postinstall": "echo $INIT_CWD && $INIT_CWD/set-version.sh"
   },
   "dependencies": {
     "@material/select": "^2.2.0",
