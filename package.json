@@ -32,7 +32,7 @@
     "yalc": "yalc push",
     "commit": "git-cz",
     "semantic-release": "semantic-release",
-    "postinstall": "./set-version.sh 0.0.0"
+    "postinstall": "[ -f ./set-version.sh ] && ./set-version.sh $npm_package_version"
   },
   "dependencies": {
     "@material/select": "^2.2.0",
