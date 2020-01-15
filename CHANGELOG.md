@@ -1,3 +1,10 @@
+# [0.22.0](https://github.com/pie-framework/pie-player-components/compare/v0.21.8...v0.22.0) (2020-01-15)
+
+
+### Features
+
+* normalize elements ([#40](https://github.com/pie-framework/pie-player-components/issues/40)) ([f05ede2](https://github.com/pie-framework/pie-player-components/commit/f05ede24c7b178ad9f0799f2df99e1476d0dae3f))
+
 ## [0.21.8](https://github.com/pie-framework/pie-player-components/compare/v0.21.7...v0.21.8) (2020-01-14)
 
 
