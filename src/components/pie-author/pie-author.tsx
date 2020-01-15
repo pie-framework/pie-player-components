@@ -205,7 +205,7 @@ export class Author {
   addConfigTags(c: PieContent) {
     if (!c.markup && c.models) {
       const tags = c.models.map(model => {
-        return `<${model.element} id="${model.id}"></${model.element}-config>`;
+        return `<${model.element}-config id="${model.id}"></${model.element}-config>`;
       });
       c.markup = tags.join("");
     }

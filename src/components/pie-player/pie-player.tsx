@@ -27,6 +27,7 @@ import {
   BundleEndpoints
 } from "../../pie-loader";
 import { addRubric } from "../../rubric-utils";
+import { normalizeContentElements } from "../../utils/utils";
 import { VERSION } from "../../version";
 
 const controllerErrorMessage: string =
@@ -159,7 +160,7 @@ export class Player {
   @Watch("config")
   async watchConfig(newConfig) {
     this.elementsLoaded = false;
-
+    
     // wrapping a player in stimulus layoute
     if (this.stimulusPlayer) {
       (this.stimulusPlayer as any).config = newConfig;
@@ -178,6 +179,7 @@ export class Player {
           return; // if stimulus item
         } else if (newConfig.elements) {
           this.pieContentModel = addRubric(newConfig);
+          this.pieContentModel = normalizeContentElements(this.pieContentModel);
         } else {
           this.playerError.emit(`invalid pie data model`);
           return;
