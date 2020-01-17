@@ -1,6 +1,6 @@
 {
   "name": "@pie-framework/pie-player-components",
-  "version": "0.22.0",
+  "version": "0.21.8",
   "description": "Pie Player Components",
   "module": "dist/index.mjs",
   "main": "dist/index.js",
@@ -27,14 +27,15 @@
   },
   "scripts": {
     "build": "stencil build --docs-readme",
-    "start": "stencil build --dev --es5 --watch --serve",
+    "start": "./set-version.sh $npm_package_version && stencil build --dev --es5 --watch --serve",
     "test": "stencil test --spec --e2e",
     "test.watch": "stencil test --spec --e2e --watchAll",
     "release": "semantic-release",
     "demo": "npm run start & http-server www",
     "yalc": "yalc push",
     "commit": "git-cz",
-    "semantic-release": "semantic-release"
+    "semantic-release": "semantic-release",
+    "pretest": "if [ -f set-version.sh ]; then ./set-version.sh $npm_package_version; else echo \"skip post-install\"; fi"
   },
   "dependencies": {
     "@material/select": "^2.2.0",
