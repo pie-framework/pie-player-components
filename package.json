@@ -34,8 +34,7 @@
     "demo": "npm run start & http-server www",
     "yalc": "yalc push",
     "commit": "git-cz",
-    "semantic-release": "semantic-release",
-    "postinstall": "if [ -f set-version.sh ]; then ./set-version.sh $npm_package_version; else echo \"skip post-install\"; fi"
+    "semantic-release": "semantic-release"
   },
   "dependencies": {
     "@material/select": "^2.2.0",
