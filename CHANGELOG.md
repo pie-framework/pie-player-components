@@ -1,3 +1,11 @@
+## [0.22.1](https://github.com/pie-framework/pie-player-components/compare/v0.22.0...v0.22.1) (2020-01-17)
+
+
+### Bug Fixes
+
+* add set-version to build/test ([c863c46](https://github.com/pie-framework/pie-player-components/commit/c863c46ed0c8a45534dee0ece3f9ee050f5242fd))
+* postinstall bug ([038f00e](https://github.com/pie-framework/pie-player-components/commit/038f00eee79f15187438defa316eadbb9e25ee76))
+
 # [0.22.0](https://github.com/pie-framework/pie-player-components/compare/v0.21.8...v0.22.0) (2020-01-15)
 
 
