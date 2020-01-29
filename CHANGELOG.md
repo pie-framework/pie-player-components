@@ -1,3 +1,10 @@
+## [0.22.2](https://github.com/pie-framework/pie-player-components/compare/v0.22.1...v0.22.2) (2020-01-29)
+
+
+### Bug Fixes
+
+* bad prod url ([6cce5bc](https://github.com/pie-framework/pie-player-components/commit/6cce5bc28f7c03e3c7b524b9569fbf69b7563db2))
+
 ## [0.22.1](https://github.com/pie-framework/pie-player-components/compare/v0.22.0...v0.22.1) (2020-01-17)
 
 
