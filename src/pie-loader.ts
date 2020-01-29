@@ -7,7 +7,7 @@ import { emptyConfigure } from "./components/empty-configure";
 export const DEFAULT_ENDPOINTS = {
   prod: {
     bundleBase: "https://pits-cdn.pie-api.io//bundles/",
-    buildServiceBase: "https://pits-dot-pie-221718.appspot.com/bundles/"
+    buildServiceBase: "https://pits-dot-pie-prod-221718.appspot.com/bundles/"
   },
   stage: {
     bundleBase: "https://pits-cdn-staging.pie-api.io/bundles/",
@@ -250,9 +250,6 @@ export class PieLoader {
     script.src = scriptUrl;
     head.appendChild(script);
   };
-
-  
-
 
   /**
    * Given a defintion of elements, will check the registry
