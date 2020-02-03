@@ -1,3 +1,10 @@
+# [0.23.0](https://github.com/pie-framework/pie-player-components/compare/v0.22.2...v0.23.0) (2020-02-03)
+
+
+### Features
+
+* **passage:** even width for passage items ([#41](https://github.com/pie-framework/pie-player-components/issues/41)) ([323ef9f](https://github.com/pie-framework/pie-player-components/commit/323ef9f422a1153c3c97d208868a4135d65b184c))
+
 ## [0.22.2](https://github.com/pie-framework/pie-player-components/compare/v0.22.1...v0.22.2) (2020-01-29)
 
 
