@@ -117,6 +117,38 @@ export namespace Components {
     */
     'active': boolean;
   }
+  interface PieStimulus {
+    /**
+    * Provide this property override the default endpoints used by the player to retrieve JS bundles. Must be set before setting the config property. Most users will not need to use this property.
+    */
+    'bundleEndpoints'?: BundleEndpoints;
+    /**
+    * Optionally specifies the back-end that builds and hosts javascript bundles for rendering assessment items. This property lets you choose which environment to use, from 'dev' , 'stage' or 'prod' environments. Until 1.0 will default to 'stage'.
+    */
+    'bundleHost'?: string;
+    /**
+    * The Pie config model.
+    */
+    'config': ItemConfig;
+    /**
+    * Allows disabling of the default behaviour which is to look up and load the JS bundle that define the Custom Elements used by the item config. This if for advanced use cases when using the pie-player in a container that is managing loading of Custom Elements and Controllers.
+    */
+    'disableBundler': boolean;
+    /**
+    * Describes runtime environment for the player.
+    */
+    'env': Object;
+    /**
+    * Indicates if player running in the context of a PIE hosting system. Do not modify the default value for this property if you are not implementing a PIE host. If true, the host is responsible for all model updates.
+    */
+    'hosted'?: boolean;
+    /**
+    * For previewing changes to an item. Updates the model for one question in the item model.
+    * @param update the updated model
+    */
+    'updateElementModel': (update: PieModel) => Promise<void>;
+    'version': string;
+  }
   interface PieStimulusLayout {}
 }
 
@@ -153,6 +185,12 @@ declare global {
     new (): HTMLPieSpinnerElement;
   };
 
+  interface HTMLPieStimulusElement extends Components.PieStimulus, HTMLStencilElement {}
+  const HTMLPieStimulusElement: {
+    prototype: HTMLPieStimulusElement;
+    new (): HTMLPieStimulusElement;
+  };
+
   interface HTMLPieStimulusLayoutElement extends Components.PieStimulusLayout, HTMLStencilElement {}
   const HTMLPieStimulusLayoutElement: {
     prototype: HTMLPieStimulusLayoutElement;
@@ -164,6 +202,7 @@ declare global {
     'pie-preview-control': HTMLPiePreviewControlElement;
     'pie-preview-layout': HTMLPiePreviewLayoutElement;
     'pie-spinner': HTMLPieSpinnerElement;
+    'pie-stimulus': HTMLPieStimulusElement;
     'pie-stimulus-layout': HTMLPieStimulusLayoutElement;
   }
 }
@@ -279,6 +318,45 @@ declare namespace LocalJSX {
     */
     'active'?: boolean;
   }
+  interface PieStimulus {
+    /**
+    * Provide this property override the default endpoints used by the player to retrieve JS bundles. Must be set before setting the config property. Most users will not need to use this property.
+    */
+    'bundleEndpoints'?: BundleEndpoints;
+    /**
+    * Optionally specifies the back-end that builds and hosts javascript bundles for rendering assessment items. This property lets you choose which environment to use, from 'dev' , 'stage' or 'prod' environments. Until 1.0 will default to 'stage'.
+    */
+    'bundleHost'?: string;
+    /**
+    * The Pie config model.
+    */
+    'config'?: ItemConfig;
+    /**
+    * Allows disabling of the default behaviour which is to look up and load the JS bundle that define the Custom Elements used by the item config. This if for advanced use cases when using the pie-player in a container that is managing loading of Custom Elements and Controllers.
+    */
+    'disableBundler'?: boolean;
+    /**
+    * Describes runtime environment for the player.
+    */
+    'env'?: Object;
+    /**
+    * Indicates if player running in the context of a PIE hosting system. Do not modify the default value for this property if you are not implementing a PIE host. If true, the host is responsible for all model updates.
+    */
+    'hosted'?: boolean;
+    /**
+    * Emitted when the content in the config has been loaded.
+    */
+    'onLoad-complete'?: (event: CustomEvent<any>) => void;
+    /**
+    * Emmitted if there is an error encountered while rendering. `event.detail` will be a string containing a message about the error.
+    */
+    'onPlayer-error'?: (event: CustomEvent<any>) => void;
+    /**
+    * TODO - Emmitted when any all interactions in a PIE Assessment Item have reported that a user has provided a response to the interaction.
+    */
+    'onResponseCompleted'?: (event: CustomEvent<any>) => void;
+    'version'?: string;
+  }
   interface PieStimulusLayout {}
 
   interface IntrinsicElements {
@@ -287,6 +365,7 @@ declare namespace LocalJSX {
     'pie-preview-control': PiePreviewControl;
     'pie-preview-layout': PiePreviewLayout;
     'pie-spinner': PieSpinner;
+    'pie-stimulus': PieStimulus;
     'pie-stimulus-layout': PieStimulusLayout;
   }
 }
@@ -302,6 +381,7 @@ declare module "@stencil/core" {
       'pie-preview-control': LocalJSX.PiePreviewControl & JSXBase.HTMLAttributes<HTMLPiePreviewControlElement>;
       'pie-preview-layout': LocalJSX.PiePreviewLayout & JSXBase.HTMLAttributes<HTMLPiePreviewLayoutElement>;
       'pie-spinner': LocalJSX.PieSpinner & JSXBase.HTMLAttributes<HTMLPieSpinnerElement>;
+      'pie-stimulus': LocalJSX.PieStimulus & JSXBase.HTMLAttributes<HTMLPieStimulusElement>;
       'pie-stimulus-layout': LocalJSX.PieStimulusLayout & JSXBase.HTMLAttributes<HTMLPieStimulusLayoutElement>;
     }
   }
