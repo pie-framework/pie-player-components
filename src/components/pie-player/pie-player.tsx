@@ -162,8 +162,8 @@ export class Player {
     this.elementsLoaded = false;
     
     // wrapping a player in stimulus layoute
-    if (this.stimulusPlayer) {
-      (this.stimulusPlayer as any).config = newConfig;
+    if (this.stimulusPlayer && this.stimulusItemModel) {
+      (this.stimulusPlayer as any).config = this.stimulusItemModel.stimulus;
       return;
     }
     try {
