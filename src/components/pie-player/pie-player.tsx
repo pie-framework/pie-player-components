@@ -160,12 +160,6 @@ export class Player {
   @Watch("config")
   async watchConfig(newConfig) {
     this.elementsLoaded = false;
-    
-    // wrapping a player in stimulus layoute
-    if (this.stimulusPlayer && this.stimulusItemModel) {
-      (this.stimulusPlayer as any).config = this.stimulusItemModel.stimulus;
-      return;
-    }
     try {
       if (!newConfig) {
         return;
