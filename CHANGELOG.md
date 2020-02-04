@@ -1,3 +1,10 @@
+## [0.23.2](https://github.com/pie-framework/pie-player-components/compare/v0.23.1...v0.23.2) (2020-02-04)
+
+
+### Bug Fixes
+
+* rm logic ([#43](https://github.com/pie-framework/pie-player-components/issues/43)) ([5738c5e](https://github.com/pie-framework/pie-player-components/commit/5738c5e6192978b894800be57836a94831d27600))
+
 ## [0.23.1](https://github.com/pie-framework/pie-player-components/compare/v0.23.0...v0.23.1) (2020-02-04)
 
 
