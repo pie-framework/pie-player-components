@@ -1,3 +1,10 @@
+## [0.23.1](https://github.com/pie-framework/pie-player-components/compare/v0.23.0...v0.23.1) (2020-02-04)
+
+
+### Bug Fixes
+
+* dupe players ([624e7fb](https://github.com/pie-framework/pie-player-components/commit/624e7fb952c6ca05fce555f57d0518695583b06e))
+
 # [0.23.0](https://github.com/pie-framework/pie-player-components/compare/v0.22.2...v0.23.0) (2020-02-03)
 
 
