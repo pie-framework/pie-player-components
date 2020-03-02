@@ -283,7 +283,7 @@ export class Author {
       // emit a content-item level event with the model
       if (this.pieContentModel && e.update) {
         this.pieContentModel.models.forEach(m => {
-          if (m.id === e.update.id) {
+          if (m.id === e.update.id && m.name === e.update.name) {
             Object.assign(m, e.update);
           }
         });
