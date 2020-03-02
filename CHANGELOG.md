@@ -1,3 +1,10 @@
+## [0.23.3](https://github.com/pie-framework/pie-player-components/compare/v0.23.2...v0.23.3) (2020-03-02)
+
+
+### Bug Fixes
+
+* **author:** made sure model is updated for the right element [ch5076] ([a092171](https://github.com/pie-framework/pie-player-components/commit/a092171a58cb86c062f29f598d39fb61cb1d6d2a))
+
 ## [0.23.2](https://github.com/pie-framework/pie-player-components/compare/v0.23.1...v0.23.2) (2020-02-04)
 
 
