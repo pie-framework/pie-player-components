@@ -6,12 +6,28 @@ interface PieContent {
    */
   elements: PieItemElement;
 
+  pies?: PieDef[],
+
   /** Models for each PIE included in the item */
   models: PieModel[]
 
-  markup: string;
+  markup?: string;
 
   bundle?: BundleInfo;
+}
+
+export type PieDef = {
+  controllerUrl?;
+  modules?: PieModulesDef;
+  name?: string;
+  package?: string;
+  tag: string;
+}
+
+export type PieModulesDef = {
+  config?: string;
+  controller?: string;
+  render: string;
 }
 
 export type BundleInfo = {

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0"
+    />
+    <title>Item</title>
+   
+    <script type="module" src="/build/pie-player-components.esm.js"></script>
+  <script nomodule src="/build/pie-player-components.js"></script>
+  </head>
+  <body>
+    <pie-player id="player"></pie-player>
+
+    <script>
+      const config = {
+        id: '1',
+        elements: {
+          'pie-multiple-choice': '@pie-element/multiple-choice@5.0.7'
+        },
+        pies: [{
+          "tag": "pie-elements-categorize-1-3-22", 
+          "modules": { 
+            "render": "///unpkg.com/@pie-ui/categorize@1.3.22/module/index.js"
+          }
+        }],
+        models: [
+        {
+          id: '1',
+          element: 'pie-elements-categorize-1-3-22',
+          disabled: false,
+          categories: [
+            { id: '1', label: 'Fruit' },
+            { id: '2', label: 'Vegetable' }
+          ],
+          choices: [
+            {
+              id: '1',
+              content:
+                '<h1>$10 is $20 - fooBanana<span data-latex="">$\\frac{1}{2}$</span></h1>',
+              categoryCount: 1
+            },
+            {
+              id: '2',
+              content: '<div>Carrot<span data-latex="">\\(\\frac{2}{1}\\)</span></div>',
+              categoryCount: 1
+            },
+            { id: '3', content: '<div>Apple</div>' },
+            { id: '4', content: '<div>Papaya</div>' }
+          ],
+          config: {
+            categories: {
+              columns: 2
+            },
+            choices: {
+              label: 'First Label',
+              position: 'left',
+              columns: 4,
+              shuffle: true
+            }
+          }
+        }
+        ],
+        markup: `
+            <pie-elements-categorize-1-3-22 id='1'></pie-elements-categorize-1-3-22>
+          `
+      };
+
+      const endpoints = {
+        bundleBase: "https://storage.googleapis.com/pie-pits-staging/bundles/",
+        buildServiceBase: "https://pits-dot-pie-dev-221718.appspot.com/bundles/"
+       };
+      const player = document.getElementById('player');
+
+      // player.bundleEndpoints = endpoints;
+
+      player.addEventListener('sessionChanged', event => {
+        console.log(event.type + ':' + JSON.stringify(event.detail));
+      });
+
+      player.config = config;
+
+
+      
+    </script>
+  </body>
+</html>

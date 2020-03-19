@@ -196,14 +196,17 @@ export class Player {
         if (this.bundleEndpoints) {
           endpoints = this.bundleEndpoints;
         }
-
-        await this.pieLoader.loadCloudPies({
-          content: this.pieContentModel,
-          doc: this.doc,
-          endpoints: endpoints,
-          bundle: this.hosted ? BundleType.player : BundleType.clientPlayer,
-          useCdn: false
-        });
+        if (this.pieContentModel.pies) {
+          this.pieLoader.loadElementModules(this.pieContentModel.pies, this.el, this.doc);
+        } else {
+          await this.pieLoader.loadCloudPies({
+            content: this.pieContentModel,
+            doc: this.doc,
+            endpoints: endpoints,
+            bundle: this.hosted ? BundleType.player : BundleType.clientPlayer,
+            useCdn: false
+          });
+        }
       }
     } catch (err) {
       this.playerError.emit(`problem loading item (${err})`);
@@ -346,21 +349,21 @@ export class Player {
         this.updateModels();
         this.renderMath();
       } else {
-        const elements = Object.keys(this.pieContentModel.elements).map(el => ({
-          name: el,
-          tag: el
-        }));
+
+        const els = this.pieContentModel.pies.map(pie => ({name: pie.tag, tag: pie.tag}));
 
         // Note: hard to verify but it appears that we need to resolve
         // the value first rather than setting the promise directly on
         // this state property - otherwise lifecycle re-render is triggered too early
-        const loadedInfo = await this.pieLoader.elementsHaveLoaded(elements);
+        const loadedInfo = await this.pieLoader.elementsHaveLoaded(els);
 
         if (
-          loadedInfo.val &&
-          !!loadedInfo.elements.find(
-            el => this.pieContentModel.elements[el.name]
-          )
+          loadedInfo.val 
+          // TODO on pie.2.0 branch - this was probably here for a good reason, should validate like this
+          // &&
+          // !!loadedInfo.elements.find(
+          //   el => this.pieContentModel.elements[el.name]
+          // )
         ) {
           this.elementsLoaded = true;
         }

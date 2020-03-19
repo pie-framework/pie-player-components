@@ -1,6 +1,6 @@
 import isFunction from "lodash/isFunction";
 import { getPackageWithoutVersion, getPackageBundleUri } from "./utils/utils";
-import { PieItemElement, PieContent } from "./interface";
+import { PieItemElement, PieContent, PieDef } from "./interface";
 import pickBy from "lodash/pickBy";
 import { emptyConfigure } from "./components/empty-configure";
 
@@ -250,6 +250,33 @@ export class PieLoader {
     script.src = scriptUrl;
     head.appendChild(script);
   };
+
+
+  public loadElementModules = async (pies:PieDef[], elem: Element, doc: Document, options = {config: false, controller: false}) => {
+    pies.forEach((pie:PieDef) => {
+      const script = doc.createElement("script");
+      script.type = "module";
+      script.textContent = `
+      if (!customElements.get("${pie.tag}")) {
+        import("${pie.modules.render}").then(Module => {
+          customElements.define("${pie.tag}", Module.default);
+        });  
+      }
+      if (${options.config} && !customElements.get("${pie.tag}-config")) {
+        import("${pie.modules.config}").then(Module => {
+          customElements.define("${pie.tag}-config", Module.default);
+        });  
+      }
+      if (${options.controller}) {
+        import("${pie.modules.controller}").then(Module => {
+          Window[${pie.tag}] = Module;
+        });  
+      }
+      `;
+      elem.appendChild(script);
+    });
+    
+  }
 
   /**
    * Given a defintion of elements, will check the registry
