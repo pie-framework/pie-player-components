@@ -15,7 +15,15 @@ jobs:
   - stage: release
     node_js: lts/*
     deploy:
-      provider: script
-      script: npm run release
-      on:
-        branch IN (master, alpha, beta) 
+      - provider: script
+        script: npm run release
+        on:
+          branch: master
+      - provider: script
+        script: npm run release
+        on:
+          branch: beta    
+      - provider: script
+        script: npm run release
+        on:
+          branch: next                  
