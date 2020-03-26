@@ -18,13 +18,13 @@ jobs:
   - stage: release
     node_js: lts/*
     deploy:
-      provider: script
-      skip_cleanup: true
-      script:
-      - npm run release
-      on:
-        branches:
-          only:
-            - master
-            - beta
-            - alpha
+      - provider: script
+        script: npm run release
+        skip_cleanup: true
+        on:
+          branch: betac
+      - provider: script
+        script: npm run release
+        skip_cleanup: true
+        on:
+          branch: beta          
