@@ -1,5 +1,4 @@
 dist: trusty
-sudo: required
 language: node_js
 node_js:
 - "11"
@@ -11,20 +10,12 @@ jobs:
   include:
   - stage: install
     script: npm install
-    skip_cleanup: true
   - stage: test
     script: npm run test
-    skip_cleanup: true
   - stage: release
     node_js: lts/*
     deploy:
       provider: script
-      skip_cleanup: true
-      script:
-      - npm run release
+      script: npm run release
       on:
-        branches:
-          only:
-            - master
-            - beta
-            - alpha
+        branch IN (master, alpha, beta) 
