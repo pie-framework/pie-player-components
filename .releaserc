@@ -1,0 +1,13 @@
+{
+  "plugins": [
+    "@semantic-release/commit-analyzer",
+    "@semantic-release/release-notes-generator",
+    "@semantic-release/git",
+    ["semantic-release-jira-releases", {
+      "projectId": "PD",
+      "releaseNameTemplate": "pie player v${version}",
+      "jiraHost": "illuminate.atlassian.net",
+      "ticketPrefixes": [ "PD"]
+    }]
+  ]
+}
