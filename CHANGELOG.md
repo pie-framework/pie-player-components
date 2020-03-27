@@ -1,3 +1,15 @@
+# [0.24.0-beta.2](https://github.com/pie-framework/pie-player-components/compare/v0.24.0-beta.1...v0.24.0-beta.2) (2020-03-27)
+
+
+### Bug Fixes
+
+* release fix PD-72 ([1a67dfb](https://github.com/pie-framework/pie-player-components/commit/1a67dfb10824f4697671a621940cfa59ae2ac33d))
+
+
+### Features
+
+* test PD-72 add release date and released status ([8fa7422](https://github.com/pie-framework/pie-player-components/commit/8fa74222bdaa136378b6a5eac1c04dcafd30d269))
+
 # [0.24.0-beta.1](https://github.com/pie-framework/pie-player-components/compare/v0.23.3...v0.24.0-beta.1) (2020-03-26)
 
 
