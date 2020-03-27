@@ -55,7 +55,7 @@
     "@material/switch": "^2.1.1",
     "@material/tab": "^2.2.0",
     "@material/tab-bar": "^2.2.0",
-    "@pie-api/semantic-release-jira-releases": "file:.yalc/@pie-api/semantic-release-jira-releases",
+    "@pie-api/semantic-release-jira-releases": "^0.6.1",
     "@pie-framework/pie-configure-events": "^1.2.0",
     "@pie-framework/pie-player-events": "^0.1.0",
     "@release-it/conventional-changelog": "^1.0.0",
