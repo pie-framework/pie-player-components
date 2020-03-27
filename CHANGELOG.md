@@ -1,3 +1,10 @@
+# [0.24.0-beta.3](https://github.com/pie-framework/pie-player-components/compare/v0.24.0-beta.2...v0.24.0-beta.3) (2020-03-27)
+
+
+### Bug Fixes
+
+* upgrade sem release package PD-73 ([ef5f90e](https://github.com/pie-framework/pie-player-components/commit/ef5f90e0ae10c260294a4b020353cc0896da0151))
+
 # [0.24.0-beta.2](https://github.com/pie-framework/pie-player-components/compare/v0.24.0-beta.1...v0.24.0-beta.2) (2020-03-27)
 
 
