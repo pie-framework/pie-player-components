@@ -1,3 +1,11 @@
+# [0.24.0-beta.4](https://github.com/pie-framework/pie-player-components/compare/v0.24.0-beta.3...v0.24.0-beta.4) (2020-03-27)
+
+
+### Bug Fixes
+
+* test local PD-73 ([2e417c9](https://github.com/pie-framework/pie-player-components/commit/2e417c9635af05b62f3ab228e4ac3f3855b3a2dd))
+* test release bump srjr PD-73 ([75b9b62](https://github.com/pie-framework/pie-player-components/commit/75b9b62b6025ed8b4f7273b6bed4d87abd0b0829))
+
 # [0.24.0-beta.3](https://github.com/pie-framework/pie-player-components/compare/v0.24.0-beta.2...v0.24.0-beta.3) (2020-03-27)
 
 
