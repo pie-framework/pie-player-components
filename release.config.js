@@ -19,7 +19,7 @@ module.exports = {
       }
     ],
     "@semantic-release/github",
-    ["semantic-release-jira-releases", {
+    ["@pie-api/semantic-release-jira-releases", {
       "projectId": "PD",
       "releaseNameTemplate": "pie player v${version}",
       "jiraHost": "illuminate.atlassian.net",
