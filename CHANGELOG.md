@@ -1,3 +1,12 @@
+# [0.24.0-beta.5](https://github.com/pie-framework/pie-player-components/compare/v0.24.0-beta.4...v0.24.0-beta.5) (2020-03-27)
+
+
+### Bug Fixes
+
+* more test jrsr PD-73 ([98029cd](https://github.com/pie-framework/pie-player-components/commit/98029cd49e5482f49d567b704ec63b03c7d6d108))
+* release test PD-73 ([560fb03](https://github.com/pie-framework/pie-player-components/commit/560fb03fd8fc2b342aa4186f36465f3d8c642c7b))
+* srjr PD-73 connector upgrade bump ([28368f1](https://github.com/pie-framework/pie-player-components/commit/28368f108e870ee693b8ac162d2dd857327cf849))
+
 # [0.24.0-beta.4](https://github.com/pie-framework/pie-player-components/compare/v0.24.0-beta.3...v0.24.0-beta.4) (2020-03-27)
 
 
