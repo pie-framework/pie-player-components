@@ -1,3 +1,10 @@
+# [0.24.0-beta.11](https://github.com/pie-framework/pie-player-components/compare/v0.24.0-beta.10...v0.24.0-beta.11) (2020-03-30)
+
+
+### Bug Fixes
+
+* test ([2608632](https://github.com/pie-framework/pie-player-components/commit/2608632bd30bea19b87783cb14ef44d96c5b9c3d))
+
 # [0.24.0-beta.10](https://github.com/pie-framework/pie-player-components/compare/v0.24.0-beta.9...v0.24.0-beta.10) (2020-03-29)
 
 
