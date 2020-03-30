@@ -1,3 +1,11 @@
+# [0.24.0-beta.12](https://github.com/pie-framework/pie-player-components/compare/v0.24.0-beta.11...v0.24.0-beta.12) (2020-03-30)
+
+
+### Features
+
+* fix release config PD-74 ([79d6500](https://github.com/pie-framework/pie-player-components/commit/79d65007fe475a6365466aca10330584ba40a339))
+* semantic releases with date and released status ([2709b52](https://github.com/pie-framework/pie-player-components/commit/2709b529d072bf4e2b56e2128f26e3bea12312c9))
+
 # [0.24.0-beta.11](https://github.com/pie-framework/pie-player-components/compare/v0.24.0-beta.10...v0.24.0-beta.11) (2020-03-30)
 
 
