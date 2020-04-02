@@ -1,5 +1,5 @@
 import { SessionChangedEvent } from "@pie-framework/pie-player-events";
-import mr from "@pie-lib/math-rendering";
+import * as mr from "@pie-lib/math-rendering";
 import {
   Component,
   Element,
