@@ -18,6 +18,14 @@ module.exports = {
           "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
       }
     ],
-    "@semantic-release/github"
+    "@semantic-release/github",
+    ["@pie-api/semantic-release-jira-releases", {
+      projectId: 13788,
+      released: true,
+      releaseDate: true,
+      releaseNameTemplate: "pie player v${version}",
+      jiraHost: "illuminate.atlassian.net",
+      ticketPrefixes: ["PD"]
+    }]
   ]
 };
