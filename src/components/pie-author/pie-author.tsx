@@ -10,7 +10,7 @@ import {
   h
 } from "@stencil/core";
 
-import mr from "@pie-lib/math-rendering";
+import * as mr from "@pie-lib/math-rendering";
 
 import { PieContent, ItemConfig, PieElement, PieModel } from "../../interface";
 import {
@@ -205,7 +205,9 @@ export class Author {
   addConfigTags(c: PieContent) {
     if (!c.markup && c.models) {
       const tags = c.models.map(model => {
-        return `<${model.element}-config id="${model.id}"></${model.element}-config>`;
+        return `<${model.element}-config id="${model.id}"></${
+          model.element
+        }-config>`;
       });
       c.markup = tags.join("");
     }
