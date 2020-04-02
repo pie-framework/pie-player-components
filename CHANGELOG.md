@@ -1,3 +1,17 @@
+# [0.24.0](https://github.com/pie-framework/pie-player-components/compare/v0.23.3...v0.24.0) (2020-04-02)
+
+
+### Bug Fixes
+
+* import @pie-lib/math-rendering correctly ([f5b8a1a](https://github.com/pie-framework/pie-player-components/commit/f5b8a1a1dd4266f46905477bddacb32e7754d409))
+* pie-author import of @pie-lib/math-rendering ([94606eb](https://github.com/pie-framework/pie-player-components/commit/94606eb93537f3594e92a63e9986b983351116e2))
+* **player:** separate scrolling containers in stimulus layout [ch5777] ([#45](https://github.com/pie-framework/pie-player-components/issues/45)) IBX-3339 ([f567ccd](https://github.com/pie-framework/pie-player-components/commit/f567ccd45063c79a18d32677f5b02f76be1e697c))
+
+
+### Features
+
+* jira semantic release PD-80 ([#47](https://github.com/pie-framework/pie-player-components/issues/47)) ([f95fd84](https://github.com/pie-framework/pie-player-components/commit/f95fd84c489bd67e2ceea7e9ba6da8371a2eac7f))
+
 ## [0.23.3](https://github.com/pie-framework/pie-player-components/compare/v0.23.2...v0.23.3) (2020-03-02)
 
 
