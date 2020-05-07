@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0"
+    />
+    <title>Stencil Component Starter</title>
+    <script nomodule src="/build/pie-player-components.js"></script>
+    <script type="module" src="/build/pie-player-components.esm.js"></script>
+  </head>
+  <body>
+    <pie-player id="player"></pie-player>
+
+    <script>
+      const config = {
+        elements: {
+          "pie-element-multiple-choice":
+            "@pie-element/multiple-choice@latest"
+        },
+        markup:
+          '<pie-element-multiple-choice id="1"></pie-element-multiple-choice>',
+        models: [
+          {
+            "disabled": false,
+            "mode": "gather",
+            "prompt": "<div>A true number sentence is created when which sign is put in the box below?<br /><br />18 <div class=\"kds-fillin\">&#160;</div>&#160;6 = 12</div>",
+            "choiceMode": "radio",
+            "keyMode": "letters",
+            "shuffle": false,
+            "choices": [
+              {
+                "label": "<p>+</p>",
+                "value": "8a80808163e095450163e51729ef26c7",
+                "rationale": null
+              },
+              {
+                "label": "<p>&#8211;</p>",
+                "value": "8a80808163e095450163e51729ef26c8",
+                "rationale": null
+              },
+              {
+                "label": "<p>&#215;</p>",
+                "value": "8a80808163e095450163e51729ef26c9",
+                "rationale": null
+              },
+              {
+                "label": "<p>&#247;</p>",
+                "value": "8a80808163e095450163e51729ef26ca",
+                "rationale": null
+              }
+            ],
+            "complete": {
+              "min": 1
+            },
+            "teacherInstructions": null,
+            "element": "pie-element-multiple-choice",
+            "id": "1"
+          }        ]
+      };
+
+      const player = document.getElementById("player");
+      document.addEventListener("session-changed", e => {
+        console.log(e);
+      });
+
+      player.addEventListener("sessionChanged", event => {
+        console.log(event.type + ":" + JSON.stringify(event.detail));
+      });
+
+      player.config = config;
+    </script>
+  </body>
+</html>
