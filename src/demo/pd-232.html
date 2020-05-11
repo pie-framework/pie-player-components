@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0"
+    />
+    <title>Item</title>
+   
+    <script type="module" src="/build/pie-player-components.esm.js"></script>
+  <script nomodule src="/build/pie-player-components.js"></script>
+  </head>
+  <body>
+    <pie-player id="player"></pie-player>
+
+    <script>
+      const config = {
+    "models": [
+      {
+        "correctResponse": [
+          {
+            "domainPosition": 0,
+            "type": "point",
+            "pointType": "full"
+          },
+          {
+            "domainPosition": 1.2,
+            "type": "point",
+            "pointType": "full"
+          }
+        ],
+        "id": "8a80808163e9a6940163f12e184c1698",
+        "graph": {
+          "availableTypes": {
+            "PF": true
+          },
+          "maxNumberOfPoints": 2,
+          "height": 300,
+          "initialElements": [],
+          "width": 500,
+          "initialType": "PF",
+          "tickFrequency": 13,
+          "domain": [
+            -1.2000009999999999,
+            1.2000009999999999
+          ],
+          "tickLabelOverrides": [
+            "-6/5",
+            "-1",
+            "-4/5",
+            "-3/5",
+            "-2/5",
+            "-1/5",
+            "0",
+            "1/5",
+            "2/5",
+            "3/5",
+            "4/5",
+            "1",
+            "6/5"
+          ],
+          "showMinorTicks": false
+        },
+        "element": "number-line",
+        "rationale": "<p>&lt;div&gt;&lt;/div&gt;&nbsp;</p>",
+        "prompt": "<div>¿Cuáles dos números están ubicados exactamente&nbsp;<math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mfrac><mn>3</mn><mn>5</mn></mfrac></math>&nbsp; unidades de distancia de&nbsp;<math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mfrac><mn>3</mn><mn>5</mn></mfrac></math>&nbsp;en la recta numérica?<br><br>Traza la ubicación de estos números en la recta numérica.</div>"
+      }
+    ],
+    "markup": "<number-line id=\"8a80808163e9a6940163f12e184c1698\"></number-line>",
+    "elements": {
+      "number-line": "@pie-element/number-line@latest"
+    }
+  };
+
+      const endpoints = {
+        bundleBase: "https://storage.googleapis.com/pie-pits-staging/bundles/",
+        buildServiceBase: "https://pits-dot-pie-dev-221718.appspot.com/bundles/"
+       };
+      const player = document.getElementById('player');
+
+      // player.bundleEndpoints = endpoints;
+
+      player.addEventListener('sessionChanged', event => {
+        console.log(event.type + ':' + JSON.stringify(event.detail));
+      });
+
+      player.config = config;
+
+
+      
+    </script>
+  </body>
+</html>

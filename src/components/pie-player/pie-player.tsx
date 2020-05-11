@@ -299,7 +299,13 @@ export class Player {
               );
             }
           }
-          pieEl.session = session;
+          try {
+            pieEl.session = session;
+          } catch(err) {
+            this.playerError.emit(
+              `error setting item session value - ${err.message}`
+            );
+          }
         }
       });
       setTimeout(() => {
