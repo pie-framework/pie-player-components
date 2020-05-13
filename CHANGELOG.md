@@ -1,3 +1,13 @@
+## [0.25.1](https://github.com/pie-framework/pie-player-components/compare/v0.25.0...v0.25.1) (2020-05-13)
+
+
+### Bug Fixes
+
+* error event not emitted for session save exception ([ebeefa7](https://github.com/pie-framework/pie-player-components/commit/ebeefa76787009547a169ed1ef9273af058331ff))
+* error event not emitted for session save exception PD-232 ([acb61dc](https://github.com/pie-framework/pie-player-components/commit/acb61dce9e9456b885dcab9182674d36373174e8))
+* type errors on build fix ([#51](https://github.com/pie-framework/pie-player-components/issues/51)) ([8c766ad](https://github.com/pie-framework/pie-player-components/commit/8c766ad4086d3933ee30040070ef0c0aca266129))
+* **player:** updated components css [PD-175 and PD-221] ([304d62f](https://github.com/pie-framework/pie-player-components/commit/304d62f28fb11c86cd6739c8c84490732838ac66))
+
 # [0.25.0](https://github.com/pie-framework/pie-player-components/compare/v0.24.0...v0.25.0) (2020-04-14)
 
 
