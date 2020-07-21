@@ -254,6 +254,8 @@ export class PieLoader {
 
   public loadElementModules = async (pies:PieDef[], elem: Element, doc: Document, options = {config: false, controller: false}) => {
     pies.forEach((pie:PieDef) => {
+      // TODO - this doesn't need to use a script appended to the page
+      // can just import directly
       const script = doc.createElement("script");
       script.type = "module";
       script.textContent = `
