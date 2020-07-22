@@ -254,28 +254,22 @@ export class PieLoader {
 
   public loadElementModules = async (pies:PieDef[], elem: Element, doc: Document, options = {config: false, controller: false}) => {
     pies.forEach((pie:PieDef) => {
-      // TODO - this doesn't need to use a script appended to the page
-      // can just import directly
-      const script = doc.createElement("script");
-      script.type = "module";
-      script.textContent = `
-      if (!customElements.get("${pie.tag}")) {
-        import("${pie.modules.render}").then(Module => {
-          customElements.define("${pie.tag}", Module.default);
+      if (!customElements.get(pie.tag)) {
+        import(pie.modules.render).then(Module => {
+          customElements.define(pie.tag, Module.default);
         });  
       }
-      if (${options.config} && !customElements.get("${pie.tag}-config")) {
-        import("${pie.modules.config}").then(Module => {
-          customElements.define("${pie.tag}-config", Module.default);
+      if (options.config && !customElements.get(`${pie.tag}-config`)) {
+        import(pie.modules.config).then(Module => {
+          customElements.define(`${pie.tag}-config`, Module.default);
         });  
       }
-      if (${options.controller}) {
-        import("${pie.modules.controller}").then(Module => {
-          Window[${pie.tag}] = Module;
+      if (options.controller) {
+        import(pie.modules.controller).then(Module => {
+          Window[pie.tag] = Module;
         });  
       }
-      `;
-      elem.appendChild(script);
+
     });
     
   }
