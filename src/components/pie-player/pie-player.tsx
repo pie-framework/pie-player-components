@@ -1,5 +1,5 @@
 import { SessionChangedEvent } from "@pie-framework/pie-player-events";
-import mr from "@pie-lib/math-rendering";
+import { renderMath } from "@pie-lib/math-rendering";
 import {
   Component,
   Element,
@@ -197,7 +197,11 @@ export class Player {
           endpoints = this.bundleEndpoints;
         }
         if (this.pieContentModel.pies) {
-          this.pieLoader.loadElementModules(this.pieContentModel.pies, this.el, this.doc);
+          this.pieLoader.loadElementModules(
+            this.pieContentModel.pies,
+            this.el,
+            this.doc
+          );
         } else {
           await this.pieLoader.loadCloudPies({
             content: this.pieContentModel,
@@ -339,7 +343,7 @@ export class Player {
 
   private renderMath() {
     setTimeout(() => {
-      mr.renderMath(this.el);
+      renderMath(this.el);
     }, 50);
   }
 
@@ -349,22 +353,21 @@ export class Player {
         this.updateModels();
         this.renderMath();
       } else {
-
-        const els = this.pieContentModel.pies.map(pie => ({name: pie.tag, tag: pie.tag}));
-
-        // Note: hard to verify but it appears that we need to resolve
-        // the value first rather than setting the promise directly on
-        // this state property - otherwise lifecycle re-render is triggered too early
+        let els;
+        if (this.pieContentModel.pies) {
+          els = this.pieContentModel.pies.map(pie => ({
+            name: pie.tag,
+            tag: pie.tag
+          }));
+        } else {
+          els = Object.keys(this.pieContentModel.elements).map(el => ({
+            name: el,
+            tag: el
+          }));
+        }
         const loadedInfo = await this.pieLoader.elementsHaveLoaded(els);
 
-        if (
-          loadedInfo.val 
-          // TODO on pie.2.0 branch - this was probably here for a good reason, should validate like this
-          // &&
-          // !!loadedInfo.elements.find(
-          //   el => this.pieContentModel.elements[el.name]
-          // )
-        ) {
+        if (loadedInfo.val) {
           this.elementsLoaded = true;
         }
       }

@@ -10,7 +10,7 @@ import {
   h
 } from "@stencil/core";
 
-import mr from "@pie-lib/math-rendering";
+import { renderMath } from "@pie-lib/math-rendering";
 
 import { PieContent, ItemConfig, PieElement, PieModel } from "../../interface";
 import {
@@ -332,10 +332,11 @@ export class Author {
 
   private renderMath() {
     setTimeout(() => {
-      mr.renderMath(this.el);
+      renderMath(this.el);
     }, 50);
   }
 
+  // TODO - not DRY, see duplication in pie-player.tsx
   async afterRender() {
     if (
       this.pieContentModel &&
