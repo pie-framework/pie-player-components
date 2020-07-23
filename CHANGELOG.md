@@ -1,3 +1,10 @@
+## [0.25.2](https://github.com/pie-framework/pie-player-components/compare/v0.25.1...v0.25.2) (2020-07-23)
+
+
+### Bug Fixes
+
+* add pie-player-events as dependency ([964a615](https://github.com/pie-framework/pie-player-components/commit/964a615c47cff1258ea3902cb119dda40954606a))
+
 ## [0.25.1](https://github.com/pie-framework/pie-player-components/compare/v0.25.0...v0.25.1) (2020-05-13)
 
 
