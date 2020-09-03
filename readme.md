@@ -2,7 +2,6 @@
 
 # Pie Player Components
 
-> STATUS - Beta. Apis may change within minor versions while in beta phase.
 
 This package provides Custom Html Elements for using PIE Framework content.
 
@@ -16,78 +15,6 @@ For rendering PIE content, and [pie-author](src/components/pie-player/readme.md)
 `<pie-author></pie-author>`
 
 For authoring content.
-
-## Using these components
-
-### Script tag
-
-
-Put  
-
-```html
-<script src='https://unpkg.com/@pie-framework@latest/dist/pie-player-components.js'></script>
-``` 
-
-in the head of your index.html
-
-Then you can use the element anywhere in your template, JSX, html etc.
-
-```html
-<pie-player id="player"></pie-player>
-<script>
-      const player = document.getElementById('player');
-
-      player.addEventListener('session-changed', event => {
-        // do something
-      });
-
-      player.config = config;
-</script>
-```
-
-### Node Modules
-- Run `npm install @pie-framework/pie-player-components --save`
-- Put this `<script src='node_modules/@pie-framework/pie-player-components/dist/pie-player-components.js'></script>` in the head of your index.html
-- Then you can use the element anywhere in your template, JSX, html etc
-
-### VUE
-
-
-#### 1: Add the component to the dependencies
-
-```json
-// package.json
-
-"dependencies": {
-  ...
-  "@pie-framework/pie-player-components": "latest"
-}
-```
-
-#### 2: Import the component(s)
-
-```javascript
-import { defineCustomElements } from '@pie-framework/pie-player-components/dist/loader';
-
-defineCustomElements(window);
-```
-
-#### 3: Consume the component
-
-To prevent Vue from complaining that your component has an unrecognized tag, add the following in main.js. Use either the full name, or regex if you want to capture a family of components.
-
-```json
-Vue.config.ignoredElements = [
-  "pie-player",
-  "pie-author"
-];
-```
-
-It is now possible to use the tag provided by the pie components in any template of the app.
-
-```html
-<pie-player v-bind:config.prop="config" />
-```
 
 
 # Development
@@ -104,3 +31,13 @@ To debug client side code, run stencil tests with the `--devtools` flag and add 
 
 `npx stencil test --devtools --e2e src/components/pie-player`
 
+
+### Documentation
+
+The documentation is auto-generated and placed in `docs/` folder and is available on github pages at https://key-data-systems.github.io/pie-player-components
+
+To build the docs:
+`npx stencil build`
+
+To view the docs locally:
+`npx http-server docs/`
