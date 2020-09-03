@@ -19,7 +19,11 @@ export const config: Config = {
         }
       ]
     },
-    { type: "docs-readme" },
+    {
+      type: 'docs-readme',
+      footer: '',
+      dir: 'docs'
+    },
     {
       type: "www",
       copy: [{ src: "demo" }, { src: "ebsr.html" }],
