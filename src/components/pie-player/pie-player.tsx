@@ -44,7 +44,7 @@ export class Player {
    */
   stimulusPlayer: HTMLElement;
 
-  @Prop({ context: "document" }) doc!: Document;
+  @Prop() doc: Document = window.document;
 
   /**
    * Optionally specifies the back-end that builds and hosts javascript bundles for rendering assessment items.
@@ -301,7 +301,7 @@ export class Player {
           }
           try {
             pieEl.session = session;
-          } catch(err) {
+          } catch (err) {
             this.playerError.emit(
               `error setting item session value - ${err.message}`
             );

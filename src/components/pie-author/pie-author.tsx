@@ -47,7 +47,7 @@ import { VERSION } from "../../version";
 export class Author {
   _modelLoadedState: boolean = false;
 
-  @Prop({ context: "document" }) doc!: Document;
+  @Prop() doc!: Document;
 
   /**
    * Optionally specifies the back-end that builds and hosts javascript bundles for rendering assessment items.
@@ -268,7 +268,7 @@ export class Author {
     }
   }
 
-  componentDidUnload() {
+  disconnectedCallback() {
     this.el.removeEventListener(InsertImageEvent.TYPE, this.handleInsertImage);
     this.el.removeEventListener(DeleteImageEvent.TYPE, this.handleDeleteImage);
     this.fileInput.removeEventListener("change", this.handleFileInputChange);

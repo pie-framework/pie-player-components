@@ -1,27 +1,21 @@
-import { Component, Event, EventEmitter, h } from '@stencil/core';
-import { MDCSelect } from '@material/select';
-import {MDCSwitch} from '@material/switch';
-import { patchMDCSwitchFocus } from '../../utils/utils';
+import { Component, Event, EventEmitter, h } from "@stencil/core";
+import { MDCSelect } from "@material/select";
+import { MDCSwitch } from "@material/switch";
+import { patchMDCSwitchFocus } from "../../utils/utils";
 
-
-
-
-
-@Component({ 
-  tag: 'pie-preview-control', 
-  styleUrls: [
-    "pie-preview-control.scss"
-  ]})
+@Component({
+  tag: "pie-preview-control",
+  styleUrls: ["pie-preview-control.scss"]
+})
 export class PiePreviewControl {
-
   roleSelectElement: HTMLDivElement;
-  roleSelect: MDCSelect;   
+  roleSelect: MDCSelect;
   checkAnswersElement: HTMLDivElement;
   checkAnswers: MDCSwitch;
   env = {
-    mode: 'gather',
-    role: 'student'
-  }
+    mode: "gather",
+    role: "student"
+  };
 
   @Event() envChanged: EventEmitter;
 
@@ -31,32 +25,39 @@ export class PiePreviewControl {
 
     patchMDCSwitchFocus(this.checkAnswersElement);
 
-    this.checkAnswers.listen('change', () =>{
-      this.checkAnswers.checked ? this.env.mode = 'evaluate' : this.env.mode = 'gather'; 
+    this.checkAnswers.listen("change", () => {
+      this.checkAnswers.checked
+        ? (this.env.mode = "evaluate")
+        : (this.env.mode = "gather");
       this.envChanged.emit(this.env);
     });
 
-    this.roleSelect.listen('MDCSelect:change', () => {
-      
+    this.roleSelect.listen("MDCSelect:change", () => {
       // sticky mdc focus workaround https://github.com/prateekbh/preact-material-components/issues/625
-      this.roleSelect.root_.classList.remove(`mdc-select--focused`);
+      this.roleSelect.root.classList.remove(`mdc-select--focused`);
 
       this.env.role = this.roleSelect.value;
       this.envChanged.emit(this.env);
     });
   }
 
-
   render() {
     return (
       <div class="preview-control-container">
-        <div ref={(el) => this.roleSelectElement = el as HTMLDivElement} class="mdc-select demo-width-class pie-role-select">
+        <div
+          ref={el => (this.roleSelectElement = el as HTMLDivElement)}
+          class="mdc-select demo-width-class pie-role-select"
+        >
           {/* <input type="hidden" name="enhanced-select"> */}
-          <i class="mdc-select__dropdown-icon"></i>
+          <i class="mdc-select__dropdown-icon" />
           <div class="mdc-select__selected-text">Student</div>
           <div class="mdc-select__menu mdc-menu mdc-menu-surface demo-width-class">
             <ul class="mdc-list">
-              <li class="mdc-list-item  mdc-list-item--selected" aria-selected="true" data-value="student">
+              <li
+                class="mdc-list-item  mdc-list-item--selected"
+                aria-selected="true"
+                data-value="student"
+              >
                 Student
               </li>
               <li class="mdc-list-item" data-value="instructor">
@@ -64,15 +65,25 @@ export class PiePreviewControl {
               </li>
             </ul>
           </div>
-          <span class="mdc-floating-label mdc-floating-label--float-above">Role</span>
-          <div class="mdc-line-ripple"></div>
+          <span class="mdc-floating-label mdc-floating-label--float-above">
+            Role
+          </span>
+          <div class="mdc-line-ripple" />
         </div>
         <div class="pie-check-answers">
-          <div ref={(el) => this.checkAnswersElement = el as HTMLDivElement} class="mdc-switch">
-            <div class="mdc-switch__track"></div>
+          <div
+            ref={el => (this.checkAnswersElement = el as HTMLDivElement)}
+            class="mdc-switch"
+          >
+            <div class="mdc-switch__track" />
             <div class="mdc-switch__thumb-underlay">
               <div class="mdc-switch__thumb">
-                  <input type="checkbox" id="basic-switch" class="mdc-switch__native-control" role="switch"></input>
+                <input
+                  type="checkbox"
+                  id="basic-switch"
+                  class="mdc-switch__native-control"
+                  role="switch"
+                />
               </div>
             </div>
           </div>
