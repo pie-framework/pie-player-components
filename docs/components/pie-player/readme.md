@@ -21,6 +21,7 @@ The class `pie-loading` will be added to the element while assets are being load
 | `bundleHost`         | `bundle-host`          | Optionally specifies the back-end that builds and hosts javascript bundles for rendering assessment items. This property lets you choose which environment to use, from 'dev' , 'stage' or 'prod' environments. Until 1.0 will default to 'stage'.                                 | `string`                           | `undefined`                           |
 | `config`             | --                     | The Pie config model.                                                                                                                                                                                                                                                              | `AdvancedItemConfig \| PieContent` | `undefined`                           |
 | `disableBundler`     | `disable-bundler`      | Allows disabling of the default behaviour which is to look up and load the JS bundle that define the Custom Elements used by the item config. This if for advanced use cases when using the pie-player in a container that is managing loading of Custom Elements and Controllers. | `boolean`                          | `false`                               |
+| `doc`                | --                     |                                                                                                                                                                                                                                                                                    | `Document`                         | `window.document`                     |
 | `env`                | --                     | Describes runtime environment for the player.                                                                                                                                                                                                                                      | `Object`                           | `{ mode: "gather", role: "student" }` |
 | `hosted`             | `hosted`               | Indicates if player running in the context of a PIE hosting system. Do not modify the default value for this property if you are not implementing a PIE host. If true, the host is responsible for all model updates.                                                              | `boolean`                          | `false`                               |
 | `renderStimulus`     | `render-stimulus`      | If the item contains a stimulus, the player will render it by default. Set this property to false to not render stimulus.                                                                                                                                                          | `boolean`                          | `true`                                |
@@ -55,19 +56,21 @@ Type: `Promise<void>`
 
 ### Used by
 
- - [pie-player]()
+ - [item-preview-tool](../item-preview-tool)
+ - [pie-player](.)
  - [pie-preview-layout](../pie-preview-layout)
 
 ### Depends on
 
 - [pie-stimulus-layout](../pie-stimulus-layout)
-- [pie-player]()
+- [pie-player](.)
 - [pie-spinner](../pie-spinner)
 
 ### Graph
 ```mermaid
 graph TD;
   pie-player --> pie-player
+  item-preview-tool --> pie-player
   pie-preview-layout --> pie-player
   style pie-player fill:#f9f,stroke:#333,stroke-width:4px
 ```

@@ -2,8 +2,6 @@ import {
   Component,
   Event,
   EventEmitter,
-  State,
-  Watch,
   Prop,
   h
 } from "@stencil/core";

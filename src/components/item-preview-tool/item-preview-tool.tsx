@@ -1,9 +1,68 @@
-import { Component, State, Watch, Prop, h } from "@stencil/core";
+import { Component, State, Prop, h } from "@stencil/core";
 
 import( "@material/mwc-button");
 
 // TODO sticky mdc focus workaround https://github.com/prateekbh/preact-material-components/issues/625
 
+
+const demoItem = {
+        id: '1',
+        elements: {
+          'pie-multiple-choice': '@pie-element/multiple-choice@5.0.7'
+        },
+        models: [
+          {
+            id: '1',
+            element: 'pie-multiple-choice',
+            prompt: 'What is the theme of this poem',
+            choiceMode: 'checkbox',
+            keyMode: 'numbers',
+            choices: [
+              {
+                correct: true,
+                value: 'sorrow',
+                label: 'Sorrow',
+                feedback: {
+                  type: 'none',
+                  value: ''
+                }
+              },
+              {
+                value: 'contemplation',
+                label: 'Contemplation',
+                feedback: {
+                  type: 'none',
+                  value: ''
+                }
+              },
+              {
+                value: 'loneliness',
+                label: 'Loneliness',
+                feedback: {
+                  type: 'none',
+                  value: ''
+                }
+              },
+              {
+                correct: true,
+                value: 'envy',
+                label: 'Envy',
+                feedback: {
+                  type: 'none',
+                  value: ''
+                }
+              }
+            ],
+            partialScoring: false,
+            partialScoringLabel: `Each correct response that is correctly checked and each incorrect response
+              that is correctly unchecked will be worth 1 point.
+              The maximum points is the total number of answer choices.`
+          }
+        ],
+        markup: `
+            <pie-multiple-choice id='1'></pie-multiple-choice>
+          `
+      };
 @Component({
   tag: "item-preview-tool",
   styleUrls: ["item-preview-tool.scss"]
@@ -11,11 +70,15 @@ import( "@material/mwc-button");
 export class ItemPreviewTool {
   @State() config: any;
 
-  @Prop() text:string = "{}";
+  @Prop() text:string = JSON.stringify(demoItem, null, "  ")
 
   @State() notValid : boolean;
 
-  componentDidLoad() {}
+  componentDidLoad() {
+
+    this.applyUpdate()
+  }
+
 
   handleActivated(ev) {}
 
@@ -58,6 +121,7 @@ export class ItemPreviewTool {
           {/* <div class="code-editor">... in here </div> */}
           <div class="controls">
             <mwc-button unelevated outlined="true" onClick={e => this.buttonClicked(e)} label="update"></mwc-button>
+            <div class="info">You can add json or js objects below, Ctrl+Enter to update</div>
           </div>
           <code-editor text={this.text}
           class="code-editor"

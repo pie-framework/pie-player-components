@@ -30,8 +30,17 @@ html, body{
   flex-direction: column;
   height: 100%;
   border-left: solid 1px grey;
+  padding-left: 10px;
   // border: solid 1px lightsalmon;
 } 
+
+.info{
+  padding-top: 10px;
+  color: blue;
+  font-family: 'Roboto', sans-serif; 
+  font-size: 0.9rem;
+}
+
 item-preview-tool {
   position: absolute;
   display: block;
