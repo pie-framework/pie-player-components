@@ -356,7 +356,7 @@ export class Player {
         let els;
         if (this.pieContentModel.pies) {
           els = this.pieContentModel.pies.map(pie => ({
-            name: pie.tag,
+            name: this.pieLoader.getBaseElementTagName(pie),
             tag: pie.tag
           }));
         } else {

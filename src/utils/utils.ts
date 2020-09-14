@@ -10,6 +10,7 @@ import { PieContent, AdvancedItemConfig, PieItemElement, PieModel } from '../int
 export const normalizeContentElements = (content: PieContent): PieContent => {
   if (!content || (content && !content.elements)) return content;
   let markup = content.markup;
+  let pies = content.pies ? content.pies : Object.keys(content.elements).map(key => {});
   Object.keys(content.elements).forEach(key =>{
     const tag = key;
     const npmPkg = content.elements[key];

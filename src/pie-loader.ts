@@ -252,8 +252,28 @@ export class PieLoader {
   };
 
 
+  /**
+   * Simple hashing function for use in generating unique custom element tag names from module specifiers
+   * @param s 
+   */
+  hashCode = (s) => {
+    for(var i = 0, h = 0xdeadbeef; i < s.length; i++)
+        h = Math.imul(h ^ s.charCodeAt(i), 2654435761);
+    return (h ^ h >>> 16) >>> 0;
+  };
+
+  public getBaseElementTagName = (def: PieDef) => {
+    // at a minimum, a PIE should have a render module, create the base tag from that
+    return def.modules && def.modules.render ? `pie-${this.hashCode(def.modules.render)}` : null;
+  }
+
   public loadElementModules = async (pies:PieDef[], elem: Element, doc: Document, options = {config: false, controller: false}) => {
     pies.forEach((pie:PieDef) => {
+      
+      pie.tag = pie.tag ? pie.tag : this.getBaseElementTagName(pie);
+      if (!pie.tag) {
+        throw new Error('pie definition error, could not assign tag name');
+      }
       if (!customElements.get(pie.tag)) {
         import(pie.modules.render).then(Module => {
           customElements.define(pie.tag, Module.default);

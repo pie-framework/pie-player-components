@@ -20,12 +20,13 @@
         elements: {
           'pie-multiple-choice': '@pie-element/multiple-choice@5.0.7'
         },
-        pies: [{
-          "tag": "pie-elements-categorize-1-3-22", 
-          "modules": { 
-            "render": "///unpkg.com/@pie-ui/categorize@1.3.22/module/index.js"
+        pies: {
+          'categorize': {
+            "modules": { 
+              "render": "///unpkg.com/@pie-ui/categorize@1.3.22/module/index.js"
+            }
           }
-        }],
+        },
         models: [
         {
           id: '1',
@@ -64,7 +65,7 @@
         }
         ],
         markup: `
-            <pie-elements-categorize-1-3-22 id='1'></pie-elements-categorize-1-3-22>
+            <categorize id='1'></categorize>
           `
       };
 
