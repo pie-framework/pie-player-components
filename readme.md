@@ -34,7 +34,7 @@ To debug client side code, run stencil tests with the `--devtools` flag and add 
 
 ### Documentation
 
-The documentation is auto-generated and placed in `docs/` folder and is available on github pages at https://key-data-systems.github.io/pie-player-components
+The documentation is auto-generated and placed in `docs/` folder and is available on github pages at https://pie-framework.github.io/pie-player-components/
 
 To build the docs:
 `npx stencil build`
