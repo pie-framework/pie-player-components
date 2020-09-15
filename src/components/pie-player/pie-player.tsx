@@ -197,10 +197,14 @@ export class Player {
           endpoints = this.bundleEndpoints;
         }
         if (this.pieContentModel.pies) {
-          this.pieLoader.loadElementModules(
+          await this.pieLoader.loadElementModules(
             this.pieContentModel.pies,
             this.el,
-            this.doc
+            this.doc,
+            {
+              config: false,
+              controller: true
+            }
           );
         } else {
           await this.pieLoader.loadCloudPies({
@@ -356,8 +360,8 @@ export class Player {
         let els;
         if (this.pieContentModel.pies) {
           els = this.pieContentModel.pies.map(pie => ({
-            name: pie.tag,
-            tag: pie.tag
+            name: pie.tag || 'pie-elements-categorize-1-3-22',
+            tag: pie.tag || 'pie-elements-categorize-1-3-22'
           }));
         } else {
           els = Object.keys(this.pieContentModel.elements).map(el => ({

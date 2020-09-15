@@ -80,6 +80,15 @@ export const needToLoad = (registry: any, bundle: BundleType) => (
   }
 };
 
+const isValidUrl = (str: string) => {
+  // (^http[s]{0,1}:\/\/) - starts with protocol
+  // (^\/) - starts with /
+  // (^\.) - starts with .
+  const result = str.match(/(^http[s]{0,1}:\/\/)|(^\/)|(^\.)/g);
+
+  return result && result.length > 0;
+};
+
 /**
  * Pie Registry contols the loading of all PIEs from the pie build service
  */
@@ -251,28 +260,82 @@ export class PieLoader {
     head.appendChild(script);
   };
 
+  private static getPieUiInfo = async (str: string, type: string): Promise<string> => {
+    const packageInfoResp = (await fetch(`///unpkg.com/${str}/package.json`) as any);
+    const packageInfo = (await packageInfoResp.json() as any);
+    const pieElement = packageInfo.pie.element;
+    const version = packageInfo.dependencies[pieElement].replace(/[^0-9.]/g, '');
 
-  public loadElementModules = async (pies:PieDef[], elem: Element, doc: Document, options = {config: false, controller: false}) => {
-    pies.forEach((pie:PieDef) => {
+    return `///unpkg.com/${pieElement}@${version}/module/index.js`;
+  };
+
+  private static getUrlToLoad = (str: string, type: string): string => {
+    return isValidUrl(str) ? str : `///unpkg.com/${str}/module/${type}.js`;
+  };
+
+  public loadElementModules = async (pies:(PieDef|string)[], elem: Element, doc: Document, options = {config: false, controller: false}) => {
+    pies.forEach((pieInfo:PieDef|string) => {
+      const pie = typeof pieInfo === 'string'
+        ? {
+          // packageToElementName
+          tag: 'pie-elements-categorize-1-3-22',
+          modules: {
+            config: pieInfo,
+            controller: pieInfo,
+            render: pieInfo
+          }
+        }
+        : pieInfo;
+
+      if (!this.registry[pie.tag]) {
+        this.registry[pie.tag] = {
+          package: pie.tag,
+          status: Status.loading,
+          tagName: pie.tag
+        };
+      }
+
       if (!customElements.get(pie.tag)) {
-        import(pie.modules.render).then(Module => {
-          customElements.define(pie.tag, Module.default);
-        });  
+        if (isValidUrl(pie.modules.render)) {
+          const urlToLoad = PieLoader.getUrlToLoad(pie.modules.config, 'configure');
+
+          import(urlToLoad).then(Module => {
+            customElements.define(pie.tag, Module.default);
+            this.registry[pie.tag].element = Module.default;
+          });
+        } else {
+          PieLoader
+            .getPieUiInfo(pie.modules.render, 'ui')
+            .then(url => {
+              import(url).then(Module => {
+                customElements.define(pie.tag, Module.default);
+                this.registry[pie.tag].element = Module.default;
+              });
+            });
+        }
       }
+
       if (options.config && !customElements.get(`${pie.tag}-config`)) {
-        import(pie.modules.config).then(Module => {
+        const urlToLoad = PieLoader.getUrlToLoad(pie.modules.config, 'configure');
+
+        import(urlToLoad).then(Module => {
           customElements.define(`${pie.tag}-config`, Module.default);
-        });  
+          this.registry[pie.tag].config = Module.default;
+        });
       }
+
       if (options.controller) {
-        import(pie.modules.controller).then(Module => {
+        const urlToLoad = PieLoader.getUrlToLoad(pie.modules.controller, 'controller');
+
+        import(urlToLoad).then(Module => {
           Window[pie.tag] = Module;
-        });  
+          this.registry[pie.tag].controller = Module;
+        });
       }
 
     });
-    
-  }
+
+  };
 
   /**
    * Given a defintion of elements, will check the registry

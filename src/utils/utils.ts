@@ -3,7 +3,7 @@ import { PieContent, AdvancedItemConfig, PieItemElement, PieModel } from '../int
 
 
 /**
- * Replaces all user-defined element name mappings with ones derived from 
+ * Replaces all user-defined element name mappings with ones derived from
  * the NPM package name.
  * @param content the content to normalize
  */
@@ -27,14 +27,14 @@ export const normalizeContentElements = (content: PieContent): PieContent => {
       content.elements[newTag] = npmPkg;
       delete content.elements[key];
     }
-    
+
   });
   content.markup = markup;
   return content;
-}
+};
 
 /**
- * Convert an npm package to html valid element name by replacing 
+ * Convert an npm package to html valid element name by replacing
  * all special chars with `-`
  * @param npmPackage npm package to convert
  */
@@ -45,7 +45,7 @@ export const packageToElementName = (npmPackage: string) : string => {
     tag = tag.replace('@','');
     return tag ;
   }
-}
+};
 
 export const getPackageWithoutVersion = packages => {
   const packagesArray = packages.split('+');
@@ -58,7 +58,7 @@ export const getPackageWithoutVersion = packages => {
 
 /**
  * See if the `PieContent.elements` set contains the provided package.
- * 
+ *
  * @param elements the elements dict
  * @param npmPackage the npm package to locate
  */
@@ -79,22 +79,22 @@ export const elementsHasPackage = (
 };
 
 /**
- * Gets all models defined for a given npmPacakge in `PieContent` 
- * @param pieContent the pie content 
- * @param npmPackage npm package name 
+ * Gets all models defined for a given npmPacakge in `PieContent`
+ * @param pieContent the pie content
+ * @param npmPackage npm package name
  */
 export const modelsForPackage = (pieContent: PieContent, npmPackage: string): PieModel[] => {
   if (pieContent && pieContent.models && pieContent.elements && npmPackage) {
 
     const element = elementForPackage(pieContent, npmPackage);
     return pieContent.models.filter(m => {
-     return element === m.element 
+     return element === m.element
     });
-    
+
   } else {
     return [];
   }
- 
+
 }
 
 /**
@@ -165,14 +165,15 @@ export const patchMDCSwitchFocus = element => {
   );
 };
 
+// Not an advanced algorighm, but only need to be unique within the current model.
+const S4 = function() {
+  return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
+};
+
 /**
  * Creates short id for use within pie models.
  * Can be used to create random element tag or model id.
  */
 export const pieShortIdGenerator = () => {
-  // Not an advanced algorighm, but only need to be unique within the current model.
-  var S4 = function() {
-    return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
-  };
   return `p-${S4() + S4()}`;
-}
+};

@@ -7,7 +7,7 @@
       content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0"
     />
     <title>Item</title>
-   
+
     <script type="module" src="/build/pie-player-components.esm.js"></script>
   <script nomodule src="/build/pie-player-components.js"></script>
   </head>
@@ -20,12 +20,14 @@
         elements: {
           'pie-multiple-choice': '@pie-element/multiple-choice@5.0.7'
         },
-        pies: [{
-          "tag": "pie-elements-categorize-1-3-22", 
-          "modules": { 
+        pies: [/*{
+          "tag": "pie-elements-categorize-1-3-22",
+          "modules": {
+            "config": "///unpkg.com/@pie-element/categorize@6.5.5/module/configure.js",
+            "controller": "///unpkg.com/@pie-element/categorize@6.5.5/module/controller.js",
             "render": "///unpkg.com/@pie-ui/categorize@1.3.22/module/index.js"
           }
-        }],
+        }*/'@pie-element/categorize@6.5.5'],
         models: [
         {
           id: '1',
@@ -47,8 +49,24 @@
               content: '<div>Carrot<span data-latex="">\\(\\frac{2}{1}\\)</span></div>',
               categoryCount: 1
             },
-            { id: '3', content: '<div>Apple</div>' },
-            { id: '4', content: '<div>Papaya</div>' }
+            { id: '3', content: '<div>Apple</div>', categoryCount: 1 },
+            { id: '4', content: '<div>Papaya</div>', categoryCount: 1 }
+          ],
+          "correctResponse": [
+            {
+              "choices": [
+                "1",
+                "2"
+              ],
+              "category": "1"
+            },
+            {
+              "choices": [
+                "3",
+                "4"
+              ],
+              "category": "2"
+            }
           ],
           config: {
             categories: {
@@ -83,7 +101,7 @@
       player.config = config;
 
 
-      
+
     </script>
   </body>
 </html>
