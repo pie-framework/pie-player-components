@@ -7,7 +7,7 @@
       content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0"
     />
     <title>Item</title>
-   
+
     <script type="module" src="/build/pie-player-components.esm.js"></script>
   <script nomodule src="/build/pie-player-components.js"></script>
   </head>
@@ -48,8 +48,24 @@
               content: '<div>Carrot<span data-latex="">\\(\\frac{2}{1}\\)</span></div>',
               categoryCount: 1
             },
-            { id: '3', content: '<div>Apple</div>' },
-            { id: '4', content: '<div>Papaya</div>' }
+            { id: '3', content: '<div>Apple</div>', categoryCount: 1 },
+            { id: '4', content: '<div>Papaya</div>', categoryCount: 1 }
+          ],
+          "correctResponse": [
+            {
+              "choices": [
+                "1",
+                "2"
+              ],
+              "category": "1"
+            },
+            {
+              "choices": [
+                "3",
+                "4"
+              ],
+              "category": "2"
+            }
           ],
           config: {
             categories: {
@@ -84,7 +100,7 @@
       player.config = config;
 
 
-      
+
     </script>
   </body>
 </html>

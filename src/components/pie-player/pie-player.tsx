@@ -197,10 +197,14 @@ export class Player {
           endpoints = this.bundleEndpoints;
         }
         if (this.pieContentModel.pies) {
-          this.pieLoader.loadElementModules(
+          await this.pieLoader.loadElementModules(
             this.pieContentModel.pies,
             this.el,
-            this.doc
+            this.doc,
+            {
+              config: false,
+              controller: true
+            }
           );
         } else {
           await this.pieLoader.loadCloudPies({
