@@ -1,3 +1,11 @@
+## [0.25.3](https://github.com/pie-framework/pie-player-components/compare/v0.25.2...v0.25.3) (2020-11-30)
+
+
+### Bug Fixes
+
+* dont ignore yarn.lock, upgrade semantic-release ([8269349](https://github.com/pie-framework/pie-player-components/commit/8269349c3a6bdcd00a50cadfbc0af167bff45646))
+* use prod for assets by default: PD-735 ([b8d15d9](https://github.com/pie-framework/pie-player-components/commit/b8d15d9aa079bec2056bf09f31bbeb3c44ea136f))
+
 ## [0.25.2](https://github.com/pie-framework/pie-player-components/compare/v0.25.1...v0.25.2) (2020-07-23)
 
 
