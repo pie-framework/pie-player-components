@@ -3,7 +3,9 @@ import { getPackageWithoutVersion, getPackageBundleUri } from "./utils/utils";
 import { PieItemElement, PieContent } from "./interface";
 import pickBy from "lodash/pickBy";
 import { emptyConfigure } from "./components/empty-configure";
-
+/**
+ * TODO: Clean up: PD-761
+ */
 export const DEFAULT_ENDPOINTS = {
   prod: {
     bundleBase: "https://pits-cdn.pie-api.io//bundles/",

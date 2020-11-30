@@ -313,7 +313,7 @@ export class Author {
 
   async loadPieElements() {
     if (this.config && !this.disableBundler) {
-      let endpoints = DEFAULT_ENDPOINTS.stage;
+      let endpoints = DEFAULT_ENDPOINTS.prod;
       if (
         this.bundleHost &&
         ["dev", "stage", "prod"].includes(this.bundleHost)

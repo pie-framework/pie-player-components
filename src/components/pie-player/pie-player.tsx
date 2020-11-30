@@ -186,7 +186,7 @@ export class Player {
       }
 
       if (!this.elementsLoaded && !this.disableBundler) {
-        let endpoints = DEFAULT_ENDPOINTS.stage;
+        let endpoints = DEFAULT_ENDPOINTS.prod;
         if (
           this.bundleHost &&
           ["dev", "stage", "prod"].includes(this.bundleHost)
