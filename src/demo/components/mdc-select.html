@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0"
+    />
+    <title>MDC-Select</title>
+    <script nomodule src="/build/pie-player-components.js"></script>
+    <script type="module" src="/build/pie-player-components.esm.js"></script>
+  </head>
+  <body>
+    <mdc-select></mdc-select>
+     <script type="text/javascript">
+
+      const s = document.querySelector('mdc-select');
+
+      console.log("s:", s);
+      s.options = [
+        {label: "This is the foo", value: 'foo'},
+        {label: "This is the bar", value: 'bar'},
+        {label: "This is the baz", value: 'baz'}
+      ];
+      s.prompt = "This is the prompt";
+      s.value = "bar";
+
+      s.addEventListener("valueChanged", e => {
+        console.log("got: ", e)
+      })
+
+    </script>
+  </body>
+  </html>
+    

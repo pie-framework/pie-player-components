@@ -1,12 +1,11 @@
-$mdc-theme-primary: #0049FF;
-$mdc-theme-secondary: #0049FF;
+$mdc-theme-primary: #0049ff;
+$mdc-theme-secondary: #0049ff;
 
 @import "@material/switch/mdc-switch";
 @import "@material/list/mdc-list";
 @import "@material/menu-surface/mdc-menu-surface";
 @import "@material/menu/mdc-menu";
 @import "@material/select/mdc-select";
-
 
 .preview-control-container {
   display: flex;
@@ -17,14 +16,13 @@ $mdc-theme-secondary: #0049FF;
   align-items: stretch;
 }
 
-.pie-role-select {
-  order: 0;
-  flex: 0 0 auto;
-  align-self: flex-start;
-  width: 200px;
-  @include mdc-select-container-fill-color('surface')
-}
-
+// .pie-role-select {
+//   order: 0;
+//   flex: 0 0 auto;
+//   align-self: flex-start;
+//   width: 200px;
+//   @include mdc-select-container-fill-color('surface')
+// }
 
 .pie-check-answers {
   order: 0;

@@ -12,6 +12,15 @@
   </head>
   <body>
     <pie-spinner></pie-spinner>
+    <script type="text/javascript">
+
+      const s = document.querySelector('pie-spinner');
+
+      console.log("s:", s);
+      s.options = [
+        {label: "foo", value: 'foo'}
+      ]
+    </script>
   </body>
   </html>
     

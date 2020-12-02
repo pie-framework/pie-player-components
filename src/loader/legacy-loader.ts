@@ -1,60 +1,38 @@
+import { PieContent, PieItemElement } from "../interface";
+import { getPackageBundleUri, getPackageWithoutVersion } from "../utils/utils";
+
 import isFunction from "lodash/isFunction";
-import { getPackageWithoutVersion, getPackageBundleUri } from "./utils/utils";
-import { PieItemElement, PieContent } from "./interface";
 import pickBy from "lodash/pickBy";
-import { emptyConfigure } from "./components/empty-configure";
+import { emptyConfigure } from "../components/empty-configure";
+import {
+  BundleEndpoints,
+  BundleType,
+  Entry,
+  LoadedElementsQuery,
+  LoadedElementsResp,
+  LoadOpts,
+  PieLoader,
+  Status,
+} from "./pie-loader";
+
 /**
  * TODO: Clean up: PD-761
  */
-export const DEFAULT_ENDPOINTS = {
+const DEFAULT_ENDPOINTS = {
   prod: {
     bundleBase: "https://pits-cdn.pie-api.io//bundles/",
-    buildServiceBase: "https://pits-dot-pie-prod-221718.appspot.com/bundles/"
+    buildServiceBase: "https://pits-dot-pie-prod-221718.appspot.com/bundles/",
   },
   stage: {
     bundleBase: "https://pits-cdn-staging.pie-api.io/bundles/",
-    buildServiceBase: "https://pits-dot-pie-staging-221718.appspot.com/bundles/"
+    buildServiceBase:
+      "https://pits-dot-pie-staging-221718.appspot.com/bundles/",
   },
   dev: {
     bundleBase: "https://pits-cdn-dev.pie-api.io/bundles/",
-    buildServiceBase: "https://pits-dot-pie-dev-221718.appspot.com/bundles/"
-  }
+    buildServiceBase: "https://pits-dot-pie-dev-221718.appspot.com/bundles/",
+  },
 };
-
-export interface Entry {
-  package: string;
-  status: Status;
-  tagName: string;
-  controller?: any;
-  config?: Element;
-  element?: Element;
-}
-
-interface LoadedElementsQuery {
-  name: string;
-  tag: string;
-}
-
-interface LoadedElementsResp {
-  elements: LoadedElementsQuery[];
-  val: boolean;
-}
-
-export interface BundleEndpoints {
-  buildServiceBase: string;
-  bundleBase: string;
-}
-
-export enum Status {
-  loading = "loading",
-  loaded = "loaded"
-}
-
-export enum BundleType {
-  player = "player.js",
-  clientPlayer = "client-player.js",
-  editor = "editor.js"
-}
 
 export const needToLoad = (registry: any, bundle: BundleType) => (
   el: string,
@@ -81,11 +59,24 @@ export const needToLoad = (registry: any, bundle: BundleType) => (
       true;
   }
 };
+/**
+ * Given a defintion of elements, will check the registry
+ * and return the elements and tags that need to be loaded.
+ *
+ * @param elements - the elements to test against registry
+ */
+export const getElementsToLoad = (
+  els: PieItemElement,
+  bundle: BundleType = BundleType.editor,
+  registry
+): PieItemElement => {
+  return pickBy(els, needToLoad(registry, bundle));
+};
 
 /**
  * Pie Registry contols the loading of all PIEs from the pie build service
  */
-export class PieLoader {
+export class LegacyPieLoader implements PieLoader {
   endpoints: BundleEndpoints;
 
   /**
@@ -103,8 +94,8 @@ export class PieLoader {
     window["PIE_REGISTRY"] = window["PIE_REGISTRY"]
       ? window["PIE_REGISTRY"]
       : {};
-    PieLoader._registry = window["PIE_REGISTRY"];
-    this.registry = PieLoader._registry;
+    LegacyPieLoader._registry = window["PIE_REGISTRY"];
+    this.registry = LegacyPieLoader._registry;
   }
 
   private static _registry: { [elementName: string]: Entry };
@@ -119,7 +110,7 @@ export class PieLoader {
   public elementsHaveLoaded = (
     els: LoadedElementsQuery[]
   ): Promise<LoadedElementsResp> => {
-    const promises = els.map(el => customElements.whenDefined(el.tag));
+    const promises = els.map((el) => customElements.whenDefined(el.tag));
 
     return Promise.all(promises)
       .then(() => {
@@ -129,6 +120,10 @@ export class PieLoader {
         return Promise.resolve({ elements: els, val: false });
       });
   };
+
+  public load(content: PieContent, opts: LoadOpts): Promise<void> {
+    return this.loadCloudPies({ doc: window.document, content, ...opts });
+  }
 
   /**
    *
@@ -143,6 +138,7 @@ export class PieLoader {
     bundle?: BundleType;
     useCdn: boolean;
   }) => {
+    console.log("loadCloudPies...");
     if (!options.endpoints) {
       options.endpoints = this.endpoints;
     }
@@ -150,13 +146,14 @@ export class PieLoader {
       options.bundle = BundleType.editor;
     }
 
+    console.log("loadCloudPies...");
     const elements = options.content.elements;
     let head: HTMLElement = options.doc.getElementsByTagName("head")[0];
     if (!head) {
       head = options.doc.createElement("head");
       options.doc.appendChild(head);
     }
-    const piesToLoad = this.getElementsToLoad(
+    const piesToLoad = getElementsToLoad(
       elements,
       options.bundle,
       this.registry
@@ -186,7 +183,7 @@ export class PieLoader {
 
     const loadedScripts = [...head.getElementsByTagName("script")];
     if (
-      loadedScripts.find(s => {
+      loadedScripts.find((s) => {
         return s.src === scriptUrl;
       })
     ) {
@@ -195,11 +192,12 @@ export class PieLoader {
 
     const script = options.doc.createElement("script");
 
-    const onloadFn = (_pies => {
+    const onloadFn = ((_pies) => {
       return () => {
         const pieKeys = Object.keys(_pies);
 
-        pieKeys.forEach(key => {
+        console.log("onload!");
+        pieKeys.forEach((key) => {
           const packagesWithoutVersion = getPackageWithoutVersion(_pies[key]);
           const pie =
             window["pie"] && window["pie"].default
@@ -215,10 +213,11 @@ export class PieLoader {
             this.registry[elName] = {
               package: _pies[key],
               status: Status.loading,
-              tagName: elName
+              tagName: elName,
             };
 
-            customElements.whenDefined(elName).then(async () => {
+            customElements.whenDefined(elName).then(() => {
+              console.log("DEFINED:", elName);
               this.registry[elName].status = Status.loaded;
               this.registry[elName].element = customElements.get(elName);
               this.registry[elName].controller = pie.controller;
@@ -235,7 +234,8 @@ export class PieLoader {
 
             if (!customElements.get(configElName)) {
               customElements.define(configElName, pie.Configure);
-              customElements.whenDefined(configElName).then(async () => {
+              customElements.whenDefined(configElName).then(() => {
+                console.log("DEFINED:", elName);
                 if (this.registry[elName]) {
                   this.registry[elName].config = customElements.get(
                     configElName
@@ -251,19 +251,5 @@ export class PieLoader {
     script.onload = onloadFn;
     script.src = scriptUrl;
     head.appendChild(script);
-  };
-
-  /**
-   * Given a defintion of elements, will check the registry
-   * and return the elements and tags that need to be loaded.
-   *
-   * @param elements - the elements to test against registry
-   */
-  protected getElementsToLoad = (
-    els: PieItemElement,
-    bundle: BundleType = BundleType.editor,
-    registry
-  ): PieItemElement => {
-    return pickBy(els, needToLoad(registry, bundle));
   };
 }

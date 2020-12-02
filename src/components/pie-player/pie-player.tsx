@@ -20,12 +20,12 @@ import {
   PieElement,
   PieModel
 } from "../../interface";
+import { LegacyPieLoader } from "../../loader/legacy-loader";
 import {
   PieLoader,
   BundleType,
-  DEFAULT_ENDPOINTS,
-  BundleEndpoints
-} from "../../pie-loader";
+  BundleEndpoints,
+} from "../../loader/pie-loader";
 import { addRubric } from "../../rubric-utils";
 import { normalizeContentElements } from "../../utils/utils";
 import { VERSION } from "../../version";
@@ -44,8 +44,9 @@ export class Player {
    */
   stimulusPlayer: HTMLElement;
 
-  @Prop({ context: "document" }) doc!: Document;
 
+  @Prop({mutable: false, reflect: false}) loader?: PieLoader;
+  
   /**
    * Optionally specifies the back-end that builds and hosts javascript bundles for rendering assessment items.
    * This property lets you choose which environment to use, from 'dev' , 'stage' or 'prod' environments.
@@ -151,8 +152,6 @@ export class Player {
 
   @State() stimulusItemModel: AdvancedItemConfig;
 
-  pieLoader = new PieLoader();
-
   player() {
     return this.stimulusPlayer ? this.stimulusPlayer : this;
   }
@@ -185,26 +184,11 @@ export class Player {
         return;
       }
 
-      if (!this.elementsLoaded && !this.disableBundler) {
-        let endpoints = DEFAULT_ENDPOINTS.prod;
-        if (
-          this.bundleHost &&
-          ["dev", "stage", "prod"].includes(this.bundleHost)
-        ) {
-          endpoints = DEFAULT_ENDPOINTS[this.bundleHost];
-        }
-        if (this.bundleEndpoints) {
-          endpoints = this.bundleEndpoints;
-        }
+      await this.loader.load(this.pieContentModel, {
+        bundle: this.hosted ? BundleType.player : BundleType.clientPlayer,
+        useCdn: false
+      });
 
-        await this.pieLoader.loadCloudPies({
-          content: this.pieContentModel,
-          doc: this.doc,
-          endpoints: endpoints,
-          bundle: this.hosted ? BundleType.player : BundleType.clientPlayer,
-          useCdn: false
-        });
-      }
     } catch (err) {
       this.playerError.emit(`problem loading item (${err})`);
     }
@@ -264,7 +248,7 @@ export class Player {
           if (!this.hosted) {
             try {
               // use local controllers
-              const controller: PieController = this.pieLoader.getController(
+              const controller: PieController = this.loader.getController(
                 pieEl.localName
               );
               if (controller) {
@@ -325,6 +309,11 @@ export class Player {
   }
 
   async componentWillLoad() {
+
+    if(!this.loader){
+      this.loader = new LegacyPieLoader()
+    }
+
     if (this.config) {
       this.watchConfig(this.config);
     }
@@ -360,7 +349,7 @@ export class Player {
         // Note: hard to verify but it appears that we need to resolve
         // the value first rather than setting the promise directly on
         // this state property - otherwise lifecycle re-render is triggered too early
-        const loadedInfo = await this.pieLoader.elementsHaveLoaded(elements);
+        const loadedInfo = await this.loader.elementsHaveLoaded(elements);
 
         if (
           loadedInfo.val &&

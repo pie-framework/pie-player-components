@@ -9,29 +9,29 @@ describe("rubric utils", () => {
     pieContent = {
       id: "1",
       elements: {
-        "pie-rubric": "@pie-element/rubric@latest"
+        "pie-rubric": "@pie-element/rubric@latest",
       },
       models: [
         {
           id: "x",
-          element: "pie-rubric"
-        }
+          element: "pie-rubric",
+        },
       ],
-      markup: "markup here"
+      markup: "markup here",
     };
 
     noRubric = {
       id: "1",
       elements: {
-        "something-else": "@pie-element/something-else@latest"
+        "something-else": "@pie-element/something-else@latest",
       },
       models: [
         {
           id: "x",
-          element: "something-else"
-        }
+          element: "something-else",
+        },
       ],
-      markup: "markup here"
+      markup: "markup here",
     };
 
     rubricModel = {
@@ -39,7 +39,7 @@ describe("rubric utils", () => {
       element: "pie-rubric",
       points: ["level 1", "level 2", "level 3", "level 4"],
       maxPoints: 4,
-      excludeZero: false
+      excludeZero: false,
     };
   });
 
@@ -52,7 +52,7 @@ describe("rubric utils", () => {
     it("do nothing if in markup", () => {
       const content = {
         ...pieContent,
-        markup: '<pie-rubric id="x"></pie-rubric>'
+        markup: '<pie-rubric id="x"></pie-rubric>',
       };
       const handled = addRubric(content);
       expect(handled).toEqual(content);

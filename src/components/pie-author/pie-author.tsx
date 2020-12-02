@@ -13,11 +13,6 @@ import {
 import * as mr from "@pie-lib/math-rendering";
 
 import { PieContent, ItemConfig, PieElement, PieModel } from "../../interface";
-import {
-  PieLoader,
-  BundleEndpoints,
-  DEFAULT_ENDPOINTS
-} from "../../pie-loader";
 import { pieContentFromConfig } from "../../utils/utils";
 import parseNpm from "parse-package-name";
 import _isEqual from "lodash/isEqual";
@@ -34,6 +29,8 @@ import {
   ExternalImageSupport
 } from "./dataurl-image-support";
 import { VERSION } from "../../version";
+import { PieLoader } from "../../loader/pie-loader";
+import { LegacyPieLoader } from "../../loader/legacy-loader";
 
 /**
  * Pie Author will load a Pie Content model for authoring.
@@ -46,22 +43,6 @@ import { VERSION } from "../../version";
 })
 export class Author {
   _modelLoadedState: boolean = false;
-
-  @Prop({ context: "document" }) doc!: Document;
-
-  /**
-   * Optionally specifies the back-end that builds and hosts javascript bundles for rendering assessment items.
-   * This property lets you choose which environment to use, from 'dev' , 'stage' or 'prod' environments.
-   * Until 1.0 will default to 'stage'.
-   */
-  @Prop() bundleHost?: string;
-
-  /**
-   * Provide this property override the default endpoints used by the player to retrieve JS
-   * bundles. Must be set before setting the config property.
-   * Most users will not need to use this property.
-   */
-  @Prop() bundleEndpoints?: BundleEndpoints;
 
   /**
    * Allows disabling of the default behaviour which is to look up and load the JS bundle that define the Custom Elements
@@ -112,7 +93,7 @@ export class Author {
 
   pieContentModel: PieContent;
 
-  pieLoader = new PieLoader();
+  @Prop({mutable: false, reflect: false}) loader?: PieLoader;
 
   renderMarkup: String;
 
@@ -229,7 +210,7 @@ export class Author {
       if (!this.pieContentModel.models) {
         this.pieContentModel.models = [];
       }
-      const tempDiv = this.doc.createElement("div");
+      const tempDiv = document.createElement("div");
       tempDiv.innerHTML = this.pieContentModel.markup;
       const elsWithId = tempDiv.querySelectorAll("[id]");
       // set up a model for each pie defined in the markup
@@ -268,13 +249,18 @@ export class Author {
     }
   }
 
-  componentDidUnload() {
+  disconnectedCallback() {
     this.el.removeEventListener(InsertImageEvent.TYPE, this.handleInsertImage);
     this.el.removeEventListener(DeleteImageEvent.TYPE, this.handleDeleteImage);
     this.fileInput.removeEventListener("change", this.handleFileInputChange);
   }
 
   async componentWillLoad() {
+
+    if(!this.loader){
+      this.loader = new LegacyPieLoader();
+    }
+
     if (this.config) {
       this.watchConfig(this.config, {});
     }
@@ -313,22 +299,17 @@ export class Author {
 
   async loadPieElements() {
     if (this.config && !this.disableBundler) {
-      let endpoints = DEFAULT_ENDPOINTS.prod;
-      if (
-        this.bundleHost &&
-        ["dev", "stage", "prod"].includes(this.bundleHost)
-      ) {
-        endpoints = DEFAULT_ENDPOINTS[this.bundleHost];
-      }
-      if (this.bundleEndpoints) {
-        endpoints = this.bundleEndpoints;
-      }
-      await this.pieLoader.loadCloudPies({
-        content: this.pieContentModel,
-        doc: this.doc,
-        endpoints,
-        useCdn: false
-      });
+      // let endpoints = DEFAULT_ENDPOINTS.prod;
+      // if (
+      //   this.bundleHost &&
+      //   ["dev", "stage", "prod"].includes(this.bundleHost)
+      // ) {
+      //   endpoints = DEFAULT_ENDPOINTS[this.bundleHost];
+      // }
+      // if (this.bundleEndpoints) {
+      //   endpoints = this.bundleEndpoints;
+      // }
+      await this.loader.load( this.pieContentModel, { useCdn: false });
     }
   }
 
@@ -348,7 +329,7 @@ export class Author {
         name: el,
         tag: `${el}-config`
       }));
-      const loadedInfo = await this.pieLoader.elementsHaveLoaded(elements);
+      const loadedInfo = await this.loader.elementsHaveLoaded(elements);
 
       if (
         loadedInfo.val &&

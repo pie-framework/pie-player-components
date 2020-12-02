@@ -1,6 +1,7 @@
-import { BundleType, needToLoad, PieLoader } from "../pie-loader";
-import { PieContent } from "../interface";
+import { LegacyPieLoader, needToLoad } from "../legacy-loader";
+import { PieContent } from "../../interface";
 import { JSDOM } from "jsdom";
+import { BundleType } from "../pie-loader";
 const reg = (extras: any = {}) => ({ ...extras });
 
 const KEY = "pie-element";
@@ -30,8 +31,8 @@ describe("needToLoad", () => {
       [KEY]: {
         config: {},
         controller: {},
-        element: {}
-      }
+        element: {},
+      },
     }),
     false
   );
@@ -65,10 +66,10 @@ describe("PieLoader", () => {
   beforeAll(() => {
     _ce = global.customElements;
 
-    global.customElements = {
+    (global as any).customElements = {
       define: jest.fn(),
       whenDefined: jest.fn().mockResolvedValue(undefined),
-      get: jest.fn().mockReturnValue(undefined)
+      get: jest.fn().mockReturnValue(undefined),
     };
   });
   afterAll(() => {
@@ -76,7 +77,7 @@ describe("PieLoader", () => {
   });
   describe("loadCloudPies", () => {
     it("doesnt define configure element when type is clientPlayer", async () => {
-      const loader = new PieLoader();
+      const loader = new LegacyPieLoader();
 
       const d = new JSDOM({});
 
@@ -86,23 +87,23 @@ describe("PieLoader", () => {
           id: "1",
           models: [],
           markup: "",
-          elements: { "pie-el": "pie-el@latest" }
+          elements: { "pie-el": "pie-el@latest" },
         } as PieContent,
         doc: d.window.document,
-        useCdn: false
+        useCdn: false,
       });
 
       // global.window = d.window;
-      window.pie = {
+      (window as any).pie = {
         default: {
           "pie-el": {
             controller: jest.fn(),
-            Element: class extends HTMLElement {}
-          }
-        }
+            Element: class extends HTMLElement {},
+          },
+        },
       };
       const scripts = d.window.document.querySelectorAll("script");
-      scripts.forEach(s => {
+      scripts.forEach((s) => {
         s.onload();
       });
 

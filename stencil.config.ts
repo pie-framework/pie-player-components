@@ -9,26 +9,26 @@ export const config: Config = {
       copy: [
         {
           src: "components/pie-author/readme.md",
-          dest: "../docs/pie-author.md"
+          dest: "../docs/pie-author.md",
         },
         {
           // top level in dist dir
           src: "components/pie-player/readme.md",
           // top level in dist dir
-          dest: "../docs/pie-player.md"
-        }
-      ]
+          dest: "../docs/pie-player.md",
+        },
+      ],
     },
     {
-      type: 'docs-readme',
-      footer: '',
-      dir: 'docs'
+      type: "docs-readme",
+      footer: "",
+      dir: "docs",
     },
     {
       type: "www",
-      copy: [{ src: "demo" }, { src: "ebsr.html" }],
-      serviceWorker: null // disable service workers
-    }
+      copy: [{ src: "demo" }],
+      serviceWorker: null, // disable service workers
+    },
   ],
-  plugins: [sass({ includePaths: ["./node_modules"] })]
+  plugins: [sass({ includePaths: ["./node_modules"] })],
 };
