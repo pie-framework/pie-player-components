@@ -21,6 +21,7 @@ export const setupInterceptPieCloud = async (
     // mock the response from pie cloud
     if (request.url().match(match)) {
       try {
+        console.log("RESPOND!", match);
         request.respond({
           status: 200,
           headers: resHeaders,
