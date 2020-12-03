@@ -7,7 +7,7 @@ import {
   Event,
   EventEmitter,
   Method,
-  h
+  h,
 } from "@stencil/core";
 
 import * as mr from "@pie-lib/math-rendering";
@@ -22,11 +22,11 @@ import {
   ModelUpdatedEvent,
   InsertImageEvent,
   DeleteImageEvent,
-  ImageHandler
+  ImageHandler,
 } from "@pie-framework/pie-configure-events";
 import {
   DataURLImageSupport,
-  ExternalImageSupport
+  ExternalImageSupport,
 } from "./dataurl-image-support";
 import { VERSION } from "../../version";
 import { PieLoader } from "../../loader/pie-loader";
@@ -39,7 +39,7 @@ import { LegacyPieLoader } from "../../loader/legacy-loader";
 @Component({
   tag: "pie-author",
   styleUrl: "../components.css",
-  shadow: false // shadow dom causes material ui problem
+  shadow: false, // shadow dom causes material ui problem
 })
 export class Author {
   _modelLoadedState: boolean = false;
@@ -93,7 +93,7 @@ export class Author {
 
   pieContentModel: PieContent;
 
-  @Prop({mutable: false, reflect: false}) loader?: PieLoader;
+  @Prop({ mutable: false, reflect: false }) loader?: PieLoader;
 
   renderMarkup: String;
 
@@ -161,7 +161,7 @@ export class Author {
   getRenderMarkup(): string {
     let markup = this.pieContentModel ? this.pieContentModel.markup : "";
     if (markup) {
-      Object.keys(this.pieContentModel.elements).forEach(key => {
+      Object.keys(this.pieContentModel.elements).forEach((key) => {
         markup = markup.split(key).join(key + "-config");
       });
       return markup;
@@ -185,10 +185,8 @@ export class Author {
 
   addConfigTags(c: PieContent) {
     if (!c.markup && c.models) {
-      const tags = c.models.map(model => {
-        return `<${model.element}-config id="${model.id}"></${
-          model.element
-        }-config>`;
+      const tags = c.models.map((model) => {
+        return `<${model.element}-config id="${model.id}"></${model.element}-config>`;
       });
       c.markup = tags.join("");
     }
@@ -214,12 +212,12 @@ export class Author {
       tempDiv.innerHTML = this.pieContentModel.markup;
       const elsWithId = tempDiv.querySelectorAll("[id]");
       // set up a model for each pie defined in the markup
-      elsWithId.forEach(el => {
+      elsWithId.forEach((el) => {
         const pieElName = el.tagName.toLowerCase().split("-config")[0];
         // initialize emtpy model if this is a pie
         if (this.pieContentModel.elements[pieElName]) {
           const elementId = el.getAttribute("id");
-          if (!this.pieContentModel.models.find(m => m.id === elementId)) {
+          if (!this.pieContentModel.models.find((m) => m.id === elementId)) {
             const model = { id: elementId, element: pieElName };
             this.pieContentModel.models.push(model);
           }
@@ -228,7 +226,7 @@ export class Author {
       tempDiv.remove();
     }
     if (this.pieContentModel && this.pieContentModel.models) {
-      this.pieContentModel.models.map(model => {
+      this.pieContentModel.models.map((model) => {
         let pieEl: PieElement = this.el.querySelector(`[id='${model.id}']`);
         !pieEl && (pieEl = this.el.querySelector(`[pie-id='${model.id}']`));
 
@@ -256,8 +254,7 @@ export class Author {
   }
 
   async componentWillLoad() {
-
-    if(!this.loader){
+    if (!this.loader) {
       this.loader = new LegacyPieLoader();
     }
 
@@ -270,7 +267,7 @@ export class Author {
       // set the internal model
       // emit a content-item level event with the model
       if (this.pieContentModel && e.update) {
-        this.pieContentModel.models.forEach(m => {
+        this.pieContentModel.models.forEach((m) => {
           if (m.id === e.update.id && m.element === e.update.element) {
             Object.assign(m, e.update);
           }
@@ -299,17 +296,7 @@ export class Author {
 
   async loadPieElements() {
     if (this.config && !this.disableBundler) {
-      // let endpoints = DEFAULT_ENDPOINTS.prod;
-      // if (
-      //   this.bundleHost &&
-      //   ["dev", "stage", "prod"].includes(this.bundleHost)
-      // ) {
-      //   endpoints = DEFAULT_ENDPOINTS[this.bundleHost];
-      // }
-      // if (this.bundleEndpoints) {
-      //   endpoints = this.bundleEndpoints;
-      // }
-      await this.loader.load( this.pieContentModel, { useCdn: false });
+      await this.loader.load(this.pieContentModel, { useCdn: false });
     }
   }
 
@@ -325,15 +312,17 @@ export class Author {
       this.pieContentModel.markup &&
       !this.elementsLoaded
     ) {
-      const elements = Object.keys(this.pieContentModel.elements).map(el => ({
+      const elements = Object.keys(this.pieContentModel.elements).map((el) => ({
         name: el,
-        tag: `${el}-config`
+        tag: `${el}-config`,
       }));
       const loadedInfo = await this.loader.elementsHaveLoaded(elements);
 
       if (
         loadedInfo.val &&
-        !!loadedInfo.elements.find(el => this.pieContentModel.elements[el.name])
+        !!loadedInfo.elements.find(
+          (el) => this.pieContentModel.elements[el.name]
+        )
       ) {
         this.elementsLoaded = true;
 
@@ -358,7 +347,7 @@ export class Author {
         element: "pie-rubric",
         points: ["", "", "", ""],
         maxPoints: 4,
-        excludeZero: false
+        excludeZero: false,
       };
     }
     const configPieContent = pieContentFromConfig(config);
@@ -381,14 +370,14 @@ export class Author {
                 <div innerHTML={markup} />
               </pie-spinner>
             </div>
-            <input type="file" hidden ref={r => (this.fileInput = r)} />
+            <input type="file" hidden ref={(r) => (this.fileInput = r)} />
           </pie-preview-layout>
         );
       } else {
         return (
           <pie-spinner active={!this.elementsLoaded}>
             <div innerHTML={markup} />
-            <input type="file" hidden ref={r => (this.fileInput = r)} />
+            <input type="file" hidden ref={(r) => (this.fileInput = r)} />
           </pie-spinner>
         );
       }

@@ -2,11 +2,11 @@ import { E2EPage } from "@stencil/core/testing";
 
 const fs = require("fs");
 
-const mockPieCloudResponseContent = fs.readFileSync(
+export const mockPieCloudResponseContent = fs.readFileSync(
   __dirname + "/mockPieCloudResponse.js"
 );
 
-const resHeaders = {
+export const resHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Methods": "DELETE, POST, GET, OPTIONS",
   "Access-Control-Allow-Headers":
@@ -17,12 +17,17 @@ export const setupInterceptPieCloud = async (
   page: E2EPage,
   match
 ): Promise<void> => {
-  page.on("request", (request) => {
-    // mock the response from pie cloud
+  page.on("request", async (request) => {
     if (request.url().match(match)) {
       try {
-        console.log("RESPOND!", match);
-        request.respond({
+        // console.log(
+        //   "RESPOND!",
+        //   request.url(),
+        //   match,
+        //   "handled?",
+        //   (request as any)._interceptionHandled
+        // );
+        await request.respond({
           status: 200,
           headers: resHeaders,
           contentType: "application/javascript",
@@ -30,10 +35,11 @@ export const setupInterceptPieCloud = async (
         });
       } catch (err) {
         console.error(err);
+        await request.abort();
       }
     } else {
       request.continue();
     }
   });
-  return await page.setRequestInterception(true);
+  await page.setRequestInterception(true);
 };

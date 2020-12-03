@@ -23,16 +23,21 @@ const DEFAULT_ENDPOINTS = {
     bundleBase: "https://pits-cdn.pie-api.io//bundles/",
     buildServiceBase: "https://pits-dot-pie-prod-221718.appspot.com/bundles/",
   },
-  stage: {
-    bundleBase: "https://pits-cdn-staging.pie-api.io/bundles/",
-    buildServiceBase:
-      "https://pits-dot-pie-staging-221718.appspot.com/bundles/",
-  },
-  dev: {
-    bundleBase: "https://pits-cdn-dev.pie-api.io/bundles/",
-    buildServiceBase: "https://pits-dot-pie-dev-221718.appspot.com/bundles/",
-  },
+  // stage: {
+  //   bundleBase: "https://pits-cdn-staging.pie-api.io/bundles/",
+  //   buildServiceBase:
+  //     "https://pits-dot-pie-staging-221718.appspot.com/bundles/",
+  // },
+  // dev: {
+  //   bundleBase: "https://pits-cdn-dev.pie-api.io/bundles/",
+  //   buildServiceBase: "https://pits-dot-pie-dev-221718.appspot.com/bundles/",
+  // },
 };
+
+const rejectAfter = (n) =>
+  new Promise((resolve, reject) =>
+    setTimeout(() => reject(`rejectAfter ${n}`), n)
+  );
 
 export const needToLoad = (registry: any, bundle: BundleType) => (
   el: string,
@@ -86,7 +91,7 @@ export class LegacyPieLoader implements PieLoader {
    */
   constructor(_endpoints?: BundleEndpoints) {
     if (!_endpoints) {
-      this.endpoints = DEFAULT_ENDPOINTS.stage;
+      this.endpoints = DEFAULT_ENDPOINTS.prod;
     } else {
       this.endpoints = _endpoints;
     }
@@ -112,12 +117,12 @@ export class LegacyPieLoader implements PieLoader {
   ): Promise<LoadedElementsResp> => {
     const promises = els.map((el) => customElements.whenDefined(el.tag));
 
-    return Promise.all(promises)
+    return Promise.race([Promise.all(promises), rejectAfter(2000)])
       .then(() => {
-        return Promise.resolve({ elements: els, val: true });
+        return { elements: els, val: true };
       })
       .catch(() => {
-        return Promise.resolve({ elements: els, val: false });
+        return { elements: els, val: false };
       });
   };
 
@@ -138,7 +143,7 @@ export class LegacyPieLoader implements PieLoader {
     bundle?: BundleType;
     useCdn: boolean;
   }) => {
-    console.log("loadCloudPies...");
+    // console.log("loadCloudPies...");
     if (!options.endpoints) {
       options.endpoints = this.endpoints;
     }
@@ -146,7 +151,6 @@ export class LegacyPieLoader implements PieLoader {
       options.bundle = BundleType.editor;
     }
 
-    console.log("loadCloudPies...");
     const elements = options.content.elements;
     let head: HTMLElement = options.doc.getElementsByTagName("head")[0];
     if (!head) {
@@ -196,7 +200,6 @@ export class LegacyPieLoader implements PieLoader {
       return () => {
         const pieKeys = Object.keys(_pies);
 
-        console.log("onload!");
         pieKeys.forEach((key) => {
           const packagesWithoutVersion = getPackageWithoutVersion(_pies[key]);
           const pie =
@@ -217,7 +220,6 @@ export class LegacyPieLoader implements PieLoader {
             };
 
             customElements.whenDefined(elName).then(() => {
-              console.log("DEFINED:", elName);
               this.registry[elName].status = Status.loaded;
               this.registry[elName].element = customElements.get(elName);
               this.registry[elName].controller = pie.controller;
@@ -235,7 +237,6 @@ export class LegacyPieLoader implements PieLoader {
             if (!customElements.get(configElName)) {
               customElements.define(configElName, pie.Configure);
               customElements.whenDefined(configElName).then(() => {
-                console.log("DEFINED:", elName);
                 if (this.registry[elName]) {
                   this.registry[elName].config = customElements.get(
                     configElName
