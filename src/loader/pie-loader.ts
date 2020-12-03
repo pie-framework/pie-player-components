@@ -40,7 +40,7 @@ export type LoadOpts = {
   useCdn: boolean;
 };
 
-export interface PieLoader {
+export interface PieBundleLoader {
   load(content: PieContent, opts: LoadOpts): Promise<void>;
 
   /**

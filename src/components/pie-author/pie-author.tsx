@@ -29,7 +29,7 @@ import {
   ExternalImageSupport,
 } from "./dataurl-image-support";
 import { VERSION } from "../../version";
-import { PieLoader } from "../../loader/pie-loader";
+import { PieBundleLoader } from "../../loader/pie-loader";
 import { LegacyPieLoader } from "../../loader/legacy-loader";
 
 /**
@@ -93,7 +93,7 @@ export class Author {
 
   pieContentModel: PieContent;
 
-  @Prop({ mutable: false, reflect: false }) loader?: PieLoader;
+  @Prop({ mutable: false, reflect: false }) loader?: PieBundleLoader;
 
   renderMarkup: String;
 

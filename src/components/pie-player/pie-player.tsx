@@ -9,7 +9,7 @@ import {
   Method,
   Prop,
   State,
-  Watch
+  Watch,
 } from "@stencil/core";
 import {
   AdvancedItemConfig,
@@ -18,11 +18,11 @@ import {
   PieContent,
   PieController,
   PieElement,
-  PieModel
+  PieModel,
 } from "../../interface";
 import { LegacyPieLoader } from "../../loader/legacy-loader";
 import {
-  PieLoader,
+  PieBundleLoader,
   BundleType,
   BundleEndpoints,
 } from "../../loader/pie-loader";
@@ -36,7 +36,7 @@ const controllerErrorMessage: string =
 @Component({
   tag: "pie-player",
   styleUrl: "../components.css",
-  shadow: false
+  shadow: false,
 })
 export class Player {
   /**
@@ -44,9 +44,8 @@ export class Player {
    */
   stimulusPlayer: HTMLElement;
 
+  @Prop({ mutable: false, reflect: false }) loader?: PieBundleLoader;
 
-  @Prop({mutable: false, reflect: false}) loader?: PieLoader;
-  
   /**
    * Optionally specifies the back-end that builds and hosts javascript bundles for rendering assessment items.
    * This property lets you choose which environment to use, from 'dev' , 'stage' or 'prod' environments.
@@ -186,9 +185,8 @@ export class Player {
 
       await this.loader.load(this.pieContentModel, {
         bundle: this.hosted ? BundleType.player : BundleType.clientPlayer,
-        useCdn: false
+        useCdn: false,
       });
-
     } catch (err) {
       this.playerError.emit(`problem loading item (${err})`);
     }
@@ -202,7 +200,7 @@ export class Player {
   async updateElementModel(update: PieModel) {
     if (this.pieContentModel && this.pieContentModel.models) {
       const index = this.pieContentModel.models.findIndex(
-        m => m.id === update.id
+        (m) => m.id === update.id
       );
 
       if (index !== -1) {
@@ -285,7 +283,7 @@ export class Player {
           }
           try {
             pieEl.session = session;
-          } catch(err) {
+          } catch (err) {
             this.playerError.emit(
               `error setting item session value - ${err.message}`
             );
@@ -309,9 +307,8 @@ export class Player {
   }
 
   async componentWillLoad() {
-
-    if(!this.loader){
-      this.loader = new LegacyPieLoader()
+    if (!this.loader) {
+      this.loader = new LegacyPieLoader();
     }
 
     if (this.config) {
@@ -320,7 +317,7 @@ export class Player {
   }
 
   findOrAddSession(data: any[], id: string) {
-    const s = data.find(d => d.id === id);
+    const s = data.find((d) => d.id === id);
     if (s) {
       return s;
     }
@@ -341,10 +338,12 @@ export class Player {
         this.updateModels();
         this.renderMath();
       } else {
-        const elements = Object.keys(this.pieContentModel.elements).map(el => ({
-          name: el,
-          tag: el
-        }));
+        const elements = Object.keys(this.pieContentModel.elements).map(
+          (el) => ({
+            name: el,
+            tag: el,
+          })
+        );
 
         // Note: hard to verify but it appears that we need to resolve
         // the value first rather than setting the promise directly on
@@ -354,7 +353,7 @@ export class Player {
         if (
           loadedInfo.val &&
           !!loadedInfo.elements.find(
-            el => this.pieContentModel.elements[el.name]
+            (el) => this.pieContentModel.elements[el.name]
           )
         ) {
           this.elementsLoaded = true;
@@ -382,7 +381,7 @@ export class Player {
               env={this.env}
               hosted={this.hosted}
               session={this.session}
-              ref={el => (this.stimulusPlayer = el as HTMLElement)}
+              ref={(el) => (this.stimulusPlayer = el as HTMLElement)}
             />
           </div>
           <div slot="item">

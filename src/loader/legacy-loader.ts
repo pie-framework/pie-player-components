@@ -11,7 +11,7 @@ import {
   LoadedElementsQuery,
   LoadedElementsResp,
   LoadOpts,
-  PieLoader,
+  PieBundleLoader,
   Status,
 } from "./pie-loader";
 
@@ -81,7 +81,7 @@ export const getElementsToLoad = (
 /**
  * Pie Registry contols the loading of all PIEs from the pie build service
  */
-export class LegacyPieLoader implements PieLoader {
+export class LegacyPieLoader implements PieBundleLoader {
   endpoints: BundleEndpoints;
 
   /**
