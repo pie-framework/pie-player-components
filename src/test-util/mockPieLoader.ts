@@ -3,10 +3,10 @@ import {
   LoadedElementsQuery,
   LoadedElementsResp,
   LoadOpts,
-  PieLoader,
+  PieBundleLoader,
 } from "../loader/pie-loader";
 
-export class MockPieLoader implements PieLoader {
+export class MockPieLoader implements PieBundleLoader {
   getController(name: string): PieController {
     throw new Error("Method not implemented.");
   }

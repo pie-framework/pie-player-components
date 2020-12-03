@@ -28,6 +28,7 @@
 graph TD;
   pie-preview-layout --> pie-preview-control
   pie-preview-layout --> pie-player
+  pie-preview-control --> mdc-select
   pie-player --> pie-stimulus-layout
   pie-player --> pie-player
   pie-player --> pie-spinner

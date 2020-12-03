@@ -23,6 +23,7 @@ The class `pie-loading` will be added to the element while assets are being load
 | `disableBundler`     | `disable-bundler`      | Allows disabling of the default behaviour which is to look up and load the JS bundle that define the Custom Elements used by the item config. This if for advanced use cases when using the pie-player in a container that is managing loading of Custom Elements and Controllers. | `boolean`                          | `false`                               |
 | `env`                | --                     | Describes runtime environment for the player.                                                                                                                                                                                                                                      | `Object`                           | `{ mode: "gather", role: "student" }` |
 | `hosted`             | `hosted`               | Indicates if player running in the context of a PIE hosting system. Do not modify the default value for this property if you are not implementing a PIE host. If true, the host is responsible for all model updates.                                                              | `boolean`                          | `false`                               |
+| `loader`             | --                     |                                                                                                                                                                                                                                                                                    | `PieBundleLoader`                  | `undefined`                           |
 | `renderStimulus`     | `render-stimulus`      | If the item contains a stimulus, the player will render it by default. Set this property to false to not render stimulus.                                                                                                                                                          | `boolean`                          | `true`                                |
 | `session`            | --                     | The Pie Session                                                                                                                                                                                                                                                                    | `{ id: string; data: any[]; }`     | `{ id: "", data: [] }`                |
 | `version`            | `version`              |                                                                                                                                                                                                                                                                                    | `string`                           | `VERSION`                             |
@@ -55,13 +56,13 @@ Type: `Promise<void>`
 
 ### Used by
 
- - [pie-player]()
+ - [pie-player](.)
  - [pie-preview-layout](../pie-preview-layout)
 
 ### Depends on
 
 - [pie-stimulus-layout](../pie-stimulus-layout)
-- [pie-player]()
+- [pie-player](.)
 - [pie-spinner](../pie-spinner)
 
 ### Graph

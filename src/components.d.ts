@@ -7,7 +7,7 @@
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { Option } from "./components/mdc-select/mdc-select";
 import { ItemConfig, ItemSession, PieContent, PieModel } from "./interface";
-import { BundleEndpoints, PieLoader } from "./loader/pie-loader";
+import { BundleEndpoints, PieBundleLoader } from "./loader/pie-loader";
 import { ExternalImageSupport } from "./components/pie-author/dataurl-image-support";
 export namespace Components {
     interface MdcSelect {
@@ -47,7 +47,7 @@ export namespace Components {
           * external providers can set this if they need to upload the assets to the cloud etc. by default we use data urls
          */
         "imageSupport": ExternalImageSupport;
-        "loader"?: PieLoader;
+        "loader"?: PieBundleLoader;
         "version": string;
     }
     interface PiePlayer {
@@ -79,7 +79,7 @@ export namespace Components {
           * Indicates if player running in the context of a PIE hosting system. Do not modify the default value for this property if you are not implementing a PIE host. If true, the host is responsible for all model updates.
          */
         "hosted"?: boolean;
-        "loader"?: PieLoader;
+        "loader"?: PieBundleLoader;
         /**
           * If the item contains a stimulus, the player will render it by default. Set this property to false to not render stimulus.
          */
@@ -194,7 +194,7 @@ declare namespace LocalJSX {
           * external providers can set this if they need to upload the assets to the cloud etc. by default we use data urls
          */
         "imageSupport"?: ExternalImageSupport;
-        "loader"?: PieLoader;
+        "loader"?: PieBundleLoader;
         /**
           * Emmitted when the content models in the config have been set on the content
          */
@@ -234,7 +234,7 @@ declare namespace LocalJSX {
           * Indicates if player running in the context of a PIE hosting system. Do not modify the default value for this property if you are not implementing a PIE host. If true, the host is responsible for all model updates.
          */
         "hosted"?: boolean;
-        "loader"?: PieLoader;
+        "loader"?: PieBundleLoader;
         /**
           * Emitted when the content in the config has been loaded.
          */
