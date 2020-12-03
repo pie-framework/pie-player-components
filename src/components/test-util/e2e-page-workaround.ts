@@ -64,7 +64,6 @@ export const setContent = async (
         contentType: "text/html",
         body: output.join("\n"),
       });
-      // console.log("NOW REMOVE ALL LISTENERS!!!!");
       (page as any).removeAllListeners("request");
       page.setRequestInterception(false);
     } else {
@@ -77,7 +76,6 @@ export const setContent = async (
   if (!options.waitUntil) {
     options.waitUntil = process.env.__STENCIL_BROWSER_WAIT_UNTIL as any;
   }
-  // console.log("PAGE URL:", pageUrl);
 
   const rsp = await page.goto("/", options);
 
@@ -85,8 +83,5 @@ export const setContent = async (
     throw new Error(`Testing unable to load content`);
   }
 
-  // await waitForStencil(page, options);
-
   return rsp;
-  // }
 };
