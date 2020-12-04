@@ -46,7 +46,7 @@ export interface PieBundleLoader {
   /**
    * @deprecated can we remove this?
    */
-  getController(name: string): PieController;
+  getController(name: string): Promise<PieController>;
 
   /**
    * @deprecated can we remove this?

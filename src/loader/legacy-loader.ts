@@ -1,4 +1,4 @@
-import { PieContent, PieItemElement } from "../interface";
+import { PieContent, PieController, PieItemElement } from "../interface";
 import { getPackageBundleUri, getPackageWithoutVersion } from "../utils/utils";
 
 import isFunction from "lodash/isFunction";
@@ -106,11 +106,12 @@ export class LegacyPieLoader implements PieBundleLoader {
   private static _registry: { [elementName: string]: Entry };
   protected registry: { [elementName: string]: Entry };
 
-  public getController = (pieTagName: string) => {
-    return this.registry[pieTagName]
-      ? this.registry[pieTagName].controller
-      : null;
-  };
+  public getController = (pieTagName: string): Promise<PieController> =>
+    new Promise((resolve, reject) => {
+      return this.registry[pieTagName]
+        ? this.registry[pieTagName].controller
+        : null;
+    });
 
   public elementsHaveLoaded = (
     els: LoadedElementsQuery[]

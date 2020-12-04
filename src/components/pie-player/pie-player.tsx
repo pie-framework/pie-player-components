@@ -246,7 +246,7 @@ export class Player {
           if (!this.hosted) {
             try {
               // use local controllers
-              const controller: PieController = this.loader.getController(
+              const controller: PieController = await this.loader.getController(
                 pieEl.localName
               );
               if (controller) {

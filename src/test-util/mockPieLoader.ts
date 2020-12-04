@@ -7,7 +7,7 @@ import {
 } from "../loader/pie-loader";
 
 export class MockPieLoader implements PieBundleLoader {
-  getController(name: string): PieController {
+  getController(name: string): Promise<PieController> {
     throw new Error("Method not implemented.");
   }
   elementsHaveLoaded(
