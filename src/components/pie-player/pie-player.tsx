@@ -183,10 +183,12 @@ export class Player {
         return;
       }
 
-      await this.loader.load(this.pieContentModel, {
-        bundle: this.hosted ? BundleType.player : BundleType.clientPlayer,
-        useCdn: false,
-      });
+      if (!this.elementsLoaded && !this.disableBundler) {
+        await this.loader.load(this.pieContentModel, {
+          bundle: this.hosted ? BundleType.player : BundleType.clientPlayer,
+          useCdn: false,
+        });
+      }
     } catch (err) {
       this.playerError.emit(`problem loading item (${err})`);
     }
@@ -208,6 +210,10 @@ export class Player {
       }
       await this.updateModels();
     }
+  }
+
+  private qs(s: string): PieElement {
+    return this.el.querySelector(s);
   }
 
   @Watch("env")
@@ -240,11 +246,16 @@ export class Player {
           this.playerError.emit(`error loading question data`);
           throw new Error(model.error);
         }
-        const pieEl: PieElement = this.el.querySelector(`[id='${model.id}']`);
+
+        const pieEl: PieElement =
+          this.qs(`[id='${model.id}']`) || this.qs(`[pie-id='${model.id}']`);
+
         let session = this.findOrAddSession(this.session.data, model.id);
         if (pieEl) {
           if (!this.hosted) {
             try {
+              console.log("GET CONTROLLER");
+
               // use local controllers
               const controller: PieController = await this.loader.getController(
                 pieEl.localName
@@ -350,6 +361,8 @@ export class Player {
         // this state property - otherwise lifecycle re-render is triggered too early
         const loadedInfo = await this.loader.elementsHaveLoaded(elements);
 
+        console.log("LOADED_INFO: ", loadedInfo);
+
         if (
           loadedInfo.val &&
           !!loadedInfo.elements.find(
@@ -406,7 +419,9 @@ export class Player {
         />
       );
     } else {
+      console.log("[render] elementsLoaded?", this.elementsLoaded);
       if (this.elementsLoaded) {
+        console.log("RENDER MARKUP...w");
         return (
           <div
             innerHTML={
