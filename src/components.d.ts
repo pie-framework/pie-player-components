@@ -99,6 +99,7 @@ export namespace Components {
     }
     interface PiePreviewLayout {
         "config": Object;
+        "loader": PieBundleLoader;
     }
     interface PieSpinner {
         /**
@@ -266,6 +267,7 @@ declare namespace LocalJSX {
     }
     interface PiePreviewLayout {
         "config"?: Object;
+        "loader"?: PieBundleLoader;
     }
     interface PieSpinner {
         /**

@@ -225,6 +225,7 @@ export class Author {
       });
       tempDiv.remove();
     }
+    console.log("set the model...");
     if (this.pieContentModel && this.pieContentModel.models) {
       this.pieContentModel.models.map((model) => {
         let pieEl: PieElement = this.el.querySelector(`[id='${model.id}']`);
@@ -257,6 +258,7 @@ export class Author {
     if (!this.loader) {
       this.loader = new LegacyPieLoader();
     }
+    console.log("[pie-author] componentWillLoad - this.loader:", this.loader);
 
     if (this.config) {
       this.watchConfig(this.config, {});
@@ -362,9 +364,11 @@ export class Author {
   render() {
     if (this.pieContentModel && this.pieContentModel.markup) {
       const markup = this.getRenderMarkup();
+
+      console.log("MARKUP:", markup, "loaded?", this.elementsLoaded);
       if (this.addPreview) {
         return (
-          <pie-preview-layout config={this.config}>
+          <pie-preview-layout loader={this.loader} config={this.config}>
             <div slot="configure">
               <pie-spinner active={!this.elementsLoaded}>
                 <div innerHTML={markup} />

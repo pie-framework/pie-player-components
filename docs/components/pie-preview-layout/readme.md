@@ -7,9 +7,10 @@
 
 ## Properties
 
-| Property | Attribute | Description | Type     | Default     |
-| -------- | --------- | ----------- | -------- | ----------- |
-| `config` | --        |             | `Object` | `undefined` |
+| Property | Attribute | Description | Type              | Default     |
+| -------- | --------- | ----------- | ----------------- | ----------- |
+| `config` | --        |             | `Object`          | `undefined` |
+| `loader` | --        |             | `PieBundleLoader` | `undefined` |
 
 
 ## Dependencies
