@@ -124,37 +124,37 @@ declare global {
 
 
   interface HTMLPieAuthorElement extends Components.PieAuthor, HTMLStencilElement {}
-  const HTMLPieAuthorElement: {
+  var HTMLPieAuthorElement: {
     prototype: HTMLPieAuthorElement;
     new (): HTMLPieAuthorElement;
   };
 
   interface HTMLPiePlayerElement extends Components.PiePlayer, HTMLStencilElement {}
-  const HTMLPiePlayerElement: {
+  var HTMLPiePlayerElement: {
     prototype: HTMLPiePlayerElement;
     new (): HTMLPiePlayerElement;
   };
 
   interface HTMLPiePreviewControlElement extends Components.PiePreviewControl, HTMLStencilElement {}
-  const HTMLPiePreviewControlElement: {
+  var HTMLPiePreviewControlElement: {
     prototype: HTMLPiePreviewControlElement;
     new (): HTMLPiePreviewControlElement;
   };
 
   interface HTMLPiePreviewLayoutElement extends Components.PiePreviewLayout, HTMLStencilElement {}
-  const HTMLPiePreviewLayoutElement: {
+  var HTMLPiePreviewLayoutElement: {
     prototype: HTMLPiePreviewLayoutElement;
     new (): HTMLPiePreviewLayoutElement;
   };
 
   interface HTMLPieSpinnerElement extends Components.PieSpinner, HTMLStencilElement {}
-  const HTMLPieSpinnerElement: {
+  var HTMLPieSpinnerElement: {
     prototype: HTMLPieSpinnerElement;
     new (): HTMLPieSpinnerElement;
   };
 
   interface HTMLPieStimulusLayoutElement extends Components.PieStimulusLayout, HTMLStencilElement {}
-  const HTMLPieStimulusLayoutElement: {
+  var HTMLPieStimulusLayoutElement: {
     prototype: HTMLPieStimulusLayoutElement;
     new (): HTMLPieStimulusLayoutElement;
   };
