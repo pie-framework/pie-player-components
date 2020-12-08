@@ -1,3 +1,10 @@
+## [0.25.4](https://github.com/pie-framework/pie-player-components/compare/v0.25.3...v0.25.4) (2020-12-08)
+
+
+### Bug Fixes
+
+* set prod for pie-loader ([8ddfb43](https://github.com/pie-framework/pie-player-components/commit/8ddfb4340f9a064451b379b104c69cedc7b2e592))
+
 ## [0.25.3](https://github.com/pie-framework/pie-player-components/compare/v0.25.2...v0.25.3) (2020-11-30)
 
 
