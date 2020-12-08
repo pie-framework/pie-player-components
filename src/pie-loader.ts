@@ -9,16 +9,17 @@ import { emptyConfigure } from "./components/empty-configure";
 export const DEFAULT_ENDPOINTS = {
   prod: {
     bundleBase: "https://pits-cdn.pie-api.io//bundles/",
-    buildServiceBase: "https://pits-dot-pie-prod-221718.appspot.com/bundles/"
+    buildServiceBase: "https://pits-dot-pie-prod-221718.appspot.com/bundles/",
   },
   stage: {
     bundleBase: "https://pits-cdn-staging.pie-api.io/bundles/",
-    buildServiceBase: "https://pits-dot-pie-staging-221718.appspot.com/bundles/"
+    buildServiceBase:
+      "https://pits-dot-pie-staging-221718.appspot.com/bundles/",
   },
   dev: {
     bundleBase: "https://pits-cdn-dev.pie-api.io/bundles/",
-    buildServiceBase: "https://pits-dot-pie-dev-221718.appspot.com/bundles/"
-  }
+    buildServiceBase: "https://pits-dot-pie-dev-221718.appspot.com/bundles/",
+  },
 };
 
 export interface Entry {
@@ -47,13 +48,13 @@ export interface BundleEndpoints {
 
 export enum Status {
   loading = "loading",
-  loaded = "loaded"
+  loaded = "loaded",
 }
 
 export enum BundleType {
   player = "player.js",
   clientPlayer = "client-player.js",
-  editor = "editor.js"
+  editor = "editor.js",
 }
 
 export const needToLoad = (registry: any, bundle: BundleType) => (
@@ -95,7 +96,7 @@ export class PieLoader {
    */
   constructor(_endpoints?: BundleEndpoints) {
     if (!_endpoints) {
-      this.endpoints = DEFAULT_ENDPOINTS.stage;
+      this.endpoints = DEFAULT_ENDPOINTS.prod;
     } else {
       this.endpoints = _endpoints;
     }
@@ -119,7 +120,7 @@ export class PieLoader {
   public elementsHaveLoaded = (
     els: LoadedElementsQuery[]
   ): Promise<LoadedElementsResp> => {
-    const promises = els.map(el => customElements.whenDefined(el.tag));
+    const promises = els.map((el) => customElements.whenDefined(el.tag));
 
     return Promise.all(promises)
       .then(() => {
@@ -186,7 +187,7 @@ export class PieLoader {
 
     const loadedScripts = [...head.getElementsByTagName("script")];
     if (
-      loadedScripts.find(s => {
+      loadedScripts.find((s) => {
         return s.src === scriptUrl;
       })
     ) {
@@ -195,11 +196,11 @@ export class PieLoader {
 
     const script = options.doc.createElement("script");
 
-    const onloadFn = (_pies => {
+    const onloadFn = ((_pies) => {
       return () => {
         const pieKeys = Object.keys(_pies);
 
-        pieKeys.forEach(key => {
+        pieKeys.forEach((key) => {
           const packagesWithoutVersion = getPackageWithoutVersion(_pies[key]);
           const pie =
             window["pie"] && window["pie"].default
@@ -215,7 +216,7 @@ export class PieLoader {
             this.registry[elName] = {
               package: _pies[key],
               status: Status.loading,
-              tagName: elName
+              tagName: elName,
             };
 
             customElements.whenDefined(elName).then(async () => {
