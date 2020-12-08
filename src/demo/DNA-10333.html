@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0" />
+    <title>Stencil Component Starter</title>
+    <script nomodule src="/build/pie-player-components.js"></script>
+    <script type="module" src="/build/pie-player-components.esm.js"></script>
+</head>
+
+<body>
+    <pie-player id="player"></pie-player>
+
+    <script>
+        const config = {
+            id: "1",
+            elements: {
+            "pie-element-extended-text-entry": "@pie-element/extended-text-entry"
+            },
+            markup:
+                '<pie-element-extended-text-entry  id="1">This</pie-element-extended-text-entry>',
+            models: [
+                {
+                    "promptEnabled": true,
+                    "studentInstructionsEnabled": false,
+                    "element": "pie-element-extended-text-entry",
+                    "showMathInput": false,
+                    "dimensions": {
+                        "height": 100,
+                        "width": 500
+                    },
+                    "equationEditor": "everything",
+                    "rationaleEnabled": false,
+                    "mathInput": false,
+                    "teacherInstructionsEnabled": false,
+                    "feedback": {
+                        "type": "default",
+                        "default": ""
+                    },
+                    "feedbackEnabled": false,
+                    "prompt": "<div>Write a sentence that includes two or more subjects and a matching verb. <u>Underline </u>your subjects and <b>bold </b>your verb. </div>",
+                    "id": "1"
+                },
+            ]
+        };
+
+        const session = {
+            id : "1",
+            value: "<div>1.  The <u>guys</u> are <b>posing </b>by the stop sign.<b><br/><br/></b>2. The <u>animal</u> is <b>walking </b>near the ocean.<b><br/><br/></b>3.  <u>Couple</u> <b>holding</b> hands.<br/><br/>4. The <u>deer</u> is <b>eating </b>the carrot out of the persons hand.</div>"
+        };
+
+        const player = document.getElementById("player");
+        
+        document.addEventListener("session-changed", e => {
+            console.log(e);
+        });
+
+        player.addEventListener("sessionChanged", event => {
+            console.log(event.type + ":" + JSON.stringify(event.detail));
+        });
+
+        player.config = config;
+        //player.session = session;
+    </script>
+</body>
+</html>
