@@ -1,6 +1,6 @@
 {
   "name": "@pie-framework/pie-player-components",
-  "version": "0.25.4",
+  "version": "0.25.5",
   "description": "Pie Player Components",
   "module": "dist/index.js",
   "main": "dist/index.cjs.js",

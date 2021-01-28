@@ -1,3 +1,10 @@
+## [0.25.5](https://github.com/pie-framework/pie-player-components/compare/v0.25.4...v0.25.5) (2021-01-28)
+
+
+### Bug Fixes
+
+* made sure fileInput exists before trying to remove event listeners ([c2a03ae](https://github.com/pie-framework/pie-player-components/commit/c2a03ae1f45a9a1724283381804268571462c112))
+
 ## [0.25.4](https://github.com/pie-framework/pie-player-components/compare/v0.25.3...v0.25.4) (2020-12-08)
 
 
