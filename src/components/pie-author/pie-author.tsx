@@ -271,7 +271,10 @@ export class Author {
   componentDidUnload() {
     this.el.removeEventListener(InsertImageEvent.TYPE, this.handleInsertImage);
     this.el.removeEventListener(DeleteImageEvent.TYPE, this.handleDeleteImage);
-    this.fileInput.removeEventListener("change", this.handleFileInputChange);
+
+    if (this.fileInput) {
+      this.fileInput.removeEventListener("change", this.handleFileInputChange);
+    }
   }
 
   async componentWillLoad() {
