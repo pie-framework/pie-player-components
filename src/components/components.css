@@ -492,6 +492,64 @@ table.KdsTable02 > tbody > tr > td {
   padding: 2px;
 }
 
+.table {
+  width: 100%;
+  margin-bottom: 1em;
+  background-color: transparent;
+  border-collapse: collapse;
+}
+
+.table th, .table td {
+  padding: .75em;
+  vertical-align: top;
+  border-top: 1px solid #dee2e6;
+}
+
+.table tbody + tbody {
+  border-top: 2px solid #dee2e6;
+}
+
+.table thead th {
+  vertical-align: bottom;
+  border-bottom: 2px solid #dee2e6;
+}
+
+th {
+  text-align: inherit;
+}
+
+.table-bordered, .table-bordered th, .table-bordered td {
+  border: 1px solid #dee2e6;
+}
+
+.table-bordered thead td, .table-bordered thead th {
+  border-bottom-width: 2px;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+  background-color: rgba(0,0,0,.05);
+}
+
+.text-center {
+  text-align: center!important;
+}
+
+.h5, h5 {
+  font-size: 1.25em;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin-top: 0;
+}
+
+.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
+  margin-bottom: .5em;
+  font-family: inherit;
+  font-weight: 500;
+  line-height: 1.2;
+  color: inherit;
+}
+
 /* LEARNOSITY OVERRIDES */
 .lrn_feature h3 {
   margin-top: 0 !important;
