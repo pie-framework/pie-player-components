@@ -1,3 +1,10 @@
+## [0.25.6](https://github.com/pie-framework/pie-player-components/compare/v0.25.5...v0.25.6) (2021-02-16)
+
+
+### Bug Fixes
+
+* define classes for tables and table elements - PD-876  ([#60](https://github.com/pie-framework/pie-player-components/issues/60)) ([e0570d3](https://github.com/pie-framework/pie-player-components/commit/e0570d31b593ad8b577d55f9dac7a366ab30dfcf))
+
 ## [0.25.5](https://github.com/pie-framework/pie-player-components/compare/v0.25.4...v0.25.5) (2021-01-28)
 
 
