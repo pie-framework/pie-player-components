@@ -494,13 +494,13 @@ table.KdsTable02 > tbody > tr > td {
 
 .table {
   width: 100%;
-  margin-bottom: 1rem;
+  margin-bottom: 1em;
   background-color: transparent;
   border-collapse: collapse;
 }
 
 .table th, .table td {
-  padding: .75rem;
+  padding: .75em;
   vertical-align: top;
   border-top: 1px solid #dee2e6;
 }
@@ -535,7 +535,7 @@ th {
 }
 
 .h5, h5 {
-  font-size: 1.25rem;
+  font-size: 1.25em;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -543,7 +543,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
-  margin-bottom: .5rem;
+  margin-bottom: .5em;
   font-family: inherit;
   font-weight: 500;
   line-height: 1.2;
@@ -567,3 +567,6 @@ h1, h2, h3, h4, h5, h6 {
   float: left;
 }
 
+.MJX-TEX * {
+  font-family: MJXZERO, MJXTEX !important;
+}
