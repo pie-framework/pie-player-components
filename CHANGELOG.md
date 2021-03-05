@@ -1,3 +1,10 @@
+## [0.25.7](https://github.com/pie-framework/pie-player-components/compare/v0.25.6...v0.25.7) (2021-03-05)
+
+
+### Bug Fixes
+
+* override font style for mjx to fix PD-774 ([#64](https://github.com/pie-framework/pie-player-components/issues/64)) ([228c9a4](https://github.com/pie-framework/pie-player-components/commit/228c9a44beb069c04d8abed2ee4b90ee7eef2a7b))
+
 ## [0.25.6](https://github.com/pie-framework/pie-player-components/compare/v0.25.5...v0.25.6) (2021-02-16)
 
 
