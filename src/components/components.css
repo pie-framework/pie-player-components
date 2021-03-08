@@ -567,3 +567,10 @@ h1, h2, h3, h4, h5, h6 {
   float: left;
 }
 
+.lrn_width_auto.table {
+  width: auto;
+}
+
+.MJX-TEX * {
+  font-family: MJXZERO, MJXTEX !important;
+}
