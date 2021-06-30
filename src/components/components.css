@@ -568,5 +568,5 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .MJX-TEX * {
-  font-family: MJXZERO, MJXTEX !important;
+  font-family: MJXZERO, MJXTEX-S1, MJXTEX-S4, MJXTEX, MJXTEX-A ! important;
 }
