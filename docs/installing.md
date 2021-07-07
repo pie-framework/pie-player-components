@@ -6,7 +6,7 @@
 Put  
 
 ```html
-<script src='https://unpkg.com/@pie-framework@latest/dist/pie-player-components.js'></script>
+<script src='https://unpkg.com/@pie-framework/pie-player-components@latest/dist/pie-player-components.js'></script>
 ``` 
 
 in the head of your index.html
