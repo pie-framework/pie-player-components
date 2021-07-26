@@ -590,3 +590,7 @@ h1, h2, h3, h4, h5, h6 {
 mjx-c.mjx-c2032 {
   font-family: 'CerebriSans', serif !important;
 }
+
+mjx-c.mjx-c22, mjx-c.mjx-c27 {
+  font-family: MJXZERO, serif !important
+}
