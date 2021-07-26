@@ -568,13 +568,17 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .MJX-TEX * {
-  font-family: MJXZERO, MJXTEX !important;
+  font-family: MJXZERO, MJXTEX, MJXTEX-S1, MJXTEX-S4, MJXTEX-A ! important;
 }
-
-.TEX-I {
-  font-family: MJXZERO, MJXTEX-I !important;
-}
-
 .TEX-S3 {
   font-family: MJXZERO, MJXTEX-S3 !important;
+}
+.TEX-S2 {
+  font-family: MJXZERO, MJXTEX-S2 !important;
+}
+.TEX-S1 {
+  font-family: MJXZERO, MJXTEX-S1 !important;
+}
+.TEX-I {
+  font-family: MJXZERO, MJXTEX-I !important;
 }
