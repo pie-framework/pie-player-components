@@ -586,3 +586,7 @@ h1, h2, h3, h4, h5, h6 {
 .TEX-I {
   font-family: MJXZERO, MJXTEX-I !important;
 }
+
+mjx-c.mjx-c2032 {
+  font-family: 'CerebriSans', serif !important;
+}
