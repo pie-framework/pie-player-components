@@ -1,3 +1,16 @@
+## [0.25.8](https://github.com/pie-framework/pie-player-components/compare/v0.25.7...v0.25.8) (2021-08-04)
+
+
+### Bug Fixes
+
+* add browser-tools support to CircleCI ([aeb2483](https://github.com/pie-framework/pie-player-components/commit/aeb248338b0c1d61f3306c534ff5b8182c6b868d))
+* bump semantic-release-jira-releases ([1dce365](https://github.com/pie-framework/pie-player-components/commit/1dce3652cc795aa2376591d825a17b359c1093d3))
+* math rendering override style for prime symbol - PD-467 ([d560584](https://github.com/pie-framework/pie-player-components/commit/d560584a34ba65a31af95d8bc0bae516d4e3919d))
+* minor math rendering issues with quotes PD-965 ([add9a2e](https://github.com/pie-framework/pie-player-components/commit/add9a2ecaa521c192c969a4473fcc7a1d0443839))
+* override style for math ([97e35bd](https://github.com/pie-framework/pie-player-components/commit/97e35bd20ecf3204ce0f3cdc8a53856942973547))
+* override style for math PD-1148 ([5c784d4](https://github.com/pie-framework/pie-player-components/commit/5c784d4e98acc49905d6cdcfba9d498530d0b40f))
+* set column tables to accommodate the content PD-194 ([1f6d67f](https://github.com/pie-framework/pie-player-components/commit/1f6d67fb92682709d93e79902a54b7bd333bc25d))
+
 ## [0.25.7](https://github.com/pie-framework/pie-player-components/compare/v0.25.6...v0.25.7) (2021-03-05)
 
 
