@@ -1,0 +1,84 @@
+version: 2.1
+
+node: &node
+  docker:
+    - image: circleci/node:14
+      environment:
+        - NODE_OPTIONS=--max_old_space_size=4096
+  working_directory: ~/repo
+
+save_src_cache: &save_src_cache
+  key: source-v1-{{ .Branch }}-{{ .Revision }}
+  paths:
+    - ~/repo
+
+restore_src_cache: &restore_src_cache
+  keys:
+    - source-v1-{{ .Branch }}-{{ .Revision }}
+    - source-v1-{{ .Branch }}-
+    - source-v1-
+
+save_yarn_cache: &save_yarn_cache
+  key: yarn-packages-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
+  paths:
+    - node_modules
+
+restore_yarn_cache: &restore_yarn_cache
+  keys:
+    - yarn-packages-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
+    - yarn-packages-v1-{{ .Branch }}-
+    - yarn-packages-v1-
+
+jobs:
+  build:
+    <<: *node
+    steps:
+      - restore_cache: *restore_src_cache
+      - checkout
+      - save_cache: *save_src_cache
+      - restore_cache: *restore_yarn_cache
+      - run:
+          name: Install dependencies
+          command: yarn install
+      - save_cache: *save_yarn_cache
+      - persist_to_workspace:
+          root: ~/repo
+          paths:
+            - .
+  test:
+    <<: *node
+    steps:
+      - attach_workspace:
+          at: ~/repo
+      - run:
+          name: Run tests
+          command: yarn test
+  release:
+    <<: *node
+    steps:
+      - attach_workspace:
+          at: ~/repo
+      - run:
+          name: Release packages
+          command: yarn release
+
+filter_branches: &filter_branches
+  filters:
+    branches:
+      only:
+        - master
+        - beta
+        - alpha
+
+workflows:
+  build_test_release:
+    jobs:
+      - build
+      - test:
+          requires:
+            - build
+      - release:
+          requires:
+            - test
+          <<: *filter_branches
+
