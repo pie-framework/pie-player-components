@@ -1032,10 +1032,10 @@
   dependencies:
     "@types/node" ">= 8"
 
-"@pie-api/semantic-release-jira-releases@^0.11.0":
-  version "0.11.0"
-  resolved "https://registry.yarnpkg.com/@pie-api/semantic-release-jira-releases/-/semantic-release-jira-releases-0.11.0.tgz#7b1240cb237c55a452f65ecec1d2ebc519240186"
-  integrity sha512-KOxMkrvpUBD9F7SMza3M5LXAJKMFf+suSm9kp8RfS/caC8gYymiSbtaWekKlzbmsoTFP72xaQ1uMTrPX1mHh0g==
+"@pie-api/semantic-release-jira-releases@^0.12.0":
+  version "0.12.0"
+  resolved "https://registry.yarnpkg.com/@pie-api/semantic-release-jira-releases/-/semantic-release-jira-releases-0.12.0.tgz#b1bf67c6e809cbc255865ac9702c3b085c68135a"
+  integrity sha512-TBavyuHa18TnTidWpBIyfTAH3/io3lGSYFPGKSI68xSJZEILXjTgGaVL1eW+D8ixR5q+vuQO226ldkMu3/z3KA==
   dependencies:
     "@semantic-release/error" "^2.2.0"
     "@types/request" "^2.48.4"
