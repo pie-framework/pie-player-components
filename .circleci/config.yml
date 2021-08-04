@@ -1,8 +1,11 @@
 version: 2.1
 
+orbs:
+  browser-tools: circleci/browser-tools@1.1.3
+
 node: &node
   docker:
-    - image: circleci/node:14
+    - image: cimg/node:14.17.4-browsers
       environment:
         - NODE_OPTIONS=--max_old_space_size=4096
   working_directory: ~/repo
@@ -50,6 +53,8 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/repo
+      - browser-tools/install-chrome
+      - browser-tools/install-chromedriver
       - run:
           name: Run tests
           command: yarn test
@@ -81,4 +86,3 @@ workflows:
           requires:
             - test
           <<: *filter_branches
-
