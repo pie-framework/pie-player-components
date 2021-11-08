@@ -594,3 +594,7 @@ mjx-c.mjx-c2032 {
 mjx-c.mjx-c22, mjx-c.mjx-c27 {
   font-family: MJXZERO, serif !important
 }
+
+svg {
+  overflow: unset !important;
+}
