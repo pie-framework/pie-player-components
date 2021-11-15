@@ -36,7 +36,6 @@ export class Embed {
       }
       return acc;
     }, {});
-    // this.params = params || {};
     await load(tag, url);
   }
 
