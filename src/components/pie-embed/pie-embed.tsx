@@ -19,7 +19,7 @@ export class Embed {
 
   async componentWillLoad() {
     const dataset = this.el.dataset || {};
-    const { tag, url, ...params } = dataset;
+    const { tag, url } = dataset;
     if (!url) {
       return;
     }
@@ -28,8 +28,6 @@ export class Embed {
     }
 
     this.tag = tag;
-
-    console.log("params:", params);
 
     const names = this.el.getAttributeNames();
     this.params = Object.entries(names).reduce((acc, [index, n]: any[]) => {
@@ -40,10 +38,6 @@ export class Embed {
     }, {});
     // this.params = params || {};
     await load(tag, url);
-  }
-
-  connectedCallback() {
-    console.log("att:", this.el.getAttribute("url"));
   }
 
   render() {
