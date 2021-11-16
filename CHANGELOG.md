@@ -1,3 +1,10 @@
+## [0.26.2](https://github.com/pie-framework/pie-player-components/compare/v0.26.1...v0.26.2) (2021-11-16)
+
+
+### Bug Fixes
+
+* patch bump ([5f57111](https://github.com/pie-framework/pie-player-components/commit/5f571116d50142fe6ee880563987894096264569))
+
 ## [0.26.1](https://github.com/pie-framework/pie-player-components/compare/v0.26.0...v0.26.1) (2021-11-16)
 
 
