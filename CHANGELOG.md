@@ -1,3 +1,11 @@
+## [0.26.3](https://github.com/pie-framework/pie-player-components/compare/v0.26.2...v0.26.3) (2021-11-16)
+
+
+### Bug Fixes
+
+* rm lodash dev dep ([0e5f761](https://github.com/pie-framework/pie-player-components/commit/0e5f7610bdb7f01484ccffdb44ee5cdea62edcc8))
+* set main/module paths ([bffe3e1](https://github.com/pie-framework/pie-player-components/commit/bffe3e15b8a6010f0b43a2b941d2cbe95775eaec))
+
 ## [0.26.2](https://github.com/pie-framework/pie-player-components/compare/v0.26.1...v0.26.2) (2021-11-16)
 
 
