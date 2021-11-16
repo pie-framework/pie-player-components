@@ -1,3 +1,10 @@
+## [0.26.1](https://github.com/pie-framework/pie-player-components/compare/v0.26.0...v0.26.1) (2021-11-16)
+
+
+### Bug Fixes
+
+* add pie-embed docs ([0470b25](https://github.com/pie-framework/pie-player-components/commit/0470b258466ff78e26f51e9e8c12beca3e8a8711))
+
 # [0.26.0](https://github.com/pie-framework/pie-player-components/compare/v0.25.8...v0.26.0) (2021-11-16)
 
 
