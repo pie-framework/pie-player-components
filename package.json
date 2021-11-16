@@ -76,7 +76,6 @@
     "jest-cli": "24.9.0",
     "jest-environment-node-debug": "^2.0.0",
     "lint-staged": "^8.2.0",
-    "lodash": "^4.17.11",
     "parse-package-name": "^0.1.0",
     "prettier": "1.16.4",
     "puppeteer": "1.19.0",
