@@ -1,3 +1,10 @@
+# [0.26.0](https://github.com/pie-framework/pie-player-components/compare/v0.25.8...v0.26.0) (2021-11-16)
+
+
+### Features
+
+* add pie-embed element PD-331 ([1188737](https://github.com/pie-framework/pie-player-components/commit/118873749648fcc7c0213f7be9d6936a2eb9d8b7))
+
 ## [0.25.8](https://github.com/pie-framework/pie-player-components/compare/v0.25.7...v0.25.8) (2021-08-04)
 
 
