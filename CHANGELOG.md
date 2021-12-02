@@ -1,3 +1,32 @@
+## [0.26.3](https://github.com/pie-framework/pie-player-components/compare/v0.26.2...v0.26.3) (2021-11-16)
+
+
+### Bug Fixes
+
+* rm lodash dev dep ([0e5f761](https://github.com/pie-framework/pie-player-components/commit/0e5f7610bdb7f01484ccffdb44ee5cdea62edcc8))
+* set main/module paths ([bffe3e1](https://github.com/pie-framework/pie-player-components/commit/bffe3e15b8a6010f0b43a2b941d2cbe95775eaec))
+
+## [0.26.2](https://github.com/pie-framework/pie-player-components/compare/v0.26.1...v0.26.2) (2021-11-16)
+
+
+### Bug Fixes
+
+* patch bump ([5f57111](https://github.com/pie-framework/pie-player-components/commit/5f571116d50142fe6ee880563987894096264569))
+
+## [0.26.1](https://github.com/pie-framework/pie-player-components/compare/v0.26.0...v0.26.1) (2021-11-16)
+
+
+### Bug Fixes
+
+* add pie-embed docs ([0470b25](https://github.com/pie-framework/pie-player-components/commit/0470b258466ff78e26f51e9e8c12beca3e8a8711))
+
+# [0.26.0](https://github.com/pie-framework/pie-player-components/compare/v0.25.8...v0.26.0) (2021-11-16)
+
+
+### Features
+
+* add pie-embed element PD-331 ([1188737](https://github.com/pie-framework/pie-player-components/commit/118873749648fcc7c0213f7be9d6936a2eb9d8b7))
+
 ## [0.25.8](https://github.com/pie-framework/pie-player-components/compare/v0.25.7...v0.25.8) (2021-08-04)
 
 
