@@ -9,7 +9,8 @@
       content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0"
     />
     <title>Item</title>
-    <script src="/build/pie-player-components.js"></script>
+    <script type="module" src="/build/pie-player-components.esm.js"></script>
+    <script nomodule src="/build/pie-player-components.js"></script>
   </head>
   <body>
     <pie-author config="evan" id="author"></pie-author>
@@ -80,12 +81,12 @@
         console.log(event.type + ':' + JSON.stringify(event.detail));
       });
 
-     
+
 
       author.config = config;
       author.configSettings = {'@pie-element/multiple-choice': { "foo": "bar"} };
 
-      
+
       // await page.setContent('<pie-author config="evan"></pie-author>');
       // pieAuthor = await page.find('pie-author');
       // setupInterceptPieCloud(page,  pie);
@@ -95,15 +96,14 @@
       // const el = await page.waitForSelector('pie-author');
       // expect(el).toBeDefined();
       // const configEl = await page.find('pie-multiple-choice-config');
-      // console.log(`got config el ${configEl.innerHTML}`); 
+      // console.log(`got config el ${configEl.innerHTML}`);
       // const configure = await configEl.getProperty('configure');
       // expect(configure.foo).toEqual("bar");
 
-      
+
     </script>
   </body>
 </html>
 
 
 
- 
