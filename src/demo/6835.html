@@ -31,6 +31,7 @@
       <li>Add Author El</li>
       <li class="error">Set CR Config</li>
     </ol>
+
     <button id="run-steps">Run all Steps...</button>
     <button id="add">Add Author El</button>
     <button id="delete">Delete Author El</button>
@@ -43,12 +44,14 @@
       import { authorSettings } from "./item-configs.js";
 
       console.log(authorSettings);
+
       let author;
       const holder = document.querySelector("#holder");
 
       const addAuthor = () => {
         console.log("add author..");
         author = document.createElement("pie-author");
+        console.log('author', author);
         holder.appendChild(author);
       };
 
@@ -89,15 +92,14 @@
           author.remove();
         }
       });
+
       const setCrConfig = () => {
-        let contentConfig = _.cloneDeep(authorSettings["constructed_response"])
-          .contentConfig;
-        let configSettings = _.cloneDeep(
-          authorSettings["constructed_response"].configSettings
-        );
+        let contentConfig = _.cloneDeep(authorSettings["constructed_response"].contentConfig);
+        let configSettings = _.cloneDeep(authorSettings["constructed_response"].configSettings);
 
         author.configSettings = configSettings;
         console.log("... set config...");
+
         return author
           .addRubricToConfig(contentConfig)
           .then(rubricModel => {
@@ -108,6 +110,7 @@
             console.error(error);
           });
       };
+
       document.querySelector("#set-cr-config").addEventListener("click", () => {
         // get clean copy of configs
         setCrConfig();

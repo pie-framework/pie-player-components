@@ -19,7 +19,7 @@
       const config = {
         id: "1",
         elements: {
-          "pie-multiple-choice": "@pie-element/multiple-choice@2.7.3"
+          "pie-multiple-choice": "@pie-element/multiple-choice@latest"
         },
         models: [
           {
@@ -78,8 +78,6 @@
         `
       };
 
-      // const config = {};
-
       const player = document.querySelector("pie-player");
 
       document.addEventListener("session-changed", e => console.log(">", e));
@@ -89,13 +87,13 @@
       });
 
       player.addCorrectResponse = true;
-
       player.config = config;
 
       const addAuthor = document.querySelector("#add-pie-author");
 
       addAuthor.addEventListener("click", () => {
         const author = document.createElement("pie-author");
+
         document.body.appendChild(author);
         author.config = config;
       });

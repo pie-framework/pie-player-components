@@ -16,8 +16,7 @@
     <script>
       const config = {
         elements: {
-          "pie-element-explicit-constructed-response":
-            "@pie-element/explicit-constructed-response@3.0.1"
+          "pie-element-explicit-constructed-response": "@pie-element/explicit-constructed-response@latest"
         },
         markup:
           '<pie-element-explicit-constructed-response id="1"></pie-element-explicit-constructed-response>',
@@ -68,10 +67,11 @@
           }
         ]
       };
+
       // const config = {
       //   id: "1",
       //   elements: {
-      //     "pie-multiple-choice": "@pie-element/multiple-choice@2.7.3"
+      //     "pie-multiple-choice": "@pie-element/multiple-choice@latest"
       //   },
       //   models: [
       //     {
@@ -128,9 +128,8 @@
       //   `
       // };
 
-      // const config = {};
-
       const player = document.getElementById("player");
+
       document.addEventListener("session-changed", e => {
         console.log(e);
       });

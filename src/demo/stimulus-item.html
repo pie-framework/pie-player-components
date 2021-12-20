@@ -11,24 +11,22 @@
     <script type="module" src="/build/pie-player-components.esm.js"></script>
   </head>
   <body>
- 
-     <div>  
+     <div>
        <h2>render stimulus</h2>
-        <pie-player id="player"></pie-player>
+       <pie-player id="player"></pie-player>
      </div>
-     <div>  
-        <h2>no stimulus</h2>
-         <pie-player render-stimulus="false" id="nostimulus"></pie-player>
-      </div>
 
-
+     <div>
+       <h2>no stimulus</h2>
+       <pie-player render-stimulus="false" id="nostimulus"></pie-player>
+     </div>
 
     <script>
       const config = {
         pie: {
           id: '1',
           elements: {
-            'pie-multiple-choice': '@pie-element/multiple-choice@2.7.3'
+            'pie-multiple-choice': '@pie-element/multiple-choice@latest'
           },
           models: [
             {
@@ -95,7 +93,7 @@
           passages: [
             {
               title: 'Ineskeen Road, July Evening',
-              text: `The bicycles go by in twos and threes -<br/> 
+              text: `The bicycles go by in twos and threes -<br/>
               There's a dance in Billy Brennan's barn tonight,<br/>
               And there's the half-talk code of mysteries<br/>
               And the wink-and-elbow language of delight.<br/>
@@ -123,8 +121,6 @@
       const player = document.getElementById('player');
       const noStimulus = document.getElementById('nostimulus');
 
-
-
       player.addEventListener('sessionChanged', event => {
         console.log(event.type + ':' + JSON.stringify(event.detail));
       });
@@ -139,6 +135,5 @@
       noStimulus.env = {mode: 'evaluate', role: 'instructor'};
       player.env = {mode: 'evaluate', role: 'instructor'};
     </script>
-
   </body>
 </html>

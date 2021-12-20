@@ -11,27 +11,17 @@
     <script type="module" src="/build/pie-player-components.esm.js"></script>
   </head>
   <body>
-
-
-
-
     <a id="switchLink" href="#">switch</a>
     <p></p>
 
-    <pie-author id="author" add-preview="true">
-
-    </pie-author>
-
-
+    <pie-author id="author" add-preview="true"></pie-author>
 
     <script>
-
       const author = document.getElementById('author');
-
       const config = {
         id: '1',
         elements: {
-          'pie-multiple-choice': '@pie-element/multiple-choice@2.4.6'
+          'pie-multiple-choice': '@pie-element/multiple-choice@latest'
         },
         models: [
           {
@@ -108,20 +98,17 @@
         "markup": "<pie-explicit-constructed-response id=\"p-00000000\"></pie-explicit-constructed-response>"
       };
 
-
       author.config = config;
 
-
       const link = document.getElementById('switchLink');
+
       link.onclick = () => {
-        if (author.config.elements['pie-multiple-choice']) {
+        if (author.config.elements['pp-pie-element-multiple-choice']) {
           author.config = ecrConfig;
         } else {
           author.config = config;
         }
       }
-
     </script>
-
   </body>
 </html>

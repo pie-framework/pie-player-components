@@ -11,25 +11,14 @@
     <script type="module" src="/build/pie-player-components.esm.js"></script>
   </head>
   <body>
+    <pie-author id="author" add-preview="true"></pie-author>
 
-
-
-
-
-    <pie-author id="author" add-preview="true">
-
-    </pie-author>
-
-
-   
     <script>
-
       const author = document.getElementById('author');
-    
       const config = {
         id: '1',
         elements: {
-          'pie-multiple-choice': '@pie-element/multiple-choice@2.4.6'
+          'pie-multiple-choice': '@pie-element/multiple-choice@latest'
         },
         models: [
           {
@@ -85,12 +74,11 @@
         markup: "<pie-multiple-choice id='1'></pie-multiple-choice>"
       };
 
-      author.componentOnReady().then(() => {
+      window.addEventListener('load', () => {
         author.addRubricToConfig(config).then(newConf => {
           author.config = newConf;
         })
       });
     </script>
-
   </body>
 </html>

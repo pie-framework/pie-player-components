@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html dir="ltr" lang="en">
   <head>
@@ -19,7 +17,7 @@
       const config = {
         id: '1',
         elements: {
-          'pie-multiple-choice': '@pie-element/multiple-choice@2.7.3'
+          'pie-multiple-choice': '@pie-element/multiple-choice@latest'
         },
         models: [
           {
@@ -81,11 +79,8 @@
         console.log(event.type + ':' + JSON.stringify(event.detail));
       });
 
-
-
       author.config = config;
       author.configSettings = {'@pie-element/multiple-choice': { "foo": "bar"} };
-
 
       // await page.setContent('<pie-author config="evan"></pie-author>');
       // pieAuthor = await page.find('pie-author');
@@ -99,7 +94,6 @@
       // console.log(`got config el ${configEl.innerHTML}`);
       // const configure = await configEl.getProperty('configure');
       // expect(configure.foo).toEqual("bar");
-
 
     </script>
   </body>

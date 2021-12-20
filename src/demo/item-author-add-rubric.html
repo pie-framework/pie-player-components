@@ -17,7 +17,7 @@
       const config = {
         id: '1',
         elements: {
-          'pie-multiple-choice': '@pie-element/multiple-choice@2.7.3'
+          'pie-multiple-choice': '@pie-element/multiple-choice@latest'
         },
         models: [
           {
@@ -79,10 +79,10 @@
         console.log(event.type + ':' + JSON.stringify(event.detail));
       });
 
-      author.componentOnReady().then(() => {
+      window.addEventListener('load', () => {
         author.addRubricToConfig(config).then(newConf => {
           author.config = newConf;
-        });
+        })
       });
     </script>
   </body>

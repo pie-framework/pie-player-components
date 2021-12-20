@@ -17,24 +17,24 @@
       const config = {
         id: "1",
         elements: {
-          "pie-multiple-choice": "@pie-element/multiple-choice@5.0.7"
+          "pie-multiple-choice": "@pie-element/multiple-choice@latest"
         },
         models: [
           {
             id: "1",
             element: "pie-multiple-choice",
             prompt: `<math> <mrow>
-   <msup>
-     <mfenced>
-       <mrow>
-         <mi>a</mi>
-         <mo>+</mo>
-         <mi>b</mi>
-       </mrow>
-     </mfenced>
-     <mn>2</mn>
-   </msup>
- </mrow></math>`,
+               <msup>
+                 <mfenced>
+                   <mrow>
+                     <mi>a</mi>
+                     <mo>+</mo>
+                     <mi>b</mi>
+                   </mrow>
+                 </mfenced>
+                 <mn>2</mn>
+               </msup>
+             </mrow></math>`,
             choiceMode: "checkbox",
             keyMode: "numbers",
             choices: [
@@ -50,17 +50,17 @@
               {
                 value: "iceland",
                 label: `Iceland <math xmlns="http://www.w3.org/1998/Math/MathML">   <mrow>
-   <msup>
-     <mfenced>
-       <mrow>
-         <mi>a</mi>
-         <mo>+</mo>
-         <mi>b</mi>
-       </mrow>
-     </mfenced>
-     <mn>2</mn>
-   </msup>
- </mrow> </math>`,
+                   <msup>
+                     <mfenced>
+                       <mrow>
+                         <mi>a</mi>
+                         <mo>+</mo>
+                         <mi>b</mi>
+                       </mrow>
+                     </mfenced>
+                     <mn>2</mn>
+                   </msup>
+                 </mrow> </math>`,
                 //label: `Iceland <math style="display: block;"> <mtable columnalign="right center left"> <mtr> <mtd> <msup> <mrow> <mo> ( </mo> <mi> a </mi> <mo> + </mo> <mi> b </mi> <mo> ) </mo> </mrow> <mn> 2 </mn> </msup> </mtd> <mtd> <mo> = </mo> </mtd> <mtd> <msup><mi> c </mi><mn>2</mn></msup> <mo> + </mo> <mn> 4 </mn> <mo> ⋅ </mo> <mo>(</mo> <mfrac> <mn> 1 </mn> <mn> 2 </mn> </mfrac> <mi> a </mi><mi> b </mi> <mo>)</mo>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;</mtd> </mtr> <mtr> <mtd> <msup><mi> a </mi><mn>2</mn></msup> <mo> + </mo> <mn> 2 </mn><mi> a </mi><mi> b </mi> <mo> + </mo> <msup><mi> b </mi><mn>2</mn></msup> </mtd> <mtd> <mo> = </mo> </mtd> <mtd> <msup><mi> c </mi><mn>2</mn></msup> <mo> + </mo> <mn> 2 </mn><mi> a </mi><mi> b</mi></mtd></mtr><mtr><mtd></mtd></mtr><mtr><mtd><msup><mi>a </mi><mn>2</mn></msup> <mo> + </mo> <msup><mi> b </mi><mn>2</mn></msup> </mtd> <mtd> <mo> = </mo> </mtd> <mtd> <msup><mi> c </mi><mn>2</mn></msup> </mtd> </mtr> </mtable> </math>`,
                 feedback: {
                   type: "none",
@@ -97,8 +97,6 @@
           <pie-multiple-choice id='1'></pie-multiple-choice>
         `
       };
-
-      // const config = {};
 
       const author = document.querySelector("pie-author");
 

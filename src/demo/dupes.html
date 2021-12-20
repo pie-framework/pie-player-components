@@ -172,16 +172,16 @@
       };
 
       const player = document.getElementById("player");
+      const updateConfig = document.querySelector("#updateConfig");
 
       player.addEventListener("sessionChanged", event => {
         console.log(event.type + ":" + JSON.stringify(event.detail));
       });
 
-      const updateConfig = document.querySelector("#updateConfig");
-
       updateConfig.addEventListener("click", () => {
         player.config = config;
       });
+
       // noStimulus.addEventListener("sessionChanged", event => {
       //   console.log(event.type + ":" + JSON.stringify(event.detail));
       // });
@@ -189,7 +189,6 @@
       player.env = { mode: "evaluate", role: "instructor" };
       player.config = one;
       // noStimulus.config = config;
-
       // noStimulus.env = { mode: "evaluate", role: "instructor" };
     </script>
   </body>
