@@ -40,9 +40,13 @@ function getModel(tagName) {
     };
     return `p-${S4() + S4()}`;
   }
+
   const pieDefinition = availablePies[tagName];
+
   if (!pieDefinition) return;
+
   const id = guidGenerator();
+
   return {
     id,
     elements: { [tagName]: pieDefinition.piePackage + '@latest' },
@@ -52,14 +56,13 @@ function getModel(tagName) {
 }
 
 const author = document.getElementById('author');
-
-
 const model = getModel(Object.keys(availablePies)[0]);
-author.config = model;
 
+author.config = model;
 
 Object.keys(availablePies).forEach(key => {
   const button = document.createElement('button');
+
   button.selected = true;
   button.id = key;
   button.label = key;

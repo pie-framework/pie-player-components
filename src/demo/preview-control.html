@@ -11,16 +11,13 @@
     <script type="module" src="/build/pie-player-components.esm.js"></script>
   </head>
   <body>
-
-
-
     <pie-preview-control id="pc">
-  
-    </pie-preview-control>
 
+    </pie-preview-control>
 
     <script>
       const control = document.getElementById('pc');
+
       control.addEventListener('envChanged', (e) =>  {
         console.log(JSON.stringify(e.detail));
       });

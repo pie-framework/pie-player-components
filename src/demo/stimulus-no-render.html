@@ -11,21 +11,17 @@
     <script nomodule src="/build/pie-player-components.js"></script>
   </head>
   <body>
-
-
      <div>
-        <h2>no stimulus</h2>
-         <pie-player render-stimulus="false" id="nostimulus"></pie-player>
-      </div>
-
-
+       <h2>no stimulus</h2>
+       <pie-player render-stimulus="false" id="nostimulus"></pie-player>
+     </div>
 
     <script>
       const config = {
         pie: {
           id: '1',
           elements: {
-            'pie-multiple-choice': '@pie-element/multiple-choice@2.7.3'
+            'pie-multiple-choice': '@pie-element/multiple-choice@latest'
           },
           models: [
             {
@@ -119,13 +115,11 @@
 
       const noStimulus = document.getElementById('nostimulus');
 
-
       noStimulus.addEventListener('sessionChanged', event => {
         console.log(event.type + ':' + JSON.stringify(event.detail));
       });
 
       noStimulus.config = config;
     </script>
-
   </body>
 </html>

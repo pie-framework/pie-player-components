@@ -11,21 +11,12 @@
     <script nomodule src="/build/pie-player-components.js"></script>
   </head>
   <body>
-
-
-
-
-
     <pie-author id="author" add-preview="true">
 
     </pie-author>
 
-
-
     <script>
-
       const author = document.getElementById('author');
-
       const config = {
         "models": [
           {
@@ -66,16 +57,14 @@
             "element": "pie-rubric"
           }
         ],
-        "markup": "<extended-text-entry id=\"4028e4a23e1a7e7c013e28b2be2d1326\"></extended-text-entry><extended-text-entry id=\"4028e4a23e1a7e7c013e28b6d228132d\"></extended-text-entry><extended-text-entry id=\"4028e4a23e1a7e7c013e28bca5c91332\"></extended-text-entry>",
+        "markup": "<extended-text-entry id=\"4028e4a23e1a7e7c013e28b2be2d1326\"></extended-text-entry><extended-text-entry id=\"4028e4a23e1a7e7c013e28b6d228132d\"></extended-text-entry><extended-text-entry id=\"4028e4a23e1a7e7c013e28bca5c91332\"></extended-text-entry><pie-rubric id='rubric-4028e4a23e1a7e7c013e28b2be2d1325' />",
         "elements": {
           "pie-rubric": "@pie-element/rubric@latest",
           "extended-text-entry": "@pie-element/extended-text-entry@latest"
         }
       };
 
-
       author.config = config;
     </script>
-
   </body>
 </html>
