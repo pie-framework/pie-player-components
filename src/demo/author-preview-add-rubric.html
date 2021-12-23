@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0"
+  />
+  <title>Item Preview Layout - add Rubric Demo</title>
+  <script nomodule src="/build/pie-player-components.js"></script>
+  <script type="module" src="/build/pie-player-components.esm.js"></script>
+</head>
+<body>
+<pie-author id="author" add-preview="true"></pie-author>
+
+<script type="text/javascript" src="./utils/models.js"></script>
+<script>
+  const author = document.getElementById('author');
+  const config = {
+    id: '1',
+    elements: {
+      'pie-multiple-choice': '@pie-element/multiple-choice@latest'
+    },
+    models: [MC_model],
+    markup: "<pie-multiple-choice id='1'></pie-multiple-choice>"
+  };
+
+  window.addEventListener('load', () => {
+    author.addRubricToConfig(config).then(newConf => {
+      author.config = newConf;
+    })
+  });
+</script>
+</body>
+</html>
