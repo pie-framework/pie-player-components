@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0"
+  />
+  <title>Item Preview Layout - add Rubric Demo</title>
+  <script nomodule src="/build/pie-player-components.js"></script>
+  <script type="module" src="/build/pie-player-components.esm.js"></script>
+</head>
+<body>
+<pie-author id="author" add-preview="true"></pie-author>
+
+<script type="text/javascript" src="./utils/models.js"></script>
+<script>
+  const author = document.getElementById('author');
+  const config = {
+    id: '1',
+    elements: {
+      "match": "@pie-element/match"
+    },
+    models: [
+      {
+        "id": "0",
+        "element": "match",
+        "lockChoiceOrder": true,
+        "headers": [
+          " ",
+          "<div>Cause</div>",
+          "<div>Effect</div>",
+          "<div>Neither</div>"
+        ],
+        "rows": [
+          {
+            "id": "row-1",
+            "title": "<div>A layer of gases surrounds Earth</div>",
+            "values": [
+              false,
+              false,
+              true
+            ]
+          },
+          {
+            "id": "row-2",
+            "title": "<div>An increase in greenhouse gases</div>",
+            "values": [
+              true,
+              false,
+              false
+            ]
+          },
+          {
+            "id": "row-3",
+            "title": "<div>An increase in Earth’s temperature</div>",
+            "values": [
+              false,
+              true,
+              false
+            ]
+          },
+          {
+            "id": "row-4",
+            "title": "<div>The burning of fossil fuels</div>",
+            "values": [
+              true,
+              false,
+              false
+            ]
+          },
+          {
+            "id": "row-5",
+            "title": "<div>The sun radiates energy to Earth</div>",
+            "values": [
+              false,
+              false,
+              true
+            ]
+          },
+          {
+            "id": "row-6",
+            "title": "<div>Extreme weather conditions</div>",
+            "values": [
+              false,
+              true,
+              false
+            ]
+          }
+        ],
+        "layout": 4,
+        "choiceMode": "radio",
+        "partialScoring": false
+      }
+    ],
+    markup: "<div><div>Complete the chartmatch by clicking in the matching circles next to the information column that match whether the detail describes a cause of global warming, an effect of global warming, or neither.<div></div>​<match id=\"0\"></match>​<div><br></div></div></div>"
+  };
+
+  author.config = config;
+</script>
+</body>
+</html>

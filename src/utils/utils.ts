@@ -3,7 +3,7 @@ import { PieContent, AdvancedItemConfig, PieItemElement, PieModel } from '../int
 
 
 /**
- * Replaces all user-defined element name mappings with ones derived from 
+ * Replaces all user-defined element name mappings with ones derived from
  * the NPM package name.
  * @param content the content to normalize
  */
@@ -15,7 +15,9 @@ export const normalizeContentElements = (content: PieContent): PieContent => {
     const npmPkg = content.elements[key];
     // prefix new tag with pp- for pie player and to ensure custom element validity
     const newTag = 'pp-' + packageToElementName(npmPkg);
-    markup = markup.split(tag).join(newTag);
+    // markup = markup.split(tag).join(newTag); // - with this approach, not only html tags are replaced, but also the text
+    markup = markup.split(`<${tag}`).join(`<${newTag}`).split(`</${tag}`).join(`</${newTag}`);
+
     if (content.models) {
       content.models.forEach(model => {
         if (model.element === key) {
@@ -27,14 +29,14 @@ export const normalizeContentElements = (content: PieContent): PieContent => {
       content.elements[newTag] = npmPkg;
       delete content.elements[key];
     }
-    
+
   });
   content.markup = markup;
   return content;
 }
 
 /**
- * Convert an npm package to html valid element name by replacing 
+ * Convert an npm package to html valid element name by replacing
  * all special chars with `-`
  * @param npmPackage npm package to convert
  */
@@ -58,7 +60,7 @@ export const getPackageWithoutVersion = packages => {
 
 /**
  * See if the `PieContent.elements` set contains the provided package.
- * 
+ *
  * @param elements the elements dict
  * @param npmPackage the npm package to locate
  */
@@ -79,22 +81,22 @@ export const elementsHasPackage = (
 };
 
 /**
- * Gets all models defined for a given npmPacakge in `PieContent` 
- * @param pieContent the pie content 
- * @param npmPackage npm package name 
+ * Gets all models defined for a given npmPacakge in `PieContent`
+ * @param pieContent the pie content
+ * @param npmPackage npm package name
  */
 export const modelsForPackage = (pieContent: PieContent, npmPackage: string): PieModel[] => {
   if (pieContent && pieContent.models && pieContent.elements && npmPackage) {
 
     const element = elementForPackage(pieContent, npmPackage);
     return pieContent.models.filter(m => {
-     return element === m.element 
+     return element === m.element
     });
-    
+
   } else {
     return [];
   }
- 
+
 }
 
 /**
