@@ -1,3 +1,11 @@
+## [0.26.4](https://github.com/pie-framework/pie-player-components/compare/v0.26.3...v0.26.4) (2022-03-03)
+
+
+### Bug Fixes
+
+* add style for IBX user authored math PD-482 ([5dcf4df](https://github.com/pie-framework/pie-player-components/commit/5dcf4dfe3b83f26c46969ec1d90dff83f3690673))
+* replace only tags (not text), when normalizing markup PD-1616 ([b63d707](https://github.com/pie-framework/pie-player-components/commit/b63d7076c369f456e52490be0076ab0e3c6fd57f))
+
 ## [0.26.3](https://github.com/pie-framework/pie-player-components/compare/v0.26.2...v0.26.3) (2021-11-16)
 
 
