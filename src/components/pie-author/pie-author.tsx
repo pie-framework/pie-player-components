@@ -18,10 +18,11 @@ import {
   BundleEndpoints,
   DEFAULT_ENDPOINTS
 } from "../../pie-loader";
-import { pieContentFromConfig } from "../../utils/utils";
+import {pieContentFromConfig} from "../../utils/utils";
 import parseNpm from "parse-package-name";
 import _isEqual from "lodash/isEqual";
-import { addPackageToContent, addRubric } from "../../rubric-utils";
+import _isEmpty from "lodash/isEmpty";
+import {addPackageToContent, addRubric} from "../../rubric-utils";
 
 import {
   ModelUpdatedEvent,
@@ -33,7 +34,7 @@ import {
   DataURLImageSupport,
   ExternalImageSupport
 } from "./dataurl-image-support";
-import { VERSION } from "../../version";
+import {VERSION} from "../../version";
 
 /**
  * Pie Author will load a Pie Content model for authoring.
@@ -47,7 +48,7 @@ import { VERSION } from "../../version";
 export class Author {
   _modelLoadedState: boolean = false;
 
-  @Prop({ context: "document" }) doc!: Document;
+  @Prop({context: "document"}) doc!: Document;
 
   /**
    * Optionally specifies the back-end that builds and hosts javascript bundles for rendering assessment items.
@@ -126,42 +127,49 @@ export class Author {
   handleSetConfigElement: (e: CustomEvent) => void;
 
   /** external providers can set this if they need to upload the assets to the cloud etc. by default we use data urls */
-  @Prop({ reflect: false })
+  @Prop({reflect: false})
   imageSupport: ExternalImageSupport = new DataURLImageSupport();
 
-  @Prop({ mutable: false, reflect: false })
+  @Prop({mutable: false, reflect: false})
   version: string = VERSION;
 
 
   @Method()
-  async validateItem() {
-    console.log('Should Validate item');
-
-    return this.validateModels();
-  }
-
   async validateModels() {
-    if (this.pieContentModel && this.pieContentModel.models) {
-      this.pieContentModel.models.map(model => {
-        let pieEl: PieElement = this.el.querySelector(`[id='${model.id}']`);
-        !pieEl && (pieEl = this.el.querySelector(`[pie-id='${model.id}']`));
+    if (!this.pieContentModel || !this.pieContentModel.models) {
+      console.error('No pie content model');
 
-        if (pieEl) {
-          const pieElName = pieEl.tagName.toLowerCase().split("-config")[0];
+      return false;
+    }
 
-          const controller: PieController = this.pieLoader.getController(pieElName);
+    let hasErrors = false;
 
-          // here we call controller.validateItems
+    (this.pieContentModel.models || []).map(model => {
+      let pieEl: PieElement = this.el.querySelector(`[id='${model.id}']`);
+      !pieEl && (pieEl = this.el.querySelector(`[pie-id='${model.id}']`));
+
+      if (pieEl) {
+        const pieElName = pieEl.tagName.toLowerCase().split("-config")[0];
+
+        const controller: PieController = this.pieLoader.getController(pieElName);
+
+        if (controller && controller.validate) {
+          // here we call controller.validate which returns an object with all the errors
+          const errors = controller.validate(model);
 
           // here we can update the model in author, so we can set errors
-          // I have updated the prompt now because we don't have any error handling in UI
-          model.prompt = 'This item has errors';
+          pieEl.model = {
+            ...model,
+            errors,
+          };
 
-          // then we set the new model
-          pieEl.model = model;
+          // here we return a boolean value if models are valid or not
+          hasErrors = hasErrors || _isEmpty(errors);
         }
-      });
-    }
+      }
+    });
+
+    return !hasErrors;
   }
 
 
@@ -272,7 +280,7 @@ export class Author {
         if (this.pieContentModel.elements[pieElName]) {
           const elementId = el.getAttribute("id");
           if (!this.pieContentModel.models.find(m => m.id === elementId)) {
-            const model = { id: elementId, element: pieElName };
+            const model = {id: elementId, element: pieElName};
             this.pieContentModel.models.push(model);
           }
         }
@@ -433,22 +441,22 @@ export class Author {
           <pie-preview-layout config={this.config}>
             <div slot="configure">
               <pie-spinner active={!this.elementsLoaded}>
-                <div innerHTML={markup} />
+                <div innerHTML={markup}/>
               </pie-spinner>
             </div>
-            <input type="file" hidden ref={r => (this.fileInput = r)} />
+            <input type="file" hidden ref={r => (this.fileInput = r)}/>
           </pie-preview-layout>
         );
       } else {
         return (
           <pie-spinner active={!this.elementsLoaded}>
-            <div innerHTML={markup} />
-            <input type="file" hidden ref={r => (this.fileInput = r)} />
+            <div innerHTML={markup}/>
+            <input type="file" hidden ref={r => (this.fileInput = r)}/>
           </pie-spinner>
         );
       }
     } else {
-      return <pie-spinner />;
+      return <pie-spinner/>;
     }
   }
 }

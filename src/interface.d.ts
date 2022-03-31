@@ -24,8 +24,8 @@ export type ItemSession = {
   data: any[];
 };
 
-export interface PieItemElement { 
-  [elementName: string]: string 
+export interface PieItemElement {
+  [elementName: string]: string
 }
 
 interface AdvancedItemConfig {
@@ -62,6 +62,7 @@ interface PieElement extends HTMLElement {
 type PieController = {
   model: (config: Object, session: Object, env: Object) => Promise<Object>;
   score: (config: Object, session: Object, env: Object) => Promise<Object>;
-  createCorrectResponseSession: (config: Object, env: Object) => Promise<Object>;  
+  createCorrectResponseSession: (config: Object, env: Object) => Promise<Object>;
+  validate: (config: Object) => Promise<Object>;
 };
 
