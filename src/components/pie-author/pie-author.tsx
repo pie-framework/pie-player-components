@@ -12,7 +12,7 @@ import {
 
 import * as mr from "@pie-lib/math-rendering";
 
-import { PieContent, ItemConfig, PieElement, PieModel } from "../../interface";
+import {PieContent, ItemConfig, PieElement, PieModel, PieController} from "../../interface";
 import {
   PieLoader,
   BundleEndpoints,
@@ -131,6 +131,39 @@ export class Author {
 
   @Prop({ mutable: false, reflect: false })
   version: string = VERSION;
+
+
+  @Method()
+  async validateItem() {
+    console.log('Should Validate item');
+
+    return this.validateModels();
+  }
+
+  async validateModels() {
+    if (this.pieContentModel && this.pieContentModel.models) {
+      this.pieContentModel.models.map(model => {
+        let pieEl: PieElement = this.el.querySelector(`[id='${model.id}']`);
+        !pieEl && (pieEl = this.el.querySelector(`[pie-id='${model.id}']`));
+
+        if (pieEl) {
+          const pieElName = pieEl.tagName.toLowerCase().split("-config")[0];
+
+          const controller: PieController = this.pieLoader.getController(pieElName);
+
+          // here we call controller.validateItems
+
+          // here we can update the model in author, so we can set errors
+          // I have updated the prompt now because we don't have any error handling in UI
+          model.prompt = 'This item has errors';
+
+          // then we set the new model
+          pieEl.model = model;
+        }
+      });
+    }
+  }
+
 
   constructor() {
     this.handleFileInputChange = (e: Event) => {
