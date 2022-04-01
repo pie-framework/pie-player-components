@@ -297,10 +297,9 @@ export class Author {
 
         if (pieEl) {
           const pieElName = pieEl.tagName.toLowerCase().split("-config")[0];
-          const packageName = parseNpm(this.pieContentModel.elements[pieElName])
-            .name;
+          const packageName = parseNpm(this.pieContentModel.elements[pieElName]).name;
           pieEl.model = model;
-          console.log('this.configSettings[packageName]', this.configSettings[packageName]);
+
           if (this.configSettings && this.configSettings[packageName]) {
             pieEl.configuration = this.configSettings[packageName];
           }
