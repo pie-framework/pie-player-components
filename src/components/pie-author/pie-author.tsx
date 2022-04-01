@@ -153,9 +153,12 @@ export class Author {
 
         const controller: PieController = this.pieLoader.getController(pieElName);
 
+        const packageName = parseNpm(this.pieContentModel.elements[pieElName]).name;
+        const configuration = this.configSettings && this.configSettings[packageName] || {};
+
         if (controller && controller.validate) {
           // here we call controller.validate which returns an object with all the errors
-          const errors = controller.validate(model);
+          const errors = controller.validate(model, configuration);
 
           // here we can update the model in author, so we can set errors
           pieEl.model = {
@@ -169,7 +172,7 @@ export class Author {
       }
     });
 
-    return !hasErrors;
+    return hasErrors;
   }
 
 
@@ -297,6 +300,7 @@ export class Author {
           const packageName = parseNpm(this.pieContentModel.elements[pieElName])
             .name;
           pieEl.model = model;
+          console.log('this.configSettings[packageName]', this.configSettings[packageName]);
           if (this.configSettings && this.configSettings[packageName]) {
             pieEl.configuration = this.configSettings[packageName];
           }
