@@ -14,6 +14,8 @@ import {
   ItemConfig,
   ItemSession,
   PieContent,
+  PieController,
+  PieElement,
   PieModel,
 } from './interface';
 import {
