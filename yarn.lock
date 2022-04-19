@@ -1054,7 +1054,7 @@
   resolved "https://registry.yarnpkg.com/@pie-framework/pie-player-events/-/pie-player-events-0.1.0.tgz#0150904118fd604559982ab658967811c053ffe3"
   integrity sha512-6H1tlRGmcZ3Wt+8HMqu5KugVcwwyNrMylfI5rIpvOSt0T82QDmjRj+2sPgQG5zos/w6MtwUqn/QZ+8Rq2EXSOA==
 
-"@pie-lib/math-rendering@^2.3.12":
+"@pie-lib/math-rendering@^2.3.13":
   version "2.3.13"
   resolved "https://registry.yarnpkg.com/@pie-lib/math-rendering/-/math-rendering-2.3.13.tgz#ed16e7d86130f528b2c74334a43debb3858a9600"
   integrity sha512-1iFLN1404xq8kzAC2UNpqSevNTHbBaPTWcYSRIzbIwVxN+/RDWizUaA90Z1E0QunOcVmBIO+0bW2iyKFAZaKDA==
