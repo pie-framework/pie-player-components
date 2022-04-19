@@ -1,6 +1,6 @@
 {
   "name": "@pie-framework/pie-player-components",
-  "version": "0.26.4",
+  "version": "0.27.0",
   "description": "Pie Player Components",
   "module": "dist/index.mjs",
   "main": "dist/index.js",
@@ -34,7 +34,7 @@
     "demo": "npm run start & http-server www",
     "yalc": "yalc push",
     "commit": "git-cz",
-    "semantic-release": "semantic-release",
+    "semantic-release": "semantic-release --dry-run=false",
     "pretest": "if [ -f set-version.sh ]; then ./set-version.sh $npm_package_version; else echo \"skip post-install\"; fi"
   },
   "dependencies": {

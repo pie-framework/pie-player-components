@@ -1,3 +1,13 @@
+# [0.27.0](https://github.com/pie-framework/pie-player-components/compare/v0.26.4...v0.27.0) (2022-04-19)
+
+
+### Features
+
+* added configuration prop to validation ([b129da9](https://github.com/pie-framework/pie-player-components/commit/b129da920adc6f2dd1a0b641f7eb518cdd287747))
+* added configuration prop to validation ([9a759bd](https://github.com/pie-framework/pie-player-components/commit/9a759bd8e0fc7835640fb290727bb504877274d0))
+* continue working on item validation ([4ae2323](https://github.com/pie-framework/pie-player-components/commit/4ae232311a4cd605e8e5a4bc55e977d1415eb96c))
+* start working on item validation ([569b4d1](https://github.com/pie-framework/pie-player-components/commit/569b4d148748fc0be3c5fde5fae2b516d21c16a9))
+
 ## [0.26.4](https://github.com/pie-framework/pie-player-components/compare/v0.26.3...v0.26.4) (2022-03-03)
 
 
