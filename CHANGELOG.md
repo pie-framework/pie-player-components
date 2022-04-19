@@ -1,3 +1,10 @@
+## [0.27.2](https://github.com/pie-framework/pie-player-components/compare/v0.27.1...v0.27.2) (2022-04-19)
+
+
+### Bug Fixes
+
+* **package:** version bumped to trigger release ([d47c87a](https://github.com/pie-framework/pie-player-components/commit/d47c87a663a2b0b39f8d02bd975cde6b9c11a920))
+
 ## [0.27.1](https://github.com/pie-framework/pie-player-components/compare/v0.27.0...v0.27.1) (2022-04-19)
 
 
