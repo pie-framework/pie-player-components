@@ -1,3 +1,10 @@
+## [0.27.3](https://github.com/pie-framework/pie-player-components/compare/v0.27.2...v0.27.3) (2022-04-19)
+
+
+### Bug Fixes
+
+* **math:** upgraded math-rendering version to 2.3.13 ([1608cf7](https://github.com/pie-framework/pie-player-components/commit/1608cf7235224fdebe0cc3ca1aca5d5d17e899e7))
+
 ## [0.27.2](https://github.com/pie-framework/pie-player-components/compare/v0.27.1...v0.27.2) (2022-04-19)
 
 
