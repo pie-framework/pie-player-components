@@ -1,3 +1,10 @@
+## [0.27.4](https://github.com/pie-framework/pie-player-components/compare/v0.27.3...v0.27.4) (2022-05-24)
+
+
+### Bug Fixes
+
+* remove mathjax font family override ([7d4bd87](https://github.com/pie-framework/pie-player-components/commit/7d4bd870fd4a666f2920a5430c95039ffeadf2ce))
+
 ## [0.27.3](https://github.com/pie-framework/pie-player-components/compare/v0.27.2...v0.27.3) (2022-04-19)
 
 
