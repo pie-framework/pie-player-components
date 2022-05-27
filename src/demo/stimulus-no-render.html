@@ -7,24 +7,21 @@
       content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0"
     />
     <title>Item With Stimulus</title>
-    <script src="/build/pie-player-components.js"></script>
+    <script type="module" src="/build/pie-player-components.esm.js"></script>
+    <script nomodule src="/build/pie-player-components.js"></script>
   </head>
   <body>
- 
-
-     <div>  
-        <h2>no stimulus</h2>
-         <pie-player render-stimulus="false" id="nostimulus"></pie-player>
-      </div>
-
-
+     <div>
+       <h2>no stimulus</h2>
+       <pie-player render-stimulus="false" id="nostimulus"></pie-player>
+     </div>
 
     <script>
       const config = {
         pie: {
           id: '1',
           elements: {
-            'pie-multiple-choice': '@pie-element/multiple-choice@2.7.3'
+            'pie-multiple-choice': '@pie-element/multiple-choice@latest'
           },
           models: [
             {
@@ -91,7 +88,7 @@
           passages: [
             {
               title: 'Ineskeen Road, July Evening',
-              text: `The bicycles go by in twos and threes -<br/> 
+              text: `The bicycles go by in twos and threes -<br/>
               There's a dance in Billy Brennan's barn tonight,<br/>
               And there's the half-talk code of mysteries<br/>
               And the wink-and-elbow language of delight.<br/>
@@ -118,13 +115,11 @@
 
       const noStimulus = document.getElementById('nostimulus');
 
-
       noStimulus.addEventListener('sessionChanged', event => {
         console.log(event.type + ':' + JSON.stringify(event.detail));
       });
 
       noStimulus.config = config;
     </script>
-
   </body>
 </html>

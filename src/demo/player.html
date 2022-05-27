@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0"
+    />
+    <title>Item Player</title>
+
+<!--    <script-->
+<!--      type="module"-->
+<!--      src="https://unpkg.com/@pie-framework/pie-player-components@latest/dist/pie-player-components/pie-player-components.esm.js"-->
+<!--    ></script>-->
+
+    <!-- <script nomodule src="/build/pie-player-components.js"></script> -->
+    <script type="module" src="/build/pie-player-components.esm.js"></script>
+    <script nomodule src="/build/pie-player-components.js"></script>
+  </head>
+  <body>
+    <pie-player id="player"></pie-player>
+
+    <script type="text/javascript" src="./utils/models.js"></script>
+    <script>
+      const config = {
+        id: '1',
+        elements: {
+          'pie-multiple-choice': '@pie-element/multiple-choice@latest'
+        },
+        models: [MC_model],
+        markup: `
+        <math xmlns="http://www.w3.org/1998/Math/MathML"><mfenced><mrow><mo>-</mo><mn>5</mn><mo>,</mo><mn>1</mn></mrow></mfenced></math> drafted by his assistant on a computer program which involves coordinate planes.&#160; The designer suggests to change the location and size of the lawn by dilating and then reflecting the lawn across the <span class="variable">x</span>-axis to produce the similar square lawn.&#160; The coordinates of the new square lawn are <math xmlns="http://www.w3.org/1998/Math/MathML"><mfenced><mrow><mo>-</mo><mn>4</mn><mo>,</mo><mo>-</mo><mn>2</mn></mrow></mfenced></math>, <math xmlns="http://www.w3.org/1998/Math/MathML"><mfenced><mrow><mo>-</mo><mn>2</mn><mo>,</mo><mo>-</mo><mn>2</mn></mrow></mfenced></math>,&#160;<math xmlns="http://www.w3.org/1998/Math/MathML"><mfenced><mrow><mo>-</mo><mn>4</mn><mo>,</mo><mo>-</mo><mn>4</mn></mrow></mfenced></math>, and <math xmlns="http://www.w3.org/1998/Math/MathML"><mfenced><mrow><mo>-</mo><mn>2</mn><mo>,</mo><mo>-</mo><mn>4</mn></mrow></mfenced></math>
+        <pie-multiple-choice id='1'></pie-multiple-choice>
+        `
+      };
+
+      const endpoints = {
+        bundleBase: "https://storage.googleapis.com/pie-pits-staging/bundles/",
+        buildServiceBase: "https://pits-dot-pie-dev-221718.appspot.com/bundles/"
+       };
+      const player = document.getElementById('player');
+
+      // player.bundleEndpoints = endpoints;
+
+      document.addEventListener("session-changed", e => console.log(">", e));
+
+      player.addEventListener('sessionChanged', event => {
+        console.log(event.type + ':' + JSON.stringify(event.detail));
+      });
+
+      player.config = config;
+    </script>
+  </body>
+</html>

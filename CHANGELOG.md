@@ -1,3 +1,78 @@
+## [0.27.4](https://github.com/pie-framework/pie-player-components/compare/v0.27.3...v0.27.4) (2022-05-24)
+
+
+### Bug Fixes
+
+* remove mathjax font family override ([7d4bd87](https://github.com/pie-framework/pie-player-components/commit/7d4bd870fd4a666f2920a5430c95039ffeadf2ce))
+
+## [0.27.3](https://github.com/pie-framework/pie-player-components/compare/v0.27.2...v0.27.3) (2022-04-19)
+
+
+### Bug Fixes
+
+* **math:** upgraded math-rendering version to 2.3.13 ([1608cf7](https://github.com/pie-framework/pie-player-components/commit/1608cf7235224fdebe0cc3ca1aca5d5d17e899e7))
+
+## [0.27.2](https://github.com/pie-framework/pie-player-components/compare/v0.27.1...v0.27.2) (2022-04-19)
+
+
+### Bug Fixes
+
+* **package:** version bumped to trigger release ([d47c87a](https://github.com/pie-framework/pie-player-components/commit/d47c87a663a2b0b39f8d02bd975cde6b9c11a920))
+
+## [0.27.1](https://github.com/pie-framework/pie-player-components/compare/v0.27.0...v0.27.1) (2022-04-19)
+
+
+### Bug Fixes
+
+* **package:** version downgraded to trigger release ([ed9fc32](https://github.com/pie-framework/pie-player-components/commit/ed9fc325096e6bc982c8eb738d5b2d17fd90d326))
+
+# [0.27.0](https://github.com/pie-framework/pie-player-components/compare/v0.26.4...v0.27.0) (2022-04-19)
+
+
+### Features
+
+* added configuration prop to validation ([b129da9](https://github.com/pie-framework/pie-player-components/commit/b129da920adc6f2dd1a0b641f7eb518cdd287747))
+* added configuration prop to validation ([9a759bd](https://github.com/pie-framework/pie-player-components/commit/9a759bd8e0fc7835640fb290727bb504877274d0))
+* continue working on item validation ([4ae2323](https://github.com/pie-framework/pie-player-components/commit/4ae232311a4cd605e8e5a4bc55e977d1415eb96c))
+* start working on item validation ([569b4d1](https://github.com/pie-framework/pie-player-components/commit/569b4d148748fc0be3c5fde5fae2b516d21c16a9))
+
+## [0.26.4](https://github.com/pie-framework/pie-player-components/compare/v0.26.3...v0.26.4) (2022-03-03)
+
+
+### Bug Fixes
+
+* add style for IBX user authored math PD-482 ([5dcf4df](https://github.com/pie-framework/pie-player-components/commit/5dcf4dfe3b83f26c46969ec1d90dff83f3690673))
+* replace only tags (not text), when normalizing markup PD-1616 ([b63d707](https://github.com/pie-framework/pie-player-components/commit/b63d7076c369f456e52490be0076ab0e3c6fd57f))
+
+## [0.26.3](https://github.com/pie-framework/pie-player-components/compare/v0.26.2...v0.26.3) (2021-11-16)
+
+
+### Bug Fixes
+
+* rm lodash dev dep ([0e5f761](https://github.com/pie-framework/pie-player-components/commit/0e5f7610bdb7f01484ccffdb44ee5cdea62edcc8))
+* set main/module paths ([bffe3e1](https://github.com/pie-framework/pie-player-components/commit/bffe3e15b8a6010f0b43a2b941d2cbe95775eaec))
+
+## [0.26.2](https://github.com/pie-framework/pie-player-components/compare/v0.26.1...v0.26.2) (2021-11-16)
+
+
+### Bug Fixes
+
+* patch bump ([5f57111](https://github.com/pie-framework/pie-player-components/commit/5f571116d50142fe6ee880563987894096264569))
+
+## [0.26.1](https://github.com/pie-framework/pie-player-components/compare/v0.26.0...v0.26.1) (2021-11-16)
+
+
+### Bug Fixes
+
+* add pie-embed docs ([0470b25](https://github.com/pie-framework/pie-player-components/commit/0470b258466ff78e26f51e9e8c12beca3e8a8711))
+
+# [0.26.0](https://github.com/pie-framework/pie-player-components/compare/v0.25.8...v0.26.0) (2021-11-16)
+
+
+### Features
+
+* add pie-embed element PD-331 ([1188737](https://github.com/pie-framework/pie-player-components/commit/118873749648fcc7c0213f7be9d6936a2eb9d8b7))
+
 ## [0.25.8](https://github.com/pie-framework/pie-player-components/compare/v0.25.7...v0.25.8) (2021-08-04)
 
 

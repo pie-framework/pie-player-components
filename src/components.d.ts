@@ -14,6 +14,8 @@ import {
   ItemConfig,
   ItemSession,
   PieContent,
+  PieController,
+  PieElement,
   PieModel,
 } from './interface';
 import {
@@ -67,8 +69,10 @@ export namespace Components {
     * external providers can set this if they need to upload the assets to the cloud etc. by default we use data urls
     */
     'imageSupport': ExternalImageSupport;
+    'validateModels': () => Promise<boolean>;
     'version': string;
   }
+  interface PieEmbed {}
   interface PiePlayer {
     /**
     * Simulates a correct response for the item. This property will only have this effect if the `hosted` property is false and player is running client-side-only.
@@ -135,6 +139,12 @@ declare global {
     new (): HTMLPieAuthorElement;
   };
 
+  interface HTMLPieEmbedElement extends Components.PieEmbed, HTMLStencilElement {}
+  var HTMLPieEmbedElement: {
+    prototype: HTMLPieEmbedElement;
+    new (): HTMLPieEmbedElement;
+  };
+
   interface HTMLPiePlayerElement extends Components.PiePlayer, HTMLStencilElement {}
   var HTMLPiePlayerElement: {
     prototype: HTMLPiePlayerElement;
@@ -166,6 +176,7 @@ declare global {
   };
   interface HTMLElementTagNameMap {
     'pie-author': HTMLPieAuthorElement;
+    'pie-embed': HTMLPieEmbedElement;
     'pie-player': HTMLPiePlayerElement;
     'pie-preview-control': HTMLPiePreviewControlElement;
     'pie-preview-layout': HTMLPiePreviewLayoutElement;
@@ -218,6 +229,7 @@ declare namespace LocalJSX {
     'onModelUpdated'?: (event: CustomEvent<any>) => void;
     'version'?: string;
   }
+  interface PieEmbed {}
   interface PiePlayer {
     /**
     * Simulates a correct response for the item. This property will only have this effect if the `hosted` property is false and player is running client-side-only.
@@ -289,6 +301,7 @@ declare namespace LocalJSX {
 
   interface IntrinsicElements {
     'pie-author': PieAuthor;
+    'pie-embed': PieEmbed;
     'pie-player': PiePlayer;
     'pie-preview-control': PiePreviewControl;
     'pie-preview-layout': PiePreviewLayout;
@@ -304,6 +317,7 @@ declare module "@stencil/core" {
   export namespace JSX {
     interface IntrinsicElements {
       'pie-author': LocalJSX.PieAuthor & JSXBase.HTMLAttributes<HTMLPieAuthorElement>;
+      'pie-embed': LocalJSX.PieEmbed & JSXBase.HTMLAttributes<HTMLPieEmbedElement>;
       'pie-player': LocalJSX.PiePlayer & JSXBase.HTMLAttributes<HTMLPiePlayerElement>;
       'pie-preview-control': LocalJSX.PiePreviewControl & JSXBase.HTMLAttributes<HTMLPiePreviewControlElement>;
       'pie-preview-layout': LocalJSX.PiePreviewLayout & JSXBase.HTMLAttributes<HTMLPiePreviewLayoutElement>;

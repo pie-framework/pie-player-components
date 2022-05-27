@@ -733,7 +733,8 @@ const authorSettings = {
 				'<pie-drag-in-the-blank id="p-00000000"></pie-drag-in-the-blank>'
 		}
 	}
-}
+};
+
 const ibxItemTypes = [
 	{
 		name: 'Multiple Choice',
@@ -785,5 +786,6 @@ const ibxItemTypes = [
 		id: 'drag_in_the_blank',
 		symbol: 'Drag and Drop_1'
 	}
-]
-export { authorSettings, ibxItemTypes }
+];
+
+export { authorSettings, ibxItemTypes };
