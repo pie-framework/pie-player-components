@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0"
+  />
+  <title>Item</title>
+  <script type="module" src="/build/pie-player-components.esm.js"></script>
+  <script nomodule src="/build/pie-player-components.js"></script>
+</head>
+<body>
+<pie-author id="author"></pie-author>
+
+<script>
+  const config = {
+    id: '1',
+    elements: {
+      'extended-text-entry': '@pie-element/extended-text-entry@latest'
+    },
+    models: [
+      {
+        "width": "500px",
+        "id": "1",
+        "prompt": "<div>What fraction is shown by point <em>a</em> on the number line below?<br><br><img alt src=\"https://storage.googleapis.com/pie-prod-221718-assets/image/26490a6c-f6b6-49c0-aa1c-a850d1b3b07f\" width=\"347\" height=\"58\"></div>",
+        "mathInput": false,
+        "element": "extended-text-entry",
+        "height": "200px"
+      }
+    ],
+    markup: `<extended-text-entry id='1'></extended-text-entry>`
+  };
+
+  const author = document.getElementById('author');
+
+  author.addEventListener('modelLoaded', event => {
+    console.log(event.type + ':' + JSON.stringify(event.detail));
+  });
+
+  (async () => {
+    await customElements.whenDefined('pie-author');
+    const author = document.getElementById('author');
+    author.addMultiTraitRubricToConfig(config).then(newConf => {
+      author.config = newConf;
+    });
+  })()
+
+</script>
+</body>
+</html>
