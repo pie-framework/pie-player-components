@@ -431,7 +431,7 @@ export class Author {
           }]
       }
     }
-      const configPieContent = pieContentFromConfig(config);
+    const configPieContent = pieContentFromConfig(config);
     addPackageToContent(
       configPieContent,
       "@pie-element/multi-trait-rubric",
