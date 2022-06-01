@@ -10,7 +10,20 @@ const prepareUrl = (u: string) => {
   return `https://cdn.jsdelivr.net/npm/${u}`;
 };
 
-export const load = (tag, url) => {
+function loadScript(src) {
+  return new Promise(function (resolve, reject) {
+    let s;
+
+    s = document.createElement('script');
+    s.type = 'module';
+    s.src = src;
+    s.onload = resolve;
+    s.onerror = reject;
+    document.head.appendChild(s);
+  });
+}
+
+export const load = async (tag, url) => {
   const def = customElements.get(tag);
 
   if (def) {
@@ -19,6 +32,12 @@ export const load = (tag, url) => {
   }
 
   const fullUrl = prepareUrl(url);
+
+  try {
+    await loadScript(fullUrl);
+  } catch (e) {
+    console.error(e.toString());
+  }
 
   return import(fullUrl)
     .then(mod => {
