@@ -1,3 +1,10 @@
+## [0.27.5](https://github.com/pie-framework/pie-player-components/compare/v0.27.4...v0.27.5) (2022-06-01)
+
+
+### Bug Fixes
+
+* import not working without the script tag ([a05b820](https://github.com/pie-framework/pie-player-components/commit/a05b8207ca61be0893314365c4dfa7b310dfe277))
+
 ## [0.27.4](https://github.com/pie-framework/pie-player-components/compare/v0.27.3...v0.27.4) (2022-05-24)
 
 
