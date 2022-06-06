@@ -1054,14 +1054,14 @@
   resolved "https://registry.yarnpkg.com/@pie-framework/pie-player-events/-/pie-player-events-0.1.0.tgz#0150904118fd604559982ab658967811c053ffe3"
   integrity sha512-6H1tlRGmcZ3Wt+8HMqu5KugVcwwyNrMylfI5rIpvOSt0T82QDmjRj+2sPgQG5zos/w6MtwUqn/QZ+8Rq2EXSOA==
 
-"@pie-lib/math-rendering@^2.3.13":
-  version "2.3.13"
-  resolved "https://registry.yarnpkg.com/@pie-lib/math-rendering/-/math-rendering-2.3.13.tgz#ed16e7d86130f528b2c74334a43debb3858a9600"
-  integrity sha512-1iFLN1404xq8kzAC2UNpqSevNTHbBaPTWcYSRIzbIwVxN+/RDWizUaA90Z1E0QunOcVmBIO+0bW2iyKFAZaKDA==
+"@pie-lib/math-rendering@^2.4.2":
+  version "2.4.2"
+  resolved "https://registry.yarnpkg.com/@pie-lib/math-rendering/-/math-rendering-2.4.2.tgz#dc7bb5bf688ac0f44f493a7654bf890630d64abd"
+  integrity sha512-keJDXdkCURYVowrUADyj9qN6y2KA9AnYrtdyna+bGeAb1FeUNZqwrwtH8pDUysQ2qlV/kUnNP9M8tfDLPd54cw==
   dependencies:
     debug "^4.1.1"
     lodash "^4.17.11"
-    mathjax-full "^3.2.0"
+    mathjax-full "3.2.0"
 
 "@release-it/conventional-changelog@^1.0.0":
   version "1.1.4"
@@ -6838,7 +6838,7 @@ matcher@^1.0.0:
   dependencies:
     escape-string-regexp "^1.0.4"
 
-mathjax-full@^3.2.0:
+mathjax-full@3.2.0:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/mathjax-full/-/mathjax-full-3.2.0.tgz#e53269842a943d4df10502937518991268996c5c"
   integrity sha512-D2EBNvUG+mJyhn+M1C858k0f2Fc4KxXvbEX2WCMXroV10212JwfYqaBJ336ECBSz5X9L5LRoamxb7AJtg3KaJA==
