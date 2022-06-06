@@ -1,3 +1,10 @@
+## [0.27.6](https://github.com/pie-framework/pie-player-components/compare/v0.27.5...v0.27.6) (2022-06-06)
+
+
+### Bug Fixes
+
+* tts not working ([091e66e](https://github.com/pie-framework/pie-player-components/commit/091e66ec2bc2e2c08e852e65cd439892be829b05))
+
 ## [0.27.5](https://github.com/pie-framework/pie-player-components/compare/v0.27.4...v0.27.5) (2022-06-01)
 
 
