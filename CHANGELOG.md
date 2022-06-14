@@ -1,3 +1,10 @@
+## [0.27.7](https://github.com/pie-framework/pie-player-components/compare/v0.27.6...v0.27.7) (2022-06-14)
+
+
+### Bug Fixes
+
+* add table style from reboot for IBX PD-1360 ([0ee1d6e](https://github.com/pie-framework/pie-player-components/commit/0ee1d6eb3a6b045f746b4f9eb138adda382b9e6f))
+
 ## [0.27.6](https://github.com/pie-framework/pie-player-components/compare/v0.27.5...v0.27.6) (2022-06-06)
 
 
