@@ -53,6 +53,25 @@ export const addRubric = (content: PieContent): PieContent => {
 };
 
 /**
+ * Adds multi-trait-rubric html to markup.
+ * @param content
+ */
+export const addMultiTraitRubric = (content: PieContent): PieContent => {
+  return addMarkupForPackage(
+    cloneDeep(content),
+    "@pie-element/multi-trait-rubric",
+    (id, tag, markup) => {
+      return `
+    ${markup}
+    <div style="margin-top: 20px;">
+      <${tag} id="${id}"></${tag}>
+    </div>
+    `;
+    }
+  );
+};
+
+/**
  * Adds the provided package to the provided PieContent Object's `elements` and `models` properties.
  *
  * @param content the PieContent for rendering

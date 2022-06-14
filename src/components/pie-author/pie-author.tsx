@@ -22,7 +22,7 @@ import {pieContentFromConfig} from "../../utils/utils";
 import parseNpm from "parse-package-name";
 import _isEqual from "lodash/isEqual";
 import _isEmpty from "lodash/isEmpty";
-import {addPackageToContent, addRubric} from "../../rubric-utils";
+import { addMultiTraitRubric, addPackageToContent, addRubric } from "../../rubric-utils";
 
 import {
   ModelUpdatedEvent,
@@ -434,6 +434,54 @@ export class Author {
       rubricModel as PieModel
     );
     return addRubric(configPieContent);
+  }
+
+  /**
+   * Utility method to add a `@pie-element/multi-trait-rubric` section to an item config when creating an item should be used before setting the config.
+   **
+   * @param config the item config to mutate
+   * @param multiTraitRubricModel
+   */
+  @Method()
+  async addMultiTraitRubricToConfig(config: ItemConfig, multiTraitRubricModel?) {
+    if (!multiTraitRubricModel) {
+      multiTraitRubricModel = {
+        id: "multi-trait-rubric",
+        element: "pie-multi-trait-rubric",
+        visibleToStudent: true,
+        halfScoring: false,
+        excludeZero: true,
+        pointLabels: true,
+        description: false,
+        standards: false,
+        scales: [
+          {
+            maxPoints: 4,
+            scorePointsLabels: ['', '', '', ''],
+            traitLabel: 'Trait',
+            traits: [
+              {
+                name: '',
+                standards: [],
+                description: '',
+                scorePointsDescriptors: [
+                  '',
+                  '',
+                  '',
+                  '',
+                  '',
+                ],
+              },]
+          }]
+      }
+    }
+    const configPieContent = pieContentFromConfig(config);
+    addPackageToContent(
+      configPieContent,
+      "@pie-element/multi-trait-rubric",
+      multiTraitRubricModel as PieModel
+    );
+    return addMultiTraitRubric(configPieContent);
   }
 
   render() {

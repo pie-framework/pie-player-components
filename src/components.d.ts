@@ -25,6 +25,12 @@ import {
 export namespace Components {
   interface PieAuthor {
     /**
+    * Utility method to add a `@pie-element/multi-trait-rubric` section to an item config when creating an item should be used before setting the config. *
+    * @param config the item config to mutate
+    * @param multiTraitRubricModel
+    */
+    'addMultiTraitRubricToConfig': (config: ItemConfig, multiTraitRubricModel?: any) => Promise<PieContent>;
+    /**
     * Adds a preview view which will render the content in another tab as it may appear to a student or instructor.
     */
     'addPreview': boolean;
