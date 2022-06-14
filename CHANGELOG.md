@@ -1,3 +1,15 @@
+# [0.28.0](https://github.com/pie-framework/pie-player-components/compare/v0.27.7...v0.28.0) (2022-06-14)
+
+
+### Bug Fixes
+
+* indentation ([bfc299d](https://github.com/pie-framework/pie-player-components/commit/bfc299dd6ecc1155de5aa6ee5d572d281a122a37))
+
+
+### Features
+
+* pd-1815 create method to add multi-trait-rubric to authoring ([6a0dd7c](https://github.com/pie-framework/pie-player-components/commit/6a0dd7cf021aa69955cf658ab12e8ae5a5b0a42c))
+
 ## [0.27.7](https://github.com/pie-framework/pie-player-components/compare/v0.27.6...v0.27.7) (2022-06-14)
 
 
