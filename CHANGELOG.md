@@ -1,3 +1,10 @@
+## [0.28.1](https://github.com/pie-framework/pie-player-components/compare/v0.28.0...v0.28.1) (2022-07-12)
+
+
+### Bug Fixes
+
+* trigger build ([70d1929](https://github.com/pie-framework/pie-player-components/commit/70d1929e15d89f584c25b00b4e7ce863950301be))
+
 # [0.28.0](https://github.com/pie-framework/pie-player-components/compare/v0.27.7...v0.28.0) (2022-06-14)
 
 
