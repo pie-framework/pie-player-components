@@ -25,6 +25,7 @@ For authoring content.
 
 `npm run demo` - starts stencil in dev mode and launches a http server to serve files in `src/demo` folder
 
+
 ### Debugging
 
 To debug client side code, run stencil tests with the `--devtools` flag and add a `debugger` statement in component.tsx code to pause execution. e.g.
