@@ -22,7 +22,7 @@ import {pieContentFromConfig} from "../../utils/utils";
 import parseNpm from "parse-package-name";
 import _isEqual from "lodash/isEqual";
 import _isEmpty from "lodash/isEmpty";
-import { addMultiTraitRubric, addPackageToContent, addRubric } from "../../rubric-utils";
+import {addMultiTraitRubric, addPackageToContent, addRubric} from "../../rubric-utils";
 
 import {
   ModelUpdatedEvent,
@@ -495,14 +495,14 @@ export class Author {
                 <div innerHTML={markup}/>
               </pie-spinner>
             </div>
-            <input type="file" hidden ref={r => (this.fileInput = r)}/>
+            <input type="file" hidden ref={r => (this.fileInput = r)} style={{visibility: 'hidden !important'}}/>
           </pie-preview-layout>
         );
       } else {
         return (
           <pie-spinner active={!this.elementsLoaded}>
             <div innerHTML={markup}/>
-            <input type="file" hidden ref={r => (this.fileInput = r)}/>
+            <input type="file" hidden ref={r => (this.fileInput = r)} style={{visibility: 'hidden !important'}}/>
           </pie-spinner>
         );
       }
