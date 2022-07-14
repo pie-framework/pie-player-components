@@ -1,3 +1,10 @@
+## [0.28.4](https://github.com/pie-framework/pie-player-components/compare/v0.28.3...v0.28.4) (2022-07-14)
+
+
+### Bug Fixes
+
+* hidden input still shows up, try forcing it to hidden ([3cdaaa9](https://github.com/pie-framework/pie-player-components/commit/3cdaaa95966716599b2e95bc5a927bc2af330eb5))
+
 ## [0.28.3](https://github.com/pie-framework/pie-player-components/compare/v0.28.2...v0.28.3) (2022-07-13)
 
 
