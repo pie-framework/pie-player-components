@@ -495,14 +495,14 @@ export class Author {
                 <div innerHTML={markup}/>
               </pie-spinner>
             </div>
-            <input type="file" hidden ref={r => (this.fileInput = r)} style={{display: 'none !important'}}/>
+            <input type="file" hidden ref={r => (this.fileInput = r)} style={{display: 'none'}}/>
           </pie-preview-layout>
         );
       } else {
         return (
           <pie-spinner active={!this.elementsLoaded}>
             <div innerHTML={markup}/>
-            <input type="file" hidden ref={r => (this.fileInput = r)} style={{display: 'none !important'}}/>
+            <input type="file" hidden ref={r => (this.fileInput = r)} style={{display: 'none'}}/>
           </pie-spinner>
         );
       }
