@@ -1,4 +1,4 @@
-import { SessionChangedEvent } from "@pie-framework/pie-player-events";
+import {SessionChangedEvent} from "@pie-framework/pie-player-events";
 import * as mr from "@pie-lib/math-rendering";
 import {
   Component,
@@ -26,9 +26,9 @@ import {
   DEFAULT_ENDPOINTS,
   BundleEndpoints
 } from "../../pie-loader";
-import { addRubric } from "../../rubric-utils";
-import { normalizeContentElements } from "../../utils/utils";
-import { VERSION } from "../../version";
+import {addRubric} from "../../rubric-utils";
+import {normalizeContentElements} from "../../utils/utils";
+import {VERSION} from "../../version";
 
 const controllerErrorMessage: string =
   "Error processing question configuration, verify the question model?";
@@ -44,7 +44,7 @@ export class Player {
    */
   stimulusPlayer: HTMLElement;
 
-  @Prop({ context: "document" }) doc!: Document;
+  @Prop({context: "document"}) doc!: Document;
 
   /**
    * Optionally specifies the back-end that builds and hosts javascript bundles for rendering assessment items.
@@ -80,13 +80,13 @@ export class Player {
    * the `complete` propery would be false if 1 or 2 points had been added, but true if all three had.
    *
    */
-  @Event({ eventName: "session-changed" }) sessionChanged: EventEmitter;
+  @Event({eventName: "session-changed"}) sessionChanged: EventEmitter;
 
   /**
    * Emmitted if there is an error encountered while rendering.
    * `event.detail` will be a string containing a message about the error.
    */
-  @Event({ eventName: "player-error" }) playerError: EventEmitter;
+  @Event({eventName: "player-error"}) playerError: EventEmitter;
 
   /**
    * TODO - Emmitted when any all interactions in a PIE Assessment Item have reported that a user
@@ -97,7 +97,7 @@ export class Player {
   /**
    * Emitted when the content in the config has been loaded.
    */
-  @Event({ eventName: "load-complete" }) loadComplete: EventEmitter;
+  @Event({eventName: "load-complete"}) loadComplete: EventEmitter;
 
   @State() elementsLoaded: boolean = false;
 
@@ -123,13 +123,13 @@ export class Player {
   /**
    * The Pie Session
    */
-  @Prop() session: ItemSession = { id: "", data: [] };
+  @Prop() session: ItemSession = {id: "", data: []};
 
   /**
    * Describes runtime environment for the player.
    *
    */
-  @Prop() env: Object = { mode: "gather", role: "student" };
+  @Prop() env: Object = {mode: "gather", role: "student"};
 
   /**
    * Indicates if player running in the context of a PIE hosting system.
@@ -144,7 +144,7 @@ export class Player {
    */
   @Prop() renderStimulus: boolean = true;
 
-  @Prop({ mutable: false, reflect: false })
+  @Prop({mutable: false, reflect: false})
   version: string = VERSION;
 
   @State() pieContentModel: PieContent;
@@ -228,6 +228,33 @@ export class Player {
     }
   }
 
+  @Method()
+  async provideScore() {
+    if (!this.pieContentModel || !this.pieContentModel.models) {
+      console.error('No pie content model');
+
+      return false;
+    }
+
+    return Promise.all((this.pieContentModel.models || []).map(async model => {
+      let pieEl: PieElement = this.el.querySelector(`[id='${model.id}']`);
+      !pieEl && (pieEl = this.el.querySelector(`[pie-id='${model.id}']`));
+
+      const session = this.findOrAddSession(this.session.data, model.id);
+
+      if (pieEl) {
+        const controller: PieController = this.pieLoader.getController(pieEl.localName);
+
+        if (controller && controller.outcome) {
+          return {
+            ...session,
+            ...(await controller.outcome(model, session, {mode: 'evaluate'}))
+          };
+        }
+      }
+    }));
+  }
+
   @Watch("env")
   updateModels(newEnv = this.env) {
     // wrapping a player in stimulus layout
@@ -275,7 +302,7 @@ export class Player {
                 ) {
                   session = await controller.createCorrectResponseSession(
                     model,
-                    { ...newEnv, ...{ role: "instructor" } }
+                    {...newEnv, ...{role: "instructor"}}
                   );
                 }
                 pieEl.model = await controller.model(model, session, newEnv);
@@ -301,7 +328,7 @@ export class Player {
           }
           try {
             pieEl.session = session;
-          } catch(err) {
+          } catch (err) {
             this.playerError.emit(
               `error setting item session value - ${err.message}`
             );
@@ -335,7 +362,7 @@ export class Player {
     if (s) {
       return s;
     }
-    const ss = { id };
+    const ss = {id};
     data.push(ss);
     return ss;
   }
@@ -430,7 +457,7 @@ export class Player {
         );
       }
 
-      return <pie-spinner />;
+      return <pie-spinner/>;
     }
   }
 }
