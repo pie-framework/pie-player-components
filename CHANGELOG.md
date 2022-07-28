@@ -1,3 +1,10 @@
+# [0.29.0](https://github.com/pie-framework/pie-player-components/compare/v0.28.4...v0.29.0) (2022-07-28)
+
+
+### Features
+
+* expose score function ([09336b3](https://github.com/pie-framework/pie-player-components/commit/09336b391370a821ad4a92e2812fb78c95283a74))
+
 ## [0.28.4](https://github.com/pie-framework/pie-player-components/compare/v0.28.3...v0.28.4) (2022-07-14)
 
 
