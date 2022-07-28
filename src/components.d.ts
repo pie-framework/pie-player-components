@@ -102,6 +102,7 @@ export namespace Components {
     * Indicates if player running in the context of a PIE hosting system. Do not modify the default value for this property if you are not implementing a PIE host. If true, the host is responsible for all model updates.
     */
     'hosted'?: boolean;
+    'provideScore': () => Promise<false | any[]>;
     /**
     * If the item contains a stimulus, the player will render it by default. Set this property to false to not render stimulus.
     */

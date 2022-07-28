@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0"
+  />
+  <title>Rubric Demo</title>
+  <script type="module" src="/build/pie-player-components.esm.js"></script>
+  <script nomodule src="/build/pie-player-components.js"></script>
+  <style>
+    #score-results {
+      border: 1px solid;
+      padding: 24px;
+      margin: 24px;
+    }
+  </style>
+</head>
+<body>
+<button id="score">SCORE</button>
+<div id="score-results">
+  <p>No results yet</p>
+</div>
+
+<pie-author id="author" add-preview="true">
+</pie-author>
+
+
+<script>
+  const author = document.getElementById('author');
+
+  const CATmodelExample = {
+    promptEnabled: true,
+
+    choices: [
+      {
+        id: 'id-mar',
+        content: '<div>mar</div>',
+      },
+      {
+        id: 'id-para',
+        content: '<div>para</div>',
+      },
+      {
+        id: 'id-rosie',
+        content: '<div>rosie</div>',
+      },
+      {
+        id: 'id-morcov',
+        content: '<div>morcov</div>',
+        categoryCount: 2,
+      },
+    ],
+    choicesPosition: 'below',
+    choicesLabel: '',
+    lockChoiceOrder: true,
+    removeTilesAfterPlacing: false,
+    categoriesPerRow: 2,
+    categories: [
+      {
+        id: 'id-fructe',
+        label: '<div>fructe</div>',
+      },
+      {
+        id: 'id-legume',
+        label: '<div>legume</div>',
+      },
+    ],
+    alternates: [],
+    correctResponse: [
+      {
+        category: 'id-fructe',
+        choices: ['id-mar', 'id-mar', 'id-mar', 'id-para'],
+        alternateResponses: [
+          ['id-mar', 'id-para', 'id-rosie'],
+          ['id-mar', 'id-para', 'id-rosie'],
+        ],
+      },
+      {
+        category: 'id-legume',
+        choices: ['id-rosie', 'id-rosie', 'id-morcov'],
+        alternateResponses: [['id-rosie', 'id-morcov'], ['id-morcov']],
+      },
+    ],
+    note: 'The answer shown above is the most common correct answer for this item. One or more additional correct answers are also defined, and will also be recognized as correct.',
+    rowLabels: ['', ''],
+    partialScoring: true,
+    feedbackEnabled: true,
+    rationaleEnabled: true,
+    teacherInstructionsEnabled: true,
+    studentInstructionsEnabled: true,
+    toolbarEditorPosition: 'bottom',
+  };
+  const CHmodelExample = {
+    addCategoryEnabled: true,
+    categoryDefaultLabel: 'Category',
+    chartType: 'bar',
+    correctAnswer: {
+      data: [
+        {
+          label: 'A',
+          value: 1
+        },
+        {
+          label: 'B',
+          value: 1
+        },
+        {
+          label: 'C',
+          value: 1
+        },
+      ]
+    },
+    data: [
+      {
+        label: 'A',
+        value: 1,
+        interactive: false,
+        editable: false
+      },
+      {
+        label: 'B',
+        value: 1,
+        interactive: true,
+        editable: false
+      },
+      {
+        label: 'D',
+        value: 2,
+        interactive: true,
+        editable: false
+      },
+    ],
+    domain: {
+      label: 'Characters',
+    },
+    graph: {
+      width: 480,
+      height: 480
+    },
+    prompt: 'Here goes item stem!',
+    promptEnabled: true,
+    rationale: 'Rationale goes here!',
+    range: {
+      label: 'Amount',
+      max: 3,
+      min: 0,
+      labelStep: 1,
+    },
+    title: 'This is a chart!',
+  }
+  const MCmodelExample = {
+    choiceMode: 'checkbox',
+    choicePrefix: 'numbers',
+    choices: [
+      {
+        correct: true,
+        value: 'sweden',
+        label: 'Sweden',
+        feedback: {
+          type: 'none',
+          value: ''
+        },
+        accessibility: 'sweden'
+      },
+      {
+        value: 'iceland',
+        label: 'Iceland',
+        feedback: {
+          type: 'none',
+          value: ''
+        },
+        rationale: 'Rationale for Iceland',
+        accessibility: 'iceland'
+      },
+      {
+        value: 'norway',
+        label: 'Norway',
+        feedback: {
+          type: 'none',
+          value: ''
+        },
+        rationale: 'Rationale for Norway',
+        accessibility: 'norway'
+      },
+      {
+        correct: true,
+        value: 'finland',
+        label: 'Finland',
+        feedback: {
+          type: 'none',
+          value: ''
+        },
+        rationale: 'Rationale for Finland',
+        accessibility: 'finland'
+      }
+    ],
+    prompt: 'Which of these northern European countries are EU members? <math><mstack><msrow><mn>111</mn></msrow><msline/></mstack></math>',
+    promptEnabled: true,
+    toolbarEditorPosition: 'bottom'
+  }
+  const MERmodelExample = {
+    'equationEditor': 3,
+    'toolbarEditorPosition': 'bottom',
+    'prompt': '<p><strong>B.</strong> Find the value of the expression that you wrote in part A to find how much money the band members made.</p>\n\n<p>Use the on-screen keyboard to type your answer in the box below.</p>\n',
+    'expression': '${{response}}',
+    'responses': [
+      {
+        'allowSpaces': true,
+        // 'validation': 'symbolic',
+        'answer': '$410',
+        'id': '1'
+      }
+    ],
+    'note': 'The answer shown above is the primary correct answer specified by the author for this item, but other answers may also be recognized as correct.',
+    'responseType': 'Advanced Multi'
+  };
+  const DITBmodelExample = {
+    'rationaleEnabled': true,
+    'promptEnabled': true,
+    'teacherInstructionsEnabled': true,
+    'studentInstructionsEnabled': true,
+    'rationale': null,
+    'prompt': '<p>Drag and drop the correct array into the box next to the matching word problem.</p>',
+    'lockChoiceOrder': true,
+    'choicesPosition': 'below',
+    'partialScoring': true,
+    'choices': [
+      {
+        'id':'0',
+        'value':'<img alt="" src="https://app.fluence.net/ia/image/3099cb73d5fe400b91b72f2606d1211c" />'
+      },
+      {
+        'id':'1',
+        'value':'<img alt="" src="https://app.fluence.net/ia/image/cc6e862dad4749d4a1ae6540ea775179" />'
+      },
+      {
+        'id':'2',
+        'value':'<img alt="" src="https://app.fluence.net/ia/image/ab3e342a466941a1a608f65eb7ec1c68" />'
+      }
+    ],
+    'markup': '<table class="table table-bordered table-striped">\n\t<tbody>\n\t\t<tr>\n\t\t\t<td class="text-center"><strong>Word Problem</strong></td>\n\t\t\t<td class="text-center"><strong>Array</strong></td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td>\n\t\t\t<p>Jamie is buying color pencils for an art project. There are 8 colored pencils in each pack. She buys 3 packs of colored pencils. How many colored pencils did she buy for her art project?</p>\n\t\t\t</td>\n\t\t\t<td>\n\t\t\t<p>{{0}}</p>\n\t\t\t</td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td>\n\t\t\t<p>Mark has 36 jelly beans to split between 9 friends. How many jelly beans will each friend get?</p>\n\t\t\t</td>\n\t\t\t<td>\n\t\t\t<p>{{1}}</p>\n\t\t\t</td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td>\n\t\t\t<p>Mr. Smith drinks 5 bottles of water each day. If there are 7 days in a week, how many bottles of water does Mr. Smith drink in 1 week?</p>\n\t\t\t</td>\n\t\t\t<td>\n\t\t\t<p>{{2}}</p>\n\t\t\t</td>\n\t\t</tr>\n\t</tbody>\n</table>\n',
+    'correctResponse': {
+      '0': '1',
+      '1': '0',
+      '2': '2'
+    },
+    'duplicates': false,
+    'feedback': {},
+    'mode': 'gather',
+    'disabled': false,
+    'teacherInstructions': null,
+    'toolbarEditorPosition': 'bottom'
+  }
+
+  const config = {
+    "models": [
+      {
+        ...MCmodelExample,
+        id: '1',
+        element: 'multiple-choice'
+      },
+      {
+        ...MERmodelExample,
+        id: '2',
+        element: 'math-inline'
+      },
+      {
+        ...CATmodelExample,
+        id: '3',
+        element: 'pie-categorize'
+      },
+      {
+        ...CHmodelExample,
+        id: '4',
+        element: 'pie-charting'
+      },
+      {
+        ...DITBmodelExample,
+        id: '5',
+        element: 'drag-in-the-blank'
+      },
+    ],
+    "markup":
+      "<multiple-choice id=1></multiple-choice>" +
+      "<math-inline id=2></math-inline>" +
+      "<pie-categorize id=3></pie-categorize>" +
+      "<pie-charting id=4></pie-charting>" +
+      "<pie-drag-in-the-blank id=5></pie-drag-in-the-blank>",
+    "elements": {
+      "pie-drag-in-the-blank": "@pie-element/drag-in-the-blank@latest",
+      "pie-charting": "@pie-element/charting@latest",
+      "pie-categorize": "@pie-element/categorize@latest",
+      "math-inline": "@pie-element/math-inline@latest",
+      "multiple-choice": "@pie-element/multiple-choice@latest"
+    }
+  };
+
+  author.config = config;
+
+  document.querySelector('#score').onclick = async () => {
+    document.querySelector('#score-results').innerHTML = '';
+
+    // THIS is what you need to GET SCORE
+    // call function to get score for the item(s) in player
+    const results = await document.querySelector('pie-player').provideScore();
+
+    results.forEach(result => {
+      // get only element id and resulted score
+      const { id, score } = result;
+      const scoreParagraph = document.createElement('p');
+
+      scoreParagraph.innerText = `id: ${id}, score: ${score}`;
+
+      document.querySelector('#score-results').appendChild(scoreParagraph);
+    });
+  }
+</script>
+</body>
+</html>
