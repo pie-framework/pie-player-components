@@ -64,6 +64,6 @@ type PieController = {
   model: (config: Object, session: Object, env: Object) => Promise<Object>;
   score: (config: Object, session: Object, env: Object) => Promise<Object>;
   createCorrectResponseSession: (config: Object, env: Object) => Promise<Object>;
-  validate: (model: Object, config: Object) => Object;
+  validate: (model: Object, config: Object) => any;
 };
 
