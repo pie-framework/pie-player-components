@@ -166,8 +166,13 @@ export class Author {
             errors,
           };
 
-          // here we return a boolean value if models are valid or not
-          hasErrors = hasErrors || _isEmpty(errors);
+          // for ebsr
+          if (errors && errors.partA && errors.partB) {
+            hasErrors = hasErrors || (!_isEmpty(errors.partA) || !_isEmpty(errors.partB));
+          } else {
+            // here we return a boolean value if models are valid or not
+            hasErrors = hasErrors || !_isEmpty(errors);
+          }
         }
       }
     });
