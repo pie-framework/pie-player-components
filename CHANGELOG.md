@@ -1,3 +1,12 @@
+## [0.29.1](https://github.com/pie-framework/pie-player-components/compare/v0.29.0...v0.29.1) (2022-08-02)
+
+
+### Bug Fixes
+
+* validate method declaration ([88c3179](https://github.com/pie-framework/pie-player-components/commit/88c31798bf61f4d1cb0b38a252f33b7fd699f521))
+* validate prop in controller interface declaration ([3863b72](https://github.com/pie-framework/pie-player-components/commit/3863b7215992f9fd655763d10fed0154c855bf29))
+* validation method ([9de5761](https://github.com/pie-framework/pie-player-components/commit/9de5761085ea9892245554ae7bd2b53a6517d39d))
+
 # [0.29.0](https://github.com/pie-framework/pie-player-components/compare/v0.28.4...v0.29.0) (2022-07-28)
 
 
