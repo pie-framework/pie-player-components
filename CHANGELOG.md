@@ -1,3 +1,11 @@
+## [0.29.2](https://github.com/pie-framework/pie-player-components/compare/v0.29.1...v0.29.2) (2022-08-08)
+
+
+### Bug Fixes
+
+* change return object of validation method ([794e2ec](https://github.com/pie-framework/pie-player-components/commit/794e2ec0f3914a06b55b147057c202e0ba2eeb4a))
+* validation method - change map with reduce ([3c254a9](https://github.com/pie-framework/pie-player-components/commit/3c254a9cbb79c6d1dc4abad3261e769a1951e4b7))
+
 ## [0.29.1](https://github.com/pie-framework/pie-player-components/compare/v0.29.0...v0.29.1) (2022-08-02)
 
 
