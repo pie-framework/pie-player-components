@@ -143,6 +143,7 @@ export class Author {
     }
 
     let hasErrors = false;
+    let validatedModels = [];
 
     (this.pieContentModel.models || []).map(model => {
       let pieEl: PieElement = this.el.querySelector(`[id='${model.id}']`);
@@ -173,11 +174,18 @@ export class Author {
             // here we return a boolean value if models are valid or not
             hasErrors = hasErrors || !_isEmpty(errors);
           }
+
+          validatedModels.push({
+            ...model,
+            errors,
+          })
+        } else {
+          validatedModels.push(model)
         }
       }
     });
 
-    return hasErrors;
+    return { hasErrors, validatedModels };
   }
 
 
