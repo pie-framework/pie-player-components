@@ -139,13 +139,10 @@ export class Author {
     if (!this.pieContentModel || !this.pieContentModel.models) {
       console.error('No pie content model');
 
-      return false;
+      return { hasErrors: false, validatedModels: {} };
     }
 
-    let hasErrors = false;
-    let validatedModels = [];
-
-    (this.pieContentModel.models || []).map(model => {
+    return (this.pieContentModel.models || []).reduce((acc: any, model) => {
       let pieEl: PieElement = this.el.querySelector(`[id='${model.id}']`);
       !pieEl && (pieEl = this.el.querySelector(`[pie-id='${model.id}']`));
 
@@ -169,23 +166,28 @@ export class Author {
 
           // for ebsr
           if (errors && errors.partA && errors.partB) {
-            hasErrors = hasErrors || (!_isEmpty(errors.partA) || !_isEmpty(errors.partB));
+            acc.hasErrors = acc.hasErrors || (!_isEmpty(errors.partA) || !_isEmpty(errors.partB));
           } else {
             // here we return a boolean value if models are valid or not
-            hasErrors = hasErrors || !_isEmpty(errors);
+            acc.hasErrors = acc.hasErrors || !_isEmpty(errors);
           }
 
-          validatedModels.push({
-            ...model,
-            errors,
-          })
+          acc.validatedModels = {
+            ...acc.validatedModels,
+            [model.id]: {
+              ...model,
+              errors,
+            }
+          };
         } else {
-          validatedModels.push(model)
+          acc.validatedModels = {
+            ...acc.validatedModels,
+            [model.id]: model,
+          }
         }
       }
-    });
-
-    return { hasErrors, validatedModels };
+      return acc;
+    }, { hasErrors: false, validatedModels: {} });
   }
 
 
