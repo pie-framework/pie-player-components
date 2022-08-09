@@ -1,3 +1,10 @@
+## [0.29.3](https://github.com/pie-framework/pie-player-components/compare/v0.29.2...v0.29.3) (2022-08-09)
+
+
+### Bug Fixes
+
+* update pie-lib math rendering ([f3418b4](https://github.com/pie-framework/pie-player-components/commit/f3418b442ee2e55b77da2761a4a4f0c4e39b24b8))
+
 ## [0.29.2](https://github.com/pie-framework/pie-player-components/compare/v0.29.1...v0.29.2) (2022-08-08)
 
 
