@@ -1054,10 +1054,10 @@
   resolved "https://registry.yarnpkg.com/@pie-framework/pie-player-events/-/pie-player-events-0.1.0.tgz#0150904118fd604559982ab658967811c053ffe3"
   integrity sha512-6H1tlRGmcZ3Wt+8HMqu5KugVcwwyNrMylfI5rIpvOSt0T82QDmjRj+2sPgQG5zos/w6MtwUqn/QZ+8Rq2EXSOA==
 
-"@pie-lib/math-rendering@^2.4.3":
-  version "2.4.3"
-  resolved "https://registry.yarnpkg.com/@pie-lib/math-rendering/-/math-rendering-2.4.3.tgz#a9db9be47e1763da00befc5139525974b74fd967"
-  integrity sha512-UOooy372DMQ37WMw0CEkRKmvCVZoeJUopRvbO+fVVELBxAqugsUUXFyhfZIK9sYlM824gOufplqBpYdiifnONw==
+"@pie-lib/math-rendering@^2.4.5":
+  version "2.4.5"
+  resolved "https://registry.yarnpkg.com/@pie-lib/math-rendering/-/math-rendering-2.4.5.tgz#2978f9b94d8403a035a78de0019121fbdfeabce1"
+  integrity sha512-BdAi4bQX8lugjbLa/7v2CvEf9cQMHFTvrPLtCbmx6dhH9DxMCnANzcSgE7GB8W4wxMzy2AvhBdcIe4cYZsPALQ==
   dependencies:
     debug "^4.1.1"
     lodash "^4.17.11"
