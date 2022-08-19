@@ -69,7 +69,7 @@ export namespace Components {
     * external providers can set this if they need to upload the assets to the cloud etc. by default we use data urls
     */
     'imageSupport': ExternalImageSupport;
-    'validateModels': () => Promise<boolean>;
+    'validateModels': () => Promise<any>;
     'version': string;
   }
   interface PieEmbed {}

@@ -36,6 +36,17 @@ The class `pie-loading` will be added to the element while assets are being load
 
 ## Methods
 
+### `addMultiTraitRubricToConfig(config: ItemConfig, multiTraitRubricModel?: any) => Promise<PieContent>`
+
+Utility method to add a `@pie-element/multi-trait-rubric` section to an item config when creating an item should be used before setting the config.
+*
+
+#### Returns
+
+Type: `Promise<PieContent>`
+
+
+
 ### `addRubricToConfig(config: ItemConfig, rubricModel?: any) => Promise<PieContent>`
 
 <span style="color:red">**[DEPRECATED]**</span> this method is for temporary use, will be removed at next major release<br/><br/>Utility method to add a `@pie-element/rubric` section to an item config when creating an item should be used before setting the config.
@@ -43,6 +54,16 @@ The class `pie-loading` will be added to the element while assets are being load
 #### Returns
 
 Type: `Promise<PieContent>`
+
+
+
+### `validateModels() => Promise<any>`
+
+
+
+#### Returns
+
+Type: `Promise<any>`
 
 
 
