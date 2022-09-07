@@ -15,6 +15,7 @@ const ECR_model = {
 const MC_model = {
   id: "1",
   element: 'pie-multiple-choice',
+  shouldHaveComplexRubric: true,
   prompt:
     'Which of these northern European countries are EU members?',
   choiceMode: 'checkbox',

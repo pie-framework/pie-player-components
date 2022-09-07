@@ -25,6 +25,13 @@ import {
 export namespace Components {
   interface PieAuthor {
     /**
+    * Utility method to add a `@pie-element/rubric` section to an item config when creating an item should be used before setting the config.
+    * @deprecated this method is for temporary use, will be removed at next major release
+    * @param config the item config to mutate
+    * @param rubricModel
+    */
+    'addComplexRubricToConfig': (config: ItemConfig, rubricModel?: any) => Promise<any>;
+    /**
     * Utility method to add a `@pie-element/multi-trait-rubric` section to an item config when creating an item should be used before setting the config. *
     * @param config the item config to mutate
     * @param multiTraitRubricModel

@@ -22,7 +22,7 @@ import {pieContentFromConfig} from "../../utils/utils";
 import parseNpm from "parse-package-name";
 import _isEqual from "lodash/isEqual";
 import _isEmpty from "lodash/isEmpty";
-import {addMultiTraitRubric, addPackageToContent, addRubric} from "../../rubric-utils";
+import {addComplexRubric, addMultiTraitRubric, addPackageToContent, addRubric} from "../../rubric-utils";
 
 import {
   ModelUpdatedEvent,
@@ -139,7 +139,7 @@ export class Author {
     if (!this.pieContentModel || !this.pieContentModel.models) {
       console.error('No pie content model');
 
-      return { hasErrors: false, validatedModels: {} };
+      return {hasErrors: false, validatedModels: {}};
     }
 
     return (this.pieContentModel.models || []).reduce((acc: any, model) => {
@@ -187,7 +187,7 @@ export class Author {
         }
       }
       return acc;
-    }, { hasErrors: false, validatedModels: {} });
+    }, {hasErrors: false, validatedModels: {}});
   }
 
 
@@ -249,10 +249,13 @@ export class Author {
   @Watch("config")
   async watchConfig(newValue, oldValue) {
     if (newValue && !_isEqual(newValue, oldValue)) {
+      console.log('watchConfig');
       try {
         this.elementsLoaded = false;
         this._modelLoadedState = false;
         this.pieContentModel = pieContentFromConfig(newValue);
+        this.rubricParser();
+        await this.addComplexRubricToConfig(this.config);
         this.addConfigTags(this.pieContentModel);
         this.loadPieElements();
       } catch (error) {
@@ -327,6 +330,38 @@ export class Author {
     }
   }
 
+  rubricParser() {
+    let shouldHaveComplexRubric = false;
+
+    this.pieContentModel.models.forEach(m => {
+      if (m.shouldHaveComplexRubric) {
+        shouldHaveComplexRubric = true;
+      }
+    });
+
+    if (shouldHaveComplexRubric) {
+      const toEliminate = Object.keys(this.pieContentModel.elements).filter(key => this.pieContentModel.elements[key] === "@pie-element/rubric");
+      toEliminate.forEach(async key => {
+        const newElements = this.pieContentModel.elements;
+        delete newElements[key];
+
+        const tempDiv = this.doc.createElement("div");
+        tempDiv.innerHTML = this.pieContentModel.markup;
+
+        tempDiv.querySelector(key).remove();
+
+        // we should check this because there are 2 types of configs (one simple, one for stimulus)
+        this.config = {
+          ...this.config,
+          elements: newElements,
+          models: this.pieContentModel.models.filter(model => model.element !== key),
+          markup: tempDiv.innerHTML
+        }
+      })
+    } else {
+    }
+  }
+
   componentDidUnload() {
     this.el.removeEventListener(InsertImageEvent.TYPE, this.handleInsertImage);
     this.el.removeEventListener(DeleteImageEvent.TYPE, this.handleDeleteImage);
@@ -351,7 +386,10 @@ export class Author {
             Object.assign(m, e.update);
           }
         });
+
+        this.rubricParser();
       }
+
       if (this._modelLoadedState) {
         this.modelUpdated.emit(this.pieContentModel);
       }
@@ -432,6 +470,34 @@ export class Author {
    * @param rubricModel
    */
   @Method()
+  async addComplexRubricToConfig(config: ItemConfig, rubricModel?) {
+    if (!rubricModel) {
+      rubricModel = {
+        id: "rubric",
+        element: "pie-rubric",
+        points: ["New", "Complex", "Rubric", "Type"],
+        maxPoints: 4,
+        excludeZero: false
+      };
+    }
+    const configPieContent = pieContentFromConfig(config);
+    addPackageToContent(
+      configPieContent,
+      "@pie-element/calculator",
+      rubricModel as PieModel
+    );
+    return addComplexRubric(configPieContent);
+  }
+
+  /**
+   * Utility method to add a `@pie-element/rubric` section to an item config when creating an item should be used before setting the config.
+   *
+   * @deprecated this method is for temporary use, will be removed at next major release
+   *
+   * @param config the item config to mutate
+   * @param rubricModel
+   */
+  @Method()
   async addRubricToConfig(config: ItemConfig, rubricModel?) {
     if (!rubricModel) {
       rubricModel = {
@@ -500,6 +566,7 @@ export class Author {
   }
 
   render() {
+    // console.log('this', this)
     if (this.pieContentModel && this.pieContentModel.markup) {
       const markup = this.getRenderMarkup();
       if (this.addPreview) {
