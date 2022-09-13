@@ -227,7 +227,9 @@ export class Author {
     this.handleInsertImage = (e: InsertImageEvent) => {
       console.log("[handleInsertImage]", e);
       this.imageHandler = e.detail;
-      this.fileInput.click();
+      if (!e.detail.isPasted) {
+        this.fileInput.click();
+      }
     };
 
     this.handleDeleteImage = (e: DeleteImageEvent) => {
