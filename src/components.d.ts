@@ -30,7 +30,7 @@ export namespace Components {
     * @param config the item config to mutate
     * @param rubricModel
     */
-    'addComplexRubricToConfig': (config: ItemConfig, rubricModel?: any) => Promise<any>;
+    'addComplexRubricToConfig': (config: ItemConfig, rubricModel?: any) => Promise<PieContent>;
     /**
     * Utility method to add a `@pie-element/multi-trait-rubric` section to an item config when creating an item should be used before setting the config. *
     * @param config the item config to mutate
