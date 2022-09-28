@@ -1,3 +1,16 @@
+# [0.30.0](https://github.com/pie-framework/pie-player-components/compare/v0.29.4...v0.30.0) (2022-09-28)
+
+
+### Bug Fixes
+
+* don't fire file input click if image is pasted ([ee9c0c0](https://github.com/pie-framework/pie-player-components/commit/ee9c0c029e93c97543260ddb424fb4a557e4cddd))
+
+
+### Features
+
+* add upload support PD-23-updated ([2cb05b7](https://github.com/pie-framework/pie-player-components/commit/2cb05b7e533dcec978c4c6a442a0a968b21e33ad))
+* bump pie-configure-events PD-23-updated ([6f463a1](https://github.com/pie-framework/pie-player-components/commit/6f463a123fd4a2648f1f23db75374f82e214c6e5))
+
 ## [0.29.4](https://github.com/pie-framework/pie-player-components/compare/v0.29.3...v0.29.4) (2022-08-31)
 
 
