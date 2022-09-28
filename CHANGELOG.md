@@ -1,3 +1,10 @@
+# [0.31.0](https://github.com/pie-framework/pie-player-components/compare/v0.30.0...v0.31.0) (2022-09-28)
+
+
+### Features
+
+* bump pie-configure-events PD-1960 ([fe4f96c](https://github.com/pie-framework/pie-player-components/commit/fe4f96c1b77d4d227d7d674eb92786a949504492))
+
 # [0.30.0](https://github.com/pie-framework/pie-player-components/compare/v0.29.4...v0.30.0) (2022-09-28)
 
 
