@@ -28,12 +28,18 @@ import {
   ModelUpdatedEvent,
   InsertImageEvent,
   DeleteImageEvent,
+  InsertSoundEvent,
+  DeleteSoundEvent,
   ImageHandler
 } from "@pie-framework/pie-configure-events";
 import {
   DataURLImageSupport,
   ExternalImageSupport
 } from "./dataurl-image-support";
+import {
+  DataURLUploadSoundSupport,
+  ExternalUploadSoundSupport
+} from "./dataurl-upload-sound-support";
 import {VERSION} from "../../version";
 
 /**
@@ -124,11 +130,17 @@ export class Author {
   handleFileInputChange: (e: Event) => void;
   handleInsertImage: (e: InsertImageEvent) => void;
   handleDeleteImage: (e: DeleteImageEvent) => void;
+  handleInsertSound: (e: InsertSoundEvent) => void;
+  handleDeleteSound: (e: DeleteSoundEvent) => void;
   handleSetConfigElement: (e: CustomEvent) => void;
 
   /** external providers can set this if they need to upload the assets to the cloud etc. by default we use data urls */
   @Prop({reflect: false})
   imageSupport: ExternalImageSupport = new DataURLImageSupport();
+
+  /** external providers can set this if they need to upload the assets to the cloud etc. by default we use data urls */
+  @Prop({reflect: false})
+  uploadSoundSupport: ExternalUploadSoundSupport = new DataURLUploadSoundSupport();
 
   @Prop({mutable: false, reflect: false})
   version: string = VERSION;
@@ -227,12 +239,24 @@ export class Author {
     this.handleInsertImage = (e: InsertImageEvent) => {
       console.log("[handleInsertImage]", e);
       this.imageHandler = e.detail;
-      this.fileInput.click();
+      if (!e.detail.isPasted) {
+        this.fileInput.click();
+      }
     };
 
     this.handleDeleteImage = (e: DeleteImageEvent) => {
       console.log("[handleDeleteImage ..]", e);
       this.imageSupport.delete(e.detail.src, e.detail.done);
+    };
+
+    this.handleInsertSound = (e: InsertSoundEvent) => {
+      console.log("[handleInsertSound]", e);
+      this.uploadSoundSupport.insert(e.detail.fileChosen, e.detail.done)
+    };
+
+    this.handleDeleteSound = (e: DeleteImageEvent) => {
+      console.log("[handleDeleteSound ..]", e);
+      this.uploadSoundSupport.delete(e.detail.src, e.detail.done);
     };
   }
 
@@ -331,6 +355,9 @@ export class Author {
     this.el.removeEventListener(InsertImageEvent.TYPE, this.handleInsertImage);
     this.el.removeEventListener(DeleteImageEvent.TYPE, this.handleDeleteImage);
 
+    this.el.removeEventListener(InsertSoundEvent.TYPE, this.handleInsertSound);
+    this.el.removeEventListener(DeleteSoundEvent.TYPE, this.handleDeleteSound);
+
     if (this.fileInput) {
       this.fileInput.removeEventListener("change", this.handleFileInputChange);
     }
@@ -359,6 +386,9 @@ export class Author {
 
     this.el.addEventListener(InsertImageEvent.TYPE, this.handleInsertImage);
     this.el.addEventListener(DeleteImageEvent.TYPE, this.handleDeleteImage);
+
+    this.el.addEventListener(InsertSoundEvent.TYPE, this.handleInsertSound);
+    this.el.addEventListener(DeleteSoundEvent.TYPE, this.handleDeleteSound);
   }
 
   async componentDidLoad() {

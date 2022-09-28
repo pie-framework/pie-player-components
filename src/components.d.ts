@@ -21,6 +21,9 @@ import {
 import {
   ExternalImageSupport,
 } from './components/pie-author/dataurl-image-support';
+import {
+  ExternalUploadSoundSupport,
+} from './components/pie-author/dataurl-upload-sound-support';
 
 export namespace Components {
   interface PieAuthor {
@@ -69,6 +72,10 @@ export namespace Components {
     * external providers can set this if they need to upload the assets to the cloud etc. by default we use data urls
     */
     'imageSupport': ExternalImageSupport;
+    /**
+    * external providers can set this if they need to upload the assets to the cloud etc. by default we use data urls
+    */
+    'uploadSoundSupport': ExternalUploadSoundSupport;
     'validateModels': () => Promise<any>;
     'version': string;
   }
@@ -228,6 +235,10 @@ declare namespace LocalJSX {
     * Emmitted when the model for the content has been updated within the ui due to user action.
     */
     'onModelUpdated'?: (event: CustomEvent<any>) => void;
+    /**
+    * external providers can set this if they need to upload the assets to the cloud etc. by default we use data urls
+    */
+    'uploadSoundSupport'?: ExternalUploadSoundSupport;
     'version'?: string;
   }
   interface PieEmbed {}
