@@ -21,7 +21,8 @@
     elements: {
       'pie-multiple-choice': '@pie-element/multiple-choice@latest'
     },
-    models: [MC_model],
+    // TODO replace teacherInstructionsEnabled -> withRubric
+    models: [{ ...MC_model, teacherInstructionsEnabled: true }],
     markup: "<pie-multiple-choice id='1'></pie-multiple-choice>"
   };
 
