@@ -230,6 +230,7 @@ export class Player {
 
   @Method()
   async provideScore() {
+    // TODO I think we have to check if it's hosted or not to expose this function
     if (!this.pieContentModel || !this.pieContentModel.models) {
       console.error('No pie content model');
 
