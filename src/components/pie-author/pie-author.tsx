@@ -22,7 +22,7 @@ import {pieContentFromConfig} from "../../utils/utils";
 import parseNpm from "parse-package-name";
 import _isEqual from "lodash/isEqual";
 import _isEmpty from "lodash/isEmpty";
-import {addMultiTraitRubric, addPackageToContent, addRubric} from "../../rubric-utils";
+import {addComplexRubric, addPackageToContent} from "../../rubric-utils";
 
 import {
   ModelUpdatedEvent,
@@ -151,7 +151,7 @@ export class Author {
     if (!this.pieContentModel || !this.pieContentModel.models) {
       console.error('No pie content model');
 
-      return { hasErrors: false, validatedModels: {} };
+      return {hasErrors: false, validatedModels: {}};
     }
 
     return (this.pieContentModel.models || []).reduce((acc: any, model) => {
@@ -199,9 +199,8 @@ export class Author {
         }
       }
       return acc;
-    }, { hasErrors: false, validatedModels: {} });
+    }, {hasErrors: false, validatedModels: {}});
   }
-
 
   constructor() {
     this.handleFileInputChange = (e: Event) => {
@@ -270,6 +269,138 @@ export class Author {
     }
   }
 
+  removeRubricFromMarkup(rubricElements) {
+    const tempDiv = this.doc.createElement("div");
+
+    tempDiv.innerHTML = this.pieContentModel.markup;
+
+    const elsWithId = tempDiv.querySelectorAll("[id]");
+
+    elsWithId.forEach(el => {
+      const pieElName = el.tagName.toLowerCase().split("-config")[0];
+
+      if (rubricElements.includes(pieElName)) {
+        try {
+          tempDiv.querySelector(`#${el.id}`).remove();
+        } catch (e) {
+          console.log(e.toString());
+        }
+      }
+    });
+
+    const newMarkup = tempDiv.innerHTML;
+
+    tempDiv.remove();
+
+    return newMarkup;
+  }
+
+  removeRubricItemTypes(rubricElements) {
+    if (!rubricElements.length || !this.pieContentModel.models) {
+      return [];
+    }
+
+    // save the rubric and multi-trait-rubric models that we're going to delete
+    const deletedModels = this.pieContentModel.models.filter(model => rubricElements.includes(model.element));
+
+    // delete the rubric and multi-trait-rubric elements
+    rubricElements.forEach(rubricElementKey => delete this.pieContentModel.elements[rubricElementKey]);
+
+    // delete the rubric and multi-trait-rubric models
+    this.pieContentModel.models = this.pieContentModel.models.filter(model => !rubricElements.includes(model.element));
+
+    // delete the rubric and multi-trait-rubric nodes from markup
+    this.pieContentModel.markup = this.removeRubricFromMarkup(rubricElements);
+
+    return deletedModels;
+  }
+
+  addComplexRubric(complexRubricModel) {
+    // add complex-rubric
+    addPackageToContent(
+      this.pieContentModel,
+      "@pie-element/complex-rubric",
+      complexRubricModel as PieModel
+    );
+
+    this.pieContentModel = addComplexRubric(this.pieContentModel);
+  }
+
+  /**
+   * The main flows for parsing an item config:
+   *
+   * When player gets initialized:
+   *  1. IF has rubric
+   *    A. IF at least one model has withRubric = true => we replace rubric item with complex-rubric item (that will contain old rubric item data)
+   *    B. IF no model has withRubric = true => we remove rubric item from item config
+   *  2. ELSE IF doesn't have rubric
+   *    A. IF at least one model has withRubric = true => we add a complex-rubric item (that will be empty)
+   *    B. IF no model has withRubric = true => we do nothing
+   *
+   * When a model gets updated, we check again:
+   *  1. IF there's at least one model that has withRubric = true
+   *     A. IF there was a complex-rubric => we do nothing
+   *    B. IF there was no complex-rubric => we add a complex-rubric item (that will be empty)
+   *  2. IF there's no model that has withRubric = true
+   *    A. IF there was a complex-rubric => we remove complex-rubric
+   *    B. IF there was no complex-rubric => we do nothing
+   */
+  parseComplexRubric() {
+    // load all rubric and multi-trait-rubric items
+    const rubricElements = Object.keys(this.pieContentModel.elements).filter(key => this.pieContentModel.elements[key].indexOf('rubric') >= 0 && this.pieContentModel.elements[key].indexOf('complex-rubric') < 0);
+
+    // delete all rubric items and store them for later conversion
+    const deletedModels = this.removeRubricItemTypes(rubricElements);
+
+    // TODO replace teacherInstructionsEnabled -> withRubric
+    const shouldHaveComplexRubric = this.pieContentModel.models.filter(model => model.teacherInstructionsEnabled).length;
+    const hasComplexRubric = Object.keys(this.pieContentModel.elements).filter(key => this.pieContentModel.elements[key].indexOf('complex-rubric') >= 0).length;
+
+    const baseComplexRubricModel = {
+      id: "complex-rubric",
+      element: "pie-complex-rubric",
+    };
+
+    if (shouldHaveComplexRubric) {
+      if (!deletedModels.length) {
+        // if should have complex rubric and there was no rubric, just add one from scratch
+        this.addComplexRubric(baseComplexRubricModel);
+      } else {
+        // if should have complex rubric and there were rubric items, use them to add the new complex-rubric
+        // TODO should we have support for multi rubrics (items/multi-items with more than one rubric item)?
+        const deletedModel = deletedModels[0];
+        let type;
+
+        // we check what type of rubric item we removed in order to set the type for the new complex-rubric
+        if (deletedModel.element.indexOf('multi-trait') >= 0) {
+          type = 'multiTraitRubric';
+        } else if (deletedModel.element.indexOf('rubric') >= 0) {
+          type = 'simpleRubric';
+        }
+
+        // TODO I think there's no need for id and element
+        delete deletedModel.id;
+        delete deletedModel.element;
+
+        this.addComplexRubric({
+          ...baseComplexRubricModel,
+          type,
+          rubrics: {
+            [type]: deletedModel
+          }
+        });
+      }
+    } else if (hasComplexRubric) {
+      // if should not have complex-rubric, but it has, then delete complex-rubric
+      // load all complex-rubric items
+      const rubricElements = Object.keys(this.pieContentModel.elements).filter(key => this.pieContentModel.elements[key].indexOf('complex-rubric') >= 0);
+
+      this.removeRubricItemTypes(rubricElements);
+    }
+
+    this.pieContentModel = pieContentFromConfig(this.pieContentModel);
+  }
+
   @Watch("config")
   async watchConfig(newValue, oldValue) {
     if (newValue && !_isEqual(newValue, oldValue)) {
@@ -277,6 +408,7 @@ export class Author {
         this.elementsLoaded = false;
         this._modelLoadedState = false;
         this.pieContentModel = pieContentFromConfig(newValue);
+        this.parseComplexRubric();
         this.addConfigTags(this.pieContentModel);
         this.loadPieElements();
       } catch (error) {
@@ -379,8 +511,21 @@ export class Author {
           }
         });
       }
+
       if (this._modelLoadedState) {
         this.modelUpdated.emit(this.pieContentModel);
+      }
+
+      // TODO replace teacherInstructionsEnabled -> withRubric
+      const shouldHaveComplexRubric = this.pieContentModel.models.filter(model => model.teacherInstructionsEnabled).length;
+      const hasComplexRubric = Object.keys(this.pieContentModel.elements).filter(key => this.pieContentModel.elements[key].indexOf('complex-rubric') >= 0).length;
+
+      if ((shouldHaveComplexRubric && !hasComplexRubric)
+        || (!shouldHaveComplexRubric && hasComplexRubric)) {
+        this.parseComplexRubric();
+
+        // TODO this causes reloading the entire element; can we load only the new item type?
+        this.watchConfig(this.pieContentModel, {});
       }
     });
 
@@ -455,78 +600,29 @@ export class Author {
 
   /**
    * Utility method to add a `@pie-element/rubric` section to an item config when creating an item should be used before setting the config.
-   *
-   * @deprecated this method is for temporary use, will be removed at next major release
-   *
+   * @deprecated this method was for temporary use, was removed in the latest major release
    * @param config the item config to mutate
    * @param rubricModel
    */
   @Method()
   async addRubricToConfig(config: ItemConfig, rubricModel?) {
-    if (!rubricModel) {
-      rubricModel = {
-        id: "rubric",
-        element: "pie-rubric",
-        points: ["", "", "", ""],
-        maxPoints: 4,
-        excludeZero: false
-      };
-    }
-    const configPieContent = pieContentFromConfig(config);
-    addPackageToContent(
-      configPieContent,
-      "@pie-element/rubric",
-      rubricModel as PieModel
-    );
-    return addRubric(configPieContent);
+    console.error('addRubricToConfig method was for temporary use, so it was removed in the latest major release');
+
+    return config;
   }
 
   /**
    * Utility method to add a `@pie-element/multi-trait-rubric` section to an item config when creating an item should be used before setting the config.
+   * @deprecated this method was for temporary use, was removed in the latest major release
    **
    * @param config the item config to mutate
    * @param multiTraitRubricModel
    */
   @Method()
   async addMultiTraitRubricToConfig(config: ItemConfig, multiTraitRubricModel?) {
-    if (!multiTraitRubricModel) {
-      multiTraitRubricModel = {
-        id: "multi-trait-rubric",
-        element: "pie-multi-trait-rubric",
-        visibleToStudent: true,
-        halfScoring: false,
-        excludeZero: true,
-        pointLabels: true,
-        description: false,
-        standards: false,
-        scales: [
-          {
-            maxPoints: 4,
-            scorePointsLabels: ['', '', '', ''],
-            traitLabel: 'Trait',
-            traits: [
-              {
-                name: '',
-                standards: [],
-                description: '',
-                scorePointsDescriptors: [
-                  '',
-                  '',
-                  '',
-                  '',
-                  '',
-                ],
-              },]
-          }]
-      }
-    }
-    const configPieContent = pieContentFromConfig(config);
-    addPackageToContent(
-      configPieContent,
-      "@pie-element/multi-trait-rubric",
-      multiTraitRubricModel as PieModel
-    );
-    return addMultiTraitRubric(configPieContent);
+    console.error('addMultiTraitRubricToConfig method was for temporary use, so it was removed in the latest major release');
+
+    return config;
   }
 
   render() {

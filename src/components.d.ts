@@ -13,7 +13,6 @@ import {
 import {
   ItemConfig,
   ItemSession,
-  PieContent,
   PieController,
   PieElement,
   PieModel,
@@ -28,11 +27,12 @@ import {
 export namespace Components {
   interface PieAuthor {
     /**
-    * Utility method to add a `@pie-element/multi-trait-rubric` section to an item config when creating an item should be used before setting the config. *
+    * Utility method to add a `@pie-element/multi-trait-rubric` section to an item config when creating an item should be used before setting the config.
+    * @deprecated this method was for temporary use, was removed in the latest major release *
     * @param config the item config to mutate
     * @param multiTraitRubricModel
     */
-    'addMultiTraitRubricToConfig': (config: ItemConfig, multiTraitRubricModel?: any) => Promise<PieContent>;
+    'addMultiTraitRubricToConfig': (config: ItemConfig, multiTraitRubricModel?: any) => Promise<ItemConfig>;
     /**
     * Adds a preview view which will render the content in another tab as it may appear to a student or instructor.
     */
@@ -43,11 +43,11 @@ export namespace Components {
     'addRubric': boolean;
     /**
     * Utility method to add a `@pie-element/rubric` section to an item config when creating an item should be used before setting the config.
-    * @deprecated this method is for temporary use, will be removed at next major release
+    * @deprecated this method was for temporary use, was removed in the latest major release
     * @param config the item config to mutate
     * @param rubricModel
     */
-    'addRubricToConfig': (config: ItemConfig, rubricModel?: any) => Promise<PieContent>;
+    'addRubricToConfig': (config: ItemConfig, rubricModel?: any) => Promise<ItemConfig>;
     /**
     * Provide this property override the default endpoints used by the player to retrieve JS bundles. Must be set before setting the config property. Most users will not need to use this property.
     */
