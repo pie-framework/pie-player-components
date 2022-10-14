@@ -41,6 +41,12 @@
   }
   const author = document.getElementById('author');
 
+  author.configSettings = {
+    '@pie-element/multiple-choice': {
+      withRubric: { settings: true, label: 'Add Rubric' }
+    }
+  }
+
   // !!! IMPORTANT: use @next versions, only they have the "Add Rubric" Toggle in the Settings Panel
 
   // I Simple
@@ -208,6 +214,7 @@
   //     "id": "8a80808173d98d5a0173e407d8447c96",
   //   }
   // }
+
 
 </script>
 </body>
