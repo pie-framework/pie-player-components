@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/pie-framework/pie-player-components/compare/v1.0.0...v1.0.1) (2022-10-14)
+
+
+### Bug Fixes
+
+* stimulus is being removed when complex-rubric is used ([5544d43](https://github.com/pie-framework/pie-player-components/commit/5544d43e48bcee98b4dfcd85826354b58eab65d9))
+
 # [1.0.0](https://github.com/pie-framework/pie-player-components/compare/v0.31.0...v1.0.0) (2022-10-14)
 
 
