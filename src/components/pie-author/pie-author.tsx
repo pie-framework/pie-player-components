@@ -22,7 +22,7 @@ import {pieContentFromConfig} from "../../utils/utils";
 import parseNpm from "parse-package-name";
 import _isEqual from "lodash/isEqual";
 import _isEmpty from "lodash/isEmpty";
-import {addMultiTraitRubric, addPackageToContent, addRubric} from "../../rubric-utils";
+import {addComplexRubric, addMultiTraitRubric, addPackageToContent, addRubric} from "../../rubric-utils";
 
 import {
   ModelUpdatedEvent,
@@ -41,6 +41,7 @@ import {
   ExternalUploadSoundSupport
 } from "./dataurl-upload-sound-support";
 import {VERSION} from "../../version";
+import cloneDeep from "lodash/cloneDeep";
 
 /**
  * Pie Author will load a Pie Content model for authoring.
@@ -151,7 +152,7 @@ export class Author {
     if (!this.pieContentModel || !this.pieContentModel.models) {
       console.error('No pie content model');
 
-      return { hasErrors: false, validatedModels: {} };
+      return {hasErrors: false, validatedModels: {}};
     }
 
     return (this.pieContentModel.models || []).reduce((acc: any, model) => {
@@ -199,7 +200,7 @@ export class Author {
         }
       }
       return acc;
-    }, { hasErrors: false, validatedModels: {} });
+    }, {hasErrors: false, validatedModels: {}});
   }
 
 
@@ -279,9 +280,26 @@ export class Author {
         this.pieContentModel = pieContentFromConfig(newValue);
         this.addConfigTags(this.pieContentModel);
         this.loadPieElements();
+
+        // if it should have complex-rubric, reset config
+        const {shouldHaveComplexRubric, hasComplexRubric} = this.checkComplexRubric(this.pieContentModel);
+
+        if (shouldHaveComplexRubric && !hasComplexRubric) {
+          this.config = await this.addComplexRubric(this.pieContentModel);
+        }
       } catch (error) {
         console.log(`ERROR ${error}`);
       }
+    }
+  }
+
+  checkComplexRubric = config => {
+    const shouldHaveComplexRubric = config.models.filter(model => model.rubricEnabled).length;
+    const hasComplexRubric = Object.keys(config.elements).filter(key => config.elements[key].indexOf('complex-rubric') >= 0).length;
+
+    return {
+      shouldHaveComplexRubric,
+      hasComplexRubric
     }
   }
 
@@ -369,7 +387,7 @@ export class Author {
     }
     // Note: cannot use the @Listen decorator as creates bundling problems due
     // to `.` in event name.
-    this.el.addEventListener(ModelUpdatedEvent.TYPE, (e: ModelUpdatedEvent) => {
+    this.el.addEventListener(ModelUpdatedEvent.TYPE, async (e: ModelUpdatedEvent) => {
       // set the internal model
       // emit a content-item level event with the model
       if (this.pieContentModel && e.update) {
@@ -381,6 +399,18 @@ export class Author {
       }
       if (this._modelLoadedState) {
         this.modelUpdated.emit(this.pieContentModel);
+      }
+
+      const {shouldHaveComplexRubric, hasComplexRubric} = this.checkComplexRubric(this.pieContentModel);
+
+      if (shouldHaveComplexRubric && !hasComplexRubric) {
+        this.config = await this.addComplexRubric(null);
+      }
+
+      if (!shouldHaveComplexRubric && hasComplexRubric) {
+        const rubricElements = Object.keys(this.pieContentModel.elements).filter(key => this.pieContentModel.elements[key].indexOf('complex-rubric') >= 0);
+
+        this.config = this.removeRubricItemTypes(rubricElements);
       }
     });
 
@@ -451,6 +481,69 @@ export class Author {
         this.renderMath();
       }
     }
+  }
+
+  removeRubricFromMarkup(rubricElements) {
+    const tempDiv = this.doc.createElement("div");
+
+    tempDiv.innerHTML = this.pieContentModel.markup;
+
+    const elsWithId = tempDiv.querySelectorAll("[id]");
+
+    elsWithId.forEach(el => {
+      const pieElName = el.tagName.toLowerCase().split("-config")[0];
+
+      if (rubricElements.includes(pieElName)) {
+        try {
+          tempDiv.querySelector(`#${el.id}`).remove();
+        } catch (e) {
+          console.log(e.toString());
+        }
+      }
+    });
+
+    const newMarkup = tempDiv.innerHTML;
+
+    tempDiv.remove();
+
+    return newMarkup;
+  }
+
+  removeRubricItemTypes(rubricElements) {
+    if (!rubricElements.length || !this.pieContentModel.models) {
+      return this.pieContentModel;
+    }
+
+    const pieContentModel = cloneDeep(this.pieContentModel);
+
+    // delete the rubric and multi-trait-rubric elements
+    rubricElements.forEach(rubricElementKey => delete pieContentModel.elements[rubricElementKey]);
+
+    // delete the rubric and multi-trait-rubric models
+    pieContentModel.models = pieContentModel.models.filter(model => !rubricElements.includes(model.element));
+
+    // delete the rubric and multi-trait-rubric nodes from markup
+    pieContentModel.markup = this.removeRubricFromMarkup(rubricElements);
+
+    return pieContentModel;
+  }
+
+  async addComplexRubric(complexRubricModel) {
+    if (!complexRubricModel) {
+      complexRubricModel = {
+        id: "complex-rubric",
+        element: "pie-complex-rubric",
+      };
+    }
+
+    // add complex-rubric
+    addPackageToContent(
+      this.pieContentModel,
+      "@pie-element/complex-rubric",
+      complexRubricModel as PieModel
+    );
+
+    return addComplexRubric(this.pieContentModel);
   }
 
   /**

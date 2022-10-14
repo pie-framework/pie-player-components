@@ -34,6 +34,25 @@ export const addMarkupForPackage = (
 };
 
 /**
+ * Adds complex-rubric html to markup.
+ * @param content
+ */
+export const addComplexRubric = (content: PieContent): PieContent => {
+  return addMarkupForPackage(
+    cloneDeep(content),
+    "@pie-element/complex-rubric",
+    (id, tag, markup) => {
+      return `
+    ${markup}
+    <div style="width: 75%">
+      <${tag} id="${id}"></${tag}>
+    </div>
+    `;
+    }
+  );
+};
+
+/**
  * Adds rubric html to markup.
  * @param content
  */
