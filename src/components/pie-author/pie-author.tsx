@@ -271,6 +271,8 @@ export class Author {
     }
   }
 
+  isAdvancedItemConfig = (config: any): Boolean => config.pie;
+
   @Watch("config")
   async watchConfig(newValue, oldValue) {
     if (newValue && !_isEqual(newValue, oldValue)) {
@@ -285,7 +287,16 @@ export class Author {
         const {shouldHaveComplexRubric, hasComplexRubric} = this.checkComplexRubric(this.pieContentModel);
 
         if (shouldHaveComplexRubric && !hasComplexRubric) {
-          this.config = await this.addComplexRubric(this.pieContentModel);
+          const newConfig = await this.addComplexRubric();
+
+          if (this.isAdvancedItemConfig(this.config)) {
+            this.config = {
+              ...this.config,
+              pie: newConfig
+            }
+          } else {
+            this.config = newConfig;
+          }
         }
       } catch (error) {
         console.log(`ERROR ${error}`);
@@ -404,13 +415,31 @@ export class Author {
       const {shouldHaveComplexRubric, hasComplexRubric} = this.checkComplexRubric(this.pieContentModel);
 
       if (shouldHaveComplexRubric && !hasComplexRubric) {
-        this.config = await this.addComplexRubric(null);
+        const newConfig = await this.addComplexRubric();
+
+        if (this.isAdvancedItemConfig(this.config)) {
+          this.config = {
+            ...this.config,
+            pie: newConfig
+          }
+        } else {
+          this.config = newConfig;
+        }
       }
 
       if (!shouldHaveComplexRubric && hasComplexRubric) {
         const rubricElements = Object.keys(this.pieContentModel.elements).filter(key => this.pieContentModel.elements[key].indexOf('complex-rubric') >= 0);
 
-        this.config = this.removeRubricItemTypes(rubricElements);
+        const newConfig = this.removeRubricItemTypes(rubricElements);
+
+        if (this.isAdvancedItemConfig(this.config)) {
+          this.config = {
+            ...this.config,
+            pie: newConfig
+          }
+        } else {
+          this.config = newConfig;
+        }
       }
     });
 
@@ -528,13 +557,11 @@ export class Author {
     return pieContentModel;
   }
 
-  async addComplexRubric(complexRubricModel) {
-    if (!complexRubricModel) {
-      complexRubricModel = {
-        id: "complex-rubric",
-        element: "pie-complex-rubric",
-      };
-    }
+  async addComplexRubric() {
+    const complexRubricModel = {
+      id: "complex-rubric",
+      element: "pie-complex-rubric",
+    };
 
     // add complex-rubric
     addPackageToContent(
