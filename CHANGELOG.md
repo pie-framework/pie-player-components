@@ -1,3 +1,16 @@
+# [1.0.0](https://github.com/pie-framework/pie-player-components/compare/v0.31.0...v1.0.0) (2022-10-14)
+
+
+### Features
+
+* add complex-rubric to item config ([11016f8](https://github.com/pie-framework/pie-player-components/commit/11016f8f77ecd8fa43f85ca7c826a069f0d527c9))
+
+
+### BREAKING CHANGES
+
+* automatically add complex-rubric
+The author will automatically add/remove the new item type (complex-rubric) depending on the value of a new property from models (rubricEnabled: Boolean)
+
 # [0.31.0](https://github.com/pie-framework/pie-player-components/compare/v0.30.0...v0.31.0) (2022-09-28)
 
 
