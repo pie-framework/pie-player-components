@@ -39,14 +39,14 @@
 
   author.configSettings = {
     '@pie-element/drawing-response': {
-      withRubric: { settings: true, label: 'Add Rubric 1', enabled: true }
+      withRubric: { settings: true, label: 'Add Rubric..', enabled: true }
     }
   }
   author.config = {
     "pie": {
       "models": [modelMC("1"), modelMC("2")],
       "elements": {
-        "drawing-response": "@pie-element/drawing-response",
+        "drawing-response": "@pie-element/drawing-response@next",
       },
       "id": "1",
       "markup": "<drawing-response id=\"1\"></drawing-response><drawing-response id=\"2\"></drawing-response>"

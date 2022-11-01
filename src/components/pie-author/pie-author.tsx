@@ -524,7 +524,7 @@ export class Author {
 
       if (rubricElements.includes(pieElName)) {
         try {
-          tempDiv.querySelector(`#${el.id}`).remove();
+          tempDiv.querySelector(`#${el.id}`).parentElement.remove();
         } catch (e) {
           console.log(e.toString());
         }
