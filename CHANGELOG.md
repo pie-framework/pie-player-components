@@ -1,3 +1,10 @@
+## [1.0.2](https://github.com/pie-framework/pie-player-components/compare/v1.0.1...v1.0.2) (2022-11-01)
+
+
+### Bug Fixes
+
+* markup was keeping the parent for the complex-rubric element ([3b0dfaa](https://github.com/pie-framework/pie-player-components/commit/3b0dfaaba0d74dff13e53b3a2c7e338f1c952801))
+
 ## [1.0.1](https://github.com/pie-framework/pie-player-components/compare/v1.0.0...v1.0.1) (2022-10-14)
 
 
