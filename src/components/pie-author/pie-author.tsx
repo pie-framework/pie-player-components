@@ -284,33 +284,51 @@ export class Author {
         this.loadPieElements();
 
         // if it should have complex-rubric, reset config
-        const {shouldHaveComplexRubric, hasComplexRubric} = this.checkComplexRubric(this.pieContentModel);
-
-        if (shouldHaveComplexRubric && !hasComplexRubric) {
-          const newConfig = await this.addComplexRubric();
-
-          if (this.isAdvancedItemConfig(this.config)) {
-            this.config = {
-              ...this.config,
-              pie: newConfig
-            }
-          } else {
-            this.config = newConfig;
-          }
-        }
+        await this.checkComplexRubric(this.pieContentModel);
       } catch (error) {
         console.log(`ERROR ${error}`);
       }
     }
   }
 
-  checkComplexRubric = config => {
+  checkComplexRubric = async config => {
+    const elementsKeys = Object.keys(config.elements);
+
+    if (elementsKeys.filter(key => config.elements[key].indexOf('complex-rubric') >= 0).length === elementsKeys.length) {
+      // if item config ONLY has complex-rubrics, then all the steps below are not necessary
+      // this is added to treat the special case of testing complex-rubric in pie-website
+      return;
+    }
+
     const shouldHaveComplexRubric = config.models.filter(model => model.rubricEnabled).length;
     const hasComplexRubric = Object.keys(config.elements).filter(key => config.elements[key].indexOf('complex-rubric') >= 0).length;
 
-    return {
-      shouldHaveComplexRubric,
-      hasComplexRubric
+    if (shouldHaveComplexRubric && !hasComplexRubric) {
+      const newConfig = await this.addComplexRubric();
+
+      if (this.isAdvancedItemConfig(this.config)) {
+        this.config = {
+          ...this.config,
+          pie: newConfig
+        }
+      } else {
+        this.config = newConfig;
+      }
+    }
+
+    if (!shouldHaveComplexRubric && hasComplexRubric) {
+      const rubricElements = Object.keys(this.pieContentModel.elements).filter(key => this.pieContentModel.elements[key].indexOf('complex-rubric') >= 0);
+
+      const newConfig = this.removeRubricItemTypes(rubricElements);
+
+      if (this.isAdvancedItemConfig(this.config)) {
+        this.config = {
+          ...this.config,
+          pie: newConfig
+        }
+      } else {
+        this.config = newConfig;
+      }
     }
   }
 
@@ -412,35 +430,7 @@ export class Author {
         this.modelUpdated.emit(this.pieContentModel);
       }
 
-      const {shouldHaveComplexRubric, hasComplexRubric} = this.checkComplexRubric(this.pieContentModel);
-
-      if (shouldHaveComplexRubric && !hasComplexRubric) {
-        const newConfig = await this.addComplexRubric();
-
-        if (this.isAdvancedItemConfig(this.config)) {
-          this.config = {
-            ...this.config,
-            pie: newConfig
-          }
-        } else {
-          this.config = newConfig;
-        }
-      }
-
-      if (!shouldHaveComplexRubric && hasComplexRubric) {
-        const rubricElements = Object.keys(this.pieContentModel.elements).filter(key => this.pieContentModel.elements[key].indexOf('complex-rubric') >= 0);
-
-        const newConfig = this.removeRubricItemTypes(rubricElements);
-
-        if (this.isAdvancedItemConfig(this.config)) {
-          this.config = {
-            ...this.config,
-            pie: newConfig
-          }
-        } else {
-          this.config = newConfig;
-        }
-      }
+      await this.checkComplexRubric(this.pieContentModel);
     });
 
     this.el.addEventListener(InsertImageEvent.TYPE, this.handleInsertImage);
@@ -524,7 +514,13 @@ export class Author {
 
       if (rubricElements.includes(pieElName)) {
         try {
-          tempDiv.querySelector(`#${el.id}`).parentElement.remove();
+          const parentElement = tempDiv.querySelector(`#${el.id}`).parentElement;
+
+          if (parentElement === tempDiv) {
+            tempDiv.querySelector(`#${el.id}`).remove();
+          } else {
+            parentElement.remove();
+          }
         } catch (e) {
           console.log(e.toString());
         }
