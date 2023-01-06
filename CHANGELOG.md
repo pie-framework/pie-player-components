@@ -1,3 +1,10 @@
+## [1.0.3](https://github.com/pie-framework/pie-player-components/compare/v1.0.2...v1.0.3) (2023-01-06)
+
+
+### Bug Fixes
+
+* complex-rubric was not working in pie-website ([e9e67fa](https://github.com/pie-framework/pie-player-components/commit/e9e67fa7b1b54266a407ef7f25df159674f4c67c))
+
 ## [1.0.2](https://github.com/pie-framework/pie-player-components/compare/v1.0.1...v1.0.2) (2022-11-01)
 
 
