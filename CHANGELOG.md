@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/pie-framework/pie-player-components/compare/v1.0.3...v1.1.0) (2023-01-12)
+
+
+### Features
+
+* ability to set extra default models(for complex-rubric especially) ([24c06dd](https://github.com/pie-framework/pie-player-components/commit/24c06ddff703971e84f28d79ccfc6e3ef3b02901))
+
 ## [1.0.3](https://github.com/pie-framework/pie-player-components/compare/v1.0.2...v1.0.3) (2023-01-06)
 
 
