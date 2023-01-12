@@ -293,17 +293,17 @@ export class Author {
 
   checkComplexRubric = async config => {
     const elementsKeys = Object.keys(config.elements);
+    const complexRubricItemsLength = elementsKeys.filter(key => config.elements[key].indexOf(COMPLEX_RUBRIC) >= 0).length;
 
-    if (elementsKeys.filter(key => config.elements[key].indexOf(COMPLEX_RUBRIC) >= 0).length === elementsKeys.length) {
+    if (complexRubricItemsLength === elementsKeys.length) {
       // if item config ONLY has complex-rubrics, then all the steps below are not necessary
       // this is added to treat the special case of testing complex-rubric in pie-website
       return;
     }
 
     const shouldHaveComplexRubric = config.models.filter(model => model.rubricEnabled).length;
-    const hasComplexRubric = Object.keys(config.elements).filter(key => config.elements[key].indexOf(COMPLEX_RUBRIC) >= 0).length;
 
-    if (shouldHaveComplexRubric && !hasComplexRubric) {
+    if (shouldHaveComplexRubric && !complexRubricItemsLength) {
       const newConfig = await this.addComplexRubric();
 
       if (this.isAdvancedItemConfig(this.config)) {
@@ -316,7 +316,7 @@ export class Author {
       }
     }
 
-    if (!shouldHaveComplexRubric && hasComplexRubric) {
+    if (!shouldHaveComplexRubric && complexRubricItemsLength) {
       const rubricElements = Object.keys(this.pieContentModel.elements).filter(key => this.pieContentModel.elements[key].indexOf(COMPLEX_RUBRIC) >= 0);
       const newConfig = this.removeComplexRubricItemTypes(rubricElements);
 
