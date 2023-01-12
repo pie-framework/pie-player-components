@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/pie-framework/pie-player-components/compare/v1.1.0...v1.1.1) (2023-01-12)
+
+
+### Bug Fixes
+
+* prevent crash ([9ba0b86](https://github.com/pie-framework/pie-player-components/commit/9ba0b86ce24a35f74073e3f5c24d3908d1a2adc8))
+
 # [1.1.0](https://github.com/pie-framework/pie-player-components/compare/v1.0.3...v1.1.0) (2023-01-12)
 
 
