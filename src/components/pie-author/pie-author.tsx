@@ -43,6 +43,8 @@ import {
 import {VERSION} from "../../version";
 import cloneDeep from "lodash/cloneDeep";
 
+const COMPLEX_RUBRIC = 'complex-rubric';
+
 /**
  * Pie Author will load a Pie Content model for authoring.
  * It needs to be run in the context
@@ -146,7 +148,6 @@ export class Author {
   @Prop({mutable: false, reflect: false})
   version: string = VERSION;
 
-
   @Method()
   async validateModels() {
     if (!this.pieContentModel || !this.pieContentModel.models) {
@@ -202,7 +203,6 @@ export class Author {
       return acc;
     }, {hasErrors: false, validatedModels: {}});
   }
-
 
   constructor() {
     this.handleFileInputChange = (e: Event) => {
@@ -280,32 +280,49 @@ export class Author {
         this.elementsLoaded = false;
         this._modelLoadedState = false;
         this.pieContentModel = pieContentFromConfig(newValue);
+
         this.addConfigTags(this.pieContentModel);
         this.loadPieElements();
 
-        // if it should have complex-rubric, reset config
-        await this.checkComplexRubric(this.pieContentModel);
+        // after item is loaded and tags are added, we check the config in order to add/remove complex-rubric
+        await this.checkComplexRubric();
       } catch (error) {
         console.log(`ERROR ${error}`);
       }
     }
   }
 
-  checkComplexRubric = async config => {
-    const elementsKeys = Object.keys(config.elements);
+  /**
+   * This function checks the config, and makes the required updates in order to have author working with complex-rubric
+   */
+  checkComplexRubric = async () => {
+    const elements = this.pieContentModel.elements || {};
+    const elementsKeys = Object.keys(elements || {});
+    // rubricElements: if @pie-element/complex-rubric is one of the config's elements
+    const rubricElements = elementsKeys.filter(key => elements[key] && elements[key].indexOf(COMPLEX_RUBRIC) >= 0);
+    // complexRubricItemsLength: how many complex-rubric elements are declared
+    const complexRubricItemsLength = rubricElements.length;
 
-    if (elementsKeys.filter(key => config.elements[key].indexOf('complex-rubric') >= 0).length === elementsKeys.length) {
+    if (complexRubricItemsLength === elementsKeys.length) {
       // if item config ONLY has complex-rubrics, then all the steps below are not necessary
-      // this is added to treat the special case of testing complex-rubric in pie-website
+      // this is added to treat the special case of testing complex-rubric (as single item type) in pie-website
       return;
     }
 
-    const shouldHaveComplexRubric = config.models.filter(model => model.rubricEnabled).length;
-    const hasComplexRubric = Object.keys(config.elements).filter(key => config.elements[key].indexOf('complex-rubric') >= 0).length;
+    // if at least one model has rubricEnabled = true, then we should have complex-rubric in the config
+    const shouldHaveComplexRubric = (this.pieContentModel.models || []).filter(model => model.rubricEnabled).length;
+    let newConfig;
 
-    if (shouldHaveComplexRubric && !hasComplexRubric) {
-      const newConfig = await this.addComplexRubric();
+    if (shouldHaveComplexRubric && !complexRubricItemsLength) {
+      newConfig = await this.addComplexRubric();
+    }
 
+    if (!shouldHaveComplexRubric && complexRubricItemsLength) {
+      newConfig = this.removeComplexRubricItemTypes(rubricElements);
+    }
+
+    // if there are changes required for complex-rubric, then we have to reset the config
+    if (newConfig) {
       if (this.isAdvancedItemConfig(this.config)) {
         this.config = {
           ...this.config,
@@ -315,21 +332,81 @@ export class Author {
         this.config = newConfig;
       }
     }
+  }
 
-    if (!shouldHaveComplexRubric && hasComplexRubric) {
-      const rubricElements = Object.keys(this.pieContentModel.elements).filter(key => this.pieContentModel.elements[key].indexOf('complex-rubric') >= 0);
+  removeComplexRubricFromMarkup(rubricElements) {
+    const tempDiv = this.doc.createElement("div");
 
-      const newConfig = this.removeRubricItemTypes(rubricElements);
+    tempDiv.innerHTML = this.pieContentModel.markup;
 
-      if (this.isAdvancedItemConfig(this.config)) {
-        this.config = {
-          ...this.config,
-          pie: newConfig
+    const elsWithId = tempDiv.querySelectorAll("[id]");
+
+    elsWithId.forEach(el => {
+      const pieElName = el.tagName.toLowerCase().split("-config")[0];
+
+      // we have to remove the complex-rubric item from the markup
+      if (rubricElements.includes(pieElName)) {
+        try {
+          const parentElement = tempDiv.querySelector(`#${el.id}`).parentElement;
+
+          if (parentElement === tempDiv) {
+            // in some cases, complex-rubric is added in the markup already (without the width: 75% wrapper)
+            // so we have to treat that case as well
+            tempDiv.querySelector(`#${el.id}`).remove();
+          } else {
+            // if complex-rubric was added via authoring, then it has the width: 75% wrapper,
+            // so we have to remove that wrapper as well
+            parentElement.remove();
+          }
+        } catch (e) {
+          console.log(e.toString());
         }
-      } else {
-        this.config = newConfig;
       }
+    });
+
+    const newMarkup = tempDiv.innerHTML;
+
+    tempDiv.remove();
+
+    return newMarkup;
+  }
+
+  removeComplexRubricItemTypes(rubricElements) {
+    if (!rubricElements.length || !this.pieContentModel.models) {
+      return this.pieContentModel;
     }
+
+    const pieContentModel = cloneDeep(this.pieContentModel);
+
+    // delete the rubric and multi-trait-rubric elements
+    rubricElements.forEach(rubricElementKey => delete pieContentModel.elements[rubricElementKey]);
+
+    // delete the rubric and multi-trait-rubric models
+    pieContentModel.models = pieContentModel.models.filter(model => !rubricElements.includes(model.element));
+
+    // delete the rubric and multi-trait-rubric nodes from markup
+    pieContentModel.markup = this.removeComplexRubricFromMarkup(rubricElements);
+
+    return pieContentModel;
+  }
+
+  async addComplexRubric() {
+    // if there is a default model defined for complex-rubric, we have to use it
+    const existingComplexRubricModel = this.config.defaultExtraModels[COMPLEX_RUBRIC];
+    const complexRubricModel = {
+      id: COMPLEX_RUBRIC,
+      element: `pie-${COMPLEX_RUBRIC}`,
+      ...existingComplexRubricModel
+    };
+
+    // add complex-rubric
+    addPackageToContent(
+      this.pieContentModel,
+      "@pie-element/complex-rubric",
+      complexRubricModel as PieModel
+    );
+
+    return addComplexRubric(this.pieContentModel);
   }
 
   addConfigTags(c: PieContent) {
@@ -430,7 +507,7 @@ export class Author {
         this.modelUpdated.emit(this.pieContentModel);
       }
 
-      await this.checkComplexRubric(this.pieContentModel);
+      await this.checkComplexRubric();
     });
 
     this.el.addEventListener(InsertImageEvent.TYPE, this.handleInsertImage);
@@ -502,73 +579,6 @@ export class Author {
     }
   }
 
-  removeRubricFromMarkup(rubricElements) {
-    const tempDiv = this.doc.createElement("div");
-
-    tempDiv.innerHTML = this.pieContentModel.markup;
-
-    const elsWithId = tempDiv.querySelectorAll("[id]");
-
-    elsWithId.forEach(el => {
-      const pieElName = el.tagName.toLowerCase().split("-config")[0];
-
-      if (rubricElements.includes(pieElName)) {
-        try {
-          const parentElement = tempDiv.querySelector(`#${el.id}`).parentElement;
-
-          if (parentElement === tempDiv) {
-            tempDiv.querySelector(`#${el.id}`).remove();
-          } else {
-            parentElement.remove();
-          }
-        } catch (e) {
-          console.log(e.toString());
-        }
-      }
-    });
-
-    const newMarkup = tempDiv.innerHTML;
-
-    tempDiv.remove();
-
-    return newMarkup;
-  }
-
-  removeRubricItemTypes(rubricElements) {
-    if (!rubricElements.length || !this.pieContentModel.models) {
-      return this.pieContentModel;
-    }
-
-    const pieContentModel = cloneDeep(this.pieContentModel);
-
-    // delete the rubric and multi-trait-rubric elements
-    rubricElements.forEach(rubricElementKey => delete pieContentModel.elements[rubricElementKey]);
-
-    // delete the rubric and multi-trait-rubric models
-    pieContentModel.models = pieContentModel.models.filter(model => !rubricElements.includes(model.element));
-
-    // delete the rubric and multi-trait-rubric nodes from markup
-    pieContentModel.markup = this.removeRubricFromMarkup(rubricElements);
-
-    return pieContentModel;
-  }
-
-  async addComplexRubric() {
-    const complexRubricModel = {
-      id: "complex-rubric",
-      element: "pie-complex-rubric",
-    };
-
-    // add complex-rubric
-    addPackageToContent(
-      this.pieContentModel,
-      "@pie-element/complex-rubric",
-      complexRubricModel as PieModel
-    );
-
-    return addComplexRubric(this.pieContentModel);
-  }
-
   /**
    * Utility method to add a `@pie-element/rubric` section to an item config when creating an item should be used before setting the config.
    *
@@ -579,6 +589,8 @@ export class Author {
    */
   @Method()
   async addRubricToConfig(config: ItemConfig, rubricModel?) {
+    console.warn('If you are using complex-rubric, stop using this function to prevent having duplicated rubrics.');
+
     if (!rubricModel) {
       rubricModel = {
         id: "rubric",
@@ -588,12 +600,15 @@ export class Author {
         excludeZero: false
       };
     }
+
     const configPieContent = pieContentFromConfig(config);
+
     addPackageToContent(
       configPieContent,
       "@pie-element/rubric",
       rubricModel as PieModel
     );
+
     return addRubric(configPieContent);
   }
 
@@ -605,6 +620,8 @@ export class Author {
    */
   @Method()
   async addMultiTraitRubricToConfig(config: ItemConfig, multiTraitRubricModel?) {
+    console.warn('If you are using complex-rubric, stop using this function to prevent having duplicated rubrics.');
+
     if (!multiTraitRubricModel) {
       multiTraitRubricModel = {
         id: "multi-trait-rubric",
@@ -636,12 +653,15 @@ export class Author {
           }]
       }
     }
+
     const configPieContent = pieContentFromConfig(config);
+
     addPackageToContent(
       configPieContent,
       "@pie-element/multi-trait-rubric",
       multiTraitRubricModel as PieModel
     );
+
     return addMultiTraitRubric(configPieContent);
   }
 

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0"
+  />
+  <title>Item Preview Layout - add Rubric Demo</title>
+  <script nomodule src="/build/pie-player-components.js"></script>
+  <script type="module" src="/build/pie-player-components.esm.js"></script>
+
+  <!--    <script-->
+  <!--            type="module"-->
+  <!--            src="https://unpkg.com/@pie-framework/pie-player-components@latest/dist/pie-player-components/pie-player-components.esm.js"-->
+  <!--    ></script>-->
+</head>
+<body>
+<pie-author id="author" add-preview="true"></pie-author>
+
+<script>
+  const modelMC = (id, extra) => ({
+    id,
+    element: 'pie-drawing-response',
+    prompt: 'Which of these northern European countries are EU members?',
+    choiceMode: 'checkbox',
+    keyMode: 'numbers',
+    choices: [
+      { correct: true, value: 'sweden', label: 'Sweden' },
+      { value: 'iceland', label: 'Iceland' },
+      { value: 'norway', label: 'Norway' }
+    ],
+    shuffle: false,
+    teacherInstructionsEnabled: false,
+    rationaleEnabled: false,
+    ...extra
+  });
+  const author = document.getElementById('author');
+
+  // !!!!! EVEN if complex-rubric is part of the model, it won't be rendered unless
+  // CASE 1 OR CASE 2 (uncomment one or another to see what is happening)
+  author.configSettings = {
+    '@pie-element/drawing-response': {
+      prompt: { settings: true, label: 'Prompt', enabled: true },
+      withRubric: {
+        settings: true,
+        label: 'Add Rubric..',
+        // CASE 1 => forceEnabled: true
+        // forceEnabled: true
+      }
+    },
+    '@pie-element/complex-rubric': {
+      multiTraitRubric: {
+        showHalfScoring: {
+          settings: true,
+          label: 'ANOTHER LABEL'
+        }
+      }
+    }
+  }
+
+  author.config = {
+    pie: {
+      models: [
+        {
+          ...modelMC("1",
+            // CASE 2 => rubricEnabled: true
+            // { rubricEnabled: true }
+          ),
+        },
+        modelMC("2")
+      ],
+      elements: {
+        'drawing-response': "@pie-element/drawing-response@next",
+      },
+      id: "1",
+      markup: "<drawing-response id=\"1\"></drawing-response><drawing-response id=\"2\"></drawing-response>"
+    },
+    stimulus: {
+      layout: "left",
+      elements: {
+        'pie-passage': "@pie-element/passage@1.7.8"
+      },
+      models: [
+        {
+          element: "pie-passage",
+          id: "8a80808173d98d5a0173e407d8447c96",
+          passages: [
+            {
+              title: "Temperature Control and Chocolate Sculptures",
+              text: "<h3>Temperature Control and Chocolate Sculptures</h3><p>A chocolate artist wants to create small chocolate sculptures that can be purchased as gifts for special occasions. She will create the sculptures in a temperature-controlled room within her chocolate shop. Controlling the temperature of the room is necessary because the visual appearance of chocolate can change if it is heated or cooled outside of a specific temperature range. If the chocolate rises above 18&#176;C, the sculpture may begin to melt and change shape. If the chocolate drops below 15&#176;C, the sculpture may begin to discolor as sugar in the chocolate crystallizes and rises to the surface.</p><p>The artist wants to design a box to transport the chocolate sculptures when they are delivered. The chocolate shop is located in a city where the temperatures range between 22&#176;C and 30&#176;C all year long. The temperature inside of the delivery van is 20&#176;C. The ideal box will be temperature-controlled using a pack that she will design. The pack will hold a chemical substance and 100 grams of water in separate parts of the pack. Squeezing the pack will combine the two substances, causing a chemical reaction to take place that absorbs or releases energy, depending on the substance. The packs will be activated and added to the insulated box, along with the chocolate sculpture, when it is ready to be transported. </p><p>The chocolate artist purchases four different substances: ammonium nitrate, calcium chloride, sodium acetate, and sodium hydroxide. She will test each substance and then choose one to create the temperature-control packs. She will test the effects of each substance by adding various amounts to the 100 grams of water. Her investigation can be viewed in the videos.</p><p></p><pie-embed data-tag=\"embed-pivot\" data-url=\"@pie-framework/embed-pivot/lib/embed-pivot.js\" data-pivot-url=\"https://pivot-interactives-embed.s3-us-west-2.amazonaws.com/illuminate/solution-enthalpy.html\" data-width=\"1200\" data-height=\"800\"></pie-embed>"
+            }
+          ]
+        }
+      ],
+      markup: "<pie-passage id=\"8a80808173d98d5a0173e407d8447c96\"></pie-passage>",
+      id: "8a80808173d98d5a0173e407d8447c96",
+    },
+    defaultExtraModels: {
+      'complex-rubric': {
+        rubrics: {
+          simpleRubric: {},
+          multiTraitRubric: {
+            visibleToStudent: true,
+            halfScoring: true,
+            pointLabels: true,
+            description: false,
+            standards: false,
+            scales: [
+              {
+                excludeZero: false,
+                maxPoints: 1,
+                scorePointsLabels: [
+                  "<div>b</div>",
+                  "<div>a</div>"
+                ],
+                traitLabel: "",
+                traits: [
+                  {
+                    name: "<div>s</div>",
+                    description: "",
+                    standards: [],
+                    scorePointsDescriptors: [
+                      "<div>sa</div>",
+                      "<div>sc</div>"
+                    ]
+                  }
+                ]
+              }
+            ],
+            excludeZero: false,
+            maxPointsEnabled: true,
+            addScaleEnabled: true
+          },
+        },
+        rubricType: "multiTraitRubric"
+      }
+    }
+  }
+
+</script>
+</body>
+</html>
