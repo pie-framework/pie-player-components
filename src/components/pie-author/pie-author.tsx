@@ -392,7 +392,7 @@ export class Author {
 
   async addComplexRubric() {
     // if there is a default model defined for complex-rubric, we have to use it
-    const existingComplexRubricModel = this.config.defaultExtraModels[COMPLEX_RUBRIC];
+    const existingComplexRubricModel = this.config && this.config.defaultExtraModels && this.config.defaultExtraModels[COMPLEX_RUBRIC] || {};
     const complexRubricModel = {
       id: COMPLEX_RUBRIC,
       element: `pie-${COMPLEX_RUBRIC}`,
