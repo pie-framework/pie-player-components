@@ -8,12 +8,12 @@
   />
   <title>Item Preview Layout - add Rubric Demo</title>
   <script nomodule src="/build/pie-player-components.js"></script>
-<!--  <script type="module" src="/build/pie-player-components.esm.js"></script>-->
+    <script type="module" src="/build/pie-player-components.esm.js"></script>
 
-    <script
-      type="module"
-      src="https://unpkg.com/@pie-framework/pie-player-components@latest/dist/pie-player-components/pie-player-components.esm.js"
-    ></script>
+<!--  <script-->
+<!--    type="module"-->
+<!--    src="https://unpkg.com/@pie-framework/pie-player-components@latest/dist/pie-player-components/pie-player-components.esm.js"-->
+<!--  ></script>-->
 </head>
 <body>
 <pie-author id="author" add-preview="true"></pie-author>
@@ -28,7 +28,7 @@
         settings: true,
         label: 'Add Rubric..',
         // !!! IF you want to force having a complex-rubric (without having the Toggle in Settings Panel), then you can uncomment the line below
-        forceEnabled: true         // BE AWARE that this property ONLY works for drawing-response and extended-text-entry
+        // forceEnabled: true         // BE AWARE that this property ONLY works for drawing-response and extended-text-entry
       }
     },
     // THIS IS HOW You can customize complex-rubric's Settings Panel
@@ -54,49 +54,49 @@
       }
     ],
     "markup": "<drawing-response id=\"1\"></drawing-response>",
-    // THIS IS HOW YOU CAN set defaults for complex-rubric models:
-    defaultExtraModels: {
-      'complex-rubric': {
-        id: "p-c-rubric",
-        element: "pp-pie-element-complex-rubric",
-        rubrics: {
-          simpleRubric: {},
-          multiTraitRubric: {
-            visibleToStudent: true,
-            halfScoring: true,
-            pointLabels: true,
-            description: false,
-            standards: false,
-            scales: [
+  }
+
+  // THIS IS HOW YOU CAN set defaults for complex-rubric models:
+  author.defaultComplexRubricModel = {
+    id: "p-c-rubric",
+    element: "pp-pie-element-complex-rubric",
+    rubrics: {
+      simpleRubric: {},
+      multiTraitRubric: {
+        visibleToStudent: true,
+        halfScoring: true,
+        pointLabels: true,
+        description: false,
+        standards: false,
+        scales: [
+          {
+            excludeZero: false,
+            maxPoints: 1,
+            scorePointsLabels: [
+              "<div>b</div>",
+              "<div>a</div>"
+            ],
+            traitLabel: "",
+            traits: [
               {
-                excludeZero: false,
-                maxPoints: 1,
-                scorePointsLabels: [
-                  "<div>b</div>",
-                  "<div>a</div>"
-                ],
-                traitLabel: "",
-                traits: [
-                  {
-                    name: "<div>s</div>",
-                    description: "",
-                    standards: [],
-                    scorePointsDescriptors: [
-                      "<div>sa</div>",
-                      "<div>sc</div>"
-                    ]
-                  }
+                name: "<div>s</div>",
+                description: "",
+                standards: [],
+                scorePointsDescriptors: [
+                  "<div>sa</div>",
+                  "<div>sc</div>"
                 ]
               }
-            ],
-            excludeZero: false,
-            maxPointsEnabled: true,
-            addScaleEnabled: true
-          },
-        },
-        rubricType: "multiTraitRubric"
-      }
-    }
-  }</script>
+            ]
+          }
+        ],
+        excludeZero: false,
+        maxPointsEnabled: true,
+        addScaleEnabled: true
+      },
+    },
+    rubricType: "multiTraitRubric"
+  }
+</script>
 </body>
 </html>
