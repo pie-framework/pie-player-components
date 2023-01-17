@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0"
+    />
+    <title>Item Preview Layout - add Rubric Demo</title>
+  <script nomodule src="/build/pie-player-components.js"></script>
+  <script type="module" src="/build/pie-player-components.esm.js"></script>
+
+  <script type="text/javascript" src="./models.js"></script>
+
+  <!--    <script-->
+<!--            type="module"-->
+<!--            src="https://unpkg.com/@pie-framework/pie-player-components@1.0.3/dist/pie-player-components/pie-player-components.esm.js"-->
+<!--    ></script>-->
+
+    <style>
+        .main {
+            display: flex;
+        }
+
+        .item {
+            flex: 2;
+            padding: 16px;
+            margin: 16px;
+            border: 6px solid;
+        }
+
+        .itemConfig {
+            padding: 16px;
+            flex: 1;
+            font-size: 10px;
+            border: 2px solid;
+            max-width: 30vw;
+        }
+    </style>
+</head>
+<body>
+
+<div>
+    <label for="options">Choose:</label>
+    <select name="options" id="options">
+        <option value="I">I Simple MC item type with ability to add rubric.</option>
+        <option value="II">II Multi-MC item type with ability to add rubric.</option>
+        <option value="III">III Simple MC item type with rubricEnabled: true.
+            complex-rubric is added automatically in the config.
+        </option>
+        <option value="IV">IV Multi-MC item type where 2nd item has rubricEnabled: true.</option>
+        <option value="V">V Multi-item with stimulus and complex-rubric in config, but no item with rubricEnabled: true.
+            complex-rubric will not be rendered.
+        </option>
+        <option value="VI">VI Multi-item with stimulus and rubricEnabled: true. Adds complex-rubric automatically.</option>
+        <option value="VII">VII Multi-item with stimulus. Add complex-rubric by toggling Add Rubric.</option>
+        <option value="VIII">VIII Simple item with MC in item config, forceEnabled = true
+        </option>
+        <option value="IX">IX Simple complex-rubric item type</option>
+        <option value="X">X A. Simple MC item type with complex-rubric, but no item with rubricEnabled: true.
+            complex-rubric won't show up.
+        </option>
+        <option value="XI">XI B. Simple MC item type with complex-rubric, 1st item with rubricEnabled: true. complex-rubric
+            will show up.
+        </option>
+        <option value="XII">XII C. Simple MC item type with complex-rubric, no item with rubricEnabled: true, but
+            configSettings.withRubric.forceEnabled: true. complex-rubric
+            will show up.
+        </option>
+        <option value="XIII">XIII D. Simple MC item type with complex-rubric, no item with rubricEnabled: true, but
+            configSettings.withRubric.forceEnabled: true, and default
+            model for complex-rubric
+        </option>
+      <option value="XIV">XIV Simple MC item type without complex-rubric, but with defaults</option>
+    </select>
+    <br><br>
+    <button id="submit" title="Submit">Submit</button>
+
+    <p>Toggle Add Rubric to add/remove a complex rubric.</p>
+    <p>TODOS:</p>
+    <p>1. fix VIII, XII, XIII: apparently, even if forceEnabled is true, this is not working properly</p>
+    <p>2. fix V & VI && VII: throes an error</p>
+</div>
+
+<div class="main">
+    <div class="item">
+        <pie-author id="author" add-preview="true"></pie-author>
+    </div>
+    <div class="itemConfig">
+        <p><strong>This is the initial data</strong></p>
+        <p>initial config:</p>
+        <div id="config"></div>
+        <p>config settings: </p>
+        <div id="config-settings"></div>
+    </div>
+</div>
+
+<script>
+  // DATA definition
+  // !!!!! EVEN if complex-rubric is part of the models, it won't be rendered unless CASE 1 OR CASE 2
+  const author = document.getElementById('author');
+
+  const initialData = useCases.I;
+  author.config = initialData.config;
+  author.configSettings = initialData.configSettings;
+
+  document.querySelector("#config").innerHTML = `<pre>${JSON.stringify(author.config, null, 2)}</pre>`;
+  document.querySelector("#config-settings").innerHTML = `<pre>${JSON.stringify(author.configSettings, null, 2)}</pre>`;
+
+  document.querySelector("#submit").addEventListener('click', () => {
+    const value = document.querySelector('#options').selectedOptions[0].value;
+    const data = useCases[value];
+
+    author.config = data.config;
+    author.configSettings = data.configSettings;
+
+    document.querySelector("#config").innerHTML = `<pre>${JSON.stringify(author.config, null, 2)}</pre>`;
+    document.querySelector("#config-settings").innerHTML = `<pre>${JSON.stringify(author.configSettings, null, 2)}</pre>`;
+  });
+</script>
+</body>
+</html>

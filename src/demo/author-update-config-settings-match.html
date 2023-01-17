@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0"
+  />
+  <title>Item Author - update Config Settings</title>
+  <script nomodule src="/build/pie-player-components.js"></script>
+  <script
+    type="module"
+    src="https://unpkg.com/@pie-framework/pie-player-components@latest/dist/pie-player-components/pie-player-components.esm.js"
+  ></script>
+</head>
+<body>
+<pie-author config="evan" id="author"></pie-author>
+
+<script type="text/javascript" src="./utils/models.js"></script>
+<script>
+  const author = document.getElementById('author');
+
+  author.config = {
+    "id": "p-00000000",
+    "elements": {
+      "pp-pie-element-match": "@pie-element/match@5.4.0"
+    },
+    "models": [
+      {
+        "id": "p-00000000",
+        "element": "pp-pie-element-match",
+        "enableImages": false,
+        "feedbackEnabled": false,
+        "headers": [
+          "",
+          "Column 2",
+          "Column 3",
+          "Column 4",
+          "Column 5",
+          "Column 6",
+          "Column 7",
+          "Column 8",
+          "Column 9",
+          "Column 10"
+        ],
+        "layout": 10,
+        "lockChoiceOrder": true,
+        "partialScoring": true,
+        "choiceMode": "checkbox",
+        "rows": [
+          {
+            "id": 1,
+            "title": "Question Text 1",
+            "values": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ]
+          },
+          {
+            "id": 2,
+            "title": "Question Text 2",
+            "values": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ]
+          },
+          {
+            "id": 3,
+            "title": "Question Text 3",
+            "values": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ]
+          }
+        ],
+        "promptEnabled": true,
+        "prompt": "",
+        "teacherInstructionsEnabled": false,
+        "rationaleEnabled": false,
+        "toolbarEditorPosition": "bottom",
+        "scoringType": "auto",
+        "studentInstructionsEnabled": true
+      }
+    ],
+    "markup": "<pp-pie-element-match id=\"p-00000000\"></pp-pie-element-match>"
+  };
+  author.configSettings = {
+    "@pie-element/match": {
+      "pieApi": {
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2kiOiJmNWYyMGRhZi03ZGNhLTRjNzMtODI2Ni04NTM1ZjE5YTBjZmIiLCJleHAiOjE2NzQxMzI4MTMsImlhdCI6MTY3Mzg3MzYxMywic2NvcGVzIjp7ImFwaSI6dHJ1ZSwicGxheWVyIjp0cnVlLCJhdXRob3IiOnRydWUsIm92ZXJyaWRlcyI6dHJ1ZX19.u-c8SyZK5M9_nqyRQvkUI0EPyj3e0XPH94H0f9YrjH0",
+        "host": "https://pie-api.io/services"
+      },
+      "enableImages": {
+        "settings": true,
+        "label": "Enable Images"
+      },
+      "feedback": {
+        "settings": false,
+        "label": "Feedback",
+        "enabled": false
+      },
+      "headers": {
+        "settings": true
+      },
+      "layout": {
+        "settings": true,
+        "label": "Layout"
+      },
+      "lockChoiceOrder": {
+        "settings": false,
+        "label": "Lock Choice Order"
+      },
+      "partialScoring": {
+        "settings": false,
+        "label": "Allow Partial Scoring"
+      },
+      "choiceMode": {
+        "settings": false,
+        "label": "Response Type"
+      },
+      "prompt": {
+        "settings": false,
+        "label": "Item Stem"
+      },
+      "rationale": {
+        "settings": true,
+        "label": "Rationale"
+      },
+      "spellCheck": {
+        "label": "Spellcheck",
+        "settings": false,
+        "enabled": true
+      },
+      "scoringType": {
+        "settings": false,
+        "label": "Scoring Type"
+      },
+      "studentInstructions": {
+        "settings": false,
+        "label": "Student Instructions"
+      },
+      "teacherInstructions": {
+        "settings": true,
+        "label": "Teacher Instructions"
+      },
+      "maxImageWidth": {
+        "teacherInstructions": 300,
+        "prompt": 300,
+        "rationale": 300,
+        "rowTitles": 300
+      },
+      "maxImageHeight": {
+        "teacherInstructions": 300,
+        "prompt": 300,
+        "rationale": 300,
+        "rowTitles": 150
+      },
+      "withRubric": {
+        "settings": false,
+        "label": "Add Rubric"
+      },
+      width: '800px'
+    }
+  };
+</script>
+</body>
+</html>
