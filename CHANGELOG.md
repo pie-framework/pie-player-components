@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/pie-framework/pie-player-components/compare/v1.1.1...v1.2.0) (2023-01-20)
+
+
+### Features
+
+* add new property called defaultComplexRubricModel ([bd1bc82](https://github.com/pie-framework/pie-player-components/commit/bd1bc8216eb71343a52b65a4f33b0c04c894dece))
+
 ## [1.1.1](https://github.com/pie-framework/pie-player-components/compare/v1.1.0...v1.1.1) (2023-01-12)
 
 
