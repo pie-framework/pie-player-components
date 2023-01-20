@@ -65,6 +65,10 @@ export namespace Components {
     */
     'configSettings'?: { [packageName: string]: Object };
     /**
+    * To provide a way to add a default model to complex-rubric
+    */
+    'defaultComplexRubricModel'?: Object;
+    /**
     * Allows disabling of the default behaviour which is to look up and load the JS bundle that define the Custom Elements used by the item config. This if for advanced use cases when using the pie-player in a container that is managing loading of Custom Elements and Controllers.
     */
     'disableBundler': boolean;
@@ -219,6 +223,10 @@ declare namespace LocalJSX {
     * To customize the standard behaviour provided by interaction configuration views you can provide settings key-ed by the package name.  e.g.  `{ '@pie-element/inline-choice': { promptLabel: 'Item Stem' } }`  The settings that are configurable for each authoring view are documented in the `@package-name/docs` folder for each package.
     */
     'configSettings'?: { [packageName: string]: Object };
+    /**
+    * To provide a way to add a default model to complex-rubric
+    */
+    'defaultComplexRubricModel'?: Object;
     /**
     * Allows disabling of the default behaviour which is to look up and load the JS bundle that define the Custom Elements used by the item config. This if for advanced use cases when using the pie-player in a container that is managing loading of Custom Elements and Controllers.
     */
