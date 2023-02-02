@@ -42,6 +42,7 @@ import {
 } from "./dataurl-upload-sound-support";
 import {VERSION} from "../../version";
 import cloneDeep from "lodash/cloneDeep";
+import debounce from "lodash/debounce";
 
 const COMPLEX_RUBRIC = 'complex-rubric';
 
@@ -290,7 +291,7 @@ export class Author {
         this.loadPieElements();
 
         // after item is loaded and tags are added, we check the config in order to add/remove complex-rubric
-        await this.checkComplexRubric();
+        await this.debouncedCheckComplexRubric();
       } catch (error) {
         console.log(`ERROR ${error}`);
       }
@@ -491,6 +492,10 @@ export class Author {
     }
   }
 
+  // TODO this is a quick fix for the issues we encountered with eliminating the initial data
+  //  make sure to find a better solution
+  debouncedCheckComplexRubric = debounce(this.checkComplexRubric);
+
   async componentWillLoad() {
     if (this.config) {
       this.watchConfig(this.config, {});
@@ -511,7 +516,7 @@ export class Author {
         this.modelUpdated.emit(this.pieContentModel);
       }
 
-      await this.checkComplexRubric();
+      await this.debouncedCheckComplexRubric();
     });
 
     this.el.addEventListener(InsertImageEvent.TYPE, this.handleInsertImage);

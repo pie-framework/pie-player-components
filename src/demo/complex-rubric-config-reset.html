@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0"
+  />
+  <title>Item Preview Layout - add Rubric Demo</title>
+  <script nomodule src="/build/pie-player-components.js"></script>
+  <script type="module" src="/build/pie-player-components.esm.js"></script>
+
+  <!--  <script-->
+  <!--    type="module"-->
+  <!--    src="https://unpkg.com/@pie-framework/pie-player-components@latest/dist/pie-player-components/pie-player-components.esm.js"-->
+  <!--  ></script>-->
+</head>
+<body>
+<button id="button-multiple-choice">MC</button>
+<button id="button-constructed-response">CR</button>
+<button id="button-multi">MULTI</button>
+
+<pie-author id="author" add-preview="true"></pie-author>
+
+
+<script>
+  const author = document.getElementById('author');
+
+  author.configSettings = {
+    '@pie-element/drawing-response': {
+      prompt: { settings: true, label: 'Prompt', enabled: true },
+      withRubric: {
+        settings: true,
+        label: 'Add Rubric..',
+        // !!! IF you want to force having a complex-rubric (without having the Toggle in Settings Panel), then you can uncomment the line below
+        forceEnabled: true         // BE AWARE that this property ONLY works for drawing-response and extended-text-entry
+      }
+    },
+    // THIS IS HOW You can customize complex-rubric's Settings Panel
+    '@pie-element/complex-rubric': {
+      multiTraitRubric: {
+        showHalfScoring: {
+          settings: true,
+          label: 'UPDATED LABEL'
+        }
+      }
+    }
+  }
+
+  // THIS IS HOW YOU CAN set defaults for complex-rubric models:
+  author.defaultComplexRubricModel = {
+    // id: "p-c-rubric",
+    // element: "andreea-complex-rubric",
+    rubrics: {
+      simpleRubric: {},
+      multiTraitRubric: {
+        visibleToStudent: true,
+        halfScoring: true,
+        pointLabels: true,
+        description: false,
+        standards: false,
+        scales: [
+          {
+            excludeZero: false,
+            maxPoints: 1,
+            scorePointsLabels: [
+              "<div>b</div>",
+              "<div>a</div>"
+            ],
+            traitLabel: "",
+            traits: [
+              {
+                name: "<div>s</div>",
+                description: "",
+                standards: [],
+                scorePointsDescriptors: [
+                  "<div>sa</div>",
+                  "<div>sc</div>"
+                ]
+              }
+            ]
+          }
+        ],
+        excludeZero: false,
+        maxPointsEnabled: true,
+        addScaleEnabled: true
+      },
+    },
+    rubricType: "multiTraitRubric"
+  }
+
+
+
+
+
+  author.config = {
+    "id": "1",
+    "elements": {
+      "drawing-response": "@pie-element/drawing-response",
+    },
+    "models": [
+      {
+        id: '1',
+        element: 'pie-drawing-response',
+        prompt: 'Which of these northern European countries are EU members?',
+        rubricEnabled: true
+      }
+    ],
+    "markup": "<drawing-response id=\"1\"></drawing-response>",
+  }
+
+  document.querySelector('#button-multiple-choice').addEventListener('click', () => {
+    author.config = {
+      "id": "1",
+      "elements": {
+        "multiple-choice": "@pie-element/multiple-choice",
+      },
+      "models": [
+        {
+          id: '1',
+          element: 'pie-multiple-choice',
+          prompt: 'Which of these northern European countries are EU members?',
+        }
+      ],
+      "markup": "<multiple-choice id=\"1\"></multiple-choice>",
+    }
+  });
+  document.querySelector('#button-multi').addEventListener('click', () => {
+    author.config = {
+      "id": "1",
+      "elements": {
+        "multiple-choice": "@pie-element/multiple-choice",
+        "select-text": "@pie-element/select-text",
+        "complex-rubric": "@pie-element/complex-rubric"
+      },
+      "models": [
+        {
+          id: '1',
+          element: 'pie-multiple-choice',
+          prompt: 'Which of these northern European countries are EU members?',
+          rubricEnabled: true
+        },
+        {
+          id: '2',
+          element: 'pie-select-text',
+          prompt: 'Which of these northern European countries are EU members?',
+        },
+        {
+          id: '3',
+          element: 'pie-complex-rubric',
+          prompt: 'Which of these northern European countries are EU members?',
+        }
+      ],
+      "markup": "<multiple-choice id=\"1\"></multiple-choice><select-text id=\"2\"></select-text><complex-rubric id=\"3\"></complex-rubric>",
+    }
+  });
+  document.querySelector('#button-constructed-response').addEventListener('click', () => {
+    author.config = {
+      "id": "1",
+      "elements": {
+        "drawing-response": "@pie-element/drawing-response",
+      },
+      "models": [
+        {
+          id: '1',
+          element: 'pie-drawing-response',
+          prompt: 'Which of these northern European countries are EU members?',
+        }
+      ],
+      "markup": "<drawing-response id=\"1\"></drawing-response>",
+    }
+  });
+</script>
+</body>
+</html>
