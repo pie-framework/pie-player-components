@@ -1,3 +1,10 @@
+## [1.2.1](https://github.com/pie-framework/pie-player-components/compare/v1.2.0...v1.2.1) (2023-02-02)
+
+
+### Bug Fixes
+
+* reset config properly pd-2489 ([d37ded6](https://github.com/pie-framework/pie-player-components/commit/d37ded62a9a57d4b475f77c9a0a372dd2569a221))
+
 # [1.2.0](https://github.com/pie-framework/pie-player-components/compare/v1.1.1...v1.2.0) (2023-01-20)
 
 
