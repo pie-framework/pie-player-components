@@ -284,29 +284,52 @@ export class Author {
       try {
         this.elementsLoaded = false;
         this._modelLoadedState = false;
-        this.pieContentModel = pieContentFromConfig(newValue);
+
+        // after item is loaded and tags are added, we check the config in order to add/remove complex-rubric
+        const newValueWithComplexRubric = await this.checkComplexRubric(newValue);
+
+        this.pieContentModel = pieContentFromConfig(newValueWithComplexRubric);
 
         this.addConfigTags(this.pieContentModel);
         this.loadPieElements();
-
-        // after item is loaded and tags are added, we check the config in order to add/remove complex-rubric
-        await this.checkComplexRubric();
       } catch (error) {
         console.log(`ERROR ${error}`);
       }
     }
   }
 
+
+  getRubricElements = (config) => {
+    const elements = config.elements || {};
+    const elementsKeys = Object.keys(elements || {});
+
+    // rubricElements: if @pie-element/complex-rubric is one of the config's elements
+    return elementsKeys.filter(key => elements[key] && elements[key].indexOf(COMPLEX_RUBRIC) >= 0);
+  }
+
+  getComplexRubricAvailabilityData = (config) => {
+    const rubricElements = this.getRubricElements(config);
+    // complexRubricItemsLength: how many complex-rubric elements are declared
+    const complexRubricItemsLength = rubricElements.length;
+    // if at least one model has rubricEnabled = true, then we should have complex-rubric in the config
+    const shouldHaveComplexRubric = (config.models || []).filter(model => model.rubricEnabled).length;
+
+    return {
+      reset: (shouldHaveComplexRubric && !complexRubricItemsLength) || (!shouldHaveComplexRubric && complexRubricItemsLength),
+      shouldHaveComplexRubric,
+      complexRubricItemsLength
+    };
+  }
+
   /**
    * This function checks the config, and makes the required updates in order to have author working with complex-rubric
    */
-  checkComplexRubric = async () => {
-    const elements = this.pieContentModel.elements || {};
-    const elementsKeys = Object.keys(elements || {});
-    // rubricElements: if @pie-element/complex-rubric is one of the config's elements
-    const rubricElements = elementsKeys.filter(key => elements[key] && elements[key].indexOf(COMPLEX_RUBRIC) >= 0);
+  checkComplexRubric = async (config) => {
+    const elementsKeys = Object.keys(config.elements || {});
+    const rubricElements = this.getRubricElements(config);
+
     // complexRubricItemsLength: how many complex-rubric elements are declared
-    const complexRubricItemsLength = rubricElements.length;
+    const {complexRubricItemsLength, shouldHaveComplexRubric} = this.getComplexRubricAvailabilityData(config);
 
     if (complexRubricItemsLength === elementsKeys.length) {
       // if item config ONLY has complex-rubrics, then all the steps below are not necessary
@@ -314,35 +337,35 @@ export class Author {
       return;
     }
 
-    // if at least one model has rubricEnabled = true, then we should have complex-rubric in the config
-    const shouldHaveComplexRubric = (this.pieContentModel.models || []).filter(model => model.rubricEnabled).length;
     let newConfig;
 
     if (shouldHaveComplexRubric && !complexRubricItemsLength) {
-      newConfig = await this.addComplexRubric();
+      newConfig = await this.addComplexRubric(config);
     }
 
     if (!shouldHaveComplexRubric && complexRubricItemsLength) {
-      newConfig = this.removeComplexRubricItemTypes(rubricElements);
+      newConfig = this.removeComplexRubricItemTypes(config, rubricElements);
     }
 
     // if there are changes required for complex-rubric, then we have to reset the config
     if (newConfig) {
       if (this.isAdvancedItemConfig(this.config)) {
-        this.config = {
+        return {
           ...this.config,
           pie: newConfig
         }
       } else {
-        this.config = newConfig;
+        return newConfig;
       }
     }
+
+    return config;
   }
 
-  removeComplexRubricFromMarkup(rubricElements) {
+  removeComplexRubricFromMarkup(config, rubricElements) {
     const tempDiv = this.doc.createElement("div");
 
-    tempDiv.innerHTML = this.pieContentModel.markup;
+    tempDiv.innerHTML = config.markup;
 
     const elsWithId = tempDiv.querySelectorAll("[id]");
 
@@ -376,12 +399,12 @@ export class Author {
     return newMarkup;
   }
 
-  removeComplexRubricItemTypes(rubricElements) {
-    if (!rubricElements.length || !this.pieContentModel.models) {
-      return this.pieContentModel;
+  removeComplexRubricItemTypes(config, rubricElements) {
+    if (!rubricElements.length || !config.models) {
+      return config;
     }
 
-    const pieContentModel = cloneDeep(this.pieContentModel);
+    const pieContentModel = cloneDeep(config);
 
     // delete the rubric and multi-trait-rubric elements
     rubricElements.forEach(rubricElementKey => delete pieContentModel.elements[rubricElementKey]);
@@ -390,12 +413,12 @@ export class Author {
     pieContentModel.models = pieContentModel.models.filter(model => !rubricElements.includes(model.element));
 
     // delete the rubric and multi-trait-rubric nodes from markup
-    pieContentModel.markup = this.removeComplexRubricFromMarkup(rubricElements);
+    pieContentModel.markup = this.removeComplexRubricFromMarkup(config, rubricElements);
 
     return pieContentModel;
   }
 
-  async addComplexRubric() {
+  async addComplexRubric(config) {
     const complexRubricModel = {
       id: COMPLEX_RUBRIC,
       element: `pie-${COMPLEX_RUBRIC}`,
@@ -404,13 +427,13 @@ export class Author {
     };
 
     // add complex-rubric
-    addPackageToContent(
-      this.pieContentModel,
+    config = addPackageToContent(
+      config,
       "@pie-element/complex-rubric",
       complexRubricModel as PieModel
     );
 
-    return addComplexRubric(this.pieContentModel);
+    return addComplexRubric(config);
   }
 
   addConfigTags(c: PieContent) {
@@ -511,7 +534,9 @@ export class Author {
         this.modelUpdated.emit(this.pieContentModel);
       }
 
-      await this.checkComplexRubric();
+      if (this.getComplexRubricAvailabilityData(this.pieContentModel).reset) {
+        this.watchConfig(this.pieContentModel, {});
+      }
     });
 
     this.el.addEventListener(InsertImageEvent.TYPE, this.handleInsertImage);
