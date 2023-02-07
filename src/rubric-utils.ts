@@ -7,6 +7,9 @@ import {
 } from "./utils/utils";
 import cloneDeep from "lodash/cloneDeep";
 
+export const COMPLEX_RUBRIC = 'complex-rubric';
+
+
 /**
  * Allows you to modify the markup for a package that is present in elements/model but
  * missing from markup.
@@ -32,6 +35,72 @@ export const addMarkupForPackage = (
   }
   return out;
 };
+
+export const complexRubricChecks = (content: PieContent) => {
+  const elements = content.elements || {};
+  const elementsKeys = Object.keys(elements || {});
+  // rubricElements: if @pie-element/complex-rubric is one of the config's elements
+  const rubricElements = elementsKeys.filter(key => elements[key] && elements[key].indexOf(COMPLEX_RUBRIC) >= 0);
+  // complexRubricItemsLength: how many complex-rubric elements are declared
+  const complexRubricItemsLength = rubricElements.length;
+
+  if (complexRubricItemsLength === elementsKeys.length) {
+    // if item config ONLY has complex-rubrics, then all the steps below are not necessary
+    // this is added to treat the special case of testing complex-rubric (as single item type) in pie-website
+    return {};
+  }
+
+  // if at least one model has rubricEnabled = true, then we should have complex-rubric in the config
+  const shouldHaveComplexRubric = (content.models || []).filter(model => model.rubricEnabled).length;
+
+  return {
+    shouldAddComplexRubric: shouldHaveComplexRubric && !complexRubricItemsLength,
+    shouldRemoveComplexRubric: !shouldHaveComplexRubric && complexRubricItemsLength,
+    rubricElements
+  }
+}
+
+
+/**
+ * Removes complex-rubric html from markup.
+ */
+export const removeComplexRubricFromMarkup = (content: PieContent, rubricElements: string[], doc): string => {
+  const tempDiv = doc.createElement("div");
+
+  tempDiv.innerHTML = content.markup;
+
+  const elsWithId = tempDiv.querySelectorAll("[id]");
+
+  elsWithId.forEach(el => {
+    const pieElName = el.tagName.toLowerCase().split("-config")[0];
+
+    // we have to remove the complex-rubric item from the markup
+    if (rubricElements.includes(pieElName)) {
+      try {
+        const parentElement = tempDiv.querySelector(`#${el.id}`).parentElement;
+
+        if (parentElement === tempDiv) {
+          // in some cases, complex-rubric is added in the markup already (without the width: 75% wrapper)
+          // so we have to treat that case as well
+          tempDiv.querySelector(`#${el.id}`).remove();
+        } else {
+          // if complex-rubric was added via authoring, then it has the width: 75% wrapper,
+          // so we have to remove that wrapper as well
+          parentElement.remove();
+        }
+      } catch (e) {
+        console.log(e.toString());
+      }
+    }
+  });
+
+  const newMarkup = tempDiv.innerHTML;
+
+  tempDiv.remove();
+
+  return newMarkup;
+}
+
 
 /**
  * Adds complex-rubric html to markup.
