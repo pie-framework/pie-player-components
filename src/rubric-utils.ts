@@ -1,4 +1,4 @@
-import { PieContent, PieModel } from "./interface";
+import {PieContent, PieModel} from "./interface";
 import {
   modelsForPackage,
   elementForPackage,
@@ -77,17 +77,7 @@ export const removeComplexRubricFromMarkup = (content: PieContent, rubricElement
     // we have to remove the complex-rubric item from the markup
     if (rubricElements.includes(pieElName)) {
       try {
-        const parentElement = tempDiv.querySelector(`#${el.id}`).parentElement;
-
-        if (parentElement === tempDiv) {
-          // in some cases, complex-rubric is added in the markup already (without the width: 75% wrapper)
-          // so we have to treat that case as well
-          tempDiv.querySelector(`#${el.id}`).remove();
-        } else {
-          // if complex-rubric was added via authoring, then it has the width: 75% wrapper,
-          // so we have to remove that wrapper as well
-          parentElement.remove();
-        }
+        tempDiv.querySelector(`#${el.id}`).remove();
       } catch (e) {
         console.log(e.toString());
       }
@@ -111,12 +101,7 @@ export const addComplexRubric = (content: PieContent): PieContent => {
     cloneDeep(content),
     "@pie-element/complex-rubric",
     (id, tag, markup) => {
-      return `
-    ${markup}
-    <div style="width: 75%">
-      <${tag} id="${id}"></${tag}>
-    </div>
-    `;
+      return `${markup}<div style="width: 75%"><${tag} id="${id}"></${tag}></div>`;
     }
   );
 };

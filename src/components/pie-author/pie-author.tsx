@@ -304,17 +304,21 @@ export class Author {
     }
   }
 
+  getNewConfig = (newConfig) => {
+    if (this.isAdvancedItemConfig(this.config)) {
+      return {
+        ...this.config,
+        pie: newConfig
+      }
+    } else {
+      return newConfig;
+    }
+  }
+
   resetConfig = (newConfig) => {
     // if there are changes required for complex-rubric, then we have to reset the config
     if (newConfig) {
-      if (this.isAdvancedItemConfig(this.config)) {
-        this.config = {
-          ...this.config,
-          pie: newConfig
-        }
-      } else {
-        this.config = newConfig;
-      }
+      this.config = this.getNewConfig(newConfig);
     }
   }
 
@@ -329,15 +333,11 @@ export class Author {
     } = complexRubricChecks(this.pieContentModel);
 
     if (shouldAddComplexRubric) {
-      const newConfig = await this.addComplexRubric();
-
-      this.resetConfig(newConfig);
+      this.resetConfig(await this.addComplexRubric());
     }
 
     if (shouldRemoveComplexRubric) {
-      const newConfig = this.removeComplexRubricItemTypes(rubricElements);
-
-      this.resetConfig(newConfig);
+      this.resetConfig(this.removeComplexRubricItemTypes(rubricElements));
     }
   }
 
@@ -375,7 +375,9 @@ export class Author {
       complexRubricModel as PieModel
     );
 
-    return addComplexRubric(this.pieContentModel);
+    const newConfigWithMarkupUpdated = addComplexRubric(this.pieContentModel);
+
+    return newConfigWithMarkupUpdated;
   }
 
   addConfigTags(c: PieContent) {
