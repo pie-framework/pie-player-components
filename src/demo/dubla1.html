@@ -12,7 +12,7 @@
 
 <!--  <script-->
 <!--    type="module"-->
-<!--    src="https://unpkg.com/@pie-framework/pie-player-components@latest/dist/pie-player-components/pie-player-components.esm.js"-->
+<!--    src="https://unpkg.com/@pie-framework/pie-player-components@0.31.0/dist/pie-player-components/pie-player-components.esm.js"-->
 <!--  ></script>-->
 </head>
 <body>
@@ -45,7 +45,7 @@
     "id": "1",
     "elements": {
       "drawing-response": "@pie-element/drawing-response",
-      // "pie-ebsr": "@pie-element/ebsr",
+      "pie-ebsr": "@pie-element/ebsr",
     },
     "models": [
       {
@@ -54,14 +54,14 @@
         prompt: 'Which of these northern European countries are EU members?',
         // rubricEnabled: true
       },
-      // {
-      //   id: '2',
-      //   element: 'pie-ebsr',
-      //   prompt: 'Which of these northern European countries are EU members?',
-      //   // rubricEnabled: true
-      // }
+      {
+        id: '2',
+        element: 'pie-ebsr',
+        prompt: 'Which of these northern European countries are EU members?',
+        // rubricEnabled: true
+      }
     ],
-    "markup": "<drawing-response id=\"1\"></drawing-response>"//<pie-ebsr id=\"2\"></pie-ebsr>",
+    "markup": "<drawing-response id=\"1\"></drawing-response><pie-ebsr id=\"2\"></pie-ebsr>",
   }
 
   // THIS IS HOW YOU CAN set defaults for complex-rubric models:

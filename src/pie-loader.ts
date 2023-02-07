@@ -123,7 +123,8 @@ export class PieLoader {
     const promises = els.map((el) => customElements.whenDefined(el.tag));
 
     return Promise.all(promises)
-      .then(() => {
+      .then((results) => {
+        console.log('\nelementsHaveLoaded', results);
         return Promise.resolve({ elements: els, val: true });
       })
       .catch(() => {
@@ -162,6 +163,7 @@ export class PieLoader {
       options.bundle,
       this.registry
     );
+    console.log('pies to load = ', piesToLoad);
     let scriptUrl;
 
     if (options.content.bundle && options.content.bundle.url) {
@@ -251,6 +253,9 @@ export class PieLoader {
 
     script.onload = onloadFn;
     script.src = scriptUrl;
+
+    console.log('scriptUrl = ', scriptUrl);
+
     head.appendChild(script);
   };
 
