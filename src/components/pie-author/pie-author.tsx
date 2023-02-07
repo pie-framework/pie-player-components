@@ -329,11 +329,15 @@ export class Author {
     } = complexRubricChecks(this.pieContentModel);
 
     if (shouldAddComplexRubric) {
-      this.resetConfig(await this.addComplexRubric());
+      const newConfig = await this.addComplexRubric();
+
+      this.resetConfig(newConfig);
     }
 
     if (shouldRemoveComplexRubric) {
-      this.resetConfig(this.removeComplexRubricItemTypes(rubricElements));
+      const newConfig = this.removeComplexRubricItemTypes(rubricElements);
+
+      this.resetConfig(newConfig);
     }
   }
 
@@ -476,26 +480,7 @@ export class Author {
         this.modelUpdated.emit(this.pieContentModel);
       }
 
-      const {
-        shouldAddComplexRubric,
-        shouldRemoveComplexRubric,
-        rubricElements
-      } = complexRubricChecks(this.pieContentModel);
-
-      if (shouldAddComplexRubric) {
-        const newConfig = await this.addComplexRubric();
-
-        this.resetConfig(newConfig);
-      }
-
-      if (shouldRemoveComplexRubric) {
-        const newConfig = this.removeComplexRubricItemTypes(rubricElements);
-
-        this.resetConfig(newConfig);
-      }
-
-
-      // await this.debouncedCheckComplexRubric();
+      await this.debouncedCheckComplexRubric();
     });
 
     this.el.addEventListener(InsertImageEvent.TYPE, this.handleInsertImage);
