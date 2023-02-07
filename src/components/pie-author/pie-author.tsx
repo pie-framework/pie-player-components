@@ -371,7 +371,7 @@ export class Author {
     // add complex-rubric
     addPackageToContent(
       this.pieContentModel,
-      "@pie-element/complex-rubric",
+      `@pie-element/${COMPLEX_RUBRIC}`,
       complexRubricModel as PieModel
     );
 

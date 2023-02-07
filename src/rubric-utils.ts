@@ -99,9 +99,9 @@ export const removeComplexRubricFromMarkup = (content: PieContent, rubricElement
 export const addComplexRubric = (content: PieContent): PieContent => {
   return addMarkupForPackage(
     cloneDeep(content),
-    "@pie-element/complex-rubric",
+    `@pie-element/${COMPLEX_RUBRIC}`,
     (id, tag, markup) => {
-      return `${markup}<div style="width: 75%"><${tag} id="${id}"></${tag}></div>`;
+      return `${markup}<${tag} id="${id}"></${tag}>`;
     }
   );
 };
