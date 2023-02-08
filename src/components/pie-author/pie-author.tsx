@@ -49,8 +49,6 @@ import {
   ExternalUploadSoundSupport
 } from "./dataurl-upload-sound-support";
 import {VERSION} from "../../version";
-import cloneDeep from "lodash/cloneDeep";
-import debounce from "lodash/debounce";
 
 /**
  * Pie Author will load a Pie Content model for authoring.
@@ -288,16 +286,48 @@ export class Author {
   @Watch("config")
   async watchConfig(newValue, oldValue) {
     if (newValue && !_isEqual(newValue, oldValue)) {
+      console.log('\nin watchConfig')
       try {
         this.elementsLoaded = false;
         this._modelLoadedState = false;
-        this.pieContentModel = pieContentFromConfig(newValue);
 
-        this.addConfigTags(this.pieContentModel);
-        this.loadPieElements();
+        const pieContentModel = pieContentFromConfig(newValue);
 
-        // after item is loaded and tags are added, we check the config in order to add/remove complex-rubric
-        await this.debouncedCheckComplexRubric();
+        const {
+          shouldAddComplexRubric,
+          shouldRemoveComplexRubric,
+          rubricElements
+        } = complexRubricChecks(pieContentModel, this.configSettings);
+
+        if (shouldAddComplexRubric || shouldRemoveComplexRubric) {
+          if (shouldAddComplexRubric) {
+            const newConfig = await this.addComplexRubric(pieContentModel);
+
+            if (newConfig) {
+              console.log('\t adds to new config');
+
+              this.config = this.getNewConfig(newConfig);
+            }
+          }
+          if (shouldRemoveComplexRubric) {
+            const newConfig = this.removeComplexRubricItemTypes(pieContentModel, rubricElements);
+
+            if (newConfig) {
+              console.log('\t removes from new config');
+
+              this.config = this.getNewConfig(newConfig);
+            }
+          }
+        } else {
+          console.log('\tcan proceed with item loading');
+
+          this.pieContentModel = pieContentFromConfig(newValue);
+
+          this.addConfigTags(this.pieContentModel);
+          await this.loadPieElements();
+
+          console.log('\t\tafter loadPieElements');
+        }
       } catch (error) {
         console.log(`ERROR ${error}`);
       }
@@ -322,31 +352,10 @@ export class Author {
     }
   }
 
-  /**
-   * This function checks the config, and makes the required updates in order to have author working with complex-rubric
-   */
-  checkComplexRubric = async () => {
-    const {
-      shouldAddComplexRubric,
-      shouldRemoveComplexRubric,
-      rubricElements
-    } = complexRubricChecks(this.pieContentModel);
-
-    if (shouldAddComplexRubric) {
-      this.resetConfig(await this.addComplexRubric());
+  removeComplexRubricItemTypes(pieContentModel, rubricElements) {
+    if (!rubricElements.length || !pieContentModel.models) {
+      return pieContentModel;
     }
-
-    if (shouldRemoveComplexRubric) {
-      this.resetConfig(this.removeComplexRubricItemTypes(rubricElements));
-    }
-  }
-
-  removeComplexRubricItemTypes(rubricElements) {
-    if (!rubricElements.length || !this.pieContentModel.models) {
-      return this.pieContentModel;
-    }
-
-    const pieContentModel = cloneDeep(this.pieContentModel);
 
     // delete the rubric and multi-trait-rubric elements
     rubricElements.forEach(rubricElementKey => delete pieContentModel.elements[rubricElementKey]);
@@ -355,12 +364,12 @@ export class Author {
     pieContentModel.models = pieContentModel.models.filter(model => !rubricElements.includes(model.element));
 
     // delete the rubric and multi-trait-rubric nodes from markup
-    pieContentModel.markup = removeComplexRubricFromMarkup(this.pieContentModel, rubricElements, this.doc);
+    pieContentModel.markup = removeComplexRubricFromMarkup(pieContentModel, rubricElements, this.doc);
 
     return pieContentModel;
   }
 
-  async addComplexRubric() {
+  async addComplexRubric(pieContentModel) {
     const complexRubricModel = {
       id: COMPLEX_RUBRIC,
       element: `pie-${COMPLEX_RUBRIC}`,
@@ -370,14 +379,12 @@ export class Author {
 
     // add complex-rubric
     addPackageToContent(
-      this.pieContentModel,
+      pieContentModel,
       `@pie-element/${COMPLEX_RUBRIC}`,
       complexRubricModel as PieModel
     );
 
-    const newConfigWithMarkupUpdated = addComplexRubric(this.pieContentModel);
-
-    return newConfigWithMarkupUpdated;
+    return addComplexRubric(pieContentModel);
   }
 
   addConfigTags(c: PieContent) {
@@ -394,11 +401,15 @@ export class Author {
   @Watch("elementsLoaded")
   async watchElementsLoaded(newValue: boolean, oldValue: boolean) {
     if (newValue && !oldValue) {
+      console.log('\t\tin watchElementsLoaded', {newValue, oldValue});
+
       await this.updateModels();
     }
   }
 
   async updateModels() {
+    console.log('\t\t\tin update model');
+
     if (
       this.pieContentModel &&
       this.pieContentModel.elements &&
@@ -407,9 +418,11 @@ export class Author {
       if (!this.pieContentModel.models) {
         this.pieContentModel.models = [];
       }
+
       const tempDiv = this.doc.createElement("div");
       tempDiv.innerHTML = this.pieContentModel.markup;
       const elsWithId = tempDiv.querySelectorAll("[id]");
+
       // set up a model for each pie defined in the markup
       elsWithId.forEach(el => {
         const pieElName = el.tagName.toLowerCase().split("-config")[0];
@@ -424,6 +437,9 @@ export class Author {
       });
       tempDiv.remove();
     }
+
+    console.log('\t\t\tsets update model');
+
     if (this.pieContentModel && this.pieContentModel.models) {
       this.pieContentModel.models.map(model => {
         let pieEl: PieElement = this.el.querySelector(`[id='${model.id}']`);
@@ -439,11 +455,15 @@ export class Author {
           }
         }
       });
+
+      console.log('\t\t\temits update model');
+
       if (this._modelLoadedState === false) {
         this._modelLoadedState = true;
         this.modelLoaded.emit(this.pieContentModel);
       }
     }
+    console.log('\t\t\tout update model');
   }
 
   componentDidUnload() {
@@ -458,31 +478,41 @@ export class Author {
     }
   }
 
-  // TODO this is a quick fix for the issues we encountered with eliminating the initial data
-  //  make sure to find a better solution
-  debouncedCheckComplexRubric = debounce(this.checkComplexRubric);
-
   async componentWillLoad() {
     if (this.config) {
       this.watchConfig(this.config, {});
     }
     // Note: cannot use the @Listen decorator as creates bundling problems due
     // to `.` in event name.
-    this.el.addEventListener(ModelUpdatedEvent.TYPE, async (e: ModelUpdatedEvent) => {
+    this.el.addEventListener(ModelUpdatedEvent.TYPE, (e: ModelUpdatedEvent) => {
       // set the internal model
       // emit a content-item level event with the model
+      console.log('ModelUpdatedEvent');
+
+      let rubricChanged;
+
       if (this.pieContentModel && e.update) {
         this.pieContentModel.models.forEach(m => {
           if (m.id === e.update.id && m.element === e.update.element) {
+            rubricChanged = rubricChanged || m.rubricEnabled !== e.update.rubricEnabled;
+
             Object.assign(m, e.update);
           }
         });
       }
+
+      console.log('rubricChanged', rubricChanged);
+      console.log('e.update', e.update);
+      console.log('this.pieContentModel.models', this.pieContentModel.models);
+
       if (this._modelLoadedState) {
         this.modelUpdated.emit(this.pieContentModel);
-      }
 
-      await this.debouncedCheckComplexRubric();
+        if (rubricChanged) {
+          console.log('----- CALLS watch config from ModelUpdatedEvent');
+          this.watchConfig(this.pieContentModel, {});
+        }
+      }
     });
 
     this.el.addEventListener(InsertImageEvent.TYPE, this.handleInsertImage);
@@ -537,11 +567,14 @@ export class Author {
       this.pieContentModel.markup &&
       !this.elementsLoaded
     ) {
+      console.log('\tafterRender');
       const elements = Object.keys(this.pieContentModel.elements).map(el => ({
         name: el,
         tag: `${el}-config`
       }));
       const loadedInfo = await this.pieLoader.elementsHaveLoaded(elements);
+
+      console.log('\t\t\tloadedInfo');
 
       if (
         loadedInfo.val &&
@@ -553,6 +586,7 @@ export class Author {
       }
     }
   }
+
 
   /**
    * Utility method to add a `@pie-element/rubric` section to an item config when creating an item should be used before setting the config.

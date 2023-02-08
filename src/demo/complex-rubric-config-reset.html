@@ -16,9 +16,22 @@
   <!--  ></script>-->
 </head>
 <body>
+<p>Switch to a multiple-choice</p>
 <button id="button-multiple-choice">MC</button>
+<br>
+<br>
+<p>Switch to a drawing-response with CR</p>
 <button id="button-constructed-response">CR</button>
-<button id="button-multi">MULTI</button>
+<br>
+<br>
+<p>TODO: if toggle Add Rubric off and then on, it's not adding rubric anymore - this happens because the complex-rubric model doesn't get removed (elements key is now pp-pie-element-complex-rubric, while in model element we have pie-complex-rubric)</p>
+<button id="button-multi">MULTI with complex-rubric</button>
+<br>
+<br>
+<p>Switch to a multi-item with ability to set complex-rubric</p>
+<button id="button-multi-2">MULTI without complex-rubric</button>
+<br>
+<br>
 
 <pie-author id="author" add-preview="true"></pie-author>
 
@@ -34,6 +47,13 @@
         label: 'Add Rubric..',
         // !!! IF you want to force having a complex-rubric (without having the Toggle in Settings Panel), then you can uncomment the line below
         forceEnabled: true         // BE AWARE that this property ONLY works for drawing-response and extended-text-entry
+      }
+    },
+    '@pie-element/multiple-choice': {
+      prompt: { settings: true, label: 'Prompt', enabled: true },
+      withRubric: {
+        settings: true,
+        label: 'Add Rubric..',
       }
     },
     // THIS IS HOW You can customize complex-rubric's Settings Panel
@@ -146,12 +166,34 @@
           prompt: 'Which of these northern European countries are EU members?',
         },
         {
-          id: '3',
+          id: 'a3',
           element: 'pie-complex-rubric',
           prompt: 'Which of these northern European countries are EU members?',
         }
       ],
-      "markup": "<multiple-choice id=\"1\"></multiple-choice><select-text id=\"2\"></select-text><complex-rubric id=\"3\"></complex-rubric>",
+      "markup": "<multiple-choice id=\"1\"></multiple-choice><select-text id=\"2\"></select-text><complex-rubric id=\"a3\"></complex-rubric>",
+    }
+  });
+  document.querySelector('#button-multi-2').addEventListener('click', () => {
+    author.config = {
+      "id": "1",
+      "elements": {
+        "multiple-choice": "@pie-element/multiple-choice",
+        "select-text": "@pie-element/select-text",
+      },
+      "models": [
+        {
+          id: '1',
+          element: 'pie-multiple-choice',
+          prompt: 'Which of these northern European countries are EU members?',
+        },
+        {
+          id: '2',
+          element: 'pie-select-text',
+          prompt: 'Which of these northern European countries are EU members?',
+        }
+      ],
+      "markup": "<multiple-choice id=\"1\"></multiple-choice><select-text id=\"2\"></select-text>",
     }
   });
   document.querySelector('#button-constructed-response').addEventListener('click', () => {

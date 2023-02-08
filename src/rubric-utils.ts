@@ -36,9 +36,10 @@ export const addMarkupForPackage = (
   return out;
 };
 
-export const complexRubricChecks = (content: PieContent) => {
+export const complexRubricChecks = (content: PieContent, configSettings) => {
   const elements = content.elements || {};
   const elementsKeys = Object.keys(elements || {});
+  const elementsValues = Object.values(elements || {});
   // rubricElements: if @pie-element/complex-rubric is one of the config's elements
   const rubricElements = elementsKeys.filter(key => elements[key] && elements[key].indexOf(COMPLEX_RUBRIC) >= 0);
   // complexRubricItemsLength: how many complex-rubric elements are declared
@@ -51,7 +52,13 @@ export const complexRubricChecks = (content: PieContent) => {
   }
 
   // if at least one model has rubricEnabled = true, then we should have complex-rubric in the config
-  const shouldHaveComplexRubric = (content.models || []).filter(model => model.rubricEnabled).length;
+  let shouldHaveComplexRubric = !!(content.models || []).filter(model => model.rubricEnabled).length;
+  // @ts-ignore
+  let shouldHaveForcedComplexRubric = !!(elementsValues.filter(elementsKey => configSettings[elementsKey] && configSettings[elementsKey].withRubric && configSettings[elementsKey].withRubric.forceEnabled).length);
+
+  console.log('\t\t\t', {shouldHaveComplexRubric, shouldHaveForcedComplexRubric})
+
+  shouldHaveComplexRubric = shouldHaveComplexRubric || shouldHaveForcedComplexRubric;
 
   return {
     shouldAddComplexRubric: shouldHaveComplexRubric && !complexRubricItemsLength,
