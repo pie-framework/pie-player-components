@@ -42,9 +42,10 @@ export const addMarkupForPackage = (
  * @param content
  * @param configSettings
  */
-export const complexRubricChecks = (content: PieContent, configSettings) => {
+export const complexRubricChecks = (content: PieContent, configSettings = {}) => {
   const elements = content.elements || {};
   const elementsKeys = Object.keys(elements || {});
+  // tODO make sure not to use versions (eg: @1.1.0, @latest)
   const elementsValues = Object.values(elements || {});
   // complexRubricElements: those elements in config where item type is @pie-element/complex-rubric
   const complexRubricElements = elementsKeys.filter(key => elements[key] && elements[key].indexOf(COMPLEX_RUBRIC) >= 0);
