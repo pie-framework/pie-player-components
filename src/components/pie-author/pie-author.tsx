@@ -286,8 +286,9 @@ export class Author {
   @Watch("config")
   async watchConfig(newValue, oldValue) {
     if (newValue && !_isEqual(newValue, oldValue)) {
-      console.log('\tin watchConfig')
       try {
+        console.log('\tin watchConfig')
+
         this.elementsLoaded = false;
         this._modelLoadedState = false;
 
@@ -299,34 +300,37 @@ export class Author {
           complexRubricElements
         } = complexRubricChecks(pieContentModel, this.configSettings);
 
-        if (!shouldAddComplexRubric && !shouldRemoveComplexRubric) {
-          // if there's no change needed, we can proceed with updating the config and loading pie-elements
-          this.pieContentModel = pieContentFromConfig(newValue);
+        // if changes are needed
+        if (shouldAddComplexRubric) {
+          // we add complex-rubric to config
+          const newConfig = await this.addComplexRubric(pieContentModel);
 
-          this.addConfigTags(this.pieContentModel);
+          // and then we reset the config
+          if (newConfig) {
+            this.config = this.getNewConfig(newConfig);
 
-          await this.loadPieElements();
-        } else {
-          // if changes are needed
-          if (shouldAddComplexRubric) {
-            // we add complex-rubric to config
-            const newConfig = await this.addComplexRubric(pieContentModel);
-
-            // and then we reset the config
-            if (newConfig) {
-              this.config = this.getNewConfig(newConfig);
-            }
-          }
-          if (shouldRemoveComplexRubric) {
-            // we remove complex-rubric from config
-            const newConfig = this.removeComplexRubricItemTypes(pieContentModel, complexRubricElements);
-
-            // and then we reset the config
-            if (newConfig) {
-              this.config = this.getNewConfig(newConfig);
-            }
+            return;
           }
         }
+
+        if (shouldRemoveComplexRubric) {
+          // we remove complex-rubric from config
+          const newConfig = this.removeComplexRubricItemTypes(pieContentModel, complexRubricElements);
+
+          // and then we reset the config
+          if (newConfig) {
+            this.config = this.getNewConfig(newConfig);
+
+            return;
+          }
+        }
+
+        // if there's no change needed, we can proceed with updating the config and loading pie-elements
+        this.pieContentModel = pieContentFromConfig(newValue);
+
+        this.addConfigTags(this.pieContentModel);
+
+        await this.loadPieElements();
       } catch (error) {
         console.log(`ERROR ${error}`);
       }
