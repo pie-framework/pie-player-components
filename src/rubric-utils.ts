@@ -3,7 +3,8 @@ import {
   modelsForPackage,
   elementForPackage,
   pieShortIdGenerator,
-  elementsHasPackage
+  elementsHasPackage,
+  getPackageWithoutVersion
 } from "./utils/utils";
 import cloneDeep from "lodash/cloneDeep";
 
@@ -46,7 +47,7 @@ export const complexRubricChecks = (content: PieContent, configSettings = {}) =>
   const elements = content.elements || {};
   const elementsKeys = Object.keys(elements || {});
   // tODO make sure not to use versions (eg: @1.1.0, @latest)
-  const elementsValues = Object.values(elements || {});
+  const elementsValues = Object.values(elements || {}).map(elementValue => getPackageWithoutVersion(elementValue));
   // complexRubricElements: those elements in config where item type is @pie-element/complex-rubric
   const complexRubricElements = elementsKeys.filter(key => elements[key] && elements[key].indexOf(COMPLEX_RUBRIC) >= 0);
   // complexRubricItemsLength: how many complex-rubric elements are declared
