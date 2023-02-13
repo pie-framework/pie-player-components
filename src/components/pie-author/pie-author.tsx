@@ -326,7 +326,7 @@ export class Author {
         }
 
         // if there's no change needed, we can proceed with updating the config and loading pie-elements
-        this.pieContentModel = pieContentFromConfig(newValue);
+        this.pieContentModel = pieContentModel;
 
         this.addConfigTags(this.pieContentModel);
 
