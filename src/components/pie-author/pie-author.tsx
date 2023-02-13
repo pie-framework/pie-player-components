@@ -286,7 +286,7 @@ export class Author {
   @Watch("config")
   async watchConfig(newValue, oldValue) {
     if (newValue && !_isEqual(newValue, oldValue)) {
-      console.log('\nin watchConfig')
+      console.log('\tin watchConfig')
       try {
         this.elementsLoaded = false;
         this._modelLoadedState = false;
@@ -296,37 +296,36 @@ export class Author {
         const {
           shouldAddComplexRubric,
           shouldRemoveComplexRubric,
-          rubricElements
+          complexRubricElements
         } = complexRubricChecks(pieContentModel, this.configSettings);
 
-        if (shouldAddComplexRubric || shouldRemoveComplexRubric) {
+        if (!shouldAddComplexRubric && !shouldRemoveComplexRubric) {
+          // if there's no change needed, we can proceed with updating the config and loading pie-elements
+          this.pieContentModel = pieContentFromConfig(newValue);
+
+          this.addConfigTags(this.pieContentModel);
+
+          await this.loadPieElements();
+        } else {
+          // if changes are needed
           if (shouldAddComplexRubric) {
+            // we add complex-rubric to config
             const newConfig = await this.addComplexRubric(pieContentModel);
 
+            // and then we reset the config
             if (newConfig) {
-              console.log('\t adds to new config');
-
               this.config = this.getNewConfig(newConfig);
             }
           }
           if (shouldRemoveComplexRubric) {
-            const newConfig = this.removeComplexRubricItemTypes(pieContentModel, rubricElements);
+            // we remove complex-rubric from config
+            const newConfig = this.removeComplexRubricItemTypes(pieContentModel, complexRubricElements);
 
+            // and then we reset the config
             if (newConfig) {
-              console.log('\t removes from new config');
-
               this.config = this.getNewConfig(newConfig);
             }
           }
-        } else {
-          console.log('\tcan proceed with item loading');
-
-          this.pieContentModel = pieContentFromConfig(newValue);
-
-          this.addConfigTags(this.pieContentModel);
-          await this.loadPieElements();
-
-          console.log('\t\tafter loadPieElements');
         }
       } catch (error) {
         console.log(`ERROR ${error}`);
@@ -345,26 +344,24 @@ export class Author {
     }
   }
 
-  resetConfig = (newConfig) => {
-    // if there are changes required for complex-rubric, then we have to reset the config
-    if (newConfig) {
-      this.config = this.getNewConfig(newConfig);
-    }
-  }
-
   removeComplexRubricItemTypes(pieContentModel, rubricElements) {
     if (!rubricElements.length || !pieContentModel.models) {
       return pieContentModel;
     }
 
-    // delete the rubric and multi-trait-rubric elements
+    // delete the complex-rubric elements from elements object
     rubricElements.forEach(rubricElementKey => delete pieContentModel.elements[rubricElementKey]);
 
-    // delete the rubric and multi-trait-rubric models
-    pieContentModel.models = pieContentModel.models.filter(model => !rubricElements.includes(model.element));
+    const {
+      markupWithoutComplexRubric,
+      deletedComplexRubricItemIds
+    } = removeComplexRubricFromMarkup(pieContentModel, rubricElements, this.doc);
 
-    // delete the rubric and multi-trait-rubric nodes from markup
-    pieContentModel.markup = removeComplexRubricFromMarkup(pieContentModel, rubricElements, this.doc);
+    // delete the complex-rubric nodes from markup
+    pieContentModel.markup = markupWithoutComplexRubric;
+
+    // delete the complex-rubric models
+    pieContentModel.models = pieContentModel.models.filter(model => !deletedComplexRubricItemIds.includes(model.id));
 
     return pieContentModel;
   }
@@ -401,15 +398,11 @@ export class Author {
   @Watch("elementsLoaded")
   async watchElementsLoaded(newValue: boolean, oldValue: boolean) {
     if (newValue && !oldValue) {
-      console.log('\t\tin watchElementsLoaded', {newValue, oldValue});
-
       await this.updateModels();
     }
   }
 
   async updateModels() {
-    console.log('\t\t\tin update model');
-
     if (
       this.pieContentModel &&
       this.pieContentModel.elements &&
@@ -438,8 +431,6 @@ export class Author {
       tempDiv.remove();
     }
 
-    console.log('\t\t\tsets update model');
-
     if (this.pieContentModel && this.pieContentModel.models) {
       this.pieContentModel.models.map(model => {
         let pieEl: PieElement = this.el.querySelector(`[id='${model.id}']`);
@@ -456,14 +447,11 @@ export class Author {
         }
       });
 
-      console.log('\t\t\temits update model');
-
       if (this._modelLoadedState === false) {
         this._modelLoadedState = true;
         this.modelLoaded.emit(this.pieContentModel);
       }
     }
-    console.log('\t\t\tout update model');
   }
 
   componentDidUnload() {
@@ -487,8 +475,6 @@ export class Author {
     this.el.addEventListener(ModelUpdatedEvent.TYPE, (e: ModelUpdatedEvent) => {
       // set the internal model
       // emit a content-item level event with the model
-      console.log('ModelUpdatedEvent');
-
       let rubricChanged;
 
       if (this.pieContentModel && e.update) {
@@ -501,16 +487,11 @@ export class Author {
         });
       }
 
-      console.log('rubricChanged', rubricChanged);
-      console.log('e.update', e.update);
-      console.log('this.pieContentModel.models', this.pieContentModel.models);
-
       if (this._modelLoadedState) {
         this.modelUpdated.emit(this.pieContentModel);
 
         if (rubricChanged) {
-          console.log('----- CALLS watch config from ModelUpdatedEvent');
-          this.watchConfig(this.pieContentModel, {});
+          this.watchConfig(this.config, {});
         }
       }
     });
@@ -567,14 +548,11 @@ export class Author {
       this.pieContentModel.markup &&
       !this.elementsLoaded
     ) {
-      console.log('\tafterRender');
       const elements = Object.keys(this.pieContentModel.elements).map(el => ({
         name: el,
         tag: `${el}-config`
       }));
       const loadedInfo = await this.pieLoader.elementsHaveLoaded(elements);
-
-      console.log('\t\t\tloadedInfo');
 
       if (
         loadedInfo.val &&

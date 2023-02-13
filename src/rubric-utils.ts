@@ -36,14 +36,20 @@ export const addMarkupForPackage = (
   return out;
 };
 
+/**
+ * This function takes the config and configSettings and determines if there should/shouldn't be a complex-rubric in the config
+ * depending on configSettings (withRubric.forceEnabled) and config (model.rubricEnabled)
+ * @param content
+ * @param configSettings
+ */
 export const complexRubricChecks = (content: PieContent, configSettings) => {
   const elements = content.elements || {};
   const elementsKeys = Object.keys(elements || {});
   const elementsValues = Object.values(elements || {});
-  // rubricElements: if @pie-element/complex-rubric is one of the config's elements
-  const rubricElements = elementsKeys.filter(key => elements[key] && elements[key].indexOf(COMPLEX_RUBRIC) >= 0);
+  // complexRubricElements: those elements in config where item type is @pie-element/complex-rubric
+  const complexRubricElements = elementsKeys.filter(key => elements[key] && elements[key].indexOf(COMPLEX_RUBRIC) >= 0);
   // complexRubricItemsLength: how many complex-rubric elements are declared
-  const complexRubricItemsLength = rubricElements.length;
+  const complexRubricItemsLength = complexRubricElements.length;
 
   if (complexRubricItemsLength === elementsKeys.length) {
     // if item config ONLY has complex-rubrics, then all the steps below are not necessary
@@ -53,17 +59,17 @@ export const complexRubricChecks = (content: PieContent, configSettings) => {
 
   // if at least one model has rubricEnabled = true, then we should have complex-rubric in the config
   let shouldHaveComplexRubric = !!(content.models || []).filter(model => model.rubricEnabled).length;
-  // @ts-ignore
-  let shouldHaveForcedComplexRubric = !!(elementsValues.filter(elementsKey => configSettings[elementsKey] && configSettings[elementsKey].withRubric && configSettings[elementsKey].withRubric.forceEnabled).length);
 
-  console.log('\t\t\t', {shouldHaveComplexRubric, shouldHaveForcedComplexRubric})
+  // if there's at least one configuration where withRubric has forceEnabled: true
+  const shouldForceEnableComplexRubric = configuration => configuration && configuration.withRubric && configuration.withRubric.forceEnabled;
+  let shouldHaveForcedComplexRubric = !!(elementsValues.filter(elementsKey => shouldForceEnableComplexRubric(configSettings[elementsKey])).length);
 
   shouldHaveComplexRubric = shouldHaveComplexRubric || shouldHaveForcedComplexRubric;
 
   return {
     shouldAddComplexRubric: shouldHaveComplexRubric && !complexRubricItemsLength,
     shouldRemoveComplexRubric: !shouldHaveComplexRubric && complexRubricItemsLength,
-    rubricElements
+    complexRubricElements
   }
 }
 
@@ -71,19 +77,21 @@ export const complexRubricChecks = (content: PieContent, configSettings) => {
 /**
  * Removes complex-rubric html from markup.
  */
-export const removeComplexRubricFromMarkup = (content: PieContent, rubricElements: string[], doc): string => {
+export const removeComplexRubricFromMarkup = (content: PieContent, complexRubricElements: string[], doc): { markupWithoutComplexRubric: string, deletedComplexRubricItemIds: string[] } => {
   const tempDiv = doc.createElement("div");
 
   tempDiv.innerHTML = content.markup;
 
   const elsWithId = tempDiv.querySelectorAll("[id]");
+  const deletedComplexRubricItemIds = [];
 
   elsWithId.forEach(el => {
     const pieElName = el.tagName.toLowerCase().split("-config")[0];
 
     // we have to remove the complex-rubric item from the markup
-    if (rubricElements.includes(pieElName)) {
+    if (complexRubricElements.includes(pieElName)) {
       try {
+        deletedComplexRubricItemIds.push(el.id);
         tempDiv.querySelector(`#${el.id}`).remove();
       } catch (e) {
         console.log(e.toString());
@@ -95,7 +103,10 @@ export const removeComplexRubricFromMarkup = (content: PieContent, rubricElement
 
   tempDiv.remove();
 
-  return newMarkup;
+  return {
+    markupWithoutComplexRubric: newMarkup,
+    deletedComplexRubricItemIds
+  };
 }
 
 
