@@ -52,6 +52,8 @@ export const complexRubricChecks = (content: PieContent, configSettings = {}) =>
   const complexRubricElements = elementsKeys.filter(key => elements[key] && elements[key].indexOf(COMPLEX_RUBRIC) >= 0);
   // complexRubricItemsLength: how many complex-rubric elements are declared
   const complexRubricItemsLength = complexRubricElements.length;
+  const complexRubricModels = content.models.filter(model => model.element.indexOf(COMPLEX_RUBRIC) >= 0)
+  const complexRubricModelsLength = complexRubricModels.length;
 
   if (complexRubricItemsLength === elementsKeys.length) {
     // if item config ONLY has complex-rubrics, then all the steps below are not necessary
@@ -69,8 +71,8 @@ export const complexRubricChecks = (content: PieContent, configSettings = {}) =>
   shouldHaveComplexRubric = shouldHaveComplexRubric || shouldHaveForcedComplexRubric;
 
   return {
-    shouldAddComplexRubric: shouldHaveComplexRubric && !complexRubricItemsLength,
-    shouldRemoveComplexRubric: !shouldHaveComplexRubric && complexRubricItemsLength,
+    shouldAddComplexRubric: shouldHaveComplexRubric && !complexRubricModelsLength,
+    shouldRemoveComplexRubric: !shouldHaveComplexRubric && complexRubricModelsLength,
     complexRubricElements
   }
 }

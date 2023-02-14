@@ -46,7 +46,7 @@
         settings: true,
         label: 'Add Rubric..',
         // !!! IF you want to force having a complex-rubric (without having the Toggle in Settings Panel), then you can uncomment the line below
-        forceEnabled: true         // BE AWARE that this property ONLY works for drawing-response and extended-text-entry
+        // forceEnabled: true         // BE AWARE that this property ONLY works for drawing-response and extended-text-entry
       }
     },
     '@pie-element/multiple-choice': {
@@ -117,6 +117,8 @@
     "id": "1",
     "elements": {
       "drawing-response": "@pie-element/drawing-response",
+      // tODO this causes crash - still haven't found a solution for it
+      // "complex-rubric": "@pie-element/complex-rubric@next",
     },
     "models": [
       {
@@ -151,7 +153,7 @@
       "elements": {
         "multiple-choice": "@pie-element/multiple-choice",
         "select-text": "@pie-element/select-text",
-        "complex-rubric": "@pie-element/complex-rubric"
+        "complex-rubric": "@pie-element/complex-rubric@latest"
       },
       "models": [
         {
