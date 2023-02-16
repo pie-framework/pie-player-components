@@ -188,4 +188,26 @@ export const addPackageToContent = (
     content.elements && (content.elements[elementName] = packageToAdd);
     return content;
   }
+
+  return null;
+};
+
+/**
+ * Adds the provided model to the provided PieContent Object's `models` properties.
+ *
+ * @param content the PieContent for rendering
+ * @param element the name of the package converted to element name
+ * @param model optional the PieModel to add, `id` and `element` properties will be replaced by this function if present
+ */
+export const addModelToContent = (
+  content: PieContent,
+  element: string,
+  model?: PieModel
+) => {
+  model = model ? model : ({} as any);
+  model.id = pieShortIdGenerator();
+  model.element = element;
+  content.models && content.models.push(model);
+
+  return content;
 };

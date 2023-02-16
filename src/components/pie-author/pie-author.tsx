@@ -18,7 +18,7 @@ import {
   BundleEndpoints,
   DEFAULT_ENDPOINTS
 } from "../../pie-loader";
-import {pieContentFromConfig} from "../../utils/utils";
+import {createTag, pieContentFromConfig} from "../../utils/utils";
 import parseNpm from "parse-package-name";
 import _isEqual from "lodash/isEqual";
 import _isEmpty from "lodash/isEmpty";
@@ -29,7 +29,7 @@ import {
   addRubric,
   removeComplexRubricFromMarkup,
   COMPLEX_RUBRIC,
-  complexRubricChecks
+  complexRubricChecks, addModelToContent
 } from "../../rubric-utils";
 
 import {
@@ -343,9 +343,9 @@ export class Author {
         ...this.config,
         pie: newConfig
       }
-    } else {
-      return newConfig;
     }
+
+    return newConfig;
   }
 
   removeComplexRubricItemTypes(pieContentModel, rubricElements) {
@@ -378,14 +378,25 @@ export class Author {
       ...this.defaultComplexRubricModel || {}
     };
 
-    // add complex-rubric
-    addPackageToContent(
+    const packageName = `@pie-element/${COMPLEX_RUBRIC}`;
+
+    // add complex-rubric in elements, IF it isn't there already
+    let content = addPackageToContent(
       pieContentModel,
-      `@pie-element/${COMPLEX_RUBRIC}`,
+      packageName,
       complexRubricModel as PieModel
     );
 
-    return addComplexRubric(pieContentModel);
+    // but if complex-rubric is already in elements, then just add it in the models
+    if (!content) {
+      content = addModelToContent(
+        pieContentModel,
+        createTag(packageName),
+        complexRubricModel as PieModel
+      );
+    }
+
+    return addComplexRubric(content);
   }
 
   addConfigTags(c: PieContent) {
