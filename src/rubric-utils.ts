@@ -52,7 +52,7 @@ export const complexRubricChecks = (content: PieContent, configSettings = {}) =>
   const complexRubricElements = elementsKeys.filter(key => elements[key] && elements[key].indexOf(COMPLEX_RUBRIC) >= 0);
   // complexRubricItemsLength: how many complex-rubric elements are declared
   const complexRubricItemsLength = complexRubricElements.length;
-  const complexRubricModels = content.models.filter(model => model.element.indexOf(COMPLEX_RUBRIC) >= 0)
+  const complexRubricModels = (content.models || []).filter(model => model.element.indexOf(COMPLEX_RUBRIC) >= 0)
   const complexRubricModelsLength = complexRubricModels.length;
 
   if (complexRubricItemsLength === elementsKeys.length) {
