@@ -1,3 +1,18 @@
+# [1.3.0](https://github.com/pie-framework/pie-player-components/compare/v1.2.1...v1.3.0) (2023-02-17)
+
+
+### Bug Fixes
+
+* package without version ([7d5d542](https://github.com/pie-framework/pie-player-components/commit/7d5d54253c92f15a73246cd74172d1dc69cbcd90))
+* remove jira integration that breaks release ([31c3cc8](https://github.com/pie-framework/pie-player-components/commit/31c3cc8ef98c3f0a27fea7a6993843bf7c39937d))
+* removing from markup needs to use ids; clean-up ([0e3cb55](https://github.com/pie-framework/pie-player-components/commit/0e3cb55dcabba816be9f2f46d1ae0fc6190ad959))
+* sanity check ([b9b48cb](https://github.com/pie-framework/pie-player-components/commit/b9b48cb151ad07342dad077434b3f2803859e88c))
+
+
+### Features
+
+* handle the case when complex-rubric is declared in elements ([532b9b1](https://github.com/pie-framework/pie-player-components/commit/532b9b1b4942281193f8f66fcf88b4e8f29c440e))
+
 ## [1.2.1](https://github.com/pie-framework/pie-player-components/compare/v1.2.0...v1.2.1) (2023-02-02)
 
 
