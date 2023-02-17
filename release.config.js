@@ -19,13 +19,5 @@ module.exports = {
       }
     ],
     "@semantic-release/github",
-    ["@pie-api/semantic-release-jira-releases", {
-      projectId: 13788,
-      released: true,
-      releaseDate: true,
-      releaseNameTemplate: "pie player v${version}",
-      jiraHost: "illuminate.atlassian.net",
-      ticketPrefixes: ["PD"]
-    }]
   ]
 };
