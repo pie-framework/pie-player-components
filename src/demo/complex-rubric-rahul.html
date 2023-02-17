@@ -1,0 +1,168 @@
+<html>
+  <head>
+    <script nomodule src="/build/pie-player-components.js"></script>
+    <script type="module" src="/build/pie-player-components.esm.js"></script>
+  </head>
+
+  <token-helper>
+    <pie-author id="author" add-preview="true"></pie-author>
+
+  </token-helper>
+
+  <script>
+    var flag = true;
+    document.addEventListener("DOMContentLoaded", () => {
+      const author = document.querySelector("pie-author");
+      author.configSettings = {
+      '@pie-element/extended-text-entry': {
+        dimensions: {
+          settings: true,
+          label: 'Response Area Size',
+        },
+        equationEditor: {
+          settings: true,
+          label: '',
+          enabled: true,
+        },
+        feedback: {
+          settings: false,
+          label: 'Feedback',
+        },
+        mathInput: {
+          settings: true,
+          label: 'Equation Editor',
+          enabled: false,
+        },
+        multiple: {
+          settings: false,
+          label: 'Multiple Parts',
+          enabled: false,
+        },
+        studentInstructions: {
+          settings: false,
+          label: 'Student Instructions',
+        },
+        teacherInstructions: {
+          settings: true,
+          label: 'Teacher Instructions',
+        },
+        prompt: {
+          settings: true,
+          label: 'Item Stem',
+        },
+        withRubric: { settings: false, label: 'Add Rubric', forceEnabled: false },
+      },
+      '@pie-element/complex-rubric': {
+        multiTraitRubric: {
+          showHalfScoring: {
+            settings: false,
+            label: 'Half scoring',
+          },
+          showVisibleToStudent: { settings: false, label: 'Visible to Student1' },
+          showMaxPoint: { settings: false, label: 'Multip Show max points dropdown' },
+          dragAndDrop: { settings: true, label: 'Enable Drag and Drop1.2', enabled: false },
+        },
+        simpleRubric: {},
+      },
+    }
+    var config = {
+      id: 'p-00000000',
+      elements: {
+        'pie-constructed-response': '@pie-element/extended-text-entry@latest',
+      },
+      models: [
+        {
+          id: 'p-00000000',
+          element: 'pie-constructed-response',
+          dimensions: { height: 100, width: 500 },
+          prompt: '',
+          mathInput: false,
+          equationEditor: 'Grade 8 - HS',
+          feedbackEnabled: false,
+          rationaleEnabled: false,
+          promptEnabled: true,
+          teacherInstructionsEnabled: false,
+          studentInstructionsEnabled: false,
+          feedback: {
+            type: 'default',
+            default: '',
+          },
+          showMathInput: false,
+          rubricEnabled: false,
+        },
+      ],
+      markup: '<pie-constructed-response id="p-00000000"></pie-constructed-response>',
+    }
+    function getContentConfig() {
+      for (const model of config.models) {
+          model.rubricEnabled = true
+      }
+      return config;
+    }
+    if(flag) {
+      author.config = getContentConfig()
+    } else {
+      author.config = config
+    }
+      author.defaultComplexRubricModel = {
+        "rubrics": {
+          "simpleRubric": {},
+          "multiTraitRubric": {
+          visibleToStudent: false,
+          halfScoring: false,
+          pointLabels: true,
+          description: false,
+          standards: false,
+          dragAndDrop: true,
+          scales: [
+            {
+              excludeZero: false,
+              maxPoints: 2,
+              scorePointsLabels: ['', '', '', ''],
+              traitLabel: '',
+              traits: [
+                {
+                  name: '',
+                  description: '',
+                  standards: [],
+                  scorePointsDescriptors: ['', '', '', ''],
+                },
+                {
+                  name: '',
+                  description: '',
+                  standards: [],
+                  scorePointsDescriptors: ['', '', '', ''],
+                },
+              ],
+            },
+            {
+              excludeZero: false,
+              maxPoints: 2,
+              scorePointsLabels: ['', '', '', '', '', ''],
+              traitLabel: '',
+              traits: [
+                {
+                  name: '',
+                  description: '',
+                  standards: [],
+                  scorePointsDescriptors: ['', '', '', '', '', ''],
+                },
+                {
+                  name: '',
+                  description: '',
+                  standards: [],
+                  scorePointsDescriptors: ['', '', '', '', '', ''],
+                },
+              ],
+            },
+          ],
+          excludeZero: true,
+          maxPointsEnabled: true,
+          addScaleEnabled: false,
+        },
+        },
+        "rubricType": "multiTraitRubric"
+      };
+    });
+  </script>
+</html>

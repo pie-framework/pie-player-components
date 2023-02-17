@@ -1,6 +1,8 @@
 import parseNpm from 'parse-package-name';
 import { PieContent, AdvancedItemConfig, PieItemElement, PieModel } from '../interface';
 
+// prefix new tag with pp- for pie player and to ensure custom element validity
+export const createTag = npmPkg => `pp-${packageToElementName(npmPkg)}`
 
 /**
  * Replaces all user-defined element name mappings with ones derived from
@@ -13,8 +15,7 @@ export const normalizeContentElements = (content: PieContent): PieContent => {
   Object.keys(content.elements).forEach(key =>{
     const tag = key;
     const npmPkg = content.elements[key];
-    // prefix new tag with pp- for pie player and to ensure custom element validity
-    const newTag = 'pp-' + packageToElementName(npmPkg);
+    const newTag = createTag(npmPkg);
     // markup = markup.split(tag).join(newTag); // - with this approach, not only html tags are replaced, but also the text
     markup = markup.split(`<${tag}`).join(`<${newTag}`).split(`</${tag}`).join(`</${newTag}`);
 
