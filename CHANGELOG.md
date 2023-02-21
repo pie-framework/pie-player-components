@@ -1,3 +1,10 @@
+## [1.3.1](https://github.com/pie-framework/pie-player-components/compare/v1.3.0...v1.3.1) (2023-02-21)
+
+
+### Bug Fixes
+
+* await for async function ([2c6ccb9](https://github.com/pie-framework/pie-player-components/commit/2c6ccb95cf7d8d2bccdfa6447ec5132439a0e195))
+
 # [1.3.0](https://github.com/pie-framework/pie-player-components/compare/v1.2.1...v1.3.0) (2023-02-17)
 
 
