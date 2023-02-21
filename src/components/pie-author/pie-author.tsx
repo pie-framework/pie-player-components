@@ -49,6 +49,7 @@ import {
   ExternalUploadSoundSupport
 } from "./dataurl-upload-sound-support";
 import {VERSION} from "../../version";
+import cloneDeep from "lodash/cloneDeep";
 
 /**
  * Pie Author will load a Pie Content model for authoring.
@@ -287,8 +288,6 @@ export class Author {
   async watchConfig(newValue, oldValue) {
     if (newValue && !_isEqual(newValue, oldValue)) {
       try {
-        console.log('\tin watchConfig')
-
         this.elementsLoaded = false;
         this._modelLoadedState = false;
 
@@ -301,36 +300,35 @@ export class Author {
         } = complexRubricChecks(pieContentModel, this.configSettings);
 
         // if changes are needed
-        if (shouldAddComplexRubric) {
-          // we add complex-rubric to config
-          const newConfig = await this.addComplexRubric(pieContentModel);
 
-          // and then we reset the config
-          if (newConfig) {
-            this.config = this.getNewConfig(newConfig);
+        if (shouldAddComplexRubric || shouldRemoveComplexRubric) {
+          if (shouldAddComplexRubric) {
+            // we add complex-rubric to config
+            const newConfig = await this.addComplexRubric(pieContentModel);
 
-            return;
+            // and then we reset the config
+            if (newConfig) {
+              this.config = this.getNewConfig(newConfig);
+            }
           }
-        }
 
-        if (shouldRemoveComplexRubric) {
-          // we remove complex-rubric from config
-          const newConfig = await this.removeComplexRubricItemTypes(pieContentModel, complexRubricElements);
+          if (shouldRemoveComplexRubric) {
+            // we remove complex-rubric from config
+            const newConfig = await this.removeComplexRubricItemTypes(pieContentModel, complexRubricElements);
 
-          // and then we reset the config
-          if (newConfig) {
-            this.config = this.getNewConfig(newConfig);
-
-            return;
+            // and then we reset the config
+            if (newConfig) {
+              this.config = this.getNewConfig(newConfig);
+            }
           }
+        } else {
+          // if there's no change needed, we can proceed with updating the config and loading pie-elements
+          this.pieContentModel = pieContentModel;
+
+          this.addConfigTags(this.pieContentModel);
+
+          await this.loadPieElements();
         }
-
-        // if there's no change needed, we can proceed with updating the config and loading pie-elements
-        this.pieContentModel = pieContentModel;
-
-        this.addConfigTags(this.pieContentModel);
-
-        await this.loadPieElements();
       } catch (error) {
         console.log(`ERROR ${error}`);
       }
@@ -353,21 +351,23 @@ export class Author {
       return pieContentModel;
     }
 
+    const newPieContentModel = cloneDeep(pieContentModel);
+
     // delete the complex-rubric elements from elements object
-    rubricElements.forEach(rubricElementKey => delete pieContentModel.elements[rubricElementKey]);
+    rubricElements.forEach(rubricElementKey => delete newPieContentModel.elements[rubricElementKey]);
 
     const {
       markupWithoutComplexRubric,
       deletedComplexRubricItemIds
-    } = removeComplexRubricFromMarkup(pieContentModel, rubricElements, this.doc);
+    } = removeComplexRubricFromMarkup(newPieContentModel, rubricElements, this.doc);
 
     // delete the complex-rubric nodes from markup
-    pieContentModel.markup = markupWithoutComplexRubric;
+    newPieContentModel.markup = markupWithoutComplexRubric;
 
     // delete the complex-rubric models
-    pieContentModel.models = pieContentModel.models.filter(model => !deletedComplexRubricItemIds.includes(model.id));
+    newPieContentModel.models = newPieContentModel.models.filter(model => !deletedComplexRubricItemIds.includes(model.id));
 
-    return pieContentModel;
+    return newPieContentModel;
   }
 
   async addComplexRubric(pieContentModel) {
