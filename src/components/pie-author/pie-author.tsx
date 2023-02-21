@@ -318,7 +318,7 @@ export class Author {
 
             // and then we reset the config
             if (newConfig) {
-              this.config = {...this.getNewConfig(newConfig)};
+              this.config = this.getNewConfig(newConfig);
             }
           }
         } else {
