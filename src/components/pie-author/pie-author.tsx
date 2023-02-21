@@ -315,7 +315,7 @@ export class Author {
 
         if (shouldRemoveComplexRubric) {
           // we remove complex-rubric from config
-          const newConfig = this.removeComplexRubricItemTypes(pieContentModel, complexRubricElements);
+          const newConfig = await this.removeComplexRubricItemTypes(pieContentModel, complexRubricElements);
 
           // and then we reset the config
           if (newConfig) {
@@ -348,7 +348,7 @@ export class Author {
     return newConfig;
   }
 
-  removeComplexRubricItemTypes(pieContentModel, rubricElements) {
+  async removeComplexRubricItemTypes(pieContentModel, rubricElements) {
     if (!rubricElements.length || !pieContentModel.models) {
       return pieContentModel;
     }
