@@ -1,3 +1,10 @@
+## [1.3.2](https://github.com/pie-framework/pie-player-components/compare/v1.3.1...v1.3.2) (2023-02-21)
+
+
+### Bug Fixes
+
+* cloneDeep was needed to make remove complex-rubric work ([1cee416](https://github.com/pie-framework/pie-player-components/commit/1cee41615996dfaf5ee71fa97aee0f6144584dd3))
+
 ## [1.3.1](https://github.com/pie-framework/pie-player-components/compare/v1.3.0...v1.3.1) (2023-02-21)
 
 
