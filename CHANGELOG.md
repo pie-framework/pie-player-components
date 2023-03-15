@@ -1,3 +1,10 @@
+## [1.3.3](https://github.com/pie-framework/pie-player-components/compare/v1.3.2...v1.3.3) (2023-03-15)
+
+
+### Bug Fixes
+
+* clean-up and add some debugging helpers ([8bbda37](https://github.com/pie-framework/pie-player-components/commit/8bbda377f245bd9242e4149a104a0fd26868dfd5))
+
 ## [1.3.2](https://github.com/pie-framework/pie-player-components/compare/v1.3.1...v1.3.2) (2023-02-21)
 
 
