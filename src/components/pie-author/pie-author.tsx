@@ -304,7 +304,7 @@ export class Author {
         if (shouldAddComplexRubric || shouldRemoveComplexRubric) {
           if (shouldAddComplexRubric) {
             // we add complex-rubric to config
-            const newConfig = await this.addComplexRubric(pieContentModel);
+            const newConfig = await this.addComplexRubric(cloneDeep(pieContentModel));
 
             // and then we reset the config
             if (newConfig) {
@@ -314,7 +314,7 @@ export class Author {
 
           if (shouldRemoveComplexRubric) {
             // we remove complex-rubric from config
-            const newConfig = await this.removeComplexRubricItemTypes(pieContentModel, complexRubricElements);
+            const newConfig = await this.removeComplexRubricItemTypes(cloneDeep(pieContentModel), complexRubricElements);
 
             // and then we reset the config
             if (newConfig) {
@@ -351,23 +351,21 @@ export class Author {
       return pieContentModel;
     }
 
-    const newPieContentModel = cloneDeep(pieContentModel);
-
     // delete the complex-rubric elements from elements object
-    rubricElements.forEach(rubricElementKey => delete newPieContentModel.elements[rubricElementKey]);
+    rubricElements.forEach(rubricElementKey => delete pieContentModel.elements[rubricElementKey]);
 
     const {
       markupWithoutComplexRubric,
       deletedComplexRubricItemIds
-    } = removeComplexRubricFromMarkup(newPieContentModel, rubricElements, this.doc);
+    } = removeComplexRubricFromMarkup(pieContentModel, rubricElements, this.doc);
 
     // delete the complex-rubric nodes from markup
-    newPieContentModel.markup = markupWithoutComplexRubric;
+    pieContentModel.markup = markupWithoutComplexRubric;
 
     // delete the complex-rubric models
-    newPieContentModel.models = newPieContentModel.models.filter(model => !deletedComplexRubricItemIds.includes(model.id));
+    pieContentModel.models = pieContentModel.models.filter(model => !deletedComplexRubricItemIds.includes(model.id));
 
-    return newPieContentModel;
+    return pieContentModel;
   }
 
   async addComplexRubric(pieContentModel) {
@@ -453,11 +451,16 @@ export class Author {
 
         if (pieEl) {
           const pieElName = pieEl.tagName.toLowerCase().split("-config")[0];
-          const packageName = parseNpm(this.pieContentModel.elements[pieElName]).name;
-          pieEl.model = model;
 
-          if (this.configSettings && this.configSettings[packageName]) {
-            pieEl.configuration = this.configSettings[packageName];
+          try {
+            const packageName = parseNpm(this.pieContentModel.elements[pieElName]).name;
+            pieEl.model = model;
+
+            if (this.configSettings && this.configSettings[packageName]) {
+              pieEl.configuration = this.configSettings[packageName];
+            }
+          } catch (e) {
+            console.log(e.toString(), pieElName, this.pieContentModel.elements[pieElName]);
           }
         }
       });
