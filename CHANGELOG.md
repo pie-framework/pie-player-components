@@ -1,3 +1,10 @@
+## [1.3.4](https://github.com/pie-framework/pie-player-components/compare/v1.3.3...v1.3.4) (2023-03-16)
+
+
+### Bug Fixes
+
+* resetting causes rendering issues because it still has old content ([52d5b36](https://github.com/pie-framework/pie-player-components/commit/52d5b36e6a7620d1db0aa9b689e2fb831d9690f2))
+
 ## [1.3.3](https://github.com/pie-framework/pie-player-components/compare/v1.3.2...v1.3.3) (2023-03-15)
 
 
