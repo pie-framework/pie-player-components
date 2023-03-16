@@ -302,6 +302,8 @@ export class Author {
         // if changes are needed
 
         if (shouldAddComplexRubric || shouldRemoveComplexRubric) {
+          this.pieContentModel = null;
+
           if (shouldAddComplexRubric) {
             // we add complex-rubric to config
             const newConfig = await this.addComplexRubric(cloneDeep(pieContentModel));
