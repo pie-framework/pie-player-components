@@ -1,3 +1,10 @@
+# [1.4.0](https://github.com/pie-framework/pie-player-components/compare/v1.3.4...v1.4.0) (2023-03-21)
+
+
+### Features
+
+* pie-player-components: add classes ([995fcc1](https://github.com/pie-framework/pie-player-components/commit/995fcc14d75cb4bae00cc901693adfb9aa959d22))
+
 ## [1.3.4](https://github.com/pie-framework/pie-player-components/compare/v1.3.3...v1.3.4) (2023-03-16)
 
 
