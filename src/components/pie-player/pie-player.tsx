@@ -414,7 +414,7 @@ export class Player {
     if (this.stimulusItemModel) {
       return this.renderStimulus ? (
         <pie-stimulus-layout>
-          <div slot="stimulus">
+          <div slot="stimulus" class='player-stimulus-container'>
             <pie-player
               id="stimulusPlayer"
               config={this.stimulusItemModel.stimulus}
@@ -424,7 +424,7 @@ export class Player {
               ref={el => (this.stimulusPlayer = el as HTMLElement)}
             />
           </div>
-          <div slot="item">
+          <div slot="item" class='player-item-container'>
             <pie-player
               id="itemPlayer"
               addCorrectResponse={this.addCorrectResponse}
@@ -448,7 +448,7 @@ export class Player {
     } else {
       if (this.elementsLoaded) {
         return (
-          <div
+          <div class='player-container'
             innerHTML={
               this.pieContentModel && this.pieContentModel.markup
                 ? this.pieContentModel.markup

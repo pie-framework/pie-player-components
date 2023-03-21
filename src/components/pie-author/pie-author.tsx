@@ -680,7 +680,7 @@ export class Author {
           <pie-preview-layout config={this.config}>
             <div slot="configure">
               <pie-spinner active={!this.elementsLoaded}>
-                <div innerHTML={markup}/>
+                <div class='author-container' innerHTML={markup}/>
               </pie-spinner>
             </div>
             <input type="file" hidden ref={r => (this.fileInput = r)} style={{display: 'none'}}/>
@@ -689,7 +689,7 @@ export class Author {
       } else {
         return (
           <pie-spinner active={!this.elementsLoaded}>
-            <div innerHTML={markup}/>
+            <div class='author-container' innerHTML={markup}/>
             <input type="file" hidden ref={r => (this.fileInput = r)} style={{display: 'none'}}/>
           </pie-spinner>
         );
