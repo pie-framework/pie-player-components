@@ -1,3 +1,10 @@
+# [1.5.0](https://github.com/pie-framework/pie-player-components/compare/v1.4.0...v1.5.0) (2023-03-23)
+
+
+### Features
+
+* added a new property, clean-up and improve efficiency ([2d8e9b2](https://github.com/pie-framework/pie-player-components/commit/2d8e9b2b4c375d6d2ec59f2b63070cd8e9a7a0c9))
+
 # [1.4.0](https://github.com/pie-framework/pie-player-components/compare/v1.3.4...v1.4.0) (2023-03-21)
 
 
