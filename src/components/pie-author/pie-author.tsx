@@ -131,6 +131,11 @@ export class Author {
    */
   @Prop() defaultComplexRubricModel?: Object;
 
+  /**
+   * If pie-author is used inside pie-api-author component. Do not set it manually.
+   */
+  @Prop() isInsidePieApiAuthor?: boolean = false;
+
   pieContentModel: PieContent;
 
   pieLoader = new PieLoader();
@@ -293,35 +298,22 @@ export class Author {
 
         const pieContentModel = pieContentFromConfig(newValue);
 
-        const {
-          shouldAddComplexRubric,
-          shouldRemoveComplexRubric,
-          complexRubricElements
-        } = complexRubricChecks(pieContentModel, this.configSettings);
+        const complexRubricCheckedValues = complexRubricChecks(pieContentModel, this.configSettings);
+        const {shouldAddComplexRubric, shouldRemoveComplexRubric} = complexRubricCheckedValues || {};
 
         // if changes are needed
 
         if (shouldAddComplexRubric || shouldRemoveComplexRubric) {
           this.pieContentModel = null;
 
-          if (shouldAddComplexRubric) {
-            // we add complex-rubric to config
-            const newConfig = await this.addComplexRubric(cloneDeep(pieContentModel));
+          const newConfig = await this.getPieContentModelWithToggledComplexRubric({
+            complexRubricCheckedValues,
+            pieContentModel
+          });
 
-            // and then we reset the config
-            if (newConfig) {
-              this.config = this.getNewConfig(newConfig);
-            }
-          }
-
-          if (shouldRemoveComplexRubric) {
-            // we remove complex-rubric from config
-            const newConfig = await this.removeComplexRubricItemTypes(cloneDeep(pieContentModel), complexRubricElements);
-
-            // and then we reset the config
-            if (newConfig) {
-              this.config = this.getNewConfig(newConfig);
-            }
+          // and then we reset the config
+          if (newConfig) {
+            this.config = this.getNewConfig(newConfig);
           }
         } else {
           // if there's no change needed, we can proceed with updating the config and loading pie-elements
@@ -335,6 +327,26 @@ export class Author {
         console.log(`ERROR ${error}`);
       }
     }
+  }
+
+  getPieContentModelWithToggledComplexRubric = async ({complexRubricCheckedValues, pieContentModel}) => {
+    const {
+      shouldAddComplexRubric,
+      shouldRemoveComplexRubric,
+      complexRubricElements
+    } = complexRubricCheckedValues || {};
+
+    if (shouldAddComplexRubric) {
+      // we add complex-rubric to config
+      return this.addComplexRubric(cloneDeep(pieContentModel));
+    }
+
+    if (shouldRemoveComplexRubric) {
+      // we remove complex-rubric from config
+      return this.removeComplexRubricItemTypes(cloneDeep(pieContentModel), complexRubricElements);
+    }
+
+    return null;
   }
 
   getNewConfig = (newConfig) => {
@@ -492,7 +504,7 @@ export class Author {
     }
     // Note: cannot use the @Listen decorator as creates bundling problems due
     // to `.` in event name.
-    this.el.addEventListener(ModelUpdatedEvent.TYPE, (e: ModelUpdatedEvent) => {
+    this.el.addEventListener(ModelUpdatedEvent.TYPE, async (e: ModelUpdatedEvent) => {
       // set the internal model
       // emit a content-item level event with the model
       let rubricChanged;
@@ -508,10 +520,36 @@ export class Author {
       }
 
       if (this._modelLoadedState) {
-        this.modelUpdated.emit(this.pieContentModel);
-
         if (rubricChanged) {
-          this.watchConfig(this.config, {});
+          if (this.isInsidePieApiAuthor) {
+            // if pie-author is used inside pie-api-author, then what we need is to
+            // calculate the new pieContentModel and make sure we emit the modelUpdated event with the updated pieContentModel
+
+            // first thing, we check what changed (if we have to add or remove complex-rubric)
+            const complexRubricCheckedValues = complexRubricChecks(this.pieContentModel, this.configSettings);
+            const {shouldAddComplexRubric, shouldRemoveComplexRubric} = complexRubricCheckedValues || {};
+
+            if (shouldAddComplexRubric || shouldRemoveComplexRubric) {
+              // then, if changes are needed, we make them and save the new contentModel
+              const newPieContentModel = await this.getPieContentModelWithToggledComplexRubric({
+                complexRubricCheckedValues,
+                pieContentModel: this.pieContentModel
+              });
+
+              // last thing to do is to make sure we send the updated pie content model to pie-api-author
+              // (which listens for this event) who will trigger watchConfig
+              if (newPieContentModel) {
+                this.modelUpdated.emit(newPieContentModel);
+              }
+            }
+          } else {
+            // however, if we only use pie-player-components, just force the call to watchConfig
+            await this.watchConfig(this.config, {});
+          }
+        } else {
+          // if rubricEnabled did not change, just behave as previously
+          // (pie-api-author listens for this event and triggers watchConfig)
+          this.modelUpdated.emit(this.pieContentModel);
         }
       }
     });

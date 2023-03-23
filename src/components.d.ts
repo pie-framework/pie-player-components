@@ -77,6 +77,10 @@ export namespace Components {
     */
     'imageSupport': ExternalImageSupport;
     /**
+    * If pie-author is used inside pie-api-author component. Do not set it manually.
+    */
+    'isInsidePieApiAuthor'?: boolean;
+    /**
     * external providers can set this if they need to upload the assets to the cloud etc. by default we use data urls
     */
     'uploadSoundSupport': ExternalUploadSoundSupport;
@@ -235,6 +239,10 @@ declare namespace LocalJSX {
     * external providers can set this if they need to upload the assets to the cloud etc. by default we use data urls
     */
     'imageSupport'?: ExternalImageSupport;
+    /**
+    * If pie-author is used inside pie-api-author component. Do not set it manually.
+    */
+    'isInsidePieApiAuthor'?: boolean;
     /**
     * Emmitted when the content models in the config have been set on the content
     */
