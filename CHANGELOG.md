@@ -1,3 +1,10 @@
+# [1.6.0](https://github.com/pie-framework/pie-player-components/compare/v1.5.0...v1.6.0) (2023-04-20)
+
+
+### Features
+
+* add configSettings watcher ([43b30dd](https://github.com/pie-framework/pie-player-components/commit/43b30dd9131c88e78f213a7c2324669bb47973d1))
+
 # [1.5.0](https://github.com/pie-framework/pie-player-components/compare/v1.4.0...v1.5.0) (2023-03-23)
 
 
