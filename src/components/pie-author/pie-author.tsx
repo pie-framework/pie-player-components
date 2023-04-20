@@ -164,6 +164,14 @@ export class Author {
   @Prop({mutable: false, reflect: false})
   version: string = VERSION;
 
+  /**
+   * used in our demo environment to allow author to watch config settings and make updates
+   * defaults to false (do not set it to true because it was not tested properly)
+   * @type {boolean}
+   * @private
+   */
+  @Prop() canWatchConfigSettings: boolean = false;
+
   @Method()
   async validateModels() {
     if (!this.pieContentModel || !this.pieContentModel.models) {
@@ -459,6 +467,17 @@ export class Author {
     }
 
     if (this.pieContentModel && this.pieContentModel.models) {
+      this.setModelsAndConfigurations();
+
+      if (this._modelLoadedState === false) {
+        this._modelLoadedState = true;
+        this.modelLoaded.emit(this.pieContentModel);
+      }
+    }
+  }
+
+  setModelsAndConfigurations = () => {
+    if (this.pieContentModel && this.pieContentModel.models) {
       this.pieContentModel.models.map(model => {
         let pieEl: PieElement = this.el.querySelector(`[id='${model.id}']`);
         !pieEl && (pieEl = this.el.querySelector(`[pie-id='${model.id}']`));
@@ -478,11 +497,13 @@ export class Author {
           }
         }
       });
+    }
+  }
 
-      if (this._modelLoadedState === false) {
-        this._modelLoadedState = true;
-        this.modelLoaded.emit(this.pieContentModel);
-      }
+  @Watch('configSettings')
+  watchConfigSettings() {
+    if (this.canWatchConfigSettings) {
+      this.setModelsAndConfigurations();
     }
   }
 

@@ -57,6 +57,12 @@ export namespace Components {
     */
     'bundleHost'?: string;
     /**
+    * used in our demo environment to allow author to watch config settings and make updates defaults to false (do not set it to true because it was not tested properly)
+    * @type {boolean}
+    * @private
+    */
+    'canWatchConfigSettings': boolean;
+    /**
     * The Pie config model.
     */
     'config': ItemConfig;
@@ -219,6 +225,12 @@ declare namespace LocalJSX {
     * Optionally specifies the back-end that builds and hosts javascript bundles for rendering assessment items. This property lets you choose which environment to use, from 'dev' , 'stage' or 'prod' environments. Until 1.0 will default to 'stage'.
     */
     'bundleHost'?: string;
+    /**
+    * used in our demo environment to allow author to watch config settings and make updates defaults to false (do not set it to true because it was not tested properly)
+    * @type {boolean}
+    * @private
+    */
+    'canWatchConfigSettings'?: boolean;
     /**
     * The Pie config model.
     */
