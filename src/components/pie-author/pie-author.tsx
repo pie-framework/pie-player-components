@@ -269,9 +269,9 @@ export class Author {
         this.fileInput.click();
       } else {
         try {
-          // tODO add chosenFile to imageHandler
+          // tODO add getChosenFile to imageHandler interface
           // @ts-ignore
-          const file: File = e.detail.chosenFile;
+          const file: File = e.detail.getChosenFile();
 
           if (file) {
             this.imageSupport.insert(
