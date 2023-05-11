@@ -264,8 +264,33 @@ export class Author {
     this.handleInsertImage = (e: InsertImageEvent) => {
       console.log("[handleInsertImage]", e);
       this.imageHandler = e.detail;
+
       if (!e.detail.isPasted) {
         this.fileInput.click();
+      } else {
+        try {
+          // tODO add chosenFile to imageHandler
+          // @ts-ignore
+          const file: File = e.detail.chosenFile;
+
+          if (file) {
+            this.imageSupport.insert(
+              file,
+              (e: Error, src: string) => {
+                if (e) {
+                  console.warn("error inserting image: ", e.message);
+                  console.error(e);
+                }
+                this.imageHandler.done(e, src);
+                this.imageHandler = null;
+              },
+              (percent, bytes, total) =>
+                this.imageHandler.progress(percent, bytes, total)
+            );
+          }
+        } catch (e) {
+          console.error(e);
+        }
       }
     };
 
