@@ -228,6 +228,22 @@ export class Author {
     }, {hasErrors: false, validatedModels: {}});
   }
 
+  insertImage(file: File) {
+    this.imageSupport.insert(
+      file,
+      (e: Error, src: string) => {
+        if (e) {
+          console.warn("error inserting image: ", e.message);
+          console.error(e);
+        }
+        this.imageHandler.done(e, src);
+        this.imageHandler = null;
+      },
+      (percent, bytes, total) =>
+        this.imageHandler.progress(percent, bytes, total)
+    );
+  }
+
   constructor() {
     this.handleFileInputChange = (e: Event) => {
       const input = e.target;
@@ -245,19 +261,7 @@ export class Author {
         const file: File = files[0];
         this.imageHandler.fileChosen(file);
         this.fileInput.value = "";
-        this.imageSupport.insert(
-          file,
-          (e: Error, src: string) => {
-            if (e) {
-              console.warn("error inserting image: ", e.message);
-              console.error(e);
-            }
-            this.imageHandler.done(e, src);
-            this.imageHandler = null;
-          },
-          (percent, bytes, total) =>
-            this.imageHandler.progress(percent, bytes, total)
-        );
+        this.insertImage(file);
       }
     };
 
@@ -269,24 +273,10 @@ export class Author {
         this.fileInput.click();
       } else {
         try {
-          // tODO add getChosenFile to imageHandler interface
-          // @ts-ignore
           const file: File = e.detail.getChosenFile();
 
           if (file) {
-            this.imageSupport.insert(
-              file,
-              (e: Error, src: string) => {
-                if (e) {
-                  console.warn("error inserting image: ", e.message);
-                  console.error(e);
-                }
-                this.imageHandler.done(e, src);
-                this.imageHandler = null;
-              },
-              (percent, bytes, total) =>
-                this.imageHandler.progress(percent, bytes, total)
-            );
+            this.insertImage(file);
           }
         } catch (e) {
           console.error(e);
