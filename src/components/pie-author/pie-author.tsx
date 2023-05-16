@@ -228,6 +228,22 @@ export class Author {
     }, {hasErrors: false, validatedModels: {}});
   }
 
+  insertImage(file: File) {
+    this.imageSupport.insert(
+      file,
+      (e: Error, src: string) => {
+        if (e) {
+          console.warn("error inserting image: ", e.message);
+          console.error(e);
+        }
+        this.imageHandler.done(e, src);
+        this.imageHandler = null;
+      },
+      (percent, bytes, total) =>
+        this.imageHandler.progress(percent, bytes, total)
+    );
+  }
+
   constructor() {
     this.handleFileInputChange = (e: Event) => {
       const input = e.target;
@@ -245,27 +261,28 @@ export class Author {
         const file: File = files[0];
         this.imageHandler.fileChosen(file);
         this.fileInput.value = "";
-        this.imageSupport.insert(
-          file,
-          (e: Error, src: string) => {
-            if (e) {
-              console.warn("error inserting image: ", e.message);
-              console.error(e);
-            }
-            this.imageHandler.done(e, src);
-            this.imageHandler = null;
-          },
-          (percent, bytes, total) =>
-            this.imageHandler.progress(percent, bytes, total)
-        );
+        this.insertImage(file);
       }
     };
 
     this.handleInsertImage = (e: InsertImageEvent) => {
       console.log("[handleInsertImage]", e);
       this.imageHandler = e.detail;
+
       if (!e.detail.isPasted) {
         this.fileInput.click();
+      } else if (e.detail.getChosenFile) {
+        // this is for images that were pasted into the editor (or dropped)
+        // they also need to be uploaded, but the file input doesn't have to be used
+        try {
+          const file: File = e.detail.getChosenFile();
+
+          if (file) {
+            this.insertImage(file);
+          }
+        } catch (e) {
+          console.error(e);
+        }
       }
     };
 
