@@ -271,7 +271,9 @@ export class Author {
 
       if (!e.detail.isPasted) {
         this.fileInput.click();
-      } else {
+      } else if (e.detail.getChosenFile) {
+        // this is for images that were pasted into the editor (or dropped)
+        // they also need to be uploaded, but the file input doesn't have to be used
         try {
           const file: File = e.detail.getChosenFile();
 
