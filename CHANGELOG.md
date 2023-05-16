@@ -1,3 +1,18 @@
+# [1.7.0](https://github.com/pie-framework/pie-player-components/compare/v1.6.0...v1.7.0) (2023-05-16)
+
+
+### Bug Fixes
+
+* create proper demo file PD-2707 ([d659af5](https://github.com/pie-framework/pie-player-components/commit/d659af5f2833f6b6c95db415f2b8547a5ab5faf9))
+* extra sanity check PD-2707 ([070d08b](https://github.com/pie-framework/pie-player-components/commit/070d08b6d158b9a3c7bed0ca791a77060f68d0de))
+* update pie-configure-events version and clean-up PD-2707 ([ea0fd3f](https://github.com/pie-framework/pie-player-components/commit/ea0fd3f9cd57bffb09dcfb506fb34dbcd3d48425))
+* use getter PD-2707 ([9c761af](https://github.com/pie-framework/pie-player-components/commit/9c761af8da82bc3d5db2296ce841c1b592634dd5))
+
+
+### Features
+
+* add handler for dropped and pasted images PD-2707 ([06bfc6d](https://github.com/pie-framework/pie-player-components/commit/06bfc6d17d2adbea8d8ef26923a504404afdbfec))
+
 # [1.6.0](https://github.com/pie-framework/pie-player-components/compare/v1.5.0...v1.6.0) (2023-04-20)
 
 
