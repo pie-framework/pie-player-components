@@ -1,3 +1,20 @@
+# [2.0.0](https://github.com/pie-framework/pie-player-components/compare/v1.7.0...v2.0.0) (2023-07-20)
+
+
+### Bug Fixes
+
+* try to fix circle ci ([92d8a7f](https://github.com/pie-framework/pie-player-components/commit/92d8a7fe4c8a32e62f970aceeb2f61c019eaa672))
+
+
+### Features
+
+* replace stimulus with passage to work with new pie-api-aws PD-2909 ([df034d2](https://github.com/pie-framework/pie-player-components/commit/df034d2809d4a6edcb03279651cfd38125094b43))
+
+
+### BREAKING CHANGES
+
+* stimulus property inside item config was replaced with passage property.
+
 # [1.7.0](https://github.com/pie-framework/pie-player-components/compare/v1.6.0...v1.7.0) (2023-05-16)
 
 
