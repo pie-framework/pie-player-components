@@ -55,7 +55,16 @@ jobs:
       - attach_workspace:
           at: ~/repo
       - browser-tools/install-chrome
-      - browser-tools/install-chromedriver
+      # Manually specify the ChromeDriver version
+      - run:
+          name: Install ChromeDriver
+          command: |
+            CHROME_DRIVER_VERSION="2.44"
+            curl -O https://chromedriver.storage.googleapis.com/$CHROME_DRIVER_VERSION/chromedriver_linux64.zip
+            unzip chromedriver_linux64.zip -d ~/bin
+            rm chromedriver_linux64.zip
+            chmod +x ~/bin/chromedriver
+            export PATH=$PATH:~/bin
       - run:
           name: Run tests
           command: yarn test
