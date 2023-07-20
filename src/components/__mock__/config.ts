@@ -4,22 +4,22 @@ export const simplePieMock: PieContent = {
   id: "1",
   elements: {"pie-multiple-choice": "@pie-element/multiple-choice@2.4.6"},
   models: [
-    { 
+    {
       id: "1",
       element: "pie-multiple-choice"
     }],
   markup: "<pie-multiple-choice id='1'></pie-multiple-choice>"
 }
 
- 
+
 export const advancedPieMock: AdvancedItemConfig = {
   id: "1",
   pie: simplePieMock,
-  stimulus: {
+  passage: {
     id: "1",
     elements: {"pie-passage": "@pie-element/passage@latest"},
     models: [
-      { 
+      {
         id: "1",
         element: "pie-passage",
         title: "passage title",
@@ -56,14 +56,14 @@ export const inlineChoiceItem = {
 export const multiPartItemWithPassage = {
   id: '1',
   elements: { 'pie-inline-choice': '@pie-element/inline-choice@latest',
-  'pie-multiple-choice': '@pie-element/multiple-choice@2.4.6', 
+  'pie-multiple-choice': '@pie-element/multiple-choice@2.4.6',
   "pie-passage": "@pie-element/passage@latest"},
   models: [
     {
       id: '1',
       element: 'pie-inline-choice'
     },
-    { 
+    {
       id: "2",
       element: "pie-passage",
       title: "passage title",

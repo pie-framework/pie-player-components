@@ -35,7 +35,7 @@ export interface PieItemElement {
 interface AdvancedItemConfig {
   id: string;
   pie: PieContent;
-  stimulus?: PieContent;
+  passage?: PieContent;
   instructorResources?: [PieContent];
   defaultExtraModels?: {
     [key: string]: PieDefaultModel
