@@ -417,7 +417,7 @@ export class Player {
           <div slot="stimulus" class='player-stimulus-container'>
             <pie-player
               id="stimulusPlayer"
-              config={this.stimulusItemModel.stimulus}
+              config={this.stimulusItemModel.passage}
               env={this.env}
               hosted={this.hosted}
               session={this.session}
