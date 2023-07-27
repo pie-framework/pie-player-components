@@ -553,6 +553,10 @@ export class Author {
             rubricChanged = rubricChanged || m.rubricEnabled !== e.update.rubricEnabled;
 
             Object.assign(m, e.update);
+
+            if (e.update.errors && !_isEmpty(e.update.errors)) {
+              this.validateModels();
+            }
           }
         });
       }
