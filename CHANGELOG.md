@@ -1,3 +1,10 @@
+## [2.0.1](https://github.com/pie-framework/pie-player-components/compare/v2.0.0...v2.0.1) (2023-07-27)
+
+
+### Bug Fixes
+
+* add validation PD-2917 ([f8e24c6](https://github.com/pie-framework/pie-player-components/commit/f8e24c63d7a7302a2178a2df698172914f32f2c2))
+
 # [2.0.0](https://github.com/pie-framework/pie-player-components/compare/v1.7.0...v2.0.0) (2023-07-20)
 
 
