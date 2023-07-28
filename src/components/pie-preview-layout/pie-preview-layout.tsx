@@ -6,8 +6,8 @@ import { ModelUpdatedEvent } from '@pie-framework/pie-configure-events';
 
 // TODO sticky mdc focus workaround https://github.com/prateekbh/preact-material-components/issues/625
 
-@Component({ 
-  tag: 'pie-preview-layout', 
+@Component({
+  tag: 'pie-preview-layout',
   styleUrls: [
     "pie-preview-layout.scss"
   ]})
@@ -23,7 +23,7 @@ export class PiePreviewLayout {
   activeIndex: number = 0;
 
   @Prop() config: Object;
-   
+
 
   @Watch('activeIndex')
   watchActiveIndex(newVal) {
@@ -52,7 +52,7 @@ export class PiePreviewLayout {
   async handleModelUpdated(ev) {
     const {reset, update} = ev.detail;
     reset === true;// TODO - not sure what reset true does
-    
+
     await this.piePlayerElement.updateElementModel(update);
 
   }
@@ -70,6 +70,7 @@ export class PiePreviewLayout {
                   role="tab"
                   aria-selected="true"
                   tabindex="0"
+                  type="button"
                 >
                   <span class="mdc-tab__content">
                     <span class="mdc-tab__text-label">Build</span>
@@ -85,6 +86,7 @@ export class PiePreviewLayout {
                   role="tab"
                   aria-selected="true"
                   tabindex="1"
+                  type="button"
                 >
                   <span class="mdc-tab__content">
                     <span class="mdc-tab__text-label">Item Preview</span>
@@ -103,14 +105,14 @@ export class PiePreviewLayout {
         {/* tab content */}
         <div class="author-preview-tab-contents">
 
-            <div 
+            <div
               ref={(el) => this.designElement = el as HTMLDivElement}
               >
-              <slot 
+              <slot
                 name='configure' />
             </div>
 
-            <div 
+            <div
               style={{display: 'none'}}
               ref={(el) => this.previewElement = el as HTMLDivElement}
               >
@@ -118,7 +120,7 @@ export class PiePreviewLayout {
                 <pie-preview-control onEnvChanged={(ev) => {
                   this.piePlayerElement.env = {mode: ev.detail.mode, role: ev.detail.role};
                 }}
-                  ></pie-preview-control>  
+                  ></pie-preview-control>
               </div>
               <div class="pie-player">
                 <pie-player
@@ -127,7 +129,7 @@ export class PiePreviewLayout {
                   config={this.config as ItemConfig}></pie-player>
               </div>
             </div>
-           
+
 
         </div>
       </div>
