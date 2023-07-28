@@ -1,3 +1,10 @@
+## [2.0.2](https://github.com/pie-framework/pie-player-components/compare/v2.0.1...v2.0.2) (2023-07-28)
+
+
+### Bug Fixes
+
+* add type button instead of default type submit PD-3075 ([1f50613](https://github.com/pie-framework/pie-player-components/commit/1f5061392229a1697191483915dc8089222be0b6))
+
 ## [2.0.1](https://github.com/pie-framework/pie-player-components/compare/v2.0.0...v2.0.1) (2023-07-27)
 
 
