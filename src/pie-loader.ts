@@ -8,17 +8,16 @@ import { emptyConfigure } from "./components/empty-configure";
  */
 export const DEFAULT_ENDPOINTS = {
   prod: {
-    bundleBase: "https://pits-cdn.pie-api.io//bundles/",
+    bundleBase: "https://pits-cdn.pie-api.io/bundles/",
     buildServiceBase: "https://pits-dot-pie-prod-221718.appspot.com/bundles/",
   },
   stage: {
-    bundleBase: "https://pits-cdn-staging.pie-api.io/bundles/",
-    buildServiceBase:
-      "https://pits-dot-pie-staging-221718.appspot.com/bundles/",
+    bundleBase: "https://pits-cdn.pie-api.io/bundles/",
+    buildServiceBase: "https://pits-dot-pie-prod-221718.appspot.com/bundles/",
   },
   dev: {
-    bundleBase: "https://pits-cdn-dev.pie-api.io/bundles/",
-    buildServiceBase: "https://pits-dot-pie-dev-221718.appspot.com/bundles/",
+    bundleBase: "https://pits-cdn.pie-api.io/bundles/",
+    buildServiceBase: "https://pits-dot-pie-prod-221718.appspot.com/bundles/",
   },
 };
 

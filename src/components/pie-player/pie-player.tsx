@@ -50,6 +50,7 @@ export class Player {
    * Optionally specifies the back-end that builds and hosts javascript bundles for rendering assessment items.
    * This property lets you choose which environment to use, from 'dev' , 'stage' or 'prod' environments.
    * Until 1.0 will default to 'stage'.
+   * Starting v2.0.3, it will temporarily redirect to production only
    */
   @Prop() bundleHost?: string;
 
@@ -422,6 +423,7 @@ export class Player {
               hosted={this.hosted}
               session={this.session}
               ref={el => (this.stimulusPlayer = el as HTMLElement)}
+              bundleHost={this.bundleHost}
             />
           </div>
           <div slot="item" class='player-item-container'>
@@ -432,6 +434,7 @@ export class Player {
               env={this.env}
               hosted={this.hosted}
               session={this.session}
+              bundleHost={this.bundleHost}
             />
           </div>
         </pie-stimulus-layout>

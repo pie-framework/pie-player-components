@@ -53,7 +53,7 @@ export namespace Components {
     */
     'bundleEndpoints'?: BundleEndpoints;
     /**
-    * Optionally specifies the back-end that builds and hosts javascript bundles for rendering assessment items. This property lets you choose which environment to use, from 'dev' , 'stage' or 'prod' environments. Until 1.0 will default to 'stage'.
+    * Optionally specifies the back-end that builds and hosts javascript bundles for rendering assessment items. This property lets you choose which environment to use, from 'dev' , 'stage' or 'prod' environments. Until 1.0 will default to 'stage'. Starting v2.0.3, it will temporarily redirect to production only
     */
     'bundleHost'?: string;
     /**
@@ -104,7 +104,7 @@ export namespace Components {
     */
     'bundleEndpoints'?: BundleEndpoints;
     /**
-    * Optionally specifies the back-end that builds and hosts javascript bundles for rendering assessment items. This property lets you choose which environment to use, from 'dev' , 'stage' or 'prod' environments. Until 1.0 will default to 'stage'.
+    * Optionally specifies the back-end that builds and hosts javascript bundles for rendering assessment items. This property lets you choose which environment to use, from 'dev' , 'stage' or 'prod' environments. Until 1.0 will default to 'stage'. Starting v2.0.3, it will temporarily redirect to production only
     */
     'bundleHost'?: string;
     /**
@@ -222,7 +222,7 @@ declare namespace LocalJSX {
     */
     'bundleEndpoints'?: BundleEndpoints;
     /**
-    * Optionally specifies the back-end that builds and hosts javascript bundles for rendering assessment items. This property lets you choose which environment to use, from 'dev' , 'stage' or 'prod' environments. Until 1.0 will default to 'stage'.
+    * Optionally specifies the back-end that builds and hosts javascript bundles for rendering assessment items. This property lets you choose which environment to use, from 'dev' , 'stage' or 'prod' environments. Until 1.0 will default to 'stage'. Starting v2.0.3, it will temporarily redirect to production only
     */
     'bundleHost'?: string;
     /**
@@ -280,7 +280,7 @@ declare namespace LocalJSX {
     */
     'bundleEndpoints'?: BundleEndpoints;
     /**
-    * Optionally specifies the back-end that builds and hosts javascript bundles for rendering assessment items. This property lets you choose which environment to use, from 'dev' , 'stage' or 'prod' environments. Until 1.0 will default to 'stage'.
+    * Optionally specifies the back-end that builds and hosts javascript bundles for rendering assessment items. This property lets you choose which environment to use, from 'dev' , 'stage' or 'prod' environments. Until 1.0 will default to 'stage'. Starting v2.0.3, it will temporarily redirect to production only
     */
     'bundleHost'?: string;
     /**
