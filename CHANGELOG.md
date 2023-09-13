@@ -1,3 +1,11 @@
+## [2.0.3](https://github.com/pie-framework/pie-player-components/compare/v2.0.2...v2.0.3) (2023-09-13)
+
+
+### Bug Fixes
+
+* make sure bundleHost gets used in pie with stimulus as well ([8ac1f5b](https://github.com/pie-framework/pie-player-components/commit/8ac1f5b0b426f416ee23e161186c7da97a6ebe05))
+* take bundles from prod, as other env were removed ([6579b61](https://github.com/pie-framework/pie-player-components/commit/6579b61b9181fc608bfc86d6dccc785406a9d9a8))
+
 ## [2.0.2](https://github.com/pie-framework/pie-player-components/compare/v2.0.1...v2.0.2) (2023-07-28)
 
 
