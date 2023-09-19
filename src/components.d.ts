@@ -99,6 +99,7 @@ export namespace Components {
     * Simulates a correct response for the item. This property will only have this effect if the `hosted` property is false and player is running client-side-only.
     */
     'addCorrectResponse': boolean;
+    'allowedResize': boolean;
     /**
     * Provide this property override the default endpoints used by the player to retrieve JS bundles. Must be set before setting the config property. Most users will not need to use this property.
     */
@@ -143,16 +144,15 @@ export namespace Components {
   interface PiePreviewLayout {
     'config': Object;
   }
-  interface PieResizer {
-    'initialWidth': string;
-  }
   interface PieSpinner {
     /**
     * Shows the spinner
     */
     'active': boolean;
   }
-  interface PieStimulusLayout {}
+  interface PieStimulusLayout {
+    'allowedResize': boolean;
+  }
 }
 
 declare global {
@@ -188,12 +188,6 @@ declare global {
     new (): HTMLPiePreviewLayoutElement;
   };
 
-  interface HTMLPieResizerElement extends Components.PieResizer, HTMLStencilElement {}
-  var HTMLPieResizerElement: {
-    prototype: HTMLPieResizerElement;
-    new (): HTMLPieResizerElement;
-  };
-
   interface HTMLPieSpinnerElement extends Components.PieSpinner, HTMLStencilElement {}
   var HTMLPieSpinnerElement: {
     prototype: HTMLPieSpinnerElement;
@@ -211,7 +205,6 @@ declare global {
     'pie-player': HTMLPiePlayerElement;
     'pie-preview-control': HTMLPiePreviewControlElement;
     'pie-preview-layout': HTMLPiePreviewLayoutElement;
-    'pie-resizer': HTMLPieResizerElement;
     'pie-spinner': HTMLPieSpinnerElement;
     'pie-stimulus-layout': HTMLPieStimulusLayoutElement;
   }
@@ -285,6 +278,7 @@ declare namespace LocalJSX {
     * Simulates a correct response for the item. This property will only have this effect if the `hosted` property is false and player is running client-side-only.
     */
     'addCorrectResponse'?: boolean;
+    'allowedResize'?: boolean;
     /**
     * Provide this property override the default endpoints used by the player to retrieve JS bundles. Must be set before setting the config property. Most users will not need to use this property.
     */
@@ -341,16 +335,15 @@ declare namespace LocalJSX {
   interface PiePreviewLayout {
     'config'?: Object;
   }
-  interface PieResizer {
-    'initialWidth'?: string;
-  }
   interface PieSpinner {
     /**
     * Shows the spinner
     */
     'active'?: boolean;
   }
-  interface PieStimulusLayout {}
+  interface PieStimulusLayout {
+    'allowedResize'?: boolean;
+  }
 
   interface IntrinsicElements {
     'pie-author': PieAuthor;
@@ -358,7 +351,6 @@ declare namespace LocalJSX {
     'pie-player': PiePlayer;
     'pie-preview-control': PiePreviewControl;
     'pie-preview-layout': PiePreviewLayout;
-    'pie-resizer': PieResizer;
     'pie-spinner': PieSpinner;
     'pie-stimulus-layout': PieStimulusLayout;
   }
@@ -375,7 +367,6 @@ declare module "@stencil/core" {
       'pie-player': LocalJSX.PiePlayer & JSXBase.HTMLAttributes<HTMLPiePlayerElement>;
       'pie-preview-control': LocalJSX.PiePreviewControl & JSXBase.HTMLAttributes<HTMLPiePreviewControlElement>;
       'pie-preview-layout': LocalJSX.PiePreviewLayout & JSXBase.HTMLAttributes<HTMLPiePreviewLayoutElement>;
-      'pie-resizer': LocalJSX.PieResizer & JSXBase.HTMLAttributes<HTMLPieResizerElement>;
       'pie-spinner': LocalJSX.PieSpinner & JSXBase.HTMLAttributes<HTMLPieSpinnerElement>;
       'pie-stimulus-layout': LocalJSX.PieStimulusLayout & JSXBase.HTMLAttributes<HTMLPieStimulusLayoutElement>;
     }
