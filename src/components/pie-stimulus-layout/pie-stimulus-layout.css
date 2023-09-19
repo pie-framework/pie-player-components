@@ -47,3 +47,16 @@
   height: 100%;
   overflow: scroll;
   }
+
+#pie-stimulus-container #resizer {
+  width: 5px;
+  cursor: ew-resize;
+  background-color: transparent;
+  height: 100%;
+  transition: width 0.2s ease-in-out, background-color 0.2s ease-in-out;
+}
+
+#pie-stimulus-container #resizer:hover {
+  width: 5px;
+  background-color: lightblue;
+}

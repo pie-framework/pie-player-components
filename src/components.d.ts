@@ -143,6 +143,9 @@ export namespace Components {
   interface PiePreviewLayout {
     'config': Object;
   }
+  interface PieResizer {
+    'initialWidth': string;
+  }
   interface PieSpinner {
     /**
     * Shows the spinner
@@ -185,6 +188,12 @@ declare global {
     new (): HTMLPiePreviewLayoutElement;
   };
 
+  interface HTMLPieResizerElement extends Components.PieResizer, HTMLStencilElement {}
+  var HTMLPieResizerElement: {
+    prototype: HTMLPieResizerElement;
+    new (): HTMLPieResizerElement;
+  };
+
   interface HTMLPieSpinnerElement extends Components.PieSpinner, HTMLStencilElement {}
   var HTMLPieSpinnerElement: {
     prototype: HTMLPieSpinnerElement;
@@ -202,6 +211,7 @@ declare global {
     'pie-player': HTMLPiePlayerElement;
     'pie-preview-control': HTMLPiePreviewControlElement;
     'pie-preview-layout': HTMLPiePreviewLayoutElement;
+    'pie-resizer': HTMLPieResizerElement;
     'pie-spinner': HTMLPieSpinnerElement;
     'pie-stimulus-layout': HTMLPieStimulusLayoutElement;
   }
@@ -331,6 +341,9 @@ declare namespace LocalJSX {
   interface PiePreviewLayout {
     'config'?: Object;
   }
+  interface PieResizer {
+    'initialWidth'?: string;
+  }
   interface PieSpinner {
     /**
     * Shows the spinner
@@ -345,6 +358,7 @@ declare namespace LocalJSX {
     'pie-player': PiePlayer;
     'pie-preview-control': PiePreviewControl;
     'pie-preview-layout': PiePreviewLayout;
+    'pie-resizer': PieResizer;
     'pie-spinner': PieSpinner;
     'pie-stimulus-layout': PieStimulusLayout;
   }
@@ -361,6 +375,7 @@ declare module "@stencil/core" {
       'pie-player': LocalJSX.PiePlayer & JSXBase.HTMLAttributes<HTMLPiePlayerElement>;
       'pie-preview-control': LocalJSX.PiePreviewControl & JSXBase.HTMLAttributes<HTMLPiePreviewControlElement>;
       'pie-preview-layout': LocalJSX.PiePreviewLayout & JSXBase.HTMLAttributes<HTMLPiePreviewLayoutElement>;
+      'pie-resizer': LocalJSX.PieResizer & JSXBase.HTMLAttributes<HTMLPieResizerElement>;
       'pie-spinner': LocalJSX.PieSpinner & JSXBase.HTMLAttributes<HTMLPieSpinnerElement>;
       'pie-stimulus-layout': LocalJSX.PieStimulusLayout & JSXBase.HTMLAttributes<HTMLPieStimulusLayoutElement>;
     }
