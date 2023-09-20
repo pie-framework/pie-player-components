@@ -57,6 +57,11 @@
 }
 
 #pie-stimulus-container #resizer:hover {
-  width: 5px;
   background-color: lightblue;
+  cursor: ew-resize;
+}
+
+#pie-stimulus-container #resizer:active {
+  background-color: lightblue;
+  cursor: ew-resize;
 }
