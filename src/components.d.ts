@@ -99,12 +99,10 @@ export namespace Components {
     * Simulates a correct response for the item. This property will only have this effect if the `hosted` property is false and player is running client-side-only.
     */
     'addCorrectResponse': boolean;
-
     /**
-    * Provide this property if it is needed to make stimulus-item layout resizable
-     */
-    'allowedResize': boolean;
-
+    * Allow to resize pie-stimulus layout Set this property to false to not render the resizer.
+    */
+    'allowedResize'?: boolean;
     /**
     * Provide this property override the default endpoints used by the player to retrieve JS bundles. Must be set before setting the config property. Most users will not need to use this property.
     */
@@ -156,7 +154,7 @@ export namespace Components {
     'active': boolean;
   }
   interface PieStimulusLayout {
-    'allowedResize': boolean;
+    'allowedResize'?: boolean;
   }
 }
 
@@ -283,6 +281,9 @@ declare namespace LocalJSX {
     * Simulates a correct response for the item. This property will only have this effect if the `hosted` property is false and player is running client-side-only.
     */
     'addCorrectResponse'?: boolean;
+    /**
+    * Allow to resize pie-stimulus layout Set this property to false to not render the resizer.
+    */
     'allowedResize'?: boolean;
     /**
     * Provide this property override the default endpoints used by the player to retrieve JS bundles. Must be set before setting the config property. Most users will not need to use this property.
