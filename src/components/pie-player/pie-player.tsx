@@ -148,7 +148,11 @@ export class Player {
   @Prop({mutable: false, reflect: false})
   version: string = VERSION;
 
-  @Prop() allowedResize: boolean = false;
+  /**
+   * Allow to resize pie-stimulus layout
+   * Set this property to false to not render the resizer.
+   */
+  @Prop() allowedResize?: boolean = false;
 
   @State() pieContentModel: PieContent;
 
