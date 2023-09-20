@@ -78,11 +78,12 @@ export class PieStimulusLayout {
                transition: this.isResizing ? 'none' : 'flex 0.2s ease'}}>
           <slot name='stimulus' />
         </div>
-        { this.allowedResize && <div id="resizer" ref={(el) => (this.resizer = el as HTMLDivElement)}></div> }
+        { this.allowedResize &&
+          <div id="resizer" ref={(el) => (this.resizer = el as HTMLDivElement)} />
+        }
         <div id="item"
              style={{ flex: `${this.initialRightFlex}`,
-                      transition: this.isResizing ? 'none' : 'flex 0.2s ease'
-        }}>
+               transition: this.isResizing ? 'none' : 'flex 0.2s ease'}}>
           <slot name='item' />
         </div>
       </div>
