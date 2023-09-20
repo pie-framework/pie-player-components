@@ -13,12 +13,16 @@ export class PieStimulusLayout {
   }
   private resizer: HTMLDivElement;
 
-  // shows us if resizing is activated or not
-  @Prop() allowedResize: boolean = false;
+  // shows if resizing is activated or not
+  @Prop() allowedResize?: boolean = false;
 
+  // shows if user is currently resizing the component,
   @State() isResizing = false;
+  // the initial X-coordinate of the mouse cursor.
   @State() initialX = 0;
+  //  flex values of the left component
   @State() initialLeftFlex = 0.5;
+  //  flex values of the right component as the user resizes them
   @State() initialRightFlex = 0.5;
 
   componentDidRender() {
@@ -33,7 +37,7 @@ export class PieStimulusLayout {
         this.initialX = e.clientX;
       });
       window.addEventListener('mousemove', this.handleMouseMove.bind(this));
-      window.addEventListener('mouseup', this.handleMouseUp.bind(this));
+      this.resizer.addEventListener('mouseup', this.handleMouseUp.bind(this));
     }
   }
 
@@ -44,7 +48,7 @@ export class PieStimulusLayout {
   componentDidUnload() {
     if(this.allowedResize){
       window.removeEventListener('mousemove', this.handleMouseMove.bind(this));
-      window.removeEventListener('mouseup', this.handleMouseUp.bind(this));
+      this.resizer.removeEventListener('mouseup', this.handleMouseUp.bind(this));
     }
   }
 
@@ -69,21 +73,27 @@ export class PieStimulusLayout {
     this.isResizing = false;
   }
 
+  // add style when the containers are resizable
+  private getStyle(flex) {
+    if (this.allowedResize) {
+      return { flex: `${flex}`, transition: this.isResizing ? 'none' : 'flex 0.1s ease'}
+    }
+    return {};
+  }
+
 
   render() {
     return (
       <div id="pie-stimulus-container">
         <div id="stimulus"
-             style={{ flex: `${this.initialLeftFlex}`,
-               transition: this.isResizing ? 'none' : 'flex 0.2s ease'}}>
+             style={this.getStyle(this.initialLeftFlex)}>
           <slot name='stimulus' />
         </div>
         { this.allowedResize &&
           <div id="resizer" ref={(el) => (this.resizer = el as HTMLDivElement)} />
         }
         <div id="item"
-             style={{ flex: `${this.initialRightFlex}`,
-               transition: this.isResizing ? 'none' : 'flex 0.2s ease'}}>
+             style={this.getStyle(this.initialRightFlex)}>
           <slot name='item' />
         </div>
       </div>
