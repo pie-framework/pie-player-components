@@ -1,3 +1,10 @@
+# [2.1.0](https://github.com/pie-framework/pie-player-components/compare/v2.0.3...v2.1.0) (2023-09-21)
+
+
+### Features
+
+* **pie-stimulus-layout:** pd-3081 - add doc page for resizer ([88ba3e4](https://github.com/pie-framework/pie-player-components/commit/88ba3e4204ab87e92466f0c8ae161cb5ea988e7f))
+
 ## [2.0.3](https://github.com/pie-framework/pie-player-components/compare/v2.0.2...v2.0.3) (2023-09-13)
 
 
