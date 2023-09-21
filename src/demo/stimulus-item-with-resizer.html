@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0"
+  />
+  <title>Item With Stimulus</title>
+  <script nomodule src="/build/pie-player-components.js"></script>
+  <script type="module" src="/build/pie-player-components.esm.js"></script>
+</head>
+<body>
+<div>
+  <h2>render stimulus</h2>
+  <pie-player id="player" allowed-resize="true"></pie-player>
+</div>
+
+<div>
+  <h2>no stimulus</h2>
+  <pie-player render-stimulus="false" id="nostimulus" allowed-resize="true"></pie-player>
+</div>
+
+<script type="text/javascript" src="./utils/models.js"></script>
+<script>
+  const config = {
+    "pie": {
+      "models": [
+        {
+          "allowFeedback": true,
+          "prompt": "<p>For each substance listed, select <span class=\"relative-emphasis\">all</span>&#160;of the substance amounts that will&#160;result in a final temperature that is appropriate for chocolate sculpture delivery. If the substance is not appropriate to use, check the box for &#34;This substance should not be used.&#34;</p>",
+          "config": {
+            "feedbackEnabled": true,
+            "promptEnabled": true,
+            "rationaleEnabled": true,
+            "teacherInstructionsEnabled": true,
+            "studentInstructionsEnabled": true,
+            "headers": [
+              "",
+              "10 g",
+              "20 g",
+              "30 g",
+              "40 g",
+              "50 g",
+              "This substance should not be used."
+            ],
+            "rows": [
+              {
+                "id": "0",
+                "title": "Ammonium nitrate"
+              },
+              {
+                "id": "1",
+                "title": "Calcium chloride"
+              },
+              {
+                "id": "2",
+                "title": "Sodium acetate"
+              },
+              {
+                "id": "3",
+                "title": "Sodium hydroxide"
+              }
+            ],
+            "element": "kds-match",
+            "id": "8a80808173d98f5a0173e8cf7cc015cd",
+            "partialScoring": true,
+            "prompt": "<p>For each substance listed, select <span class=\"relative-emphasis\">all</span>&#160;of the substance amounts that will&#160;result in a final temperature that is appropriate for chocolate sculpture delivery. If the substance is not appropriate to use, check the box for &#34;This substance should not be used.&#34;</p>",
+            "teacherInstructions": null,
+            "layout": 7,
+            "choiceMode": "checkbox",
+            "lockChoiceOrder": true,
+            "rationale": null,
+            "shuffled": false
+          },
+          "disabled": false,
+          "view": false,
+          "rationale": null,
+          "teacherInstructions": null,
+          "element": "kds-match",
+          "id": "8a80808173d98f5a0173e8cf7cc015cd"
+        }
+      ],
+      "elements": {
+        "kds-match": "@pie-element/match@4.10.8"
+      },
+      "id": "8a80808173d98f5a0173e8cf7cc015cd@0.0.3",
+      "markup": "<kds-match id=\"8a80808173d98f5a0173e8cf7cc015cd\"></kds-match>",
+      "bundle": {
+        "url": [
+          "https://pits-dot-pie-prod-221718.appspot.com/bundles/@pie-element/match@4.10.8+@pie-element/passage@1.7.8/player.js?cb=cb1"
+        ]
+      }
+    },
+    "passage": {
+      "layout": "left",
+      "elements": {
+        "pie-passage": "@pie-element/passage@1.7.8"
+      },
+      "buildInfo": [
+        {
+          "version": "latest",
+          "name": "@pie-element/passage"
+        }
+      ],
+      "models": [
+        {
+          "element": "pie-passage",
+          "id": "8a80808173d98d5a0173e407d8447c96",
+          "passages": [
+            {
+              "title": "Temperature Control and Chocolate Sculptures",
+              "text": "<h3>Temperature Control and Chocolate Sculptures</h3><p>A chocolate artist wants to create small chocolate sculptures that can be purchased as gifts for special occasions. She will create the sculptures in a temperature-controlled room within her chocolate shop. Controlling the temperature of the room is necessary because the visual appearance of chocolate can change if it is heated or cooled outside of a specific temperature range. If the chocolate rises above 18&#176;C, the sculpture may begin to melt and change shape. If the chocolate drops below 15&#176;C, the sculpture may begin to discolor as sugar in the chocolate crystallizes and rises to the surface.</p><p>The artist wants to design a box to transport the chocolate sculptures when they are delivered. The chocolate shop is located in a city where the temperatures range between 22&#176;C and 30&#176;C all year long. The temperature inside of the delivery van is 20&#176;C. The ideal box will be temperature-controlled using a pack that she will design. The pack will hold a chemical substance and 100 grams of water in separate parts of the pack. Squeezing the pack will combine the two substances, causing a chemical reaction to take place that absorbs or releases energy, depending on the substance. The packs will be activated and added to the insulated box, along with the chocolate sculpture, when it is ready to be transported. </p><p>The chocolate artist purchases four different substances: ammonium nitrate, calcium chloride, sodium acetate, and sodium hydroxide. She will test each substance and then choose one to create the temperature-control packs. She will test the effects of each substance by adding various amounts to the 100 grams of water. Her investigation can be viewed in the videos.</p><p></p>"
+            }
+          ]
+        }
+      ],
+      "markup": "<pie-passage id=\"8a80808173d98d5a0173e407d8447c96\"></pie-passage>",
+      "id": "8a80808173d98d5a0173e407d8447c96",
+      "bundle": {
+        "url": [
+          "https://pits-dot-pie-prod-221718.appspot.com/bundles/@pie-element/match@4.10.8+@pie-element/passage@1.7.8/player.js?cb=cb1"
+        ]
+      }
+    }
+  };
+
+  const player = document.getElementById('player');
+  const noStimulus = document.getElementById('nostimulus');
+
+  player.addEventListener('sessionChanged', event => {
+    console.log(event.type + ':' + JSON.stringify(event.detail));
+  });
+
+  noStimulus.addEventListener('sessionChanged', event => {
+    console.log(event.type + ':' + JSON.stringify(event.detail));
+  });
+
+  player.config = config;
+  noStimulus.config = config;
+
+  noStimulus.env = {mode: 'evaluate', role: 'instructor'};
+  player.env = {mode: 'evaluate', role: 'instructor'};
+</script>
+</body>
+</html>

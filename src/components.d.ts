@@ -100,6 +100,10 @@ export namespace Components {
     */
     'addCorrectResponse': boolean;
     /**
+    * Allow to resize pie-stimulus layout Set this property to false to not render the resizer.
+    */
+    'allowedResize'?: boolean;
+    /**
     * Provide this property override the default endpoints used by the player to retrieve JS bundles. Must be set before setting the config property. Most users will not need to use this property.
     */
     'bundleEndpoints'?: BundleEndpoints;
@@ -149,7 +153,9 @@ export namespace Components {
     */
     'active': boolean;
   }
-  interface PieStimulusLayout {}
+  interface PieStimulusLayout {
+    'allowedResize'?: boolean;
+  }
 }
 
 declare global {
@@ -276,6 +282,10 @@ declare namespace LocalJSX {
     */
     'addCorrectResponse'?: boolean;
     /**
+    * Allow to resize pie-stimulus layout Set this property to false to not render the resizer.
+    */
+    'allowedResize'?: boolean;
+    /**
     * Provide this property override the default endpoints used by the player to retrieve JS bundles. Must be set before setting the config property. Most users will not need to use this property.
     */
     'bundleEndpoints'?: BundleEndpoints;
@@ -337,7 +347,9 @@ declare namespace LocalJSX {
     */
     'active'?: boolean;
   }
-  interface PieStimulusLayout {}
+  interface PieStimulusLayout {
+    'allowedResize'?: boolean;
+  }
 
   interface IntrinsicElements {
     'pie-author': PieAuthor;

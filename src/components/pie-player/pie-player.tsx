@@ -148,6 +148,12 @@ export class Player {
   @Prop({mutable: false, reflect: false})
   version: string = VERSION;
 
+  /**
+   * Allow to resize pie-stimulus layout
+   * Set this property to false to not render the resizer.
+   */
+  @Prop() allowedResize?: boolean = false;
+
   @State() pieContentModel: PieContent;
 
   @State() stimulusItemModel: AdvancedItemConfig;
@@ -414,7 +420,7 @@ export class Player {
   render() {
     if (this.stimulusItemModel) {
       return this.renderStimulus ? (
-        <pie-stimulus-layout>
+        <pie-stimulus-layout allowedResize={this.allowedResize}>
           <div slot="stimulus" class='player-stimulus-container'>
             <pie-player
               id="stimulusPlayer"
