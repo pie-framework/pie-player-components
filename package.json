@@ -80,7 +80,7 @@
     "prettier": "1.16.4",
     "puppeteer": "1.19.0",
     "release-it": "^10.1.0",
-    "semantic-release": "17.3.0",
+    "semantic-release": "19.0.3",
     "tslint": "^5.12.1",
     "tslint-config-prettier": "^1.18.0",
     "typescript": "^3.3.3",
