@@ -13,6 +13,10 @@ export class PieStimulusLayout {
   }
   private resizer: HTMLDivElement;
 
+  private readMoreButton: HTMLButtonElement;
+
+  private stimulus: HTMLDivElement;
+
   // shows if resizing is activated or not
   @Prop() allowedResize?: boolean = false;
 
@@ -39,6 +43,21 @@ export class PieStimulusLayout {
       window.addEventListener('mousemove', this.handleMouseMove.bind(this));
       this.resizer.addEventListener('mouseup', this.handleMouseUp.bind(this));
     }
+
+    this.readMoreButton.addEventListener("click", () => {
+      if (this.readMoreButton.innerHTML === 'Read More') {
+        this.stimulus.style.maxHeight = 'none';
+        this.readMoreButton.innerHTML = "Read Less";
+        this.stimulus.style.overflow = 'auto'
+        this.stimulus.classList.remove('truncated');
+      }else {
+        this.readMoreButton.innerHTML = "Read More";
+        this.stimulus.style.maxHeight = '20%';
+        this.stimulus.style.overflow = 'hidden';
+        this.stimulus.scrollTop = 0;
+        this.stimulus.classList.add('truncated');
+      }
+    });
   }
 
   componentDidUpdate() {
@@ -86,9 +105,14 @@ export class PieStimulusLayout {
     return (
       <div id="pie-stimulus-container">
         <div id="stimulus"
+             class="truncated"
+             ref={(el) => this.stimulus = el as HTMLDivElement}
              style={this.getStyle(this.initialLeftFlex)}>
           <slot name='stimulus' />
         </div>
+        <button id="read-more" ref={(el) => this.readMoreButton = el as HTMLButtonElement}>
+          Read More
+        </button>
         { this.allowedResize &&
           <div id="resizer" ref={(el) => (this.resizer = el as HTMLDivElement)} />
         }
