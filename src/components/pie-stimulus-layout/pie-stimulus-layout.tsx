@@ -47,11 +47,11 @@ export class PieStimulusLayout {
     this.readMoreButton.addEventListener("click", () => {
       if (this.readMoreButton.innerHTML === 'Read More') {
         this.stimulus.style.maxHeight = 'none';
-        this.readMoreButton.innerHTML = "Read Less";
+        this.readMoreButton.innerHTML = 'Read Less';
         this.stimulus.style.overflow = 'auto'
         this.stimulus.classList.remove('truncated');
       }else {
-        this.readMoreButton.innerHTML = "Read More";
+        this.readMoreButton.innerHTML = 'Read More';
         this.stimulus.style.maxHeight = '20%';
         this.stimulus.style.overflow = 'hidden';
         this.stimulus.scrollTop = 0;
@@ -112,6 +112,7 @@ export class PieStimulusLayout {
         </div>
         <button id="read-more" ref={(el) => this.readMoreButton = el as HTMLButtonElement}>
           Read More
+          <span class="arrow">&#9660;</span>
         </button>
         { this.allowedResize &&
           <div id="resizer" ref={(el) => (this.resizer = el as HTMLDivElement)} />

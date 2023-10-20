@@ -111,6 +111,12 @@
     margin-top: 10px;
     cursor: pointer;
     align-self: center;
+    border: none;
+    background-color: transparent;
+    color: cornflowerblue;
+    .arrow {
+      transition: transform 0.3s ease-in-out;
+    }
   }
 
 }
