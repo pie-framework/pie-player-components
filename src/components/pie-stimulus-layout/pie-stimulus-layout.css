@@ -84,7 +84,7 @@
     width: 100%;
     overflow: hidden;
     position: relative;
-    max-height: 20%;
+    max-height: 25%;
   }
   #pie-stimulus-container #item {
     width: 100%;
@@ -114,9 +114,6 @@
     border: none;
     background-color: transparent;
     color: cornflowerblue;
-    .arrow {
-      transition: transform 0.3s ease-in-out;
-    }
   }
 
 }
