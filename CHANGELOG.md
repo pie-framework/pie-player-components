@@ -1,3 +1,13 @@
+# [2.2.0](https://github.com/pie-framework/pie-player-components/compare/v2.1.1...v2.2.0) (2023-10-23)
+
+
+### Features
+
+* pd-3082 add arrow for read more button ([9a7a5e5](https://github.com/pie-framework/pie-player-components/commit/9a7a5e5a1d0f2f99a6288979fc04cfae7ee249cb))
+* pd-3082 add demo page for narrow widths (vertical layout) ([9241100](https://github.com/pie-framework/pie-player-components/commit/9241100783c40652e11addb51ad0a9eab1d1dc61))
+* pd-3082 add method for Read More event handler ([6161aa7](https://github.com/pie-framework/pie-player-components/commit/6161aa7a2fe2417bee02af0ba8dfcd6b95a2bb67))
+* pd-3082 add new layout for stimulusItems when viewport too narrow ([e735840](https://github.com/pie-framework/pie-player-components/commit/e735840cb19e87bfa0802b42acf5db65357df5b8))
+
 ## [2.1.1](https://github.com/pie-framework/pie-player-components/compare/v2.1.0...v2.1.1) (2023-10-03)
 
 
