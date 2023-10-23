@@ -43,21 +43,7 @@ export class PieStimulusLayout {
       window.addEventListener('mousemove', this.handleMouseMove.bind(this));
       this.resizer.addEventListener('mouseup', this.handleMouseUp.bind(this));
     }
-
-    this.readMoreButton.addEventListener("click", () => {
-      if (this.readMoreButton.innerHTML.includes('Read More')) {
-         this.stimulus.style.maxHeight = 'none';
-        this.readMoreButton.innerHTML = `Read Less <span class=arrow-up>&#9650;</span>`;
-        this.stimulus.style.overflow = 'auto'
-        this.stimulus.classList.remove('truncated');
-      }else {
-        this.readMoreButton.innerHTML = `Read More <span class=arrow-down>&#9660;</span>`;
-        this.stimulus.style.maxHeight = '25%';
-        this.stimulus.style.overflow = 'hidden';
-        this.stimulus.scrollTop = 0;
-        this.stimulus.classList.add('truncated');
-      }
-    });
+    this.readMoreButton.addEventListener("click", () => this.handleReadMore());
   }
 
   componentDidUpdate() {
@@ -68,6 +54,21 @@ export class PieStimulusLayout {
     if(this.allowedResize){
       window.removeEventListener('mousemove', this.handleMouseMove.bind(this));
       this.resizer.removeEventListener('mouseup', this.handleMouseUp.bind(this));
+    }
+  }
+
+  private handleReadMore() {
+    if (this.readMoreButton.innerHTML.includes('Read More')) {
+      this.stimulus.style.maxHeight = 'none';
+      this.readMoreButton.innerHTML = `Read Less <span class=arrow-up>&#9650;</span>`;
+      this.stimulus.style.overflow = 'auto'
+      this.stimulus.classList.remove('truncated');
+    } else {
+      this.readMoreButton.innerHTML = `Read More <span class=arrow-down>&#9660;</span>`;
+      this.stimulus.style.maxHeight = '25%';
+      this.stimulus.style.overflow = 'hidden';
+      this.stimulus.scrollTop = 0;
+      this.stimulus.classList.add('truncated');
     }
   }
 
