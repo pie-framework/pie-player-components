@@ -13,6 +13,10 @@ export class PieStimulusLayout {
   }
   private resizer: HTMLDivElement;
 
+  private readMoreButton: HTMLButtonElement;
+
+  private stimulus: HTMLDivElement;
+
   // shows if resizing is activated or not
   @Prop() allowedResize?: boolean = false;
 
@@ -39,6 +43,7 @@ export class PieStimulusLayout {
       window.addEventListener('mousemove', this.handleMouseMove.bind(this));
       this.resizer.addEventListener('mouseup', this.handleMouseUp.bind(this));
     }
+    this.readMoreButton.addEventListener("click", () => this.handleReadMore());
   }
 
   componentDidUpdate() {
@@ -49,6 +54,21 @@ export class PieStimulusLayout {
     if(this.allowedResize){
       window.removeEventListener('mousemove', this.handleMouseMove.bind(this));
       this.resizer.removeEventListener('mouseup', this.handleMouseUp.bind(this));
+    }
+  }
+
+  private handleReadMore() {
+    if (this.readMoreButton.innerHTML.includes('Read More')) {
+      this.stimulus.style.maxHeight = 'none';
+      this.readMoreButton.innerHTML = `Read Less <span class=arrow-up>&#9650;</span>`;
+      this.stimulus.style.overflow = 'auto'
+      this.stimulus.classList.remove('truncated');
+    } else {
+      this.readMoreButton.innerHTML = `Read More <span class=arrow-down>&#9660;</span>`;
+      this.stimulus.style.maxHeight = '25%';
+      this.stimulus.style.overflow = 'hidden';
+      this.stimulus.scrollTop = 0;
+      this.stimulus.classList.add('truncated');
     }
   }
 
@@ -86,9 +106,15 @@ export class PieStimulusLayout {
     return (
       <div id="pie-stimulus-container">
         <div id="stimulus"
+             class="truncated"
+             ref={(el) => this.stimulus = el as HTMLDivElement}
              style={this.getStyle(this.initialLeftFlex)}>
           <slot name='stimulus' />
         </div>
+        <button id="read-more" ref={(el) => this.readMoreButton = el as HTMLButtonElement}>
+          Read More
+          <span class="arrow-down">&#9660;</span>
+        </button>
         { this.allowedResize &&
           <div id="resizer" ref={(el) => (this.resizer = el as HTMLDivElement)} />
         }

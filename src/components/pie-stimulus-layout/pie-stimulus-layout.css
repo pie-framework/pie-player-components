@@ -34,6 +34,10 @@
   overflow: scroll;
   }
 
+#pie-stimulus-container #read-more {
+  display: none;
+}
+
 #pie-stimulus-container #item {
   -webkit-order: 0;
   -ms-flex-order: 0;
@@ -64,4 +68,52 @@
 #pie-stimulus-container #resizer:active {
   background-color: lightblue;
   cursor: ew-resize;
+}
+
+
+@media screen and (max-width: 600px) {
+  #pie-stimulus-container {
+    flex-direction: column;
+  }
+
+  #resizer {
+    display: none;
+  }
+
+  #pie-stimulus-container #stimulus {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    max-height: 25%;
+  }
+  #pie-stimulus-container #item {
+    width: 100%;
+    overflow: auto;
+    flex: 1 !important;
+  }
+  #pie-stimulus-container #stimulusPlayer {
+    opacity: 1;
+    transition: opacity 0.3s;
+  }
+
+  #pie-stimulus-container #stimulus.truncated::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    height: 50px; /* Adjust the height of the fade-out portion */
+    background: linear-gradient(rgba(255, 255, 255, 0), white);
+  }
+
+  #pie-stimulus-container #read-more {
+    display: block;
+    margin-top: 10px;
+    cursor: pointer;
+    align-self: center;
+    border: none;
+    background-color: transparent;
+    color: cornflowerblue;
+  }
+
 }
