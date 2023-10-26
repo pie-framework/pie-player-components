@@ -84,12 +84,11 @@
     width: 100%;
     overflow: hidden;
     position: relative;
-    max-height: 25%;
+    flex: 0.3; /* stimulus represents 30% of the available space */
   }
   #pie-stimulus-container #item {
     width: 100%;
     overflow: auto;
-    flex: 1 !important;
   }
   #pie-stimulus-container #stimulusPlayer {
     opacity: 1;

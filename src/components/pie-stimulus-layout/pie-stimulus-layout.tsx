@@ -59,13 +59,13 @@ export class PieStimulusLayout {
 
   private handleReadMore() {
     if (this.readMoreButton.innerHTML.includes('Read More')) {
-      this.stimulus.style.maxHeight = 'none';
+      this.stimulus.style.flex = '0.5';
       this.readMoreButton.innerHTML = `Read Less <span class=arrow-up>&#9650;</span>`;
       this.stimulus.style.overflow = 'auto'
       this.stimulus.classList.remove('truncated');
     } else {
       this.readMoreButton.innerHTML = `Read More <span class=arrow-down>&#9660;</span>`;
-      this.stimulus.style.maxHeight = '25%';
+      this.stimulus.style.flex = '0.3';
       this.stimulus.style.overflow = 'hidden';
       this.stimulus.scrollTop = 0;
       this.stimulus.classList.add('truncated');
@@ -95,7 +95,9 @@ export class PieStimulusLayout {
 
   // add style when the containers are resizable
   private getStyle(flex) {
-    if (this.allowedResize) {
+    const viewPortWidth = window.innerWidth;
+    // avoid this style for viewports < 600
+    if (this.allowedResize && viewPortWidth > 600) {
       return { flex: `${flex}`, transition: this.isResizing ? 'none' : 'flex 0.1s ease'}
     }
     return {};
