@@ -1,3 +1,10 @@
+# [2.3.0](https://github.com/pie-framework/pie-player-components/compare/v2.2.0...v2.3.0) (2023-10-31)
+
+
+### Features
+
+* use flex in place of height for read more pd-3082 ([981579e](https://github.com/pie-framework/pie-player-components/commit/981579edb90e11f3428b76e780db543999cc0d8b))
+
 # [2.2.0](https://github.com/pie-framework/pie-player-components/compare/v2.1.1...v2.2.0) (2023-10-23)
 
 
