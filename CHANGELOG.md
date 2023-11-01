@@ -1,3 +1,10 @@
+## [2.3.1](https://github.com/pie-framework/pie-player-components/compare/v2.3.0...v2.3.1) (2023-11-01)
+
+
+### Bug Fixes
+
+* change flex value for readMe pd-3082 ([cfae234](https://github.com/pie-framework/pie-player-components/commit/cfae234ebad72b61d0931bac67c3b350d52254fc))
+
 # [2.3.0](https://github.com/pie-framework/pie-player-components/compare/v2.2.0...v2.3.0) (2023-10-31)
 
 
