@@ -59,7 +59,7 @@ export class PieStimulusLayout {
 
   private handleReadMore() {
     if (this.readMoreButton.innerHTML.includes('Read More')) {
-      this.stimulus.style.flex = '0.5';
+      this.stimulus.style.flex = '1';
       this.readMoreButton.innerHTML = `Read Less <span class=arrow-up>&#9650;</span>`;
       this.stimulus.style.overflow = 'auto'
       this.stimulus.classList.remove('truncated');
