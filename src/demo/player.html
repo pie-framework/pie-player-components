@@ -94,249 +94,46 @@
   //   }
   // };
   const config = {
-    "id": "8a808081570b750d01571f00a376047a@0.0.94",
-    "models": [
-      {
-        "categories": [
-          {
-            "id": "0",
-            "label": "Correct"
-          },
-          {
-            "label": "Wrong",
-            "id": "1"
-          }
-        ],
-        "categoriesPerRow": 2,
-        "choices": [
-          {
-            "categoryCount": 1,
-            "id": "0",
-            "content": "&#160;2 x 9 = 16"
-          },
-          {
-            "categoryCount": 1,
-            "id": "1",
-            "content": "3 x 9 = 21"
-          },
-          {
-            "categoryCount": 1,
-            "id": "2",
-            "content": "4 x 7 = 28"
-          },
-          {
-            "categoryCount": 1,
-            "id": "3",
-            "content": "5 x 8 = 30"
-          },
-          {
-            "categoryCount": 1,
-            "id": "4",
-            "content": "5 x 9 = 45"
-          },
-          {
-            "categoryCount": 1,
-            "id": "5",
-            "content": "6 x 4 = 18"
-          },
-          {
-            "categoryCount": 1,
-            "id": "6",
-            "content": "6 x 7 = 42"
-          },
-          {
-            "categoryCount": 1,
-            "id": "7",
-            "content": "7 x 8 = 56"
-          },
-          {
-            "categoryCount": 1,
-            "id": "8",
-            "content": "7 x 9 = 61"
-          },
-          {
-            "categoryCount": 1,
-            "id": "9",
-            "content": "8 x 2 = 18"
-          },
-          {
-            "categoryCount": 1,
-            "id": "10",
-            "content": "8 x 6 = 48"
-          },
-          {
-            "categoryCount": 1,
-            "id": "11",
-            "content": "9 x 4 = 32"
-          },
-          {
-            "categoryCount": 1,
-            "id": "12",
-            "content": "9 x 8 = 72"
-          }
-        ],
-        "choicesLabel": "",
-        "choicesPosition": "above",
-        "disabled": false,
-        "lockChoiceOrder": true,
-        "prompt": "<p><strong>A.</strong> Erin completed the number problems below for her homework.</p>\n\n<p><span style=\"font-family:helvetica neue,helvetica,arial,sans-serif; line-height:1.4\">Drag and drop the number problems&#160;Erin wrote that are correct into the box&#160;under the word </span>&#8220;<span style=\"font-family:helvetica neue,helvetica,arial,sans-serif; line-height:1.4\">Correct,</span>&#8221;<span style=\"font-family:helvetica neue,helvetica,arial,sans-serif; line-height:1.4\"> and the number problems Erin wrote that have wrong answers into the box&#160;under the word </span>&#8220;<span style=\"font-family:helvetica neue,helvetica,arial,sans-serif; line-height:1.4\">Wrong.</span>&#8221;</p>\n\n<p>&#160;</p>\n",
-        "rowLabels": [
-          ""
-        ],
-        "note": "Note: The answer shown above is the most common correct answer for this item. One or more additional correct answers are also defined, and will also be recognized as correct.",
-        "env": {
+    "pie": {
+      "id": "81b8dd41-469c-4960-8828-8956e88b7735@0.0.1-draft.17",
+      "models": [
+        {
+          "disabled": false,
           "mode": "gather",
-          "role": "student",
-          "partialScoring": true
-        },
-        "showNote": false,
-        "rationale": null,
-        "teacherInstructions": null,
-        "id": "e0120829-7ff2-4991-829a-531a69005d3a",
-        "element": "kds-categorize"
+          "prompt": "V2",
+          "choicesLayout": "vertical",
+          "gridColumns": "2",
+          "keyMode": "letters",
+          "choices": [],
+          "teacherInstructions": null,
+          "id": "1",
+          "element": "multiple-choice"
+        }
+      ],
+      "elements": {
+        "multiple-choice": "@pie-element/multiple-choice@7.7.0"
       },
-      {
-        "disabled": false,
-        "mode": "gather",
-        "prompt": "<p><strong>B.</strong> For the last problem in Erin&#8217;s homework, she uses a different&#160;number problem to help her check her work. She writes both number problems below. Use the drop down menus to choose&#160;+,&#8722;,&#215;, or &#160;&#247; in each box to make the number problems true.</p>\n\n<p>&#160;</p>\n",
-        "markup": "<p class=\"text-center\">9 {{0}} 8 = 72</p>\n\n<p class=\"text-center\">72 {{1}} 9 = 8</p>\n",
-        "choices": {
-          "0": [
-            {
-              "correct": false,
-              "label": "+",
-              "value": "0",
-              "rationale": null
-            },
-            {
-              "correct": false,
-              "label": "&#8722;",
-              "value": "1",
-              "rationale": null
-            },
-            {
-              "correct": true,
-              "label": "x",
-              "value": "2",
-              "rationale": null
-            },
-            {
-              "correct": false,
-              "label": "&#247;",
-              "value": "3",
-              "rationale": null
-            }
-          ],
-          "1": [
-            {
-              "correct": false,
-              "label": "+",
-              "value": "0",
-              "rationale": null
-            },
-            {
-              "correct": false,
-              "label": "&#8722;",
-              "value": "1",
-              "rationale": null
-            },
-            {
-              "correct": false,
-              "label": "x",
-              "value": "2",
-              "rationale": null
-            },
-            {
-              "correct": true,
-              "label": "&#247;",
-              "value": "3",
-              "rationale": null
-            }
-          ]
-        },
-        "feedback": {},
-        "rationale": null,
-        "teacherInstructions": null,
-        "id": "b4085b84-c6bf-4d6a-84c5-39c264247045",
-        "element": "inline-dropdown"
-      },
-      {
-        "disabled": false,
-        "mode": "gather",
-        "prompt": "<p><strong>B.</strong> For the last problem in Erin&#8217;s homework, she uses a different&#160;number problem to help her check her work. She writes both number problems below. Use the drop down menus to choose&#160;+,&#8722;,&#215;, or &#160;&#247; in each box to make the number problems true.</p>\n\n<p>&#160;</p>\n",
-        "markup": "<p class=\"text-center\">9 {{0}} 8 = 72</p>\n\n<p class=\"text-center\">72 {{1}} 9 = 8</p>\n",
-        "choices": {
-          "0": [
-            {
-              "correct": false,
-              "label": "+",
-              "value": "0",
-              "rationale": null
-            },
-            {
-              "correct": false,
-              "label": "&#8722;",
-              "value": "1",
-              "rationale": null
-            },
-            {
-              "correct": true,
-              "label": "x",
-              "value": "2",
-              "rationale": null
-            },
-            {
-              "correct": false,
-              "label": "&#247;",
-              "value": "3",
-              "rationale": null
-            }
-          ],
-          "1": [
-            {
-              "correct": false,
-              "label": "+",
-              "value": "0",
-              "rationale": null
-            },
-            {
-              "correct": false,
-              "label": "&#8722;",
-              "value": "1",
-              "rationale": null
-            },
-            {
-              "correct": false,
-              "label": "x",
-              "value": "2",
-              "rationale": null
-            },
-            {
-              "correct": true,
-              "label": "&#247;",
-              "value": "3",
-              "rationale": null
-            }
-          ]
-        },
-        "feedback": {},
-        "rationale": null,
-        "teacherInstructions": null,
-        "id": "9f526af3-4974-425a-9c6d-3533eeb56267",
-        "element": "inline-dropdown"
-      },
-      {
-        "id": "rubric-8a808081570b750d01571f00a376047a",
-        "element": "pie-rubric"
-      }
-    ],
-    "elements": {
-      "inline-dropdown": "@pie-element/inline-dropdown@4.18.0",
-      "extended-text-entry": "@pie-element/extended-text-entry@9.6.0",
-      "kds-categorize": "@pie-element/categorize@7.17.0",
-      "pie-rubric": "@pie-element/rubric@2.12.0"
+      "markup": "<multiple-choice id=\"1\"></multiple-choice>"
     },
-    "markup": "<kds-categorize id=\"e0120829-7ff2-4991-829a-531a69005d3a\"></kds-categorize><br/><inline-dropdown id=\"b4085b84-c6bf-4d6a-84c5-39c264247045\"></inline-dropdown><br/><inline-dropdown id=\"9f526af3-4974-425a-9c6d-3533eeb56267\"></inline-dropdown><br/>"
+    "passage": {
+      "id": "66815477-6de4-4cba-908d-1998bd228b43@0.0.1-draft.3",
+      "models": [
+        {
+          "id": "1",
+          "element": "pie-passage",
+          "passages": [
+            {
+              "title": "Passage title Andreea",
+              "text": "<p>Passage Content</p>"
+            }
+          ]
+        }
+      ],
+      "elements": {
+        "pie-passage": "@pie-element/passage@1.9.0"
+      },
+      "markup": "<pie-passage id=\"1\"></pie-passage>"
+    }
   };
 
   const endpoints = {
@@ -353,7 +150,7 @@
     console.log(event.type + ':' + JSON.stringify(event.detail));
   });
 
-  player.env = { mode: 'evaluate', role: 'instructor' }
+  player.env = { mode: 'view', role: 'student' }
   player.config = config;
 </script>
 </body>
