@@ -527,11 +527,11 @@ th {
 }
 
 .table-striped tbody tr:nth-of-type(odd) {
-  background-color: rgba(0,0,0,.05);
+  background-color: rgba(0, 0, 0, .05);
 }
 
 .text-center {
-  text-align: center!important;
+  text-align: center !important;
 }
 
 .h5, h5 {
@@ -597,4 +597,10 @@ mjx-c.mjx-c22, mjx-c.mjx-c27 {
 
 table {
   border-collapse: collapse;
+}
+
+.evaluate-bottom-border > :first-child::after {
+  content: '';
+  display: block;
+  border-bottom: 1px solid #d3d3d3;
 }

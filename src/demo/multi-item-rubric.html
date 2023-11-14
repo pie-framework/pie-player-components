@@ -18,53 +18,398 @@
     <script>
       const author = document.getElementById('author');
       const config = {
+        "id": "8a808081570b750d01571f00a376047a@0.0.94",
         "models": [
           {
-            "id": "4028e4a23e1a7e7c013e28b2be2d1326",
-            "element": "extended-text-entry",
-            "height": "200px",
-            "showMathInput": false,
-            "width": "500px",
-            "prompt": "<p>A bag contains 7 red cubes, 8 green cubes, 3 yellow cubes, 5 blue cubes, and 2 white cubes. All of the cubes are exactly the same size.</p>\r\n<p>A. Create a table that represents the contents of the bag and shows the probability of choosing each color when a cube is drawn from the bag without looking. Express the probabilities as fractions.</p>\r\n<p></p>"
-          },
-          {
-            "id": "4028e4a23e1a7e7c013e28b6d228132d",
-            "element": "extended-text-entry",
-            "height": "200px",
-            "showMathInput": false,
-            "width": "500px",
-            "prompt": "<p>B. Determine the probability of randomly drawing a green cube, returning it to the bag, and then randomly drawing a blue cube.</p>\r\n<ul>\r\n    <li>Explain how you can use your table to find the probability.</li>\r\n    <li>Write and solve an equation that represents the calculation of the probability.</li>\r\n</ul>\r\n<p></p>"
-          },
-          {
-            "width": "500px",
-            "prompt": "<p>C. Explain whether it is more likely or less likely for the event described in part B to occur when the first cube is <span class=\"relative-emphasis\">not</span> returned to the bag before drawing the second. Use words, numbers, and/or diagrams to support your answer.</p>\r\n<p></p>",
-            "id": "4028e4a23e1a7e7c013e28bca5c91332",
-            "element": "extended-text-entry",
-            "height": "200px",
-            "showMathInput": false
-          },
-          {
-            "points": [
-              "<p>The response is completely incorrect, there is no response, or the response is off topic.</p>",
-              "<p>The response demonstrates minimal understanding. A level 1 response is characterized by:</p>\r\n<ul>\r\n    <li>A table in part A that exhibits up to 3 incorrect probabilities;</li>\r\n    <li>An explanation and an equation for part B that are incorrect, incomplete, or missing;</li>\r\n    <li>An explanation for part C that is incorrect, incomplete, or missing.</li>\r\n</ul>",
-              "<p>The response demonstrates a basic but incomplete understanding. A level 2 response is characterized by:</p>\r\n<ul>\r\n    <li>A table in part A that exhibits 1&#8211;2 incorrect probabilities;</li>\r\n    <li>An explanation for part B that is vague, incomplete, or missing;</li>\r\n    <li>An expression or equation for part B that is correctly derived from the table in part A but may be incorrectly solved;</li>\r\n    <li>An explanation for part C that is incomplete.</li>\r\n</ul>",
-              "<p>The response demonstrates a strong understanding, but the work contains minor errors. A level 3 response is characterized by:</p>\r\n<ul>\r\n    <li>A correctly drawn table in part A that may exhibit minor errors in labeling or organization;</li>\r\n    <li>An explanation for part B that contains minor flaws or is incomplete but correct;</li>\r\n    <li>An equation for part B that is solvable but may contain a minor flaw leading to an incorrect result;</li>\r\n    <li>An explanation in part C that indicates the event is more likely without replacement but may be incomplete or show inadequate supporting details OR leads to a well-supported conclusion that is consistent with calculation errors made in part B.</li>\r\n</ul>",
-              "<p>The response demonstrates a high level of understanding. A level 4 response is characterized by:</p>\r\n<ul>\r\n    <li>A correctly created and labeled table in part A, with probabilities expressed as fractions, similar to:</li>\r\n</ul>\r\n<p><img src=\"https://localhost:8443/ia/image/13d1a42cd5044dcab77b163343755157\" id=\"13d1a42cd5044dcab77b163343755157\" alt=\"image 13d1a42cd5044dcab77b163343755157\" /></p>\r\n<p>(Accept an unsimplified fraction (5/25) for the probability of Blue);</p>\r\n<ul>\r\n    <li>A correct explanation for part B indicating that the compound probability can be calculated as the product of the individual probabilities, similar to \"For the green cube you use the fraction 8/25 from the table, and for the blue cube you use the fraction 1/5 from the table. Then you multiply them together to get 8/125\";</li>\r\n    <li>A correct equation in part B, similar to 8/25&#160;&#215; 1/5 = <span class=\"variable\">p</span>, solved as 8/125;</li>\r\n    <li>A correct explanation with supporting work for part C indicating that the event is more likely when the green cube is not replaced. Justification should specify that without replacing the green cube the probability for the blue cube to be drawn second increases from 1/5 to 5/24; that the fraction 5/24 is greater than 1/5; and that there are fewer cubes in the box after the green cube is removed, so all cubes have a greater likelihood of being chosen on the second draw, or that the compound probability without replacing the green cube is 1/15, which is greater than 8/125. Accept correct models, such as tree diagrams or tables that clearly illustrate the increased likelihood and/or a clear comparison of equations and solutions representing the two events.</li>\r\n</ul>\r\n<p></p>"
+            "categories": [
+              {
+                "id": "0",
+                "label": "Correct"
+              },
+              {
+                "label": "Wrong",
+                "id": "1"
+              }
             ],
-            "id": "rubric-4028e4a23e1a7e7c013e28b2be2d1325",
-            "maxPoints": 4,
-            "excludeZero": false,
+            "categoriesPerRow": 2,
+            "choices": [
+              {
+                "categoryCount": 1,
+                "id": "0",
+                "content": "&#160;2 x 9 = 16"
+              },
+              {
+                "categoryCount": 1,
+                "id": "1",
+                "content": "3 x 9 = 21"
+              },
+              {
+                "categoryCount": 1,
+                "id": "2",
+                "content": "4 x 7 = 28"
+              },
+              {
+                "categoryCount": 1,
+                "id": "3",
+                "content": "5 x 8 = 30"
+              },
+              {
+                "categoryCount": 1,
+                "id": "4",
+                "content": "5 x 9 = 45"
+              },
+              {
+                "categoryCount": 1,
+                "id": "5",
+                "content": "6 x 4 = 18"
+              },
+              {
+                "categoryCount": 1,
+                "id": "6",
+                "content": "6 x 7 = 42"
+              },
+              {
+                "categoryCount": 1,
+                "id": "7",
+                "content": "7 x 8 = 56"
+              },
+              {
+                "categoryCount": 1,
+                "id": "8",
+                "content": "7 x 9 = 61"
+              },
+              {
+                "categoryCount": 1,
+                "id": "9",
+                "content": "8 x 2 = 18"
+              },
+              {
+                "categoryCount": 1,
+                "id": "10",
+                "content": "8 x 6 = 48"
+              },
+              {
+                "categoryCount": 1,
+                "id": "11",
+                "content": "9 x 4 = 32"
+              },
+              {
+                "categoryCount": 1,
+                "id": "12",
+                "content": "9 x 8 = 72"
+              }
+            ],
+            "choicesLabel": "",
+            "choicesPosition": "above",
+            "disabled": false,
+            "lockChoiceOrder": true,
+            "prompt": "<p><strong>A.</strong> Erin completed the number problems below for her homework.</p>\n\n<p><span style=\"font-family:helvetica neue,helvetica,arial,sans-serif; line-height:1.4\">Drag and drop the number problems&#160;Erin wrote that are correct into the box&#160;under the word </span>&#8220;<span style=\"font-family:helvetica neue,helvetica,arial,sans-serif; line-height:1.4\">Correct,</span>&#8221;<span style=\"font-family:helvetica neue,helvetica,arial,sans-serif; line-height:1.4\"> and the number problems Erin wrote that have wrong answers into the box&#160;under the word </span>&#8220;<span style=\"font-family:helvetica neue,helvetica,arial,sans-serif; line-height:1.4\">Wrong.</span>&#8221;</p>\n\n<p>&#160;</p>\n",
+            "rowLabels": [
+              ""
+            ],
+            "note": "Note: The answer shown above is the most common correct answer for this item. One or more additional correct answers are also defined, and will also be recognized as correct.",
+            "env": {
+              "mode": "gather",
+              "role": "student",
+              "partialScoring": true
+            },
+            "showNote": false,
+            "rationale": null,
+            "teacherInstructions": null,
+            "id": "e0120829-7ff2-4991-829a-531a69005d3a",
+            "element": "kds-categorize"
+          },
+          {
+            "disabled": false,
+            "mode": "gather",
+            "prompt": "<p><strong>B.</strong> For the last problem in Erin&#8217;s homework, she uses a different&#160;number problem to help her check her work. She writes both number problems below. Use the drop down menus to choose&#160;+,&#8722;,&#215;, or &#160;&#247; in each box to make the number problems true.</p>\n\n<p>&#160;</p>\n",
+            "markup": "<p class=\"text-center\">9 {{0}} 8 = 72</p>\n\n<p class=\"text-center\">72 {{1}} 9 = 8</p>\n",
+            "choices": {
+              "0": [
+                {
+                  "correct": false,
+                  "label": "+",
+                  "value": "0",
+                  "rationale": null
+                },
+                {
+                  "correct": false,
+                  "label": "&#8722;",
+                  "value": "1",
+                  "rationale": null
+                },
+                {
+                  "correct": true,
+                  "label": "x",
+                  "value": "2",
+                  "rationale": null
+                },
+                {
+                  "correct": false,
+                  "label": "&#247;",
+                  "value": "3",
+                  "rationale": null
+                }
+              ],
+              "1": [
+                {
+                  "correct": false,
+                  "label": "+",
+                  "value": "0",
+                  "rationale": null
+                },
+                {
+                  "correct": false,
+                  "label": "&#8722;",
+                  "value": "1",
+                  "rationale": null
+                },
+                {
+                  "correct": false,
+                  "label": "x",
+                  "value": "2",
+                  "rationale": null
+                },
+                {
+                  "correct": true,
+                  "label": "&#247;",
+                  "value": "3",
+                  "rationale": null
+                }
+              ]
+            },
+            "feedback": {},
+            "rationale": null,
+            "teacherInstructions": null,
+            "id": "b4085b84-c6bf-4d6a-84c5-39c264247045",
+            "element": "inline-dropdown"
+          },
+          {
+            "prompt": "<p><strong>C.</strong> For the number problem 7 &#215; 9, Erin says that she knows that 7 &#215; 9 = 61 because&#160;61 &#247; 7 = 9. Is she correct? Explain&#160;why or why not.</p>\n\n<p>Type your answer in the box below.&#160;</p>\n",
+            "dimensions": {
+              "height": 100,
+              "width": 500
+            },
+            "customKeys": [],
+            "disabled": false,
+            "teacherInstructions": null,
+            "mathInput": true,
+            "equationEditor": 3,
+            "spellCheckEnabled": false,
+            "playersToolbarPosition": "bottom",
+            "id": "9f526af3-4974-425a-9c6d-3533eeb56267",
+            "element": "extended-text-entry"
+          },
+          {
+            "id": "rubric-8a808081570b750d01571f00a376047a",
             "element": "pie-rubric"
           }
         ],
-        "markup": "<extended-text-entry id=\"4028e4a23e1a7e7c013e28b2be2d1326\"></extended-text-entry><extended-text-entry id=\"4028e4a23e1a7e7c013e28b6d228132d\"></extended-text-entry><extended-text-entry id=\"4028e4a23e1a7e7c013e28bca5c91332\"></extended-text-entry><pie-rubric id='rubric-4028e4a23e1a7e7c013e28b2be2d1325' />",
         "elements": {
-          "pie-rubric": "@pie-element/rubric@latest",
-          "extended-text-entry": "@pie-element/extended-text-entry@latest"
-        }
+          "inline-dropdown": "@pie-element/inline-dropdown@4.18.0",
+          "extended-text-entry": "@pie-element/extended-text-entry@9.6.0",
+          "kds-categorize": "@pie-element/categorize@7.17.0",
+          "pie-rubric": "@pie-element/rubric@2.12.0"
+        },
+        "markup": "<kds-categorize id=\"e0120829-7ff2-4991-829a-531a69005d3a\"></kds-categorize><br/><inline-dropdown id=\"b4085b84-c6bf-4d6a-84c5-39c264247045\"></inline-dropdown><br/><extended-text-entry id=\"9f526af3-4974-425a-9c6d-3533eeb56267\"></extended-text-entry><br/>"
       };
 
-      author.config = config;
+      author.config = {
+        "id": "8a808081570b750d01571f00a376047a@0.0.94",
+        "models": [
+          {
+            "categories": [
+              {
+                "id": "0",
+                "label": "Correct"
+              },
+              {
+                "label": "Wrong",
+                "id": "1"
+              }
+            ],
+            "categoriesPerRow": 2,
+            "choices": [
+              {
+                "categoryCount": 1,
+                "id": "0",
+                "content": "&#160;2 x 9 = 16"
+              },
+              {
+                "categoryCount": 1,
+                "id": "1",
+                "content": "3 x 9 = 21"
+              },
+              {
+                "categoryCount": 1,
+                "id": "2",
+                "content": "4 x 7 = 28"
+              },
+              {
+                "categoryCount": 1,
+                "id": "3",
+                "content": "5 x 8 = 30"
+              },
+              {
+                "categoryCount": 1,
+                "id": "4",
+                "content": "5 x 9 = 45"
+              },
+              {
+                "categoryCount": 1,
+                "id": "5",
+                "content": "6 x 4 = 18"
+              },
+              {
+                "categoryCount": 1,
+                "id": "6",
+                "content": "6 x 7 = 42"
+              },
+              {
+                "categoryCount": 1,
+                "id": "7",
+                "content": "7 x 8 = 56"
+              },
+              {
+                "categoryCount": 1,
+                "id": "8",
+                "content": "7 x 9 = 61"
+              },
+              {
+                "categoryCount": 1,
+                "id": "9",
+                "content": "8 x 2 = 18"
+              },
+              {
+                "categoryCount": 1,
+                "id": "10",
+                "content": "8 x 6 = 48"
+              },
+              {
+                "categoryCount": 1,
+                "id": "11",
+                "content": "9 x 4 = 32"
+              },
+              {
+                "categoryCount": 1,
+                "id": "12",
+                "content": "9 x 8 = 72"
+              }
+            ],
+            "choicesLabel": "",
+            "choicesPosition": "above",
+            "disabled": false,
+            "lockChoiceOrder": true,
+            "prompt": "<p><strong>A.</strong> Erin completed the number problems below for her homework.</p>\n\n<p><span style=\"font-family:helvetica neue,helvetica,arial,sans-serif; line-height:1.4\">Drag and drop the number problems&#160;Erin wrote that are correct into the box&#160;under the word </span>&#8220;<span style=\"font-family:helvetica neue,helvetica,arial,sans-serif; line-height:1.4\">Correct,</span>&#8221;<span style=\"font-family:helvetica neue,helvetica,arial,sans-serif; line-height:1.4\"> and the number problems Erin wrote that have wrong answers into the box&#160;under the word </span>&#8220;<span style=\"font-family:helvetica neue,helvetica,arial,sans-serif; line-height:1.4\">Wrong.</span>&#8221;</p>\n\n<p>&#160;</p>\n",
+            "rowLabels": [
+              ""
+            ],
+            "note": "Note: The answer shown above is the most common correct answer for this item. One or more additional correct answers are also defined, and will also be recognized as correct.",
+            "env": {
+              "mode": "gather",
+              "role": "student",
+              "partialScoring": true
+            },
+            "showNote": false,
+            "rationale": null,
+            "teacherInstructions": null,
+            "id": "e0120829-7ff2-4991-829a-531a69005d3a",
+            "element": "kds-categorize"
+          },
+          {
+            "disabled": false,
+            "mode": "gather",
+            "prompt": "<p><strong>B.</strong> For the last problem in Erin&#8217;s homework, she uses a different&#160;number problem to help her check her work. She writes both number problems below. Use the drop down menus to choose&#160;+,&#8722;,&#215;, or &#160;&#247; in each box to make the number problems true.</p>\n\n<p>&#160;</p>\n",
+            "markup": "<p class=\"text-center\">9 {{0}} 8 = 72</p>\n\n<p class=\"text-center\">72 {{1}} 9 = 8</p>\n",
+            "choices": {
+              "0": [
+                {
+                  "correct": false,
+                  "label": "+",
+                  "value": "0",
+                  "rationale": null
+                },
+                {
+                  "correct": false,
+                  "label": "&#8722;",
+                  "value": "1",
+                  "rationale": null
+                },
+                {
+                  "correct": true,
+                  "label": "x",
+                  "value": "2",
+                  "rationale": null
+                },
+                {
+                  "correct": false,
+                  "label": "&#247;",
+                  "value": "3",
+                  "rationale": null
+                }
+              ],
+              "1": [
+                {
+                  "correct": false,
+                  "label": "+",
+                  "value": "0",
+                  "rationale": null
+                },
+                {
+                  "correct": false,
+                  "label": "&#8722;",
+                  "value": "1",
+                  "rationale": null
+                },
+                {
+                  "correct": false,
+                  "label": "x",
+                  "value": "2",
+                  "rationale": null
+                },
+                {
+                  "correct": true,
+                  "label": "&#247;",
+                  "value": "3",
+                  "rationale": null
+                }
+              ]
+            },
+            "feedback": {},
+            "rationale": null,
+            "teacherInstructions": null,
+            "id": "b4085b84-c6bf-4d6a-84c5-39c264247045",
+            "element": "inline-dropdown"
+          },
+          {
+            "prompt": "<p><strong>C.</strong> For the number problem 7 &#215; 9, Erin says that she knows that 7 &#215; 9 = 61 because&#160;61 &#247; 7 = 9. Is she correct? Explain&#160;why or why not.</p>\n\n<p>Type your answer in the box below.&#160;</p>\n",
+            "dimensions": {
+              "height": 100,
+              "width": 500
+            },
+            "customKeys": [],
+            "disabled": false,
+            "teacherInstructions": null,
+            "mathInput": true,
+            "equationEditor": 3,
+            "spellCheckEnabled": false,
+            "playersToolbarPosition": "bottom",
+            "id": "9f526af3-4974-425a-9c6d-3533eeb56267",
+            "element": "extended-text-entry"
+          },
+          {
+            "id": "rubric-8a808081570b750d01571f00a376047a",
+            "element": "pie-rubric"
+          }
+        ],
+        "elements": {
+          "inline-dropdown": "@pie-element/inline-dropdown@4.18.0",
+          "extended-text-entry": "@pie-element/extended-text-entry@9.6.0",
+          "kds-categorize": "@pie-element/categorize@7.17.0",
+          "pie-rubric": "@pie-element/rubric@2.12.0"
+        },
+        "markup": "<kds-categorize id=\"e0120829-7ff2-4991-829a-531a69005d3a\"></kds-categorize><br/><inline-dropdown id=\"b4085b84-c6bf-4d6a-84c5-39c264247045\"></inline-dropdown><br/><extended-text-entry id=\"9f526af3-4974-425a-9c6d-3533eeb56267\"></extended-text-entry><br/>"
+      };
     </script>
   </body>
 </html>
