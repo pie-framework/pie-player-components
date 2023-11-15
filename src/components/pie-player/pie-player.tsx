@@ -116,8 +116,7 @@ export class Player {
   @Prop() addCorrectResponse: boolean = false;
 
   /**
-   * In evaluate mode, add a bottom border to visually indicate the association
-   * between the "Show Correct" toggle and its corresponding item.
+   * In evaluate mode, add a bottom border to visually separate each item in the case of a multi-item
    */
   @Prop() showBottomBorder: boolean = false;
 
@@ -389,6 +388,10 @@ export class Player {
   }
 
   private addBottomBorder(tags: string[]) {
+    if (!Array.isArray(tags)) {
+      return;
+    }
+
     tags.forEach(tag => {
       const elems = document.querySelectorAll(`${tag}`)
 
@@ -405,6 +408,11 @@ export class Player {
       if (this.elementsLoaded) {
         this.updateModels();
         this.renderMath();
+
+        if (this.showBottomBorder && this.env.mode === 'evaluate') {
+          const pieTags = this.pieContentModel.elements && Object.keys(this.pieContentModel.elements)
+          this.addBottomBorder(pieTags);
+        }
       } else {
         const elements = Object.keys(this.pieContentModel.elements).map(el => ({
           name: el,
@@ -425,11 +433,6 @@ export class Player {
           this.elementsLoaded = true;
         }
       }
-    }
-
-    if (this.showBottomBorder && this.env.mode === 'evaluate') {
-      const pieTags = Object.keys(this.pieContentModel.elements)
-      this.addBottomBorder(pieTags);
     }
   }
 

@@ -138,7 +138,7 @@ export namespace Components {
     */
     'session': ItemSession;
     /**
-    * In evaluate mode, add a bottom border to visually indicate the association between the "Show Correct" toggle and its corresponding item.
+    * In evaluate mode, add a bottom border to visually separate each item in the case of a multi-item
     */
     'showBottomBorder': boolean;
     /**
@@ -339,7 +339,7 @@ declare namespace LocalJSX {
     */
     'session'?: ItemSession;
     /**
-    * In evaluate mode, add a bottom border to visually indicate the association between the "Show Correct" toggle and its corresponding item.
+    * In evaluate mode, add a bottom border to visually separate each item in the case of a multi-item
     */
     'showBottomBorder'?: boolean;
     'version'?: string;
