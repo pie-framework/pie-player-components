@@ -13,6 +13,7 @@ import {
 } from "@stencil/core";
 import {
   AdvancedItemConfig,
+  Env,
   ItemConfig,
   ItemSession,
   PieContent,
@@ -114,6 +115,11 @@ export class Player {
    */
   @Prop() addCorrectResponse: boolean = false;
 
+  /**
+   * In evaluate mode, add a bottom border to visually separate each item in the case of a multi-item
+   */
+  @Prop() showBottomBorder: boolean = false;
+
   @Watch("addCorrectResponse")
   watchAddCorrectResponse(newValue, oldValue) {
     if (newValue !== oldValue) {
@@ -130,7 +136,7 @@ export class Player {
    * Describes runtime environment for the player.
    *
    */
-  @Prop() env: Object = {mode: "gather", role: "student"};
+  @Prop() env: Env = {mode: "gather", role: "student"};
 
   /**
    * Indicates if player running in the context of a PIE hosting system.
@@ -381,11 +387,32 @@ export class Player {
     }, 50);
   }
 
+  private addBottomBorder(tags: string[]) {
+    if (!Array.isArray(tags)) {
+      return;
+    }
+
+    tags.forEach(tag => {
+      const elems = document.querySelectorAll(`${tag}`)
+
+      for (const elem of elems) {
+        if (elem && elem instanceof HTMLElement) {
+          elem.classList.add('evaluate-bottom-border');
+        }
+      }
+    });
+  }
+
   async afterRender() {
     if (this.pieContentModel && this.pieContentModel.markup) {
       if (this.elementsLoaded) {
         this.updateModels();
         this.renderMath();
+
+        if (this.showBottomBorder && this.env.mode === 'evaluate') {
+          const pieTags = this.pieContentModel.elements && Object.keys(this.pieContentModel.elements)
+          this.addBottomBorder(pieTags);
+        }
       } else {
         const elements = Object.keys(this.pieContentModel.elements).map(el => ({
           name: el,
