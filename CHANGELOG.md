@@ -1,3 +1,12 @@
+# [2.4.0](https://github.com/pie-framework/pie-player-components/compare/v2.3.1...v2.4.0) (2023-11-16)
+
+
+### Features
+
+* show a bottom border between pie elements in evaluate mode PD-382 ([0556e16](https://github.com/pie-framework/pie-player-components/commit/0556e1643e24c7c9fa37c5eeb2b89fae9b400b9f))
+* show a bottom border between pie elements in evaluate mode PD-382 ([aa60655](https://github.com/pie-framework/pie-player-components/commit/aa6065571bf3224a381cecd363a8e4826e8fd71b))
+* show a bottom border between pie elements in evaluate mode PD-382 ([a454ee3](https://github.com/pie-framework/pie-player-components/commit/a454ee3688ec64430d2e5650e0f100e818ec899a))
+
 ## [2.3.1](https://github.com/pie-framework/pie-player-components/compare/v2.3.0...v2.3.1) (2023-11-01)
 
 
