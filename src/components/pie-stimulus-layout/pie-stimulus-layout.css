@@ -71,7 +71,7 @@
 }
 
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 1200px) {
   #pie-stimulus-container {
     flex-direction: column;
   }
@@ -84,11 +84,12 @@
     width: 100%;
     overflow: hidden;
     position: relative;
-    flex: 0.3; /* stimulus represents 30% of the available space */
+    flex:0 0 30%; /* stimulus represents 30% of the available space */
   }
   #pie-stimulus-container #item {
     width: 100%;
     overflow: auto;
+    flex:1;
   }
   #pie-stimulus-container #stimulusPlayer {
     opacity: 1;
