@@ -1,3 +1,10 @@
+## [2.4.1](https://github.com/pie-framework/pie-player-components/compare/v2.4.0...v2.4.1) (2023-12-06)
+
+
+### Bug Fixes
+
+* adjust max-width for new layout and logic based on this PD-3082 ([e977d83](https://github.com/pie-framework/pie-player-components/commit/e977d833d02f7ca77d05232bd7d65011bc102a02))
+
 # [2.4.0](https://github.com/pie-framework/pie-player-components/compare/v2.3.1...v2.4.0) (2023-11-16)
 
 
