@@ -1,3 +1,10 @@
+# [2.5.0](https://github.com/pie-framework/pie-player-components/compare/v2.4.1...v2.5.0) (2023-12-26)
+
+
+### Features
+
+* use pie-lib/pie-toolbox instead of pie-lib/math-rendering ([93f8d5f](https://github.com/pie-framework/pie-player-components/commit/93f8d5fefc88339d37d3a99a861732c81b004b2c))
+
 ## [2.4.1](https://github.com/pie-framework/pie-player-components/compare/v2.4.0...v2.4.1) (2023-12-06)
 
 
