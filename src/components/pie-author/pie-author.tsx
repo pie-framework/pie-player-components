@@ -10,7 +10,7 @@ import {
   h
 } from "@stencil/core";
 
-import { _dll_pie_lib__pie_toolbox_math_rendering as mr } from "@pie-lib/pie-toolbox-module/module";
+import * as mr from "@pie-lib/math-rendering";
 
 import {PieContent, ItemConfig, PieElement, PieModel, PieController} from "../../interface";
 import {
