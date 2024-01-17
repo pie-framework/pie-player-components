@@ -1,3 +1,11 @@
+## [2.6.1](https://github.com/pie-framework/pie-player-components/compare/v2.6.0...v2.6.1) (2024-01-17)
+
+
+### Bug Fixes
+
+* ensure that pieContentModel is updated with correct errors PD-3388 ([cd44437](https://github.com/pie-framework/pie-player-components/commit/cd44437cfa1f5ab0fead7ddba276735f241a8e87))
+* remove redundant file and comments ([14b8852](https://github.com/pie-framework/pie-player-components/commit/14b8852ed918f57ae565886e877e08467244c25d))
+
 # [2.6.0](https://github.com/pie-framework/pie-player-components/compare/v2.5.0...v2.6.0) (2023-12-27)
 
 
