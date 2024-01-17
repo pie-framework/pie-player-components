@@ -181,7 +181,7 @@ export class Author {
       return {hasErrors: false, validatedModels: {}};
     }
 
-    return (this.pieContentModel.models || []).reduce((acc: any, model) => {
+    return (this.pieContentModel.models || []).reduce((acc: any, model, index) => {
       let pieEl: PieElement = this.el.querySelector(`[id='${model.id}']`);
       !pieEl && (pieEl = this.el.querySelector(`[pie-id='${model.id}']`));
 
@@ -197,11 +197,12 @@ export class Author {
           // here we call controller.validate which returns an object with all the errors
           const errors = controller.validate(model, configuration);
 
+          // added this to ensure that this.pieContentModel.model is updated with the correct errors
+          // TODO: figure out what's actually happening and if there is a better way to make sure that this.pieContentModels.models is actually updated
+          this.pieContentModel.models[index] = { ...model, errors };
+
           // here we can update the model in author, so we can set errors
-          pieEl.model = {
-            ...model,
-            errors,
-          };
+          pieEl.model = { ...model, errors };
 
           // for ebsr
           if (errors && errors.partA && errors.partB) {
@@ -225,8 +226,9 @@ export class Author {
           }
         }
       }
+
       return acc;
-    }, {hasErrors: false, validatedModels: {}});
+    }, { hasErrors: false, validatedModels: {} });
   }
 
   insertImage(file: File) {
@@ -456,6 +458,7 @@ export class Author {
   }
 
   async updateModels() {
+    console.log('---- update models');
     if (
       this.pieContentModel &&
       this.pieContentModel.elements &&
@@ -505,11 +508,13 @@ export class Author {
 
           try {
             const packageName = parseNpm(this.pieContentModel.elements[pieElName]).name;
-            pieEl.model = model;
+
 
             if (this.configSettings && this.configSettings[packageName]) {
               pieEl.configuration = this.configSettings[packageName];
             }
+            pieEl.model = model;
+
           } catch (e) {
             console.log(e.toString(), pieElName, this.pieContentModel.elements[pieElName]);
           }
@@ -550,6 +555,8 @@ export class Author {
 
       if (this.pieContentModel && e.update) {
         this.pieContentModel.models.forEach(m => {
+          console.log('> m', m);
+          console.log('e.update', e.update);
           if (m.id === e.update.id && m.element === e.update.element) {
             rubricChanged = rubricChanged || m.rubricEnabled !== e.update.rubricEnabled;
 
