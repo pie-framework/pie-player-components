@@ -458,7 +458,6 @@ export class Author {
   }
 
   async updateModels() {
-    console.log('---- update models');
     if (
       this.pieContentModel &&
       this.pieContentModel.elements &&
@@ -508,12 +507,11 @@ export class Author {
 
           try {
             const packageName = parseNpm(this.pieContentModel.elements[pieElName]).name;
-
+            pieEl.model = model;
 
             if (this.configSettings && this.configSettings[packageName]) {
               pieEl.configuration = this.configSettings[packageName];
             }
-            pieEl.model = model;
 
           } catch (e) {
             console.log(e.toString(), pieElName, this.pieContentModel.elements[pieElName]);
@@ -555,8 +553,6 @@ export class Author {
 
       if (this.pieContentModel && e.update) {
         this.pieContentModel.models.forEach(m => {
-          console.log('> m', m);
-          console.log('e.update', e.update);
           if (m.id === e.update.id && m.element === e.update.element) {
             rubricChanged = rubricChanged || m.rubricEnabled !== e.update.rubricEnabled;
 
