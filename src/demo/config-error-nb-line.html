@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0"
+  />
+  <title>Item Author - update Config Settings</title>
+  <script type="module" src="/build/pie-player-components.esm.js"></script>
+  <script nomodule src="/build/pie-player-components.js"></script>
+</head>
+<body>
+<button id="validate">validate</button>
+<pie-author config="evan" id="author"></pie-author>
+
+<script type="text/javascript" src="./utils/models.js"></script>
+<script>
+  const config = {
+    "id": "1",
+    "elements": { "pie-element-number-line": "@pie-element/number-line@latest" },
+    "models": [
+      {
+        "id": "1",
+        "element": "pie-element-number-line",
+        "correctResponse": [
+          { "type": "point", "pointType": "full", "domainPosition": 0 }
+        ],
+        "feedback": {
+          "correct": { "type": "default", "default": "Correct" },
+          "partial": { "type": "default", "default": "Nearly" },
+          "incorrect": { "type": "default", "default": "Incorrect" }
+        },
+        "prompt": "",
+        "widthEnabled": true,
+        "graph": {
+          "title": "",
+          "arrows": { "left": true, "right": true },
+          "width": 500,
+          "domain": { "min": -5, "max": 5 },
+          "ticks": { "minor": 1, "major": 2, "labelStep": '2', "tickIntervalType": 'Integer', "tickStep": '1' },
+          "initialElements": [],
+          "maxNumberOfPoints": 30,
+          "showMinorTicks": true,
+          "snapPerTick": 1,
+          "tickLabelOverrides": [],
+          "initialType": "PF",
+          "exhibitOnly": false,
+          "availableTypes": {
+            "PF": true,
+            "LFF": true,
+            "LEF": true,
+            "LFE": true,
+            "LEE": true,
+            "RFN": true,
+            "RFP": true,
+            "REN": true,
+            "REP": true
+          }
+        }
+      }
+    ],
+    "markup": "<pie-element-number-line id='1'></pie-element-number-line>"
+  };
+
+  const configSettings = {
+    "@pie-element/number-line": {
+      "instruction": {
+        "settings": false,
+        "enabled": true,
+        "label": 'Number line questions involve plotting points or other objects. To create one, first set up the number line, then select the plotting tools students will be offered and use them to define the correct answer.'
+      },
+      "settingsPanelDisabled": false,
+      "prompt": { "settings": true, "label": "Question" },
+      "teacherInstructions": {
+        "settings": false,
+        "label": 'Teacher Instructions'
+      },
+      "numberLineDimensions": {
+        "settings": true,
+        "label": 'Width',
+        "enabled": true,
+        "min": 200,
+        "max": 800,
+        "step": 20
+      },
+      "maxMaxElements": 25,
+      "hidePointConfigButtons": true,
+      "availableTools": ['PF', 'LFF', 'LEF', 'LFE', 'LEE', 'RFN', 'RFP', 'REN', 'REP'],
+      "spellCheck": { "settings": false, "label": "Spellcheck" }
+    }
+  };
+
+  const author = document.getElementById('author');
+
+  author.addEventListener('modelLoaded', event => {
+    console.log(event.type + ':' + JSON.stringify(event.detail));
+  });
+
+  author.configSettings = configSettings;
+  author.config = config;
+
+  document.querySelector('#validate').onclick = async () => {
+    console.log('Validate Models: ', await document.querySelector('pie-author').validateModels());
+  }
+</script>
+</body>
+</html>
