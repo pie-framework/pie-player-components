@@ -500,7 +500,7 @@ export class Author {
     if (this.pieContentModel && this.pieContentModel.models) {
       this.pieContentModel.models.map(model => {
         // ! We need to make sure to make a clone to the model parameter.
-        //    Otherwise, after setting the configuration in Step 0, we'll alter the model parameter that we set in Step 1
+        //    Otherwise, after setting the configuration in Step 0, we'll alter the model parameter that we use in Step 1
         //    (and we need this initial version, not the altered one).
         const modelClone = cloneDeep(model);
 
