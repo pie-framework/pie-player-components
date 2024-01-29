@@ -499,16 +499,37 @@ export class Author {
   setModelsAndConfigurations = () => {
     if (this.pieContentModel && this.pieContentModel.models) {
       this.pieContentModel.models.map(model => {
-        let pieEl: PieElement = this.el.querySelector(`[id='${model.id}']`);
-        !pieEl && (pieEl = this.el.querySelector(`[pie-id='${model.id}']`));
+        // ! We need to make sure to make a clone to the model parameter.
+        //    Otherwise, after setting the configuration in Step 0, we'll alter the model parameter that we set in Step 1
+        //    (and we need this initial version, not the altered one).
+        const modelClone = cloneDeep(model);
+
+        let pieEl: PieElement = this.el.querySelector(`[id='${modelClone.id}']`);
+        !pieEl && (pieEl = this.el.querySelector(`[pie-id='${modelClone.id}']`));
 
         if (pieEl) {
           const pieElName = pieEl.tagName.toLowerCase().split("-config")[0];
 
           try {
             const packageName = parseNpm(this.pieContentModel.elements[pieElName]).name;
-            pieEl.model = model;
 
+            // Initially, this was built to set model first ("Initial Step 1" below)
+            // and configuration after ("Initial Step 2" below).
+            // However, we recently discovered this doesn't make too much sense and causes issues,
+            //  because we sometimes update the model (in set model) depending on the configuration (and we don't have configuration if we set model first).
+            // The correct order would be set configuration, then set model, but because we want to ensure backwards compatibility, I think
+            //  the safest way is to set configuration first, then set the model and then set the configuration again.
+            //  In this way we make sure we have configuration already set when we reach set model, and the model set when we reach set configuration again.
+            // TODO when should we change the order for good and what's the best way to do that to ensure we have no other issues?
+            // Extra Step 0
+            if (this.configSettings && this.configSettings[packageName]) {
+              pieEl.configuration = this.configSettings[packageName];
+            }
+
+            // Initial Step 1
+            pieEl.model = modelClone;
+
+            // Initial Step 2
             if (this.configSettings && this.configSettings[packageName]) {
               pieEl.configuration = this.configSettings[packageName];
             }
