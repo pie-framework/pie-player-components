@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0"
+  />
+  <title>Stencil Component Starter</title>
+
+  <script
+    type="module"
+    src="https://unpkg.com/@pie-framework/pie-player-components@latest/dist/pie-player-components/pie-player-components.esm.js"
+  ></script>
+</head>
+<body>
+<pie-author id="author" add-preview="true"></pie-author>
+
+
+<script>
+  const MC_model = {
+    id: "1",
+    element: 'pie-multiple-choice',
+    prompt:
+      'Which of these northern European countries are EU members?',
+    choiceMode: 'checkbox',
+    keyMode: 'numbers',
+    choices: [
+      {
+        correct: true,
+        value: 'sweden',
+        label: 'Sweden',
+        feedback: {
+          type: 'none',
+          value: ''
+        }
+      },
+      {
+        value: 'iceland',
+        label: 'Iceland',// <math style="display: block;"> <mtable columnalign="right center left"> <mtr> <mtd> <msup> <mrow> <mo> ( </mo> <mi> a </mi> <mo> + </mo> <mi> b </mi> <mo> ) </mo> </mrow> <mn> 2 </mn> </msup> </mtd> <mtd> <mo> = </mo> </mtd> <mtd> <msup><mi> c </mi><mn>2</mn></msup> <mo> + </mo> <mn> 4 </mn> <mo> ⋅ </mo> <mo>(</mo> <mfrac> <mn> 1 </mn> <mn> 2 </mn> </mfrac> <mi> a </mi><mi> b </mi> <mo>)</mo>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;</mtd> </mtr> <mtr> <mtd> <msup><mi> a </mi><mn>2</mn></msup> <mo> + </mo> <mn> 2 </mn><mi> a </mi><mi> b </mi> <mo> + </mo> <msup><mi> b </mi><mn>2</mn></msup> </mtd> <mtd> <mo> = </mo> </mtd> <mtd> <msup><mi> c </mi><mn>2</mn></msup> <mo> + </mo> <mn> 2 </mn><mi> a </mi><mi> b</mi></mtd></mtr><mtr><mtd></mtd></mtr><mtr><mtd><msup><mi>a </mi><mn>2</mn></msup> <mo> + </mo> <msup><mi> b </mi><mn>2</mn></msup> </mtd> <mtd> <mo> = </mo> </mtd> <mtd> <msup><mi> c </mi><mn>2</mn></msup> </mtd> </mtr> </mtable> </math>',
+        feedback: {
+          type: 'none',
+          value: ''
+        }
+      },
+      {
+        value: 'norway',
+        label: 'Norway',
+        feedback: {
+          type: 'none',
+          value: ''
+        }
+      },
+      {
+        correct: true,
+        value: 'finland',
+        label: 'Finland',
+        feedback: {
+          type: 'none',
+          value: ''
+        }
+      }
+    ],
+    partialScoring: false,
+    shuffle: false,
+    partialScoringLabel: `Each correct response that is correctly checked and each incorrect response
+          that is correctly unchecked will be worth 1 point.
+          The maximum points is the total number of answer choices.`,
+    teacherInstructionsEnabled: false,
+    rationaleEnabled: false
+  };
+
+  const config = {
+    id: '1',
+    elements: {
+      // todo: update the version here
+      'pie-multiple-choice': '@pie-element/multiple-choice@5.9.3-next.760'
+    },
+    models: [MC_model],
+    markup: "<pie-multiple-choice id='1'></pie-multiple-choice>"
+  };
+
+  const configSettings = {
+    '@pie-element/multiple-choice':{
+      baseInputConfiguration: {
+        audio: { disabled: false },
+        video: { disabled: false },
+      },
+      spellCheck: {
+        label: 'Spellcheck',
+        settings: false,
+        enabled: true,
+      },
+      choicesLayout: {
+        settings: false,
+        label: 'Choices Layout',
+      },
+      gridColumns: {
+        label: 'Grid columns',
+      },
+      answerChoiceCount: 0,
+      addChoiceButton: {
+        settings: true,
+        label: 'Add a Choice',
+      },
+      choiceMode: {
+        settings: true,
+        label: 'Response Type',
+      },
+      choicePrefix: {
+        settings: true,
+        label: 'Choice Labels',
+      },
+      deleteChoice: {
+        settings: true,
+      },
+      feedback: {
+        settings: true,
+        label: 'Feedback',
+      },
+      prompt: {
+        settings: true,
+        label: 'Prompt',
+      },
+      lockChoiceOrder: {
+        settings: true,
+        label: 'Lock Choice Order',
+      },
+      partialScoring: {
+        settings: false,
+        label: 'Allow Partial Scoring',
+      },
+      rationale: {
+        settings: true,
+        label: 'Rationale',
+        inputConfiguration: {
+          audio: { disabled: true },
+          video: { disabled: true },
+        },
+      },
+      accessibility: {
+        settings: false,
+        label: 'Accessibility Label',
+        inputConfiguration: {
+          audio: { disabled: true },
+          video: { disabled: true },
+        },
+      },
+      scoringType: {
+        settings: false,
+        label: 'Scoring Type',
+      },
+      studentInstructions: {
+        settings: false,
+        label: 'Student Instructions',
+      },
+      teacherInstructions: {
+        settings: true,
+
+        label: 'Teacher Instructions',
+      },
+      toolbarEditorPosition: {
+        settings: false,
+        label: 'Toolbar Editor Position',
+      },
+      minAnswerChoices: 2,
+      maxAnswerChoices: 5,
+      maxImageWidth: {
+        teacherInstructions: 300,
+        prompt: 300,
+        rationale: 636,
+        choices: 900,
+      },
+      maxImageHeight: {
+        teacherInstructions: 300,
+        prompt: 300,
+        rationale: 300,
+        choices: 300,
+      },
+      withRubric: {
+        settings: false,
+        label: 'Add Rubric',
+      },
+      mathMlOptions: {
+        mmlOutput: false,
+        mmlEditing: false,
+      },
+      language: {
+        settings: false,
+        label: 'Specify Language',
+        enabled: false,
+      },
+      languageChoices: {
+        label: 'Language Choices',
+        options: [],
+      },
+    }
+  };
+
+  const author = document.getElementById("author");
+
+  author.configSettings = configSettings;
+  author.config = config;
+</script>
+</body>
+</html>
