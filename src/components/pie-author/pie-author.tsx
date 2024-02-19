@@ -10,7 +10,7 @@ import {
   h
 } from "@stencil/core";
 
-import * as mr from "@pie-lib/math-rendering";
+import { _dll_pie_lib__pie_toolbox_math_rendering } from "@pie-lib/pie-toolbox-module/module";
 
 import {PieContent, ItemConfig, PieElement, PieModel, PieController} from "../../interface";
 import {
@@ -642,7 +642,7 @@ export class Author {
 
   private renderMath() {
     setTimeout(() => {
-      mr.renderMath(this.el);
+      _dll_pie_lib__pie_toolbox_math_rendering.renderMath(this.el);
     }, 50);
   }
 
