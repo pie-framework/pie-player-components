@@ -1,3 +1,11 @@
+# [2.7.0](https://github.com/pie-framework/pie-player-components/compare/v2.6.1...v2.7.0) (2024-02-20)
+
+
+### Features
+
+* replace pie-lib/pie-toolbox with pie-lib/math-rendering PD-3372 ([bc64dcb](https://github.com/pie-framework/pie-player-components/commit/bc64dcb69e18a1d694a37e75ef7a9bd7635a1c53))
+* use pie-lib/pie-toolbox instead of pie-lib/math-rendering PD-3372 ([4828575](https://github.com/pie-framework/pie-player-components/commit/4828575f861348a8aaf8f6416b9201932f037b0e))
+
 ## [2.6.1](https://github.com/pie-framework/pie-player-components/compare/v2.6.0...v2.6.1) (2024-01-17)
 
 
