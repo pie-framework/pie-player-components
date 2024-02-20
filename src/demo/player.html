@@ -94,48 +94,95 @@
   //   }
   // };
   const config = {
-    "pie": {
-      "id": "81b8dd41-469c-4960-8828-8956e88b7735@0.0.1-draft.17",
-      "models": [
-        {
-          "disabled": false,
-          "mode": "gather",
-          "prompt": "V2",
-          "choicesLayout": "vertical",
-          "gridColumns": "2",
-          "keyMode": "letters",
-          "choices": [],
-          "teacherInstructions": null,
-          "id": "1",
-          "element": "multiple-choice"
-        }
-      ],
-      "elements": {
-        "multiple-choice": "@pie-element/multiple-choice@7.7.0"
-      },
-      "markup": "<multiple-choice id=\"1\"></multiple-choice>"
+    id: "1",
+    elements: {
+      "pie-multiple-choice": "@pie-element/multiple-choice@8.4.0"
+      // "pie-multiple-choice": "@pie-element/multiple-choice@8.3.0"
     },
-    "passage": {
-      "id": "66815477-6de4-4cba-908d-1998bd228b43@0.0.1-draft.3",
-      "models": [
-        {
-          "id": "1",
-          "element": "pie-passage",
-          "passages": [
-            {
-              "title": "Passage title Andreea",
-              "text": "<p>Passage Content</p>"
+    models: [
+      {
+        id: "1",
+        element: "pie-multiple-choice",
+        prompt:
+          "Which of these northern European countries are EU members?",
+        choiceMode: "checkbox",
+        keyMode: "numbers",
+        choices: [
+          {
+            correct: true,
+            value: "sweden",
+            label: "<div><span data-latex=\"\" data-raw=\"\\frac{1}{2}\\times\\sqrt{23x}\\div\\longdiv{asc}\\ne\\log_{\\ 2}\\cdot\\overleftrightarrow{ab}\">\\frac{1}{2}\\times\\sqrt{23x}\\div\\longdiv{asc}\\ne\\log_{\\ 2}\\cdot\\overleftrightarrow{ab}</span></div>",
+            feedback: {
+              type: "none",
+              value: ""
             }
-          ]
-        }
-      ],
-      "elements": {
-        "pie-passage": "@pie-element/passage@1.9.0"
-      },
-      "markup": "<pie-passage id=\"1\"></pie-passage>"
-    }
-  };
+          },
+          {
+            value: "iceland",
+            label: "<div><span data-latex=\"\" data-raw=\"\\sqrt{2}\">\\sqrt{2}</span></div>",
+            feedback: {
+              type: "none",
+              value: ""
+            }
+          },
+          {
+            value: "norway",
+            label: "Norway",
+            feedback: {
+              type: "none",
+              value: ""
+            }
+          },
+          {
+            correct: true,
+            value: "finland",
+            label: "Finland",
+            feedback: {
+              type: "none",
+              value: ""
+            }
+          }
+        ],
+        partialScoring: false,
+        partialScoringLabel: `Each correct response that is correctly checked and each incorrect response
+            that is correctly unchecked will be worth 1 point.
+            The maximum points is the total number of answer choices.`
+      }
+    ],
+    markup: `
+          <pie-multiple-choice id='1'></pie-multiple-choice>
 
+        <span data-latex=\"\" data-raw=\"\\sqrt{2}\">\\sqrt{2}</span>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mfenced>
+                <mrow><mo>-</mo><mn>5</mn><mo>,</mo><mn>1</mn></mrow>
+            </mfenced>
+        </math> drafted by his assistant on a computer program which involves coordinate planes.&#160;
+        The designer suggests to change the location and size of the lawn by dilating and then reflecting the lawn across the
+        <span class="variable">x</span>-axis to produce the similar square lawn.&#160;
+        The coordinates of the new square lawn are
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mfenced>
+                <mrow><mo>-</mo><mn>4</mn><mo>,</mo><mo>-</mo><mn>2</mn></mrow>
+            </mfenced>
+        </math>,
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mfenced>
+                <mrow><mo>-</mo><mn>2</mn><mo>,</mo><mo>-</mo><mn>2</mn></mrow>
+            </mfenced>
+        </math>,&#160;
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mfenced>
+                <mrow><mo>-</mo><mn>4</mn><mo>,</mo><mo>-</mo><mn>4</mn></mrow>
+            </mfenced>
+        </math>, and
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mfenced>
+                <mrow><mo>-</mo><mn>2</mn><mo>,</mo><mo>-</mo><mn>4</mn></mrow>
+            </mfenced>
+        </math>
+        `
+  };
   const endpoints = {
     bundleBase: "https://storage.googleapis.com/pie-pits-staging/bundles/",
     buildServiceBase: "https://pits-dot-pie-dev-221718.appspot.com/bundles/"

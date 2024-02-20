@@ -1,7 +1,7 @@
 import {SessionChangedEvent} from "@pie-framework/pie-player-events";
 import {
   _dll_pie_lib__pie_toolbox_math_rendering
-} from "@pie-lib/pie-toolbox-module/module";
+} from "@pie-lib/pie-toolbox-math-rendering-module/module";
 import {
   Component,
   Element,
