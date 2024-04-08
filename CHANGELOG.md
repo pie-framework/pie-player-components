@@ -1,3 +1,10 @@
+# [2.8.0](https://github.com/pie-framework/pie-player-components/compare/v2.7.0...v2.8.0) (2024-04-08)
+
+
+### Features
+
+* replace math-rendering with math-rendering-accessible PD-3643 ([f7d35be](https://github.com/pie-framework/pie-player-components/commit/f7d35be4a03e8f145b57dbd47baddde0987dcd81))
+
 # [2.7.0](https://github.com/pie-framework/pie-player-components/compare/v2.6.1...v2.7.0) (2024-02-20)
 
 
