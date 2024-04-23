@@ -43,7 +43,6 @@ interface LoadedElementsResp {
 export interface BundleEndpoints {
   buildServiceBase: string;
   bundleBase: string;
-  proxyUrl?: string;
 }
 
 export enum Status {
