@@ -9,7 +9,7 @@ import { emptyConfigure } from "./components/empty-configure";
 export const DEFAULT_ENDPOINTS = {
   prod: {
     bundleBase: "https://pits-cdn.pie-api.io/bundles/",
-    buildServiceBase: "https://pits-dot-pie-prod-221718.appspot.com/bundles/",
+    buildServiceBase: "https://proxy.pie-api.com/bundles/",
   },
   stage: {
     bundleBase: "https://pits-cdn.pie-api.io/bundles/",
@@ -43,6 +43,7 @@ interface LoadedElementsResp {
 export interface BundleEndpoints {
   buildServiceBase: string;
   bundleBase: string;
+  proxyUrl?: string;
 }
 
 export enum Status {
