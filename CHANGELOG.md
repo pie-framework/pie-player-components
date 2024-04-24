@@ -1,3 +1,13 @@
+# [2.9.0](https://github.com/pie-framework/pie-player-components/compare/v2.8.0...v2.9.0) (2024-04-24)
+
+
+### Features
+
+* add proxy url for production PD-3670 ([c313e15](https://github.com/pie-framework/pie-player-components/commit/c313e15bd006182809de493c8b8e6b0c90632f1b))
+* add proxy url for production PD-3670 ([fa21365](https://github.com/pie-framework/pie-player-components/commit/fa213653405c3c4874e89d4d2583e0ea71f63078))
+* add proxy url for production PD-3670 ([6439d1d](https://github.com/pie-framework/pie-player-components/commit/6439d1df58e1378e4017721b735fbfe33769f9d3))
+* add proxy url for production PD-3670 ([bafe421](https://github.com/pie-framework/pie-player-components/commit/bafe4211932e692df54668fcd559485fbcaefaec))
+
 # [2.8.0](https://github.com/pie-framework/pie-player-components/compare/v2.7.0...v2.8.0) (2024-04-08)
 
 
