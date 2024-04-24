@@ -459,6 +459,7 @@ export class Player {
               session={this.session}
               ref={el => (this.stimulusPlayer = el as HTMLElement)}
               bundleHost={this.bundleHost}
+              bundleEndpoints={this.bundleEndpoints}
             />
           </div>
           <div slot="item" class='player-item-container'>
@@ -470,6 +471,7 @@ export class Player {
               hosted={this.hosted}
               session={this.session}
               bundleHost={this.bundleHost}
+              bundleEndpoints={this.bundleEndpoints}
             />
           </div>
         </pie-stimulus-layout>
@@ -481,6 +483,7 @@ export class Player {
           env={this.env}
           hosted={this.hosted}
           session={this.session}
+          bundleEndpoints={this.bundleEndpoints}
         />
       );
     } else {
