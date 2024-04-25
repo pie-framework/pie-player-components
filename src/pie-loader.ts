@@ -130,6 +130,39 @@ export class PieLoader {
       });
   };
 
+  private getBaseUrls = (options, piesToLoad) => {
+    const bundleUri = getPackageBundleUri(piesToLoad);
+    if (!bundleUri) {
+      return;
+    }
+
+    return options.endpoints.buildServiceBase + bundleUri + "/" + options.bundle;
+  }
+
+  private getScriptsUrl = (options, piesToLoad): string => {
+    if (options.forceBundleUrl) {
+      const url = this.getBaseUrls(options, piesToLoad);
+
+      if (url) {
+        return url;
+      }
+    }
+
+    if (options.content.bundle && options.content.bundle.url) {
+      return options.content.bundle.url;
+    }
+
+    if (
+      options.useCdn &&
+      options.content.bundle &&
+      options.content.bundle.hash
+    ) {
+      return `${options.endpoints.bundleBase + options.content.bundle.hash}/${options.bundle}`;
+    }
+
+    return this.getBaseUrls(options, piesToLoad);
+  }
+
   /**
    *
    * @param {Object<string,string>} elements elements to load from pie cloud service
@@ -142,6 +175,7 @@ export class PieLoader {
     endpoints?: BundleEndpoints;
     bundle?: BundleType;
     useCdn: boolean;
+    forceBundleUrl: boolean;
   }) => {
     if (!options.endpoints) {
       options.endpoints = this.endpoints;
@@ -161,27 +195,12 @@ export class PieLoader {
       options.bundle,
       this.registry
     );
-    let scriptUrl;
 
-    if (options.content.bundle && options.content.bundle.url) {
-      scriptUrl = options.content.bundle.url;
-    } else if (
-      options.useCdn &&
-      options.content.bundle &&
-      options.content.bundle.hash
-    ) {
-      scriptUrl =
-        options.endpoints.bundleBase +
-        options.content.bundle.hash +
-        "/" +
-        options.bundle;
-    } else {
-      const bundleUri = getPackageBundleUri(piesToLoad);
-      if (!bundleUri) {
-        return;
-      }
-      scriptUrl =
-        options.endpoints.buildServiceBase + bundleUri + "/" + options.bundle;
+    let scriptUrl = this.getScriptsUrl(options, piesToLoad);
+    if (!scriptUrl) {
+      console.error('No script urls found for elements.');
+
+      return;
     }
 
     const loadedScripts = [...head.getElementsByTagName("script")];
