@@ -197,6 +197,11 @@ export class PieLoader {
     );
 
     let scriptUrl = this.getScriptsUrl(options, piesToLoad);
+    if (!scriptUrl) {
+      console.error('No script urls found for elements.');
+
+      return;
+    }
 
     const loadedScripts = [...head.getElementsByTagName("script")];
     if (
