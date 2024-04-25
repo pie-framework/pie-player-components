@@ -5,6 +5,13 @@
 <!-- Auto Generated Below -->
 
 
+## Properties
+
+| Property        | Attribute        | Description | Type      | Default |
+| --------------- | ---------------- | ----------- | --------- | ------- |
+| `allowedResize` | `allowed-resize` |             | `boolean` | `false` |
+
+
 ## Dependencies
 
 ### Used by

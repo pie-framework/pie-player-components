@@ -10,7 +10,7 @@ import {
   h
 } from "@stencil/core";
 
-import * as mr from "@pie-lib/math-rendering";
+import { _dll_pie_lib__pie_toolbox_math_rendering_accessible } from "@pie-lib/pie-toolbox-math-rendering-module/module";
 
 import {PieContent, ItemConfig, PieElement, PieModel, PieController} from "../../interface";
 import {
@@ -181,7 +181,7 @@ export class Author {
       return {hasErrors: false, validatedModels: {}};
     }
 
-    return (this.pieContentModel.models || []).reduce((acc: any, model) => {
+    return (this.pieContentModel.models || []).reduce((acc: any, model, index) => {
       let pieEl: PieElement = this.el.querySelector(`[id='${model.id}']`);
       !pieEl && (pieEl = this.el.querySelector(`[pie-id='${model.id}']`));
 
@@ -197,11 +197,12 @@ export class Author {
           // here we call controller.validate which returns an object with all the errors
           const errors = controller.validate(model, configuration);
 
+          // added this to ensure that this.pieContentModel.model is updated with the correct errors
+          // TODO: figure out what's actually happening and if there is a better way to make sure that this.pieContentModels.models is actually updated
+          this.pieContentModel.models[index] = { ...model, errors };
+
           // here we can update the model in author, so we can set errors
-          pieEl.model = {
-            ...model,
-            errors,
-          };
+          pieEl.model = { ...model, errors };
 
           // for ebsr
           if (errors && errors.partA && errors.partB) {
@@ -225,8 +226,9 @@ export class Author {
           }
         }
       }
+
       return acc;
-    }, {hasErrors: false, validatedModels: {}});
+    }, { hasErrors: false, validatedModels: {} });
   }
 
   insertImage(file: File) {
@@ -510,6 +512,7 @@ export class Author {
             if (this.configSettings && this.configSettings[packageName]) {
               pieEl.configuration = this.configSettings[packageName];
             }
+
           } catch (e) {
             console.log(e.toString(), pieElName, this.pieContentModel.elements[pieElName]);
           }
@@ -646,7 +649,7 @@ export class Author {
 
   private renderMath() {
     setTimeout(() => {
-      mr.renderMath(this.el);
+      _dll_pie_lib__pie_toolbox_math_rendering_accessible.renderMath(this.el);
     }, 50);
   }
 

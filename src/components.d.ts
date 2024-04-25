@@ -11,6 +11,7 @@ import {
   BundleEndpoints,
 } from './pie-loader';
 import {
+  Env,
   ItemConfig,
   ItemSession,
   PieContent,
@@ -122,7 +123,7 @@ export namespace Components {
     /**
     * Describes runtime environment for the player.
     */
-    'env': Object;
+    'env': Env;
     /**
     * Indicates if player running in the context of a PIE hosting system. Do not modify the default value for this property if you are not implementing a PIE host. If true, the host is responsible for all model updates.
     */
@@ -136,6 +137,10 @@ export namespace Components {
     * The Pie Session
     */
     'session': ItemSession;
+    /**
+    * In evaluate mode, add a bottom border to visually separate each item in the case of a multi-item
+    */
+    'showBottomBorder': boolean;
     /**
     * For previewing changes to an item. Updates the model for one question in the item model.
     * @param update the updated model
@@ -304,7 +309,7 @@ declare namespace LocalJSX {
     /**
     * Describes runtime environment for the player.
     */
-    'env'?: Object;
+    'env'?: Env;
     /**
     * Indicates if player running in the context of a PIE hosting system. Do not modify the default value for this property if you are not implementing a PIE host. If true, the host is responsible for all model updates.
     */
@@ -333,6 +338,10 @@ declare namespace LocalJSX {
     * The Pie Session
     */
     'session'?: ItemSession;
+    /**
+    * In evaluate mode, add a bottom border to visually separate each item in the case of a multi-item
+    */
+    'showBottomBorder'?: boolean;
     'version'?: string;
   }
   interface PiePreviewControl {

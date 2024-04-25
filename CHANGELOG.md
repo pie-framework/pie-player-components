@@ -1,3 +1,66 @@
+# [2.9.0](https://github.com/pie-framework/pie-player-components/compare/v2.8.0...v2.9.0) (2024-04-24)
+
+
+### Features
+
+* add proxy url for production PD-3670 ([c313e15](https://github.com/pie-framework/pie-player-components/commit/c313e15bd006182809de493c8b8e6b0c90632f1b))
+* add proxy url for production PD-3670 ([fa21365](https://github.com/pie-framework/pie-player-components/commit/fa213653405c3c4874e89d4d2583e0ea71f63078))
+* add proxy url for production PD-3670 ([6439d1d](https://github.com/pie-framework/pie-player-components/commit/6439d1df58e1378e4017721b735fbfe33769f9d3))
+* add proxy url for production PD-3670 ([bafe421](https://github.com/pie-framework/pie-player-components/commit/bafe4211932e692df54668fcd559485fbcaefaec))
+
+# [2.8.0](https://github.com/pie-framework/pie-player-components/compare/v2.7.0...v2.8.0) (2024-04-08)
+
+
+### Features
+
+* replace math-rendering with math-rendering-accessible PD-3643 ([f7d35be](https://github.com/pie-framework/pie-player-components/commit/f7d35be4a03e8f145b57dbd47baddde0987dcd81))
+
+# [2.7.0](https://github.com/pie-framework/pie-player-components/compare/v2.6.1...v2.7.0) (2024-02-20)
+
+
+### Features
+
+* replace pie-lib/pie-toolbox with pie-lib/math-rendering PD-3372 ([bc64dcb](https://github.com/pie-framework/pie-player-components/commit/bc64dcb69e18a1d694a37e75ef7a9bd7635a1c53))
+* use pie-lib/pie-toolbox instead of pie-lib/math-rendering PD-3372 ([4828575](https://github.com/pie-framework/pie-player-components/commit/4828575f861348a8aaf8f6416b9201932f037b0e))
+
+## [2.6.1](https://github.com/pie-framework/pie-player-components/compare/v2.6.0...v2.6.1) (2024-01-17)
+
+
+### Bug Fixes
+
+* ensure that pieContentModel is updated with correct errors PD-3388 ([cd44437](https://github.com/pie-framework/pie-player-components/commit/cd44437cfa1f5ab0fead7ddba276735f241a8e87))
+* remove redundant file and comments ([14b8852](https://github.com/pie-framework/pie-player-components/commit/14b8852ed918f57ae565886e877e08467244c25d))
+
+# [2.6.0](https://github.com/pie-framework/pie-player-components/compare/v2.5.0...v2.6.0) (2023-12-27)
+
+
+### Features
+
+* use pie-lib/pie-toolbox instead of pie-lib/math-rendering ([8967b70](https://github.com/pie-framework/pie-player-components/commit/8967b7012a036a7f19364eaa00837c7fe53a6354))
+
+# [2.5.0](https://github.com/pie-framework/pie-player-components/compare/v2.4.1...v2.5.0) (2023-12-26)
+
+
+### Features
+
+* use pie-lib/pie-toolbox instead of pie-lib/math-rendering ([93f8d5f](https://github.com/pie-framework/pie-player-components/commit/93f8d5fefc88339d37d3a99a861732c81b004b2c))
+
+## [2.4.1](https://github.com/pie-framework/pie-player-components/compare/v2.4.0...v2.4.1) (2023-12-06)
+
+
+### Bug Fixes
+
+* adjust max-width for new layout and logic based on this PD-3082 ([e977d83](https://github.com/pie-framework/pie-player-components/commit/e977d833d02f7ca77d05232bd7d65011bc102a02))
+
+# [2.4.0](https://github.com/pie-framework/pie-player-components/compare/v2.3.1...v2.4.0) (2023-11-16)
+
+
+### Features
+
+* show a bottom border between pie elements in evaluate mode PD-382 ([0556e16](https://github.com/pie-framework/pie-player-components/commit/0556e1643e24c7c9fa37c5eeb2b89fae9b400b9f))
+* show a bottom border between pie elements in evaluate mode PD-382 ([aa60655](https://github.com/pie-framework/pie-player-components/commit/aa6065571bf3224a381cecd363a8e4826e8fd71b))
+* show a bottom border between pie elements in evaluate mode PD-382 ([a454ee3](https://github.com/pie-framework/pie-player-components/commit/a454ee3688ec64430d2e5650e0f100e818ec899a))
+
 ## [2.3.1](https://github.com/pie-framework/pie-player-components/compare/v2.3.0...v2.3.1) (2023-11-01)
 
 

@@ -80,3 +80,19 @@ type PieController = {
   validate: (model: Object, config: Object) => any;
 };
 
+export enum Mode {
+  view = "view",
+  gather = "gather",
+  evaluate = "evaluate",
+}
+
+export enum Role {
+  student = "student",
+  instructor = "instructor",
+}
+
+export type Env = {
+  mode: Mode | String;
+  role: Role | String;
+  partialScoring?: boolean;
+};

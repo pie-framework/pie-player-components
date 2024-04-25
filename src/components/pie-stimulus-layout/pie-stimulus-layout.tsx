@@ -65,7 +65,7 @@ export class PieStimulusLayout {
       this.stimulus.classList.remove('truncated');
     } else {
       this.readMoreButton.innerHTML = `Read More <span class=arrow-down>&#9660;</span>`;
-      this.stimulus.style.flex = '0.3';
+      this.stimulus.style.flex = '0 0 30%';
       this.stimulus.style.overflow = 'hidden';
       this.stimulus.scrollTop = 0;
       this.stimulus.classList.add('truncated');
@@ -97,7 +97,7 @@ export class PieStimulusLayout {
   private getStyle(flex) {
     const viewPortWidth = window.innerWidth;
     // avoid this style for viewports < 600
-    if (this.allowedResize && viewPortWidth > 600) {
+    if (this.allowedResize && viewPortWidth > 1200) {
       return { flex: `${flex}`, transition: this.isResizing ? 'none' : 'flex 0.1s ease'}
     }
     return {};
