@@ -1,3 +1,11 @@
+# [2.10.0](https://github.com/pie-framework/pie-player-components/compare/v2.9.0...v2.10.0) (2024-04-25)
+
+
+### Features
+
+* add bundle endpoints overwrite support and example PD-3670 ([435649d](https://github.com/pie-framework/pie-player-components/commit/435649d71c8cdb71db769a8b5a547f7342f3c77c))
+* add bundle endpoints overwrite support and example PD-3670 ([b95779e](https://github.com/pie-framework/pie-player-components/commit/b95779e399c5c5a176c87c305d68b93423e51d86))
+
 # [2.9.0](https://github.com/pie-framework/pie-player-components/compare/v2.8.0...v2.9.0) (2024-04-24)
 
 
