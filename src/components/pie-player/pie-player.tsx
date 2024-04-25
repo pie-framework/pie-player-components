@@ -200,8 +200,13 @@ export class Player {
         ) {
           endpoints = DEFAULT_ENDPOINTS[this.bundleHost];
         }
+
+        // if bundleEndpoints are provided, use them instead of the default
+        // used for proxies, etc.
+        let forceBundleUrl = false;
         if (this.bundleEndpoints) {
           endpoints = this.bundleEndpoints;
+          forceBundleUrl = true;
         }
 
         await this.pieLoader.loadCloudPies({
@@ -209,7 +214,8 @@ export class Player {
           doc: this.doc,
           endpoints: endpoints,
           bundle: this.hosted ? BundleType.player : BundleType.clientPlayer,
-          useCdn: false
+          useCdn: false,
+          forceBundleUrl
         });
       }
     } catch (err) {
