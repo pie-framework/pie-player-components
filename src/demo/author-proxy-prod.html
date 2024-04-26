@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0"
+  />
+  <title>Item Preview Layout - add Rubric Demo</title>
+  <script nomodule src="/build/pie-player-components.js"></script>
+  <script type="module" src="/build/pie-player-components.esm.js"></script>
+
+  <!--    <script-->
+  <!--            type="module"-->
+  <!--            src="https://unpkg.com/@pie-framework/pie-player-components@latest/dist/pie-player-components/pie-player-components.esm.js"-->
+  <!--    ></script>-->
+</head>
+<body>
+<pie-author id="author" add-preview="true"></pie-author>
+
+<script>
+  const author = document.getElementById('author');
+
+  const endpoints = {
+    bundleBase: "https://pits-cdn.pie-api.io/bundles/",
+    buildServiceBase: "https://proxy.pie-api.com/bundles/",
+  };
+
+  author.bundleEndpoints = endpoints;
+
+
+  author.config = {
+    "models": [
+      {
+        "id": "p-9c9ded01",
+        "element": "pp-pie-element-complex-rubric"
+      }
+    ],
+    "elements": {
+      "pp-pie-element-complex-rubric": "@pie-element/complex-rubric"
+    },
+    "id": "1",
+    "markup": "<pp-pie-element-complex-rubric id=\"p-9c9ded01\"></pp-pie-element-complex-rubric>"
+  };
+</script>
+</body>
+</html>

@@ -193,16 +193,21 @@ export class Player {
         ) {
           endpoints = DEFAULT_ENDPOINTS[this.bundleHost];
         }
+
+        // if bundleEndpoints are provided, use them instead of the default
+        // used for proxies, etc.
+        let forceBundleUrl = false;
         if (this.bundleEndpoints) {
           endpoints = this.bundleEndpoints;
+          forceBundleUrl = true;
         }
 
         await this.pieLoader.loadCloudPies({
           content: this.pieContentModel,
           doc: this.doc,
-          endpoints: endpoints,
-          bundle: this.hosted ? BundleType.player : BundleType.clientPlayer,
-          useCdn: false
+          endpoints,
+          useCdn: false,
+          forceBundleUrl
         });
       }
     } catch (err) {
@@ -422,6 +427,7 @@ export class Player {
               hosted={this.hosted}
               session={this.session}
               ref={el => (this.stimulusPlayer = el as HTMLElement)}
+              bundleEndpoints={this.bundleEndpoints}
             />
           </div>
           <div slot="item" class='player-item-container'>
@@ -432,6 +438,7 @@ export class Player {
               env={this.env}
               hosted={this.hosted}
               session={this.session}
+              bundleEndpoints={this.bundleEndpoints}
             />
           </div>
         </pie-stimulus-layout>
@@ -443,6 +450,7 @@ export class Player {
           env={this.env}
           hosted={this.hosted}
           session={this.session}
+          bundleEndpoints={this.bundleEndpoints}
         />
       );
     } else {

@@ -544,14 +544,20 @@ export class Author {
       ) {
         endpoints = DEFAULT_ENDPOINTS[this.bundleHost];
       }
+
+      // if bundleEndpoints are provided, use them instead of the default
+      // used for proxies, etc.
+      let forceBundleUrl = false;
       if (this.bundleEndpoints) {
         endpoints = this.bundleEndpoints;
+        forceBundleUrl = true;
       }
       await this.pieLoader.loadCloudPies({
         content: this.pieContentModel,
         doc: this.doc,
         endpoints,
-        useCdn: false
+        useCdn: false,
+        forceBundleUrl
       });
     }
   }
