@@ -1,3 +1,10 @@
+# [2.11.0](https://github.com/pie-framework/pie-player-components/compare/v2.10.0...v2.11.0) (2024-04-29)
+
+
+### Features
+
+* upgrade math-rendering-accessible PD-3643 ([d24cc5a](https://github.com/pie-framework/pie-player-components/commit/d24cc5a00a3ebb146220b372f12c9aebb27dbcda))
+
 # [2.10.0](https://github.com/pie-framework/pie-player-components/compare/v2.9.0...v2.10.0) (2024-04-25)
 
 
