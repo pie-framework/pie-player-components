@@ -73,6 +73,7 @@ export const complexRubricChecks = (content: PieContent, configSettings = {}) =>
   return {
     shouldAddComplexRubric: shouldHaveComplexRubric && !complexRubricModelsLength,
     shouldRemoveComplexRubric: !shouldHaveComplexRubric && complexRubricModelsLength,
+    shouldForceEnableComplexRubric: !!shouldForceEnableComplexRubric,
     complexRubricElements
   }
 }
