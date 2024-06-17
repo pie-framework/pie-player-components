@@ -338,6 +338,16 @@ export class Author {
     }
   }
 
+  getElementByType = (elements: {[key: string]: string;}, type: string) => {
+    for (const [key, value] of Object.entries(elements)) {
+      if (value.startsWith(type)) {
+        return key;
+      }
+    }
+
+    return null;
+  }
+
   getPieContentModelWithToggledComplexRubric = async ({complexRubricCheckedValues, pieContentModel}) => {
     const {
       shouldAddComplexRubric,
@@ -351,7 +361,8 @@ export class Author {
 
       // if we are forced to convert the rubric, get the default values from it
       if (shouldForceEnableComplexRubric) {
-        const rubric = pieContentModel.models.find((el) => el.element.includes('element-rubric'));
+        const rubricName = this.getElementByType(pieContentModel.elements, '@pie-element/rubric');
+        const rubric = pieContentModel.models.find((el) => el.element === rubricName);
         const simpleRubric = _omit(rubric, ['id', 'element']);
         this.defaultComplexRubricModel = {
           rubrics: {
