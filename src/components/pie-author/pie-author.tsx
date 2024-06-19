@@ -363,14 +363,16 @@ export class Author {
       if (shouldForceEnableComplexRubric) {
         const rubricName = this.getElementByType(pieContentModel.elements, '@pie-element/rubric');
         const rubric = pieContentModel.models.find((el) => el.element === rubricName);
-        const simpleRubric = _omit(rubric, ['id', 'element']);
-        this.defaultComplexRubricModel = {
-          rubrics: {
-            simpleRubric
-          }
-        };
+        if (rubric) {
+          const simpleRubric = _omit(rubric, ['id', 'element']);
+          this.defaultComplexRubricModel = {
+            rubrics: {
+              simpleRubric
+            }
+          };
 
-        clonedModel = this.removeRubricItemTypes(clonedModel, [rubric.id]);
+          clonedModel = this.removeRubricItemTypes(clonedModel, [rubric.id]);
+        }
       }
 
       // we add complex-rubric to config
