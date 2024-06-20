@@ -208,24 +208,25 @@ const waitFor = (ms: number): Promise<void> => {
  * @param delay: The delay, in milliseconds.
  */
 export const withRetry = <E>(
-  fn: () => Promise<E>,
+  fn: (currentDelay: number) => Promise<E>,
   maxRetries: number,
   delay: number = 100,
   maxDelay?: number
 ): Promise<E> => {
   const retryWithBackoff = async (retries: number): Promise<E> => {
     try {
+      let currentDelay = 0;
       // don't wait on the first attempt
       if (retries > 0) {
         // on every retry, exponentially increase the time to wait
-        let currentDelay = Math.pow(2, retries) * delay;
+        currentDelay = Math.pow(2, retries) * delay;
         if (maxDelay && maxDelay < currentDelay) {
           currentDelay = maxDelay;
         }
 
         await waitFor(currentDelay);
       }
-      return await fn();
+      return await fn(currentDelay);
     } catch (err) {
       // retry if the limit isn't reached, otherwise throw the error
       if (retries < maxRetries) {

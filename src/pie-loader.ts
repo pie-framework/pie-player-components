@@ -278,10 +278,15 @@ export class PieLoader {
     const loadScript = async () => {
       try {
         const response = await withRetry(
-          async () => {
+          async (currentDelay: number) => {
             const res = await fetch(scriptUrl);
             // if the request fails with 503 retry it
             if (res.status === 503) {
+              console.warn(
+                `Service unavailable (503), retrying in ${currentDelay / 1000 ||
+                  1} seconds...`
+              );
+
               throw new Error("Unavailable, retrying");
             }
 
