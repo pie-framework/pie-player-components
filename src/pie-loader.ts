@@ -1,5 +1,9 @@
 import isFunction from "lodash/isFunction";
-import { getPackageWithoutVersion, getPackageBundleUri } from "./utils/utils";
+import {
+  getPackageWithoutVersion,
+  getPackageBundleUri,
+  withRetry
+} from "./utils/utils";
 import { PieItemElement, PieContent } from "./interface";
 import pickBy from "lodash/pickBy";
 import { emptyConfigure } from "./components/empty-configure";
@@ -273,7 +277,21 @@ export class PieLoader {
 
     const loadScript = async () => {
       try {
-        const response = await fetch(scriptUrl);
+        const response = await withRetry(
+          async () => {
+            const res = await fetch(scriptUrl);
+            // if the request fails with 503 retry it
+            if (res.status === 503) {
+              throw new Error("Unavailable, retrying");
+            }
+
+            return res;
+          },
+          20,
+          1000,
+          30000
+        );
+
         // if the request is successful inject the response as a script tag
         // to avoid doing the same call twice
         if (response.status === 200) {
@@ -283,10 +301,6 @@ export class PieLoader {
           setTimeout(() => {
             onloadFn();
           }, 100);
-        } else if (response.status === 503) {
-          console.error("Service unavailable (503), retrying in 30 seconds...");
-
-          setTimeout(loadScript, 30000);
         } else {
           console.error("Failed to load script, status code:", response.status);
         }
