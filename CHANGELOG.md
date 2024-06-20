@@ -1,3 +1,13 @@
+## [2.11.1](https://github.com/pie-framework/pie-player-components/compare/v2.11.0...v2.11.1) (2024-06-20)
+
+
+### Bug Fixes
+
+* **pie-loader:** add fetch retry functionality for pie scripts PD-3808 ([5318266](https://github.com/pie-framework/pie-player-components/commit/5318266cddd07edf7a7051bd2f1fb68f6e3d2956))
+* **pie-loader:** add retry with exponential backoff PD-3808 ([62ab922](https://github.com/pie-framework/pie-player-components/commit/62ab922e19794e40a8090286aa930a1774bec3ce))
+* **pie-loader:** add retry with exponential backoff PD-3808 ([3aa48f5](https://github.com/pie-framework/pie-player-components/commit/3aa48f57b2eda942f6d07abe9e683bf59023c055))
+* **pie-loader:** add retry with exponential backoff PD-3808 ([9f2402f](https://github.com/pie-framework/pie-player-components/commit/9f2402fb4e8835e524c796453d3d4b7935ccdd04))
+
 # [2.11.0](https://github.com/pie-framework/pie-player-components/compare/v2.10.0...v2.11.0) (2024-04-29)
 
 
