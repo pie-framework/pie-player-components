@@ -196,13 +196,18 @@ export class Author {
         if (controller && controller.validate) {
           // here we call controller.validate which returns an object with all the errors
           const errors = controller.validate(model, configuration);
+          const errorsAreTheSame = _isEqual(model && model.errors, errors);
 
-          // added this to ensure that this.pieContentModel.model is updated with the correct errors
-          // TODO: figure out what's actually happening and if there is a better way to make sure that this.pieContentModels.models is actually updated
-          this.pieContentModel.models[index] = { ...model, errors };
+          // Only update models if anything changed to errors object, otherwise, we'll keep calling onModelUpdated and again validateModels
+          // for complex items (like ebsr, complex-rubric, who are using other items)
+          if (!errorsAreTheSame) {
+            // added this to ensure that this.pieContentModel.model is updated with the correct errors
+            // TODO: figure out what's actually happening and if there is a better way to make sure that this.pieContentModels.models is actually updated
+            this.pieContentModel.models[index] = { ...model, errors };
 
-          // here we can update the model in author, so we can set errors
-          pieEl.model = { ...model, errors };
+            // here we can update the model in author, so we can set errors
+            pieEl.model = { ...model, errors };
+          }
 
           // for ebsr
           if (errors && errors.partA && errors.partB) {
