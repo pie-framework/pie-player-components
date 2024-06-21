@@ -1,3 +1,10 @@
+## [2.11.2](https://github.com/pie-framework/pie-player-components/compare/v2.11.1...v2.11.2) (2024-06-21)
+
+
+### Bug Fixes
+
+* prevent updating item if not needed (infinite loop on ebsr) PD-3863 ([1da6e4a](https://github.com/pie-framework/pie-player-components/commit/1da6e4af1472e918c91337842dbb2f46e66bf1cf))
+
 ## [2.11.1](https://github.com/pie-framework/pie-player-components/compare/v2.11.0...v2.11.1) (2024-06-20)
 
 
