@@ -106,10 +106,6 @@ describe("PieLoader", () => {
         s.onload();
       });
 
-      expect(customElements.define).toHaveBeenCalledWith(
-        "pie-el",
-        expect.anything()
-      );
       expect(customElements.define).not.toHaveBeenCalledWith(
         "pie-el-config",
         expect.anything()

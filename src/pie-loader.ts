@@ -1,5 +1,9 @@
 import isFunction from "lodash/isFunction";
-import { getPackageWithoutVersion, getPackageBundleUri } from "./utils/utils";
+import {
+  getPackageWithoutVersion,
+  getPackageBundleUri,
+  withRetry
+} from "./utils/utils";
 import { PieItemElement, PieContent } from "./interface";
 import pickBy from "lodash/pickBy";
 import { emptyConfigure } from "./components/empty-configure";
@@ -9,16 +13,16 @@ import { emptyConfigure } from "./components/empty-configure";
 export const DEFAULT_ENDPOINTS = {
   prod: {
     bundleBase: "https://pits-cdn.pie-api.io/bundles/",
-    buildServiceBase: "https://pits-dot-pie-prod-221718.appspot.com/bundles/",
+    buildServiceBase: "https://pits-dot-pie-prod-221718.appspot.com/bundles/"
   },
   stage: {
     bundleBase: "https://pits-cdn.pie-api.io/bundles/",
-    buildServiceBase: "https://pits-dot-pie-prod-221718.appspot.com/bundles/",
+    buildServiceBase: "https://pits-dot-pie-prod-221718.appspot.com/bundles/"
   },
   dev: {
     bundleBase: "https://pits-cdn.pie-api.io/bundles/",
-    buildServiceBase: "https://pits-dot-pie-prod-221718.appspot.com/bundles/",
-  },
+    buildServiceBase: "https://pits-dot-pie-prod-221718.appspot.com/bundles/"
+  }
 };
 
 export interface Entry {
@@ -47,13 +51,13 @@ export interface BundleEndpoints {
 
 export enum Status {
   loading = "loading",
-  loaded = "loaded",
+  loaded = "loaded"
 }
 
 export enum BundleType {
   player = "player.js",
   clientPlayer = "client-player.js",
-  editor = "editor.js",
+  editor = "editor.js"
 }
 
 export const needToLoad = (registry: any, bundle: BundleType) => (
@@ -119,7 +123,7 @@ export class PieLoader {
   public elementsHaveLoaded = (
     els: LoadedElementsQuery[]
   ): Promise<LoadedElementsResp> => {
-    const promises = els.map((el) => customElements.whenDefined(el.tag));
+    const promises = els.map(el => customElements.whenDefined(el.tag));
 
     return Promise.all(promises)
       .then(() => {
@@ -136,8 +140,10 @@ export class PieLoader {
       return;
     }
 
-    return options.endpoints.buildServiceBase + bundleUri + "/" + options.bundle;
-  }
+    return (
+      options.endpoints.buildServiceBase + bundleUri + "/" + options.bundle
+    );
+  };
 
   private getScriptsUrl = (options, piesToLoad): string => {
     if (options.forceBundleUrl) {
@@ -157,11 +163,13 @@ export class PieLoader {
       options.content.bundle &&
       options.content.bundle.hash
     ) {
-      return `${options.endpoints.bundleBase + options.content.bundle.hash}/${options.bundle}`;
+      return `${options.endpoints.bundleBase + options.content.bundle.hash}/${
+        options.bundle
+      }`;
     }
 
     return this.getBaseUrls(options, piesToLoad);
-  }
+  };
 
   /**
    *
@@ -198,14 +206,14 @@ export class PieLoader {
 
     let scriptUrl = this.getScriptsUrl(options, piesToLoad);
     if (!scriptUrl) {
-      console.error('No script urls found for elements.');
+      console.error("No script urls found for elements.");
 
       return;
     }
 
     const loadedScripts = [...head.getElementsByTagName("script")];
     if (
-      loadedScripts.find((s) => {
+      loadedScripts.find(s => {
         return s.src === scriptUrl;
       })
     ) {
@@ -214,11 +222,11 @@ export class PieLoader {
 
     const script = options.doc.createElement("script");
 
-    const onloadFn = ((_pies) => {
+    const onloadFn = (_pies => {
       return () => {
         const pieKeys = Object.keys(_pies);
 
-        pieKeys.forEach((key) => {
+        pieKeys.forEach(key => {
           const packagesWithoutVersion = getPackageWithoutVersion(_pies[key]);
           const pie =
             window["pie"] && window["pie"].default
@@ -234,7 +242,7 @@ export class PieLoader {
             this.registry[elName] = {
               package: _pies[key],
               status: Status.loading,
-              tagName: elName,
+              tagName: elName
             };
 
             customElements.whenDefined(elName).then(async () => {
@@ -267,9 +275,49 @@ export class PieLoader {
       };
     })(piesToLoad);
 
-    script.onload = onloadFn;
-    script.src = scriptUrl;
-    head.appendChild(script);
+    const loadScript = async () => {
+      try {
+        const response = await withRetry(
+          async (currentDelay: number) => {
+            const res = await fetch(scriptUrl);
+            // if the request fails with 503 retry it
+            if (res.status === 503) {
+              console.warn(
+                `Service unavailable (503), retrying in ${currentDelay / 1000 ||
+                  1} seconds...`
+              );
+
+              throw new Error("Unavailable, retrying");
+            }
+
+            return res;
+          },
+          20,
+          1000,
+          30000
+        );
+
+        // if the request is successful inject the response as a script tag
+        // to avoid doing the same call twice
+        if (response.status === 200) {
+          script.textContent = await response.text();
+          head.appendChild(script);
+
+          setTimeout(() => {
+            onloadFn();
+          }, 100);
+        } else {
+          console.error("Failed to load script, status code:", response.status);
+        }
+      } catch (error) {
+        console.error(
+          "Network error occurred while trying to load script:",
+          error
+        );
+      }
+    };
+
+    await loadScript();
   };
 
   /**
