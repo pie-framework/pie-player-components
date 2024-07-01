@@ -80,7 +80,7 @@ export const complexRubricChecks = (content: PieContent, configSettings = {}) =>
 
 
 /**
- * Removes complex-rubric html from markup.
+ * Removes complex-rubric and rubric html from markup.
  */
 export const removeComplexRubricFromMarkup = (content: PieContent, complexRubricElements: string[], doc): { markupWithoutComplexRubric: string, deletedComplexRubricItemIds: string[] } => {
   const tempDiv = doc.createElement("div");

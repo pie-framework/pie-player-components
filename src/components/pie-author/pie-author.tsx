@@ -344,13 +344,14 @@ export class Author {
   }
 
   getElementByType = (elements: {[key: string]: string;}, type: string) => {
+    const result = [];
     for (const [key, value] of Object.entries(elements)) {
       if (value.startsWith(type)) {
-        return key;
+        result.push(key);
       }
     }
 
-    return null;
+    return result;
   }
 
   getPieContentModelWithToggledComplexRubric = async ({complexRubricCheckedValues, pieContentModel}) => {
@@ -366,17 +367,19 @@ export class Author {
 
       // if we are forced to convert the rubric, get the default values from it
       if (shouldForceEnableComplexRubric) {
-        const rubricName = this.getElementByType(pieContentModel.elements, '@pie-element/rubric');
-        const rubric = pieContentModel.models.find((el) => el.element === rubricName);
-        if (rubric) {
-          const simpleRubric = _omit(rubric, ['id', 'element']);
-          this.defaultComplexRubricModel = {
-            rubrics: {
-              simpleRubric
-            }
-          };
+        const rubricNames = this.getElementByType(pieContentModel.elements, '@pie-element/rubric');
+        for (const rubricName of rubricNames) {
+          const rubric = pieContentModel.models.find((el) => el.element === rubricName);
+          if (rubric) {
+            const simpleRubric = _omit(rubric, ['id', 'element']);
+            this.defaultComplexRubricModel = {
+              rubrics: {
+                simpleRubric
+              }
+            };
 
-          clonedModel = this.removeRubricItemTypes(clonedModel, [rubric.id]);
+            clonedModel = this.removeRubricItemTypes(clonedModel, rubric.id, rubric.element);
+          }
         }
       }
 
@@ -403,16 +406,23 @@ export class Author {
     return newConfig;
   }
 
-  removeRubricItemTypes(pieContentModel, rubricElements) {
-    if (!rubricElements.length || !pieContentModel.models) {
+  removeRubricItemTypes(pieContentModel, rubricId, rubricElement) {
+    if (!rubricElement || !pieContentModel.models) {
       return pieContentModel;
     }
 
     // delete the rubric elements from elements object
-    rubricElements.forEach(rubricElementKey => delete pieContentModel.elements[rubricElementKey]);
+    delete pieContentModel.elements[rubricElement];
+
+    const {
+      markupWithoutComplexRubric,
+    } = removeComplexRubricFromMarkup(pieContentModel, [rubricElement], this.doc);
+
+    // delete the rubric nodes from markup
+    pieContentModel.markup = markupWithoutComplexRubric;
 
     // delete the rubric models
-    pieContentModel.models = pieContentModel.models.filter(model => !rubricElements.includes(model.id));
+    pieContentModel.models = pieContentModel.models.filter(model => rubricId !== model.id);
 
     return pieContentModel;
   }
