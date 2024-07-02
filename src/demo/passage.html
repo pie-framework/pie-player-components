@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0"
+  />
+  <title>Item With Stimulus</title>
+  <script nomodule src="/build/pie-player-components.js"></script>
+  <script type="module" src="/build/pie-player-components.esm.js"></script>
+</head>
+<body>
+<div>
+  <h2>render stimulus</h2>
+  <pie-player id="player" render-stimulus="true"></pie-player>
+</div>
+
+<script type="text/javascript" src="./utils/models.js"></script>
+<script>
+  const config = {
+    pie: {
+      "markup": "<pie-element-multiple-choice id=\"G5_Form-D_Q13\"></pie-element-multiple-choice>",
+      "elements": {
+        "pie-element-multiple-choice": "@pie-element/multiple-choice@8.21.1"
+      },
+      "models": [
+        {
+          "lockChoiceOrder": true,
+          "id": "G5_Form-D_Q13",
+          "choicePrefix": "letters",
+          "choiceMode": "checkbox",
+          "choices": [
+            {
+              "correct": true,
+              "label": "Owls",
+              "value": "Q13A1",
+              "rationale": "<strong>Correct;</strong> decomposers break down all dead organisms into nutrients in the soil, which can then be used for plant growth. Some of the energy from this process is used by decomposers, too."
+            },
+            {
+              "correct": true,
+              "label": "Deer",
+              "value": "Q13A2",
+              "rationale": "<strong>Correct;</strong> decomposers break down all dead organisms into nutrients in the soil, which can then be used for plant growth. Some of the energy from this process is used by decomposers, too."
+            },
+            {
+              "correct": true,
+              "label": "Birds",
+              "value": "Q13A3",
+              "rationale": "<strong>Correct;</strong>decomposers break down all dead organisms into nutrients in the soil, which can then be used for plant growth. Some of the energy from this process is used by decomposers, too."
+            },
+            {
+              "correct": true,
+              "label": "Plants",
+              "value": "Q13A4",
+              "rationale": "<strong>Correct;</strong> decomposers break down all dead organisms into nutrients in the soil, which can then be used for plant growth. Some of the energy from this process is used by decomposers, too."
+            },
+            {
+              "correct": true,
+              "label": "Grasshoppers",
+              "value": "Q13A5",
+              "rationale": "<strong>Correct;</strong> decomposers break down all dead organisms into nutrients in the soil, which can then be used for plant growth. Some of the energy from this process is used by decomposers, too."
+            }
+          ],
+          "prompt": "<div>Which of the organisms in the food web are a source of matter and energy for the decomposers? Select all that apply.</div>",
+          "element": "pie-element-multiple-choice"
+        }
+      ],
+      "_id": "663b89dcae7d8f671413b4de"
+    },
+    passage: {
+      "id": "35c10954-eac0-5b56-8b73-12a805dbe04f",
+      "markup": "<pie-passage id=\"35c10954-eac0-5b56-8b73-12a805dbe04f\"></pie-passage>",
+      "elements": {
+        "pie-passage": "@pie-element/passage@2.18.1"
+      },
+      "models": [
+        {
+          "passages": [
+            {
+              "text": "<p>In this performance task, you will answer 5 questions.</p><p>Some organisms, such as plants, can make food for themselves by using energy from the sun and by taking in air and water from their surroundings. These organisms are called <em>producers</em>. Some organisms must consume other organisms as food. These organisms are called <em>consumers</em>. Another kind of organism eats breaks down dead organisms into nutrients for the soil. Later, producers use these nutrients to grow. These organisms are called <em>decomposers</em>.</p><p>There are many different kinds of organisms living in a forest. Each organism depends on other organisms for survival. The diagrams below show the path of matter and energy in the forest ecosystem. The food chain below shows one path of matter and energy in the forest system. The food web shows how organisms in the forest are linked through many connected food chains.<br><img src=\"https://assets.pie-api.com/assets/35c10954-eac0-5b56-8b73-12a805dbe04f@0.0.8/image/jpeg/4fb9f103-7093-4d5e-94c1-f2601e0f75ed\" alt=\"\"></p>",
+              "title": "Passage"
+            }
+          ],
+          "id": "35c10954-eac0-5b56-8b73-12a805dbe04f",
+          "element": "pie-passage"
+        }
+      ],
+      "layout": "left",
+      "buildInfo": {
+        "name": "@pie-element/passage",
+        "version": "1.7.16"
+      }
+    }  };
+
+  const player = document.getElementById("player");
+
+  player.addEventListener("sessionChanged", event => {
+    console.log(event.type + ":" + JSON.stringify(event.detail));
+  });
+
+  player.config = config;
+</script>
+</body>
+</html>

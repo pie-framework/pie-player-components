@@ -1,3 +1,18 @@
+## [2.11.4](https://github.com/pie-framework/pie-player-components/compare/v2.11.3...v2.11.4) (2024-07-02)
+
+
+### Bug Fixes
+
+* **pie-loader:** add onload and scripturl instead of content PD-3907 ([9c44373](https://github.com/pie-framework/pie-player-components/commit/9c44373b5cc71d3d979a5cbe152be04f515afec9))
+
+## [2.11.3](https://github.com/pie-framework/pie-player-components/compare/v2.11.2...v2.11.3) (2024-07-02)
+
+
+### Bug Fixes
+
+* **pie-loader:** added missing script type attribute PD-3907 ([99d31b0](https://github.com/pie-framework/pie-player-components/commit/99d31b0cd9bf8cdb8688cc7d20103081b38077c8))
+* **pie-loader:** added missing script type attribute PD-3907 ([0a942fa](https://github.com/pie-framework/pie-player-components/commit/0a942faf3cd38522f6c85e1c0d7c6564cdaa5568))
+
 ## [2.11.2](https://github.com/pie-framework/pie-player-components/compare/v2.11.1...v2.11.2) (2024-06-21)
 
 
