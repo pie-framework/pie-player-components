@@ -300,13 +300,9 @@ export class PieLoader {
         // if the request is successful inject the response as a script tag
         // to avoid doing the same call twice
         if (response.status === 200) {
-          script.textContent = await response.text();
-          script.type = 'application/javascript'
+          script.onload = onloadFn;
+          script.src = scriptUrl;
           head.appendChild(script);
-
-          setTimeout(() => {
-            onloadFn();
-          }, 100);
         } else {
           console.error("Failed to load script, status code:", response.status);
         }
