@@ -1,55 +1,36 @@
 import {
-  Component,
-  Element,
-  Prop,
-  State,
-  Watch,
-  Event,
-  EventEmitter,
-  Method,
-  h
-} from "@stencil/core";
+  DeleteImageEvent,
+  DeleteSoundEvent,
+  ImageHandler,
+  InsertImageEvent,
+  InsertSoundEvent,
+  ModelUpdatedEvent
+} from "@pie-framework/pie-configure-events";
 
-import { _dll_pie_lib__pie_toolbox_math_rendering_accessible } from "@pie-lib/pie-toolbox-math-rendering-module/module";
-
-import {PieContent, ItemConfig, PieElement, PieModel, PieController} from "../../interface";
-import {
-  PieLoader,
-  BundleEndpoints,
-  DEFAULT_ENDPOINTS
-} from "../../pie-loader";
-import {createTag, pieContentFromConfig} from "../../utils/utils";
-import parseNpm from "parse-package-name";
-import _isEqual from "lodash/isEqual";
+import {_dll_pie_lib__pie_toolbox_math_rendering_accessible} from "@pie-lib/pie-toolbox-math-rendering-module/module";
+import {Component, Element, Event, EventEmitter, h, Method, Prop, State, Watch} from "@stencil/core";
+import cloneDeep from "lodash/cloneDeep";
 import _isEmpty from "lodash/isEmpty";
+import _isEqual from "lodash/isEqual";
+import _omit from "lodash/omit";
+import parseNpm from "parse-package-name";
+
+import {ItemConfig, PieContent, PieController, PieElement, PieModel} from "../../interface";
+import {BundleEndpoints, DEFAULT_ENDPOINTS, PieLoader} from "../../pie-loader";
 import {
   addComplexRubric,
+  addModelToContent,
   addMultiTraitRubric,
   addPackageToContent,
   addRubric,
-  removeComplexRubricFromMarkup,
   COMPLEX_RUBRIC,
-  complexRubricChecks, addModelToContent
+  complexRubricChecks,
+  removeComplexRubricFromMarkup
 } from "../../rubric-utils";
-
-import {
-  ModelUpdatedEvent,
-  InsertImageEvent,
-  DeleteImageEvent,
-  InsertSoundEvent,
-  DeleteSoundEvent,
-  ImageHandler
-} from "@pie-framework/pie-configure-events";
-import {
-  DataURLImageSupport,
-  ExternalImageSupport
-} from "./dataurl-image-support";
-import {
-  DataURLUploadSoundSupport,
-  ExternalUploadSoundSupport
-} from "./dataurl-upload-sound-support";
+import {createTag, pieContentFromConfig} from "../../utils/utils";
 import {VERSION} from "../../version";
-import cloneDeep from "lodash/cloneDeep";
+import {DataURLImageSupport, ExternalImageSupport} from "./dataurl-image-support";
+import {DataURLUploadSoundSupport, ExternalUploadSoundSupport} from "./dataurl-upload-sound-support";
 
 /**
  * Pie Author will load a Pie Content model for authoring.
@@ -362,16 +343,48 @@ export class Author {
     }
   }
 
+  getElementByType = (elements: {[key: string]: string;}, type: string) => {
+    const result = [];
+    for (const [key, value] of Object.entries(elements)) {
+      if (value.startsWith(type)) {
+        result.push(key);
+      }
+    }
+
+    return result;
+  }
+
   getPieContentModelWithToggledComplexRubric = async ({complexRubricCheckedValues, pieContentModel}) => {
     const {
       shouldAddComplexRubric,
       shouldRemoveComplexRubric,
+      shouldForceEnableComplexRubric,
       complexRubricElements
     } = complexRubricCheckedValues || {};
 
     if (shouldAddComplexRubric) {
+      let clonedModel = cloneDeep(pieContentModel);
+
+      // if we are forced to convert the rubric, get the default values from it
+      if (shouldForceEnableComplexRubric) {
+        const rubricNames = this.getElementByType(pieContentModel.elements, '@pie-element/rubric');
+        for (const rubricName of rubricNames) {
+          const rubric = pieContentModel.models.find((el) => el.element === rubricName);
+          if (rubric) {
+            const simpleRubric = _omit(rubric, ['id', 'element']);
+            this.defaultComplexRubricModel = {
+              rubrics: {
+                simpleRubric
+              }
+            };
+
+            clonedModel = this.removeRubricItemTypes(clonedModel, rubric.id, rubric.element);
+          }
+        }
+      }
+
       // we add complex-rubric to config
-      return this.addComplexRubric(cloneDeep(pieContentModel));
+      return this.addComplexRubric(clonedModel);
     }
 
     if (shouldRemoveComplexRubric) {
@@ -391,6 +404,27 @@ export class Author {
     }
 
     return newConfig;
+  }
+
+  removeRubricItemTypes(pieContentModel, rubricId, rubricElement) {
+    if (!rubricElement || !pieContentModel.models) {
+      return pieContentModel;
+    }
+
+    // delete the rubric elements from elements object
+    delete pieContentModel.elements[rubricElement];
+
+    const {
+      markupWithoutComplexRubric,
+    } = removeComplexRubricFromMarkup(pieContentModel, [rubricElement], this.doc);
+
+    // delete the rubric nodes from markup
+    pieContentModel.markup = markupWithoutComplexRubric;
+
+    // delete the rubric models
+    pieContentModel.models = pieContentModel.models.filter(model => rubricId !== model.id);
+
+    return pieContentModel;
   }
 
   async removeComplexRubricItemTypes(pieContentModel, rubricElements) {
@@ -420,7 +454,7 @@ export class Author {
       id: COMPLEX_RUBRIC,
       element: `pie-${COMPLEX_RUBRIC}`,
       // if there is a default model defined for complex-rubric, we have to use it
-      ...this.defaultComplexRubricModel || {}
+      ...this.defaultComplexRubricModel || {},
     };
 
     const packageName = `@pie-element/${COMPLEX_RUBRIC}`;
