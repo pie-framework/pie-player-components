@@ -1,3 +1,10 @@
+## [2.11.4](https://github.com/pie-framework/pie-player-components/compare/v2.11.3...v2.11.4) (2024-07-02)
+
+
+### Bug Fixes
+
+* **pie-loader:** add onload and scripturl instead of content PD-3907 ([9c44373](https://github.com/pie-framework/pie-player-components/commit/9c44373b5cc71d3d979a5cbe152be04f515afec9))
+
 ## [2.11.3](https://github.com/pie-framework/pie-player-components/compare/v2.11.2...v2.11.3) (2024-07-02)
 
 
