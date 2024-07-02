@@ -301,6 +301,7 @@ export class PieLoader {
         // to avoid doing the same call twice
         if (response.status === 200) {
           script.textContent = await response.text();
+          script.type = 'text/javascript'
           head.appendChild(script);
 
           setTimeout(() => {
