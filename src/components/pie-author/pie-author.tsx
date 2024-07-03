@@ -12,13 +12,13 @@ import {
 
 import { _dll_pie_lib__pie_toolbox_math_rendering_accessible } from "@pie-lib/pie-toolbox-math-rendering-module/module";
 
-import {PieContent, ItemConfig, PieElement, PieModel, PieController} from "../../interface";
+import { PieContent, ItemConfig, PieElement, PieModel, PieController } from "../../interface";
 import {
   PieLoader,
   BundleEndpoints,
   DEFAULT_ENDPOINTS
 } from "../../pie-loader";
-import {createTag, pieContentFromConfig} from "../../utils/utils";
+import { createTag, pieContentFromConfig } from "../../utils/utils";
 import parseNpm from "parse-package-name";
 import _isEqual from "lodash/isEqual";
 import _isEmpty from "lodash/isEmpty";
@@ -48,7 +48,7 @@ import {
   DataURLUploadSoundSupport,
   ExternalUploadSoundSupport
 } from "./dataurl-upload-sound-support";
-import {VERSION} from "../../version";
+import { VERSION } from "../../version";
 import cloneDeep from "lodash/cloneDeep";
 
 /**
@@ -63,7 +63,7 @@ import cloneDeep from "lodash/cloneDeep";
 export class Author {
   _modelLoadedState: boolean = false;
 
-  @Prop({context: "document"}) doc!: Document;
+  @Prop({ context: "document" }) doc!: Document;
 
   /**
    * Optionally specifies the back-end that builds and hosts javascript bundles for rendering assessment items.
@@ -154,15 +154,17 @@ export class Author {
   handleDeleteSound: (e: DeleteSoundEvent) => void;
   handleSetConfigElement: (e: CustomEvent) => void;
 
+  private componentLoaded = false;
+
   /** external providers can set this if they need to upload the assets to the cloud etc. by default we use data urls */
-  @Prop({reflect: false})
+  @Prop({ reflect: false })
   imageSupport: ExternalImageSupport = new DataURLImageSupport();
 
   /** external providers can set this if they need to upload the assets to the cloud etc. by default we use data urls */
-  @Prop({reflect: false})
+  @Prop({ reflect: false })
   uploadSoundSupport: ExternalUploadSoundSupport = new DataURLUploadSoundSupport();
 
-  @Prop({mutable: false, reflect: false})
+  @Prop({ mutable: false, reflect: false })
   version: string = VERSION;
 
   /**
@@ -178,7 +180,7 @@ export class Author {
     if (!this.pieContentModel || !this.pieContentModel.models) {
       console.error('No pie content model');
 
-      return {hasErrors: false, validatedModels: {}};
+      return { hasErrors: false, validatedModels: {} };
     }
 
     return (this.pieContentModel.models || []).reduce((acc: any, model, index) => {
@@ -322,6 +324,15 @@ export class Author {
 
   isAdvancedItemConfig = (config: any): Boolean => config.pie;
 
+  @Watch("addPreview")
+  async watchAddPreview() {
+    // if add preview changes, make sure to reset the configuration
+    // this is not a common use case
+    if (this.componentLoaded) {
+      await this.watchConfig(this.config, {});
+    }
+  }
+
   @Watch("config")
   async watchConfig(newValue, oldValue) {
     if (newValue && !_isEqual(newValue, oldValue)) {
@@ -332,7 +343,7 @@ export class Author {
         const pieContentModel = pieContentFromConfig(newValue);
 
         const complexRubricCheckedValues = complexRubricChecks(pieContentModel, this.configSettings);
-        const {shouldAddComplexRubric, shouldRemoveComplexRubric} = complexRubricCheckedValues || {};
+        const { shouldAddComplexRubric, shouldRemoveComplexRubric } = complexRubricCheckedValues || {};
 
         // if changes are needed
 
@@ -362,7 +373,7 @@ export class Author {
     }
   }
 
-  getPieContentModelWithToggledComplexRubric = async ({complexRubricCheckedValues, pieContentModel}) => {
+  getPieContentModelWithToggledComplexRubric = async ({ complexRubricCheckedValues, pieContentModel }) => {
     const {
       shouldAddComplexRubric,
       shouldRemoveComplexRubric,
@@ -483,7 +494,7 @@ export class Author {
         if (this.pieContentModel.elements[pieElName]) {
           const elementId = el.getAttribute("id");
           if (!this.pieContentModel.models.find(m => m.id === elementId)) {
-            const model = {id: elementId, element: pieElName};
+            const model = { id: elementId, element: pieElName };
             this.pieContentModel.models.push(model);
           }
         }
@@ -578,7 +589,7 @@ export class Author {
 
             // first thing, we check what changed (if we have to add or remove complex-rubric)
             const complexRubricCheckedValues = complexRubricChecks(this.pieContentModel, this.configSettings);
-            const {shouldAddComplexRubric, shouldRemoveComplexRubric} = complexRubricCheckedValues || {};
+            const { shouldAddComplexRubric, shouldRemoveComplexRubric } = complexRubricCheckedValues || {};
 
             if (shouldAddComplexRubric || shouldRemoveComplexRubric) {
               // then, if changes are needed, we make them and save the new contentModel
@@ -613,6 +624,8 @@ export class Author {
   }
 
   async componentDidLoad() {
+    this.componentLoaded = true;
+
     await this.afterRender();
   }
 
@@ -753,7 +766,7 @@ export class Author {
                   '',
                 ],
               },]
-          }]
+              }]
       }
     }
 
@@ -791,7 +804,7 @@ export class Author {
         );
       }
     } else {
-      return <pie-spinner/>;
+      return <pie-spinner />;
     }
   }
 }

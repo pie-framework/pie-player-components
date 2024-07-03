@@ -16,10 +16,12 @@
   <!--    ></script>-->
 </head>
 <body>
-<pie-author id="author" add-preview="true"></pie-author>
+<pie-author id="author"></pie-author>
+<button id="toggle-button">Toggle add-preview</button>
 
 <script>
   const author = document.getElementById('author');
+  const toggleButton = document.getElementById('toggle-button');
 
   author.config = {
     "models": [
@@ -34,6 +36,14 @@
     "id": "1",
     "markup": "<pp-pie-element-complex-rubric id=\"p-9c9ded01\"></pp-pie-element-complex-rubric>"
   };
+
+  toggleButton.addEventListener('click', () => {
+    const currentValue = author.getAttribute('add-preview');
+    const newValue = currentValue === 'true' ? 'false' : 'true';
+    author.setAttribute('add-preview', newValue);
+  });
+
+  author.addPreview = true;
 </script>
 </body>
 </html>
