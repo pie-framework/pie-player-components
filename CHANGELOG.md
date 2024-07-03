@@ -1,3 +1,10 @@
+## [2.11.5](https://github.com/pie-framework/pie-player-components/compare/v2.11.4...v2.11.5) (2024-07-03)
+
+
+### Bug Fixes
+
+* reset configuration if add preview changes PD-3914 ([18ef70f](https://github.com/pie-framework/pie-player-components/commit/18ef70fef839d8e7e801e733c976049fdfbda644))
+
 ## [2.11.4](https://github.com/pie-framework/pie-player-components/compare/v2.11.3...v2.11.4) (2024-07-02)
 
 
