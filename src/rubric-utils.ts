@@ -73,7 +73,6 @@ export const complexRubricChecks = (content: PieContent, configSettings = {}) =>
   return {
     shouldAddComplexRubric: shouldHaveComplexRubric && !complexRubricModelsLength,
     shouldRemoveComplexRubric: !shouldHaveComplexRubric && complexRubricModelsLength,
-    shouldForceEnableComplexRubric: !!shouldForceEnableComplexRubric,
     complexRubricElements
   }
 }
@@ -90,7 +89,7 @@ export const removeComplexRubricFromMarkup = (content: PieContent, complexRubric
   const elsWithId = tempDiv.querySelectorAll("[id]");
   const deletedComplexRubricItemIds = [];
 
-  elsWithId.forEach(el => {
+  (elsWithId || []).forEach(el => {
     const pieElName = el.tagName.toLowerCase().split("-config")[0];
 
     // we have to remove the complex-rubric item from the markup

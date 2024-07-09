@@ -345,7 +345,7 @@ export class Author {
 
   getElementByType = (elements: {[key: string]: string;}, type: string) => {
     const result = [];
-    for (const [key, value] of Object.entries(elements)) {
+    for (const [key, value] of Object.entries(elements || {})) {
       if (value.startsWith(type)) {
         result.push(key);
       }
@@ -358,28 +358,28 @@ export class Author {
     const {
       shouldAddComplexRubric,
       shouldRemoveComplexRubric,
-      shouldForceEnableComplexRubric,
       complexRubricElements
     } = complexRubricCheckedValues || {};
 
     if (shouldAddComplexRubric) {
       let clonedModel = cloneDeep(pieContentModel);
 
-      // if we are forced to convert the rubric, get the default values from it
-      if (shouldForceEnableComplexRubric) {
-        const rubricNames = this.getElementByType(pieContentModel.elements, '@pie-element/rubric');
-        for (const rubricName of rubricNames) {
-          const rubric = pieContentModel.models.find((el) => el.element === rubricName);
-          if (rubric) {
-            const simpleRubric = _omit(rubric, ['id', 'element']);
-            this.defaultComplexRubricModel = {
-              rubrics: {
-                simpleRubric
-              }
-            };
+      // we have to convert the rubric to complex-rubric, so get the default values from it
+      const rubricNames = this.getElementByType(pieContentModel.elements, '@pie-element/rubric');
 
-            clonedModel = this.removeRubricItemTypes(clonedModel, rubric.id, rubric.element);
-          }
+      for (const rubricName of rubricNames) {
+        const rubric = ((pieContentModel && pieContentModel.models) || []).find((el) => el.element === rubricName);
+
+        if (rubric) {
+          const simpleRubric = _omit(rubric, ['id', 'element']);
+
+          this.defaultComplexRubricModel = {
+            rubrics: {
+              simpleRubric
+            }
+          };
+
+          clonedModel = this.removeRubricItemTypes(clonedModel, rubric.id, rubric.element);
         }
       }
 
@@ -422,7 +422,7 @@ export class Author {
     pieContentModel.markup = markupWithoutComplexRubric;
 
     // delete the rubric models
-    pieContentModel.models = pieContentModel.models.filter(model => rubricId !== model.id);
+    pieContentModel.models = (pieContentModel.models || []).filter(model => rubricId !== model.id);
 
     return pieContentModel;
   }
