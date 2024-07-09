@@ -1,55 +1,36 @@
 import {
-  Component,
-  Element,
-  Prop,
-  State,
-  Watch,
-  Event,
-  EventEmitter,
-  Method,
-  h
-} from "@stencil/core";
+  DeleteImageEvent,
+  DeleteSoundEvent,
+  ImageHandler,
+  InsertImageEvent,
+  InsertSoundEvent,
+  ModelUpdatedEvent
+} from "@pie-framework/pie-configure-events";
 
-import { _dll_pie_lib__pie_toolbox_math_rendering_accessible } from "@pie-lib/pie-toolbox-math-rendering-module/module";
-
-import { PieContent, ItemConfig, PieElement, PieModel, PieController } from "../../interface";
-import {
-  PieLoader,
-  BundleEndpoints,
-  DEFAULT_ENDPOINTS
-} from "../../pie-loader";
-import { createTag, pieContentFromConfig } from "../../utils/utils";
-import parseNpm from "parse-package-name";
-import _isEqual from "lodash/isEqual";
+import {_dll_pie_lib__pie_toolbox_math_rendering_accessible} from "@pie-lib/pie-toolbox-math-rendering-module/module";
+import {Component, Element, Event, EventEmitter, h, Method, Prop, State, Watch} from "@stencil/core";
+import cloneDeep from "lodash/cloneDeep";
 import _isEmpty from "lodash/isEmpty";
+import _isEqual from "lodash/isEqual";
+import _omit from "lodash/omit";
+import parseNpm from "parse-package-name";
+
+import {ItemConfig, PieContent, PieController, PieElement, PieModel} from "../../interface";
+import {BundleEndpoints, DEFAULT_ENDPOINTS, PieLoader} from "../../pie-loader";
 import {
   addComplexRubric,
+  addModelToContent,
   addMultiTraitRubric,
   addPackageToContent,
   addRubric,
-  removeComplexRubricFromMarkup,
   COMPLEX_RUBRIC,
-  complexRubricChecks, addModelToContent
+  complexRubricChecks,
+  removeComplexRubricFromMarkup
 } from "../../rubric-utils";
-
-import {
-  ModelUpdatedEvent,
-  InsertImageEvent,
-  DeleteImageEvent,
-  InsertSoundEvent,
-  DeleteSoundEvent,
-  ImageHandler
-} from "@pie-framework/pie-configure-events";
-import {
-  DataURLImageSupport,
-  ExternalImageSupport
-} from "./dataurl-image-support";
-import {
-  DataURLUploadSoundSupport,
-  ExternalUploadSoundSupport
-} from "./dataurl-upload-sound-support";
-import { VERSION } from "../../version";
-import cloneDeep from "lodash/cloneDeep";
+import {createTag, pieContentFromConfig} from "../../utils/utils";
+import {VERSION} from "../../version";
+import {DataURLImageSupport, ExternalImageSupport} from "./dataurl-image-support";
+import {DataURLUploadSoundSupport, ExternalUploadSoundSupport} from "./dataurl-upload-sound-support";
 
 /**
  * Pie Author will load a Pie Content model for authoring.
@@ -63,7 +44,7 @@ import cloneDeep from "lodash/cloneDeep";
 export class Author {
   _modelLoadedState: boolean = false;
 
-  @Prop({ context: "document" }) doc!: Document;
+  @Prop({context: "document"}) doc!: Document;
 
   /**
    * Optionally specifies the back-end that builds and hosts javascript bundles for rendering assessment items.
@@ -157,14 +138,14 @@ export class Author {
   private componentLoaded = false;
 
   /** external providers can set this if they need to upload the assets to the cloud etc. by default we use data urls */
-  @Prop({ reflect: false })
+  @Prop({reflect: false})
   imageSupport: ExternalImageSupport = new DataURLImageSupport();
 
   /** external providers can set this if they need to upload the assets to the cloud etc. by default we use data urls */
-  @Prop({ reflect: false })
+  @Prop({reflect: false})
   uploadSoundSupport: ExternalUploadSoundSupport = new DataURLUploadSoundSupport();
 
-  @Prop({ mutable: false, reflect: false })
+  @Prop({mutable: false, reflect: false})
   version: string = VERSION;
 
   /**
@@ -180,7 +161,7 @@ export class Author {
     if (!this.pieContentModel || !this.pieContentModel.models) {
       console.error('No pie content model');
 
-      return { hasErrors: false, validatedModels: {} };
+      return {hasErrors: false, validatedModels: {}};
     }
 
     return (this.pieContentModel.models || []).reduce((acc: any, model, index) => {
@@ -343,7 +324,7 @@ export class Author {
         const pieContentModel = pieContentFromConfig(newValue);
 
         const complexRubricCheckedValues = complexRubricChecks(pieContentModel, this.configSettings);
-        const { shouldAddComplexRubric, shouldRemoveComplexRubric } = complexRubricCheckedValues || {};
+        const {shouldAddComplexRubric, shouldRemoveComplexRubric} = complexRubricCheckedValues || {};
 
         // if changes are needed
 
@@ -373,7 +354,18 @@ export class Author {
     }
   }
 
-  getPieContentModelWithToggledComplexRubric = async ({ complexRubricCheckedValues, pieContentModel }) => {
+  getElementByType = (elements: {[key: string]: string;}, type: string) => {
+    const result = [];
+    for (const [key, value] of Object.entries(elements || {})) {
+      if (value.startsWith(type)) {
+        result.push(key);
+      }
+    }
+
+    return result;
+  }
+
+  getPieContentModelWithToggledComplexRubric = async ({complexRubricCheckedValues, pieContentModel}) => {
     const {
       shouldAddComplexRubric,
       shouldRemoveComplexRubric,
@@ -381,8 +373,29 @@ export class Author {
     } = complexRubricCheckedValues || {};
 
     if (shouldAddComplexRubric) {
+      let clonedModel = cloneDeep(pieContentModel);
+
+      // we have to convert the rubric to complex-rubric, so get the default values from it
+      const rubricNames = this.getElementByType(pieContentModel.elements, '@pie-element/rubric');
+
+      for (const rubricName of rubricNames) {
+        const rubric = ((pieContentModel && pieContentModel.models) || []).find((el) => el.element === rubricName);
+
+        if (rubric) {
+          const simpleRubric = _omit(rubric, ['id', 'element']);
+
+          this.defaultComplexRubricModel = {
+            rubrics: {
+              simpleRubric
+            }
+          };
+
+          clonedModel = this.removeRubricItemTypes(clonedModel, rubric.id, rubric.element);
+        }
+      }
+
       // we add complex-rubric to config
-      return this.addComplexRubric(cloneDeep(pieContentModel));
+      return this.addComplexRubric(clonedModel);
     }
 
     if (shouldRemoveComplexRubric) {
@@ -402,6 +415,27 @@ export class Author {
     }
 
     return newConfig;
+  }
+
+  removeRubricItemTypes(pieContentModel, rubricId, rubricElement) {
+    if (!rubricElement || !pieContentModel.models) {
+      return pieContentModel;
+    }
+
+    // delete the rubric elements from elements object
+    delete pieContentModel.elements[rubricElement];
+
+    const {
+      markupWithoutComplexRubric,
+    } = removeComplexRubricFromMarkup(pieContentModel, [rubricElement], this.doc);
+
+    // delete the rubric nodes from markup
+    pieContentModel.markup = markupWithoutComplexRubric;
+
+    // delete the rubric models
+    pieContentModel.models = (pieContentModel.models || []).filter(model => rubricId !== model.id);
+
+    return pieContentModel;
   }
 
   async removeComplexRubricItemTypes(pieContentModel, rubricElements) {
@@ -431,7 +465,7 @@ export class Author {
       id: COMPLEX_RUBRIC,
       element: `pie-${COMPLEX_RUBRIC}`,
       // if there is a default model defined for complex-rubric, we have to use it
-      ...this.defaultComplexRubricModel || {}
+      ...this.defaultComplexRubricModel || {},
     };
 
     const packageName = `@pie-element/${COMPLEX_RUBRIC}`;
@@ -494,7 +528,7 @@ export class Author {
         if (this.pieContentModel.elements[pieElName]) {
           const elementId = el.getAttribute("id");
           if (!this.pieContentModel.models.find(m => m.id === elementId)) {
-            const model = { id: elementId, element: pieElName };
+            const model = {id: elementId, element: pieElName};
             this.pieContentModel.models.push(model);
           }
         }
@@ -589,7 +623,7 @@ export class Author {
 
             // first thing, we check what changed (if we have to add or remove complex-rubric)
             const complexRubricCheckedValues = complexRubricChecks(this.pieContentModel, this.configSettings);
-            const { shouldAddComplexRubric, shouldRemoveComplexRubric } = complexRubricCheckedValues || {};
+            const {shouldAddComplexRubric, shouldRemoveComplexRubric} = complexRubricCheckedValues || {};
 
             if (shouldAddComplexRubric || shouldRemoveComplexRubric) {
               // then, if changes are needed, we make them and save the new contentModel
@@ -766,7 +800,7 @@ export class Author {
                   '',
                 ],
               },]
-              }]
+          }]
       }
     }
 
@@ -804,7 +838,7 @@ export class Author {
         );
       }
     } else {
-      return <pie-spinner />;
+      return <pie-spinner/>;
     }
   }
 }
