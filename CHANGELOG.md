@@ -1,3 +1,14 @@
+## [2.11.6](https://github.com/pie-framework/pie-player-components/compare/v2.11.5...v2.11.6) (2024-07-09)
+
+
+### Bug Fixes
+
+* also convert rubric if rubricEnabled, not only if forceEnabled ([775d2ed](https://github.com/pie-framework/pie-player-components/commit/775d2ed517691ee58f5b2e8ae43d08439cc45cf1))
+* **complex-rubric:** add sanity checks PD-3218 ([05fb5d1](https://github.com/pie-framework/pie-player-components/commit/05fb5d1c177be091f5644bcf58469b0ffe6cf2fa))
+* **complex-rubric:** add sanity checks PD-3218 ([01875f1](https://github.com/pie-framework/pie-player-components/commit/01875f1d7f9f8063f5eff3ad64d329413456f09b))
+* **complex-rubric:** fix model values on force rubric conversion PD-3218 ([e7b62f0](https://github.com/pie-framework/pie-player-components/commit/e7b62f052c58fb93b36dc0d3b4576077b1e5c337))
+* **complex-rubric:** fix model values on force rubric conversion PD-3395 ([5f7659d](https://github.com/pie-framework/pie-player-components/commit/5f7659dc7190a0abc4ada2d519ff2792247f28f5))
+
 ## [2.11.5](https://github.com/pie-framework/pie-player-components/compare/v2.11.4...v2.11.5) (2024-07-03)
 
 
