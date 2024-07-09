@@ -135,6 +135,8 @@ export class Author {
   handleDeleteSound: (e: DeleteSoundEvent) => void;
   handleSetConfigElement: (e: CustomEvent) => void;
 
+  private componentLoaded = false;
+
   /** external providers can set this if they need to upload the assets to the cloud etc. by default we use data urls */
   @Prop({reflect: false})
   imageSupport: ExternalImageSupport = new DataURLImageSupport();
@@ -302,6 +304,15 @@ export class Author {
   }
 
   isAdvancedItemConfig = (config: any): Boolean => config.pie;
+
+  @Watch("addPreview")
+  async watchAddPreview() {
+    // if add preview changes, make sure to reset the configuration
+    // this is not a common use case
+    if (this.componentLoaded) {
+      await this.watchConfig(this.config, {});
+    }
+  }
 
   @Watch("config")
   async watchConfig(newValue, oldValue) {
@@ -647,6 +658,8 @@ export class Author {
   }
 
   async componentDidLoad() {
+    this.componentLoaded = true;
+
     await this.afterRender();
   }
 
