@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0"
+  />
+  <title>Item Preview Layout - convert Rubric Demo</title>
+  <script
+    type="module"
+    src="https://unpkg.com/@pie-framework/pie-player-components@latest/dist/pie-player-components/pie-player-components.esm.js"
+  ></script>
+</head>
+<body>
+<div id="config-container">
+  <textarea name="config" id="config" cols="150" rows="45" readonly></textarea>
+</div>
+<button id="duplicate" onclick="duplicateRubrik()">Duplicate</button>
+<div id="container"></div>
+
+<script>
+  const initialConfig = {
+    "models": [
+      {
+        "teacherInstructions": "",
+        "width": "500px",
+        "mathInput": false,
+        "id": "8a808081674b0bd101675223943b173a",
+        "prompt": "<div>Damon sold a total of 20 boxes of candy at his store on Wednesday. These boxes contained only lollipops and gumballs.<ul><li>Each box held 45 pieces of candy.</li><li>He earned $2 for each piece of candy he sold.</li><li>He earned a total of $948 from the lollipops he sold.</li></ul>What amount of money did Damon earn from the gumballs he sold? Be sure to use numbers and/or words to show how you got your answer.</div>",
+        "element": "extended-text-entry",
+        "height": "200px",
+      },
+      {
+        "sampleAnswers": [
+          "null",
+          "null",
+          "<div>$852<br />20 boxes &#215; 45 pieces of candy = 900 pieces of candy in all the boxes together<br />900 &#215; 2 = The total amount earned from all pieces is $1800<br />1800 &#8211; 948 = 852 The total amount earned ($1800) minus the amount earned from lollipops ($948) is the amount earned from gumballs ($852)</div>"
+        ],
+        "maxPoints": 2,
+        "excludeZero": false,
+        "id": "rubric-8a80808163e9a4a80163eb354b32308b",
+        "element": "pie-rubric",
+        "points": [
+          "<div>Student has little or no understanding of how to solve multistep word problems with whole numbers using multiplication and division. The student incorrectly solves the problem and provides no explanation of reasoning or an explanation of reasoning that does not make sense to the answer given.</div>",
+          "<div>Student has a partial understanding of how to solve multistep word problems with whole numbers using multiplication and division. The student correctly answers $852&#160;but provides an explanation of reasoning that is incomplete or flawed. OR The student knows operations/steps needed to solve the problem but makes an error in computation, carries this error out&#160;and provides a thorough explanation of reasoning that makes sense with the answer given.</div>",
+          "<div>Student has a thorough understanding of how to solve multistep word problems with whole numbers using multiplication and division. The student correctly answers $852 and provides a thorough explanation of reasoning that makes sense with the answer given.</div>"
+        ]
+      }
+    ],
+    "markup": "<extended-text-entry id=\"8a808081674b0bd101675223943b173a\"></extended-text-entry><br/><pie-rubric id='rubric-8a80808163e9a4a80163eb354b32308b'></pie-rubric>",
+    "elements": {
+      "extended-text-entry": "@pie-element/extended-text-entry@9.4.1",
+      "pie-rubric": "@pie-element/rubric@3.10.5",
+    }
+  };
+
+  function displayFormattedJson(config) {
+    const textarea = document.getElementById('config');
+    if (textarea) {
+      textarea.value = JSON.stringify(config, null, 4);
+    } else {
+      console.log('config textarea not found');
+    }
+  }
+
+  function addPlayer() {
+    const container = document.getElementById('container');
+
+    const newElement = document.createElement('pie-author');
+    newElement.setAttribute('id', 'author');
+    newElement.setAttribute('add-preview', 'true');
+
+    container.appendChild(newElement);
+  }
+
+  function showUpdatedConfig() {
+    const element = document.getElementById('author');
+
+    displayFormattedJson(element.config);
+  }
+
+  function addShowConfig() {
+    const container = document.getElementById('config-container');
+
+    const newElement = document.createElement('button');
+    newElement.setAttribute('id', 'show-updated-config');
+
+    newElement.onclick = showUpdatedConfig;
+
+    container.appendChild(newElement);
+    newElement.textContent = 'Show Updated Config';
+  }
+
+  function removeItem(id) {
+    const element = document.getElementById(id);
+    if (element) {
+      element.remove();
+    }
+  }
+
+  function clearItem(id) {
+    const element = document.getElementById(id);
+    if (element) {
+      element.value = '';
+    }
+  }
+
+  function duplicateRubrik() {
+    if (document.getElementById('author')) {
+      return;
+    }
+
+    addPlayer();
+
+    const author = document.getElementById('author');
+
+    author.configSettings = {
+      "@pie-element/extended-text-entry": {
+        "prompt": {
+          "settings": true,
+          "label": "Item Stem Edited"
+        },
+        "withRubric": {
+          "settings": true,
+          "label": "Add Rubric",
+          "forceEnabled": true
+        }
+      }
+    };
+
+    author.config = initialConfig;
+
+    clearItem('config');
+    removeItem('duplicate');
+
+    setTimeout(addShowConfig, 1000);
+  }
+
+  window.onload = function () {
+    displayFormattedJson(initialConfig);
+  };
+</script>
+</body>
+</html>
