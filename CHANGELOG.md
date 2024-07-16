@@ -1,3 +1,10 @@
+## [2.11.7](https://github.com/pie-framework/pie-player-components/compare/v2.11.6...v2.11.7) (2024-07-16)
+
+
+### Bug Fixes
+
+* made sure fileinput cancel is handled [PD-3634] ([4f9aa46](https://github.com/pie-framework/pie-player-components/commit/4f9aa4641262416add38b384683ea0d90ae9129c))
+
 ## [2.11.6](https://github.com/pie-framework/pie-player-components/compare/v2.11.5...v2.11.6) (2024-07-09)
 
 
