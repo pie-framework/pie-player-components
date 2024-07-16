@@ -127,12 +127,14 @@ export class Author {
   @State() fileInput: any = null;
 
   imageHandler: ImageHandler = null;
+  dialogOpened: boolean = false;
 
   handleFileInputChange: (e: Event) => void;
   handleInsertImage: (e: InsertImageEvent) => void;
   handleDeleteImage: (e: DeleteImageEvent) => void;
   handleInsertSound: (e: InsertSoundEvent) => void;
   handleDeleteSound: (e: DeleteSoundEvent) => void;
+  handleWindowFocus: (e: Event) => void;
   handleSetConfigElement: (e: CustomEvent) => void;
 
   private componentLoaded = false;
@@ -239,6 +241,8 @@ export class Author {
     this.handleFileInputChange = (e: Event) => {
       const input = e.target;
 
+      this.dialogOpened = false;
+
       if (!this.imageHandler) {
         console.error("no image handler - but file input change triggered?");
         return;
@@ -256,12 +260,27 @@ export class Author {
       }
     };
 
+    this.handleWindowFocus = () => {
+      if (!this.fileInput || !this.dialogOpened) {
+        return;
+      }
+
+      this.dialogOpened = false;
+
+      if (this.fileInput.files.length === 0) {
+        // it means the user clicked cancel
+        this.imageHandler.cancel();
+        this.imageHandler = null;
+      }
+    };
+
     this.handleInsertImage = (e: InsertImageEvent) => {
       console.log("[handleInsertImage]", e);
       this.imageHandler = e.detail;
 
       if (!e.detail.isPasted) {
         this.fileInput.click();
+        this.dialogOpened = true;
       } else if (e.detail.getChosenFile) {
         // this is for images that were pasted into the editor (or dropped)
         // they also need to be uploaded, but the file input doesn't have to be used
@@ -586,8 +605,10 @@ export class Author {
     this.el.removeEventListener(DeleteSoundEvent.TYPE, this.handleDeleteSound);
 
     if (this.fileInput) {
-      this.fileInput.removeEventListener("change", this.handleFileInputChange);
+      this.fileInput.removeEventListener('change', this.handleFileInputChange);
     }
+
+    window.removeEventListener('focus', this.handleWindowFocus);
   }
 
   async componentWillLoad() {
@@ -655,6 +676,8 @@ export class Author {
 
     this.el.addEventListener(InsertSoundEvent.TYPE, this.handleInsertSound);
     this.el.addEventListener(DeleteSoundEvent.TYPE, this.handleDeleteSound);
+
+    window.addEventListener('focus', this.handleWindowFocus);
   }
 
   async componentDidLoad() {
@@ -667,7 +690,7 @@ export class Author {
     await this.afterRender();
 
     if (this.fileInput) {
-      this.fileInput.addEventListener("change", this.handleFileInputChange);
+      this.fileInput.addEventListener('change', this.handleFileInputChange);
     }
   }
 
