@@ -1,3 +1,11 @@
+## [2.11.8](https://github.com/pie-framework/pie-player-components/compare/v2.11.7...v2.11.8) (2024-08-01)
+
+
+### Bug Fixes
+
+* don't fetch items that are already in process PD-3989 ([8c81b43](https://github.com/pie-framework/pie-player-components/commit/8c81b43d8506dbec30dfd5d1f54e46a2f82e1515))
+* update pie-toolbox module PD-3988 ([23a8147](https://github.com/pie-framework/pie-player-components/commit/23a8147dea1ee794d587784a25abe4b608f73e71))
+
 ## [2.11.7](https://github.com/pie-framework/pie-player-components/compare/v2.11.6...v2.11.7) (2024-07-16)
 
 
