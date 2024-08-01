@@ -222,13 +222,13 @@ export class PieLoader {
     //  this means that we'll make that fetch request multiple times, which slows down the page
     const loadedScripts = [...head.getElementsByTagName("script")];
     // That's why we're using this little helper to store the ones that are in the process of loading as well
-    const alreadyLoadingScript = window["pieHelpers"].loadingScripts[scriptUrl];
+    const alreadyLoadingScript = window["pieHelpers"] && window["pieHelpers"].loadingScripts[scriptUrl];
 
     if (loadedScripts.find(s => (s.src === scriptUrl)) || alreadyLoadingScript) {
       return;
     }
 
-    if (!window["pieHelpers"].loadingScripts[scriptUrl]) {
+    if (window["pieHelpers"] && !window["pieHelpers"].loadingScripts[scriptUrl]) {
       window["pieHelpers"].loadingScripts[scriptUrl] = true;
     }
 
