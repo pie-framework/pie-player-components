@@ -1,11 +1,22 @@
 <!DOCTYPE html>
 <html dir="ltr" lang="en">
 <head>
-  <meta charset="utf-8"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta
     name="viewport"
     content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0"
   />
+  <title>MathJax Example</title>
+<!--  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.6.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>-->
+<!--  <script type="text/x-mathjax-config">-->
+<!--        MathJax.Hub.Config({-->
+<!--            tex2jax: {-->
+<!--                inlineMath: [['$','$'], ['\\(','\\)']],-->
+<!--                processEscapes: true-->
+<!--            }-->
+<!--        });-->
+<!--    </script>-->
   <title>Item Player</title>
 
   <!--    <script-->
@@ -19,175 +30,113 @@
 </head>
 <body>
 <pie-player id="player"></pie-player>
+<pie-player id="player2"></pie-player>
+<pie-player id="player3"></pie-player>
+<pie-player id="player4"></pie-player>
+<pie-player id="player5"></pie-player>
+<pie-player id="player6"></pie-player>
+<pie-player id="player7"></pie-player>
+<pie-player id="player8"></pie-player>
+<pie-player id="player9"></pie-player>
+<pie-player id="player10"></pie-player>
 
 <script type="text/javascript" src="./utils/models.js"></script>
 <script>
-  // const config = {
-  //   "pie": {
-  //     "models": [
-  //       {
-  //         "disabled": false,
-  //         "mode": "gather",
-  //         "prompt": "<div>MC </div><div>CSM1 </div>",
-  //         "choicesLayout": "vertical",
-  //         "gridColumns": "2",
-  //         "choiceMode": "radio",
-  //         "keyMode": "letters",
-  //         "choices": [
-  //           {
-  //             "label": "<div>3</div>",
-  //             "value": "2",
-  //             "rationale": null
-  //           },
-  //           {
-  //             "label": "<div>1</div>",
-  //             "value": "0",
-  //             "rationale": null
-  //           },
-  //           {
-  //             "label": "<div>2</div>",
-  //             "value": "1",
-  //             "rationale": null
-  //           },
-  //           {
-  //             "label": "<div>4</div>",
-  //             "value": "3",
-  //             "rationale": null
-  //           }
-  //         ],
-  //         "teacherInstructions": null,
-  //         "element": "pp-pie-element-multiple-choice",
-  //         "id": "p-00000000"
-  //       }
-  //     ],
-  //     "elements": {
-  //       "pp-pie-element-multiple-choice": "@pie-element/multiple-choice@7.13.0"
-  //     },
-  //     "id": "3b3151a0-97c5-4214-9120-01b680f241d4@0.0.3",
-  //     "markup": "<pp-pie-element-multiple-choice id=\"p-00000000\"></pp-pie-element-multiple-choice>"
-  //   },
-  //   "stimulus": {
-  //     "layout": "left",
-  //     "models": [
-  //       {
-  //         "passages": [
-  //           {
-  //             "text": "<h3>A Boy Called Sparky</h3><div><div class=\"p-number\">1</div><div class=\"numbered-paragraph\"><p>     Sparky always looked forward to Sunday mornings. His dad did not have to work, so the two of them would sit at the kitchen table eating breakfast and reading the “funnies,” or comic strips. Sparky loved cartoons. In fact, his nickname “Sparky” came from a cartoon. His uncle gave him the name when he was just a baby. It was the name of the horse Spark Plug from the “Barney Google” comic strip.</p></div><div class=\"p-number\">2</div><div class=\"numbered-paragraph\"><p>     Sparky had his favorite cartoons. He liked “Skippy,” “Mickey Mouse,” and “Popeye” the best. He had a dream deep in his heart. He wanted to draw cartoons when he grew up.</p></div><div class=\"p-number\">3</div><div class=\"numbered-paragraph\"><p>     He started practicing right away. He drew whenever he could. When he was a senior in high school, his teacher asked him to draw some cartoons for the yearbook. Sparky was very excited about it, and he worked really hard. But when the yearbooks were handed out at the end of the year, his drawings were not in them. He felt sad because he thought his teacher had liked his drawings.</p></div><div class=\"p-number\">4</div><div class=\"numbered-paragraph\"><p>     At the same time, Sparky took a special class in an art school. The school was far away, so he mailed in his assignments. His teacher did not think Sparky could draw children very well. She gave him a C in the class.</p></div><div class=\"p-number\">5</div><div class=\"numbered-paragraph\"><p>     Even though Sparky felt bad about both of these things, he did not give up. He knew he could draw, even if others didn’t always agree. Finally, one of his drawings of a dog was printed in a magazine, and that gave him some hope.</p></div><div class=\"p-number\">6</div><div class=\"numbered-paragraph\"><p>     Sparky continued to draw as a young adult, especially as a soldier in World War II. The more he practiced, the better he became. When he came home from the war, he was able to get a few art jobs. One was at the art school he had gone to. Another was for his local paper. The paper printed his comic strip “Li’l Folks” for three years.</p></div><div class=\"p-number\">7</div><div class=\"numbered-paragraph\"><p>     His big break came in October 1950. That’s when seven national newspapers started printing a new comic strip he made up. It was called “Peanuts” and featured children and a dog as the main characters. Soon Charlie Brown, Snoopy, and the rest of the “Peanuts” gang were famous around the world. Many people loved these fun characters.</p></div><div class=\"p-number\">8</div><div class=\"numbered-paragraph\"><p>     Charles “Sparky” Schulz’s dream had come true. He was a cartoonist at last.</p></div><div class=\"numbered-paragraph\"><p style=\"text-align: center;\"><span class=\"no-number\"><img alt=\"A photo of Charles Schulz from 1956 sitting at a drawing table.\" id=\"c76e478ba7a94944adf86678ef706ec5\" src=\"https://storage.googleapis.com/pie-prod-221718-assets/image/3c0ef9b5-f331-48e6-a870-d53e99fdabd2\"></span></p></div></div>",
-  //             "title": "A Boy Called Sparky"
-  //           }
-  //         ],
-  //         "id": "4028e4a23ef2387f013f0a6afe781d9b",
-  //         "element": "pie-passage"
-  //       }
-  //     ],
-  //     "markup": "<pie-passage id=\"4028e4a23ef2387f013f0a6afe781d9b\"></pie-passage>",
-  //     "buildInfo": [
-  //       {
-  //         "name": "@pie-element/passage",
-  //         "version": "latest"
-  //       }
-  //     ],
-  //     "elements": {
-  //       "pie-passage": "@pie-element/passage@1.11.4"
-  //     },
-  //     "id": "4028e4a23ef2387f013f0a6afe781d9b"
-  //   }
-  // };
   const config = {
-    id: "1",
-    elements: {
-      "pie-multiple-choice": "@pie-element/multiple-choice@8.4.0"
-      // "pie-multiple-choice": "@pie-element/multiple-choice@8.3.0"
-    },
-    models: [
+    "id": "4fde0f35-1c03-497c-a871-b510dab7e13b@0.0.1",
+    "models": [
       {
-        id: "1",
-        element: "pie-multiple-choice",
-        prompt:
-          "Which of these northern European countries are EU members?",
-        choiceMode: "checkbox",
-        keyMode: "numbers",
-        choices: [
-          {
-            correct: true,
-            value: "sweden",
-            label: "<div><span data-latex=\"\" data-raw=\"\\frac{1}{2}\\times\\sqrt{23x}\\div\\longdiv{asc}\\ne\\log_{\\ 2}\\cdot\\overleftrightarrow{ab}\">\\frac{1}{2}\\times\\sqrt{23x}\\div\\longdiv{asc}\\ne\\log_{\\ 2}\\cdot\\overleftrightarrow{ab}</span></div>",
-            feedback: {
-              type: "none",
-              value: ""
+        "id": "p-00000000",
+        "element": "pp-pie-element-math-inline",
+        "config": {
+          "responseType": "Simple",
+          "element": "pp-pie-element-math-inline",
+          "feedback": {
+            "correct": {
+              "default": "Correct",
+              "type": "none"
+            },
+            "incorrect": {
+              "default": "Incorrect",
+              "type": "none"
+            },
+            "partial": {
+              "default": "Nearly",
+              "type": "none"
             }
           },
-          {
-            value: "iceland",
-            label: "<div><span data-latex=\"\" data-raw=\"\\sqrt{2}\">\\sqrt{2}</span></div>",
-            feedback: {
-              type: "none",
-              value: ""
-            }
+          "equationEditor": "item-authoring",
+          "expression": "",
+          "question": "",
+          "customKeys": [
+            "\\left(\\right)",
+            "\\frac{}{}",
+            "x\\frac{}{}"
+          ],
+          "feedbackEnabled": false,
+          "promptEnabled": true,
+          "rationaleEnabled": false,
+          "teacherInstructionsEnabled": false,
+          "studentInstructionsEnabled": false,
+          "id": "p-00000000",
+          "partialScoring": true,
+          "rationale": null,
+          "prompt": "<div>test</div>",
+          "scoringType": "auto",
+          "response": {
+            "answer": "",
+            "validation": "literal"
           },
-          {
-            value: "norway",
-            label: "Norway",
-            feedback: {
-              type: "none",
-              value: ""
-            }
-          },
-          {
-            correct: true,
-            value: "finland",
-            label: "Finland",
-            feedback: {
-              type: "none",
-              value: ""
+          "toolbarEditorPosition": "bottom",
+          "validationDefault": "literal",
+          "ignoreOrderDefault": false,
+          "allowTrailingZerosDefault": false,
+          "errors": {},
+          "responses": [],
+          "showNote": false,
+          "teacherInstructions": null,
+          "env": {
+            "mode": "gather",
+            "role": "student",
+            "partialScoring": true,
+            "@pie-element": {
+              "lockChoiceOrder": true
             }
           }
-        ],
-        partialScoring: false,
-        partialScoringLabel: `Each correct response that is correctly checked and each incorrect response
-            that is correctly unchecked will be worth 1 point.
-            The maximum points is the total number of answer choices.`
+        },
+        "disabled": false,
+        "view": false,
+        "rationale": null,
+        "teacherInstructions": null
       }
     ],
-    markup: `
-          <pie-multiple-choice id='1'></pie-multiple-choice>
-
-        <span data-latex=\"\" data-raw=\"\\sqrt{2}\">\\sqrt{2}</span>
-        <math xmlns="http://www.w3.org/1998/Math/MathML">
-            <mfenced>
-                <mrow><mo>-</mo><mn>5</mn><mo>,</mo><mn>1</mn></mrow>
-            </mfenced>
-        </math> drafted by his assistant on a computer program which involves coordinate planes.&#160;
-        The designer suggests to change the location and size of the lawn by dilating and then reflecting the lawn across the
-        <span class="variable">x</span>-axis to produce the similar square lawn.&#160;
-        The coordinates of the new square lawn are
-        <math xmlns="http://www.w3.org/1998/Math/MathML">
-            <mfenced>
-                <mrow><mo>-</mo><mn>4</mn><mo>,</mo><mo>-</mo><mn>2</mn></mrow>
-            </mfenced>
-        </math>,
-        <math xmlns="http://www.w3.org/1998/Math/MathML">
-            <mfenced>
-                <mrow><mo>-</mo><mn>2</mn><mo>,</mo><mo>-</mo><mn>2</mn></mrow>
-            </mfenced>
-        </math>,&#160;
-        <math xmlns="http://www.w3.org/1998/Math/MathML">
-            <mfenced>
-                <mrow><mo>-</mo><mn>4</mn><mo>,</mo><mo>-</mo><mn>4</mn></mrow>
-            </mfenced>
-        </math>, and
-        <math xmlns="http://www.w3.org/1998/Math/MathML">
-            <mfenced>
-                <mrow><mo>-</mo><mn>2</mn><mo>,</mo><mo>-</mo><mn>4</mn></mrow>
-            </mfenced>
-        </math>
-        `
+    "elements": {
+      // "pp-pie-element-math-inline": "@pie-element/math-inline@6.11.0"
+      "pp-pie-element-math-inline": "@pie-element/math-inline@7.16.5"
+    },
+    "markup": "<pp-pie-element-math-inline id=\"p-00000000\"></pp-pie-element-math-inline>",
+    "bundle": {
+      url: "https://pits-dot-pie-prod-221718.appspot.com/bundles/@pie-element/math-inline@7.16.5/player.js"
+      // "url": [
+      //   // "https://pits-dot-pie-prod-221718.appspot.com/bundles/@pie-element/math-inline@6.11.0/player.js"
+      //   "https://pits-dot-pie-prod-221718.appspot.com/bundles/@pie-element/math-inline@7.16.5/player.js"
+      // ]
+    }
   };
-  const endpoints = {
-    bundleBase: "https://storage.googleapis.com/pie-pits-staging/bundles/",
-    buildServiceBase: "https://pits-dot-pie-dev-221718.appspot.com/bundles/"
-  };
+  // const endpoints = {
+  //   bundleBase: "https://storage.googleapis.com/pie-pits-staging/bundles/",
+  //   buildServiceBase: "https://pits-dot-pie-dev-221718.appspot.com/bundles/"
+  // };
   const player = document.getElementById('player');
+  const player2 = document.getElementById('player2');
+  const player3 = document.getElementById('player3');
+  const player4 = document.getElementById('player4');
+  const player5 = document.getElementById('player5');
+  const player6 = document.getElementById('player6');
+  const player7 = document.getElementById('player7');
+  const player8 = document.getElementById('player8');
+  const player9 = document.getElementById('player9');
+  const player10 = document.getElementById('player10');
 
   // player.bundleEndpoints = endpoints;
 
@@ -197,8 +146,69 @@
     console.log(event.type + ':' + JSON.stringify(event.detail));
   });
 
-  player.env = { mode: 'view', role: 'student' }
+
+  // player.session = {
+  //   "id": "ac1dce40-4f05-11ef-a071-012811be37aa",
+  //   "assignment": {
+  //     "_id": "ac2129a0-4f05-11ef-a071-012811be37aa",
+  //     "assignment": "4968f460-4e50-11ef-8860-5b446b66af0a",
+  //     "kind": "AssignmentSessionMember",
+  //     "organization": "1",
+  //     "session": "ac1dce40-4f05-11ef-a071-012811be37aa",
+  //     "createdAt": "2024-07-31T06:25:25.319Z",
+  //     "__v": 0,
+  //     "updatedAt": "2024-07-31T10:54:05.557Z",
+  //     "id": "ac2129a0-4f05-11ef-a071-012811be37aa"
+  //   },
+  //   "data": [
+  //     {
+  //       "id": "p-00000000",
+  //       "answers": {},
+  //       "response": "123+\\theta^2\\ +\\ \\frac{2}{3}+\\sqrt{25}+\\longdiv{100}"
+  //     }
+  //   ],
+  //   "createdAt": "2024-07-31T06:25:25.287Z",
+  //   "updatedAt": "2024-07-31T06:25:25.287Z",
+  //   "mode": "gather",
+  //   "autoScore": {
+  //     "max": 1,
+  //     "points": 0,
+  //     "partialScoring": true,
+  //     "type": "auto"
+  //   }
+  // };
+  // player.env = { mode: 'view', role: 'student' }
+  //
   player.config = config;
+  player2.config = config;
+  player3.config = config;
+  player4.config = config;
+  player5.config = config;
+  player6.config = config;
+  player7.config = config;
+  player8.config = config;
+  player9.config = config;
+  player10.config = {
+    "id": "0",
+    "models": [
+      {
+        "id": "p-00000000",
+        "element": "pp-pie-element-ebsr",
+        "config": {
+          "element": "pp-pie-element-ebsr",
+          "id": "p-00000000",
+        },
+        "disabled": false,
+        "view": false,
+        "rationale": null,
+        "teacherInstructions": null
+      }
+    ],
+    "elements": {
+      "pp-pie-element-ebsr": "@pie-element/ebsr"
+    },
+    "markup": "<pp-pie-element-ebsr id=\"p-00000000\"></pp-pie-element-ebsr>",
+  };
 </script>
 </body>
 </html>
