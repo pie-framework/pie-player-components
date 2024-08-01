@@ -7,6 +7,11 @@ import {
 import { PieItemElement, PieContent } from "./interface";
 import pickBy from "lodash/pickBy";
 import { emptyConfigure } from "./components/empty-configure";
+
+window["pieHelpers"] = {
+  loadingScripts: {}
+}
+
 /**
  * TODO: Clean up: PD-761
  */
@@ -205,19 +210,26 @@ export class PieLoader {
     );
 
     let scriptUrl = this.getScriptsUrl(options, piesToLoad);
+
     if (!scriptUrl) {
       console.error("No script urls found for elements.");
 
       return;
     }
 
+    // These scripts are actually being added to headers ONLY when the fetch below (in loadScript) returns a value
+    // However, if we have multiple players that are supposed to load the same bundle on the same page,
+    //  this means that we'll make that fetch request multiple times, which slows down the page
     const loadedScripts = [...head.getElementsByTagName("script")];
-    if (
-      loadedScripts.find(s => {
-        return s.src === scriptUrl;
-      })
-    ) {
+    // That's why we're using this little helper to store the ones that are in the process of loading as well
+    const alreadyLoadingScript = window["pieHelpers"] && window["pieHelpers"].loadingScripts[scriptUrl];
+
+    if (loadedScripts.find(s => (s.src === scriptUrl)) || alreadyLoadingScript) {
       return;
+    }
+
+    if (window["pieHelpers"] && !window["pieHelpers"].loadingScripts[scriptUrl]) {
+      window["pieHelpers"].loadingScripts[scriptUrl] = true;
     }
 
     const script = options.doc.createElement("script");
@@ -303,6 +315,8 @@ export class PieLoader {
           script.onload = onloadFn;
           script.src = scriptUrl;
           head.appendChild(script);
+
+          delete window["pieHelpers"].loadingScripts[scriptUrl];
         } else {
           console.error("Failed to load script, status code:", response.status);
         }
