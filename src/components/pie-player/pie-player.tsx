@@ -122,6 +122,11 @@ export class Player {
    */
   @Prop() showBottomBorder: boolean = false;
 
+  /**
+   * used to automatically re-fetch the bundle (in case we get a 503)
+   */
+  @Prop() reFetchBundle?: boolean = false;
+
   @Watch("addCorrectResponse")
   watchAddCorrectResponse(newValue, oldValue) {
     if (newValue !== oldValue) {
@@ -223,7 +228,8 @@ export class Player {
           endpoints: endpoints,
           bundle: this.hosted ? BundleType.player : BundleType.clientPlayer,
           useCdn: false,
-          forceBundleUrl
+          forceBundleUrl,
+          reFetchBundle: this.reFetchBundle
         });
       }
     } catch (err) {
