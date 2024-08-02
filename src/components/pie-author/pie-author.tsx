@@ -158,6 +158,11 @@ export class Author {
    */
   @Prop() canWatchConfigSettings: boolean = false;
 
+  /**
+   * used to automatically re-fetch the bundle (in case we get a 503)
+   */
+  @Prop() reFetchBundle?: boolean = false;
+
   @Method()
   async validateModels() {
     if (!this.pieContentModel || !this.pieContentModel.models) {
@@ -717,7 +722,8 @@ export class Author {
         doc: this.doc,
         endpoints,
         useCdn: false,
-        forceBundleUrl
+        forceBundleUrl,
+        reFetchBundle: this.reFetchBundle
       });
     }
   }
