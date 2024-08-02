@@ -1,3 +1,10 @@
+## [2.11.9](https://github.com/pie-framework/pie-player-components/compare/v2.11.8...v2.11.9) (2024-08-02)
+
+
+### Bug Fixes
+
+* add reFetchBundle option PD-3989 ([6339dc7](https://github.com/pie-framework/pie-player-components/commit/6339dc7a9ab68846a3e895d95490b4f6d8ae7d0a))
+
 ## [2.11.8](https://github.com/pie-framework/pie-player-components/compare/v2.11.7...v2.11.8) (2024-08-01)
 
 
