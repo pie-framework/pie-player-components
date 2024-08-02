@@ -178,9 +178,7 @@ export class PieLoader {
 
   /**
    *
-   * @param {Object<string,string>} elements elements to load from pie cloud service
-   * @param {HTMLDocument} doc - the document to load the scripts
-   * @param {string} base_url - default base url for cloud service
+   * @param options
    */
   public loadCloudPies = async (options: {
     content: PieContent;
@@ -189,6 +187,7 @@ export class PieLoader {
     bundle?: BundleType;
     useCdn: boolean;
     forceBundleUrl: boolean;
+    reFetchBundle: boolean;
   }) => {
     if (!options.endpoints) {
       options.endpoints = this.endpoints;
@@ -222,13 +221,13 @@ export class PieLoader {
     //  this means that we'll make that fetch request multiple times, which slows down the page
     const loadedScripts = [...head.getElementsByTagName("script")];
     // That's why we're using this little helper to store the ones that are in the process of loading as well
-    const alreadyLoadingScript = window["pieHelpers"].loadingScripts[scriptUrl];
+    const alreadyLoadingScript = window["pieHelpers"] && window["pieHelpers"].loadingScripts[scriptUrl];
 
     if (loadedScripts.find(s => (s.src === scriptUrl)) || alreadyLoadingScript) {
       return;
     }
 
-    if (!window["pieHelpers"].loadingScripts[scriptUrl]) {
+    if (window["pieHelpers"] && !window["pieHelpers"].loadingScripts[scriptUrl]) {
       window["pieHelpers"].loadingScripts[scriptUrl] = true;
     }
 
@@ -287,48 +286,54 @@ export class PieLoader {
       };
     })(piesToLoad);
 
-    const loadScript = async () => {
-      try {
-        const response = await withRetry(
-          async (currentDelay: number) => {
-            const res = await fetch(scriptUrl);
-            // if the request fails with 503 retry it
-            if (res.status === 503) {
-              console.warn(
-                `Service unavailable (503), retrying in ${currentDelay / 1000 ||
+    if (options.reFetchBundle) {
+      const loadScript = async () => {
+        try {
+          const response = await withRetry(
+            async (currentDelay: number) => {
+              const res = await fetch(scriptUrl);
+              // if the request fails with 503 retry it
+              if (res.status === 503) {
+                console.warn(
+                  `Service unavailable (503), retrying in ${currentDelay / 1000 ||
                   1} seconds...`
-              );
+                );
 
-              throw new Error("Unavailable, retrying");
-            }
+                throw new Error("Unavailable, retrying");
+              }
 
-            return res;
-          },
-          20,
-          1000,
-          30000
-        );
+              return res;
+            },
+            20,
+            1000,
+            30000
+          );
 
-        // if the request is successful inject the response as a script tag
-        // to avoid doing the same call twice
-        if (response.status === 200) {
-          script.onload = onloadFn;
-          script.src = scriptUrl;
-          head.appendChild(script);
+          // if the request is successful inject the response as a script tag
+          // to avoid doing the same call twice
+          if (response.status === 200) {
+            script.onload = onloadFn;
+            script.src = scriptUrl;
+            head.appendChild(script);
 
-          delete window["pieHelpers"].loadingScripts[scriptUrl];
-        } else {
-          console.error("Failed to load script, status code:", response.status);
+            delete window["pieHelpers"].loadingScripts[scriptUrl];
+          } else {
+            console.error("Failed to load script, status code:", response.status);
+          }
+        } catch (error) {
+          console.error(
+            "Network error occurred while trying to load script:",
+            error
+          );
         }
-      } catch (error) {
-        console.error(
-          "Network error occurred while trying to load script:",
-          error
-        );
-      }
-    };
+      };
 
-    await loadScript();
+      await loadScript();
+    } else {
+      script.onload = onloadFn;
+      script.src = scriptUrl;
+      head.appendChild(script);
+    }
   };
 
   /**

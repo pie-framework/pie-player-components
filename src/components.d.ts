@@ -88,6 +88,10 @@ export namespace Components {
     */
     'isInsidePieApiAuthor'?: boolean;
     /**
+    * used to automatically re-fetch the bundle (in case we get a 503)
+    */
+    'reFetchBundle'?: boolean;
+    /**
     * external providers can set this if they need to upload the assets to the cloud etc. by default we use data urls
     */
     'uploadSoundSupport': ExternalUploadSoundSupport;
@@ -129,6 +133,10 @@ export namespace Components {
     */
     'hosted'?: boolean;
     'provideScore': () => Promise<false | any[]>;
+    /**
+    * used to automatically re-fetch the bundle (in case we get a 503)
+    */
+    'reFetchBundle'?: boolean;
     /**
     * If the item contains a stimulus, the player will render it by default. Set this property to false to not render stimulus.
     */
@@ -275,6 +283,10 @@ declare namespace LocalJSX {
     */
     'onModelUpdated'?: (event: CustomEvent<any>) => void;
     /**
+    * used to automatically re-fetch the bundle (in case we get a 503)
+    */
+    'reFetchBundle'?: boolean;
+    /**
     * external providers can set this if they need to upload the assets to the cloud etc. by default we use data urls
     */
     'uploadSoundSupport'?: ExternalUploadSoundSupport;
@@ -330,6 +342,10 @@ declare namespace LocalJSX {
     * Emmitted when any interaction in the set of interactions being rendered has been mutated by user action.  The `Event.detail` property contains a `complete` property. If true, this indicates that enough data has been gathered by the interaciton to constitute a response. For example, in a plot line questsion where a user had to plot three points to plot the line, the `complete` propery would be false if 1 or 2 points had been added, but true if all three had.
     */
     'onSession-changed'?: (event: CustomEvent<any>) => void;
+    /**
+    * used to automatically re-fetch the bundle (in case we get a 503)
+    */
+    'reFetchBundle'?: boolean;
     /**
     * If the item contains a stimulus, the player will render it by default. Set this property to false to not render stimulus.
     */
