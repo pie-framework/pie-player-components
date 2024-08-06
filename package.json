@@ -1,6 +1,6 @@
 {
   "name": "@pie-framework/pie-player-components",
-  "version": "2.11.4-beta.2",
+  "version": "2.11.4-beta.3",
   "description": "Pie Player Components",
   "module": "dist/index.mjs",
   "main": "dist/index.js",
@@ -35,7 +35,8 @@
     "yalc": "yalc push",
     "commit": "git-cz",
     "semantic-release": "semantic-release",
-    "pretest": "if [ -f set-version.sh ]; then ./set-version.sh $npm_package_version; else echo \"skip post-install\"; fi"
+    "pretest": "if [ -f set-version.sh ]; then ./set-version.sh $npm_package_version; else echo \"skip post-install\"; fi",
+    "full": "git clean -xdf . && yarn install && yarn pretest && yarn build && yarn demo"
   },
   "dependencies": {
     "@material/select": "^2.2.0",

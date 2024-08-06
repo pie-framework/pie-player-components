@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0"
+  />
+  <title>MathJax Example</title>
+<!--  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.6.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>-->
+<!--  <script type="text/x-mathjax-config">-->
+<!--        MathJax.Hub.Config({-->
+<!--            tex2jax: {-->
+<!--                inlineMath: [['$','$'], ['\\(','\\)']],-->
+<!--                processEscapes: true-->
+<!--            }-->
+<!--        });-->
+<!--    </script>-->
+  <title>Item Player</title>
+
+  <!--    <script-->
+  <!--      type="module"-->
+  <!--      src="https://unpkg.com/@pie-framework/pie-player-components@latest/dist/pie-player-components/pie-player-components.esm.js"-->
+  <!--    ></script>-->
+
+  <!-- <script nomodule src="/build/pie-player-components.js"></script> -->
+  <script type="module" src="/build/pie-player-components.esm.js"></script>
+  <script nomodule src="/build/pie-player-components.js"></script>
+</head>
+<body>
+<pie-player id="player"></pie-player>
+<pie-player id="player2"></pie-player>
+<pie-player id="player3"></pie-player>
+<pie-player id="player4"></pie-player>
+<pie-player id="player5"></pie-player>
+<pie-player id="player6"></pie-player>
+<pie-player id="player7"></pie-player>
+<pie-player id="player8"></pie-player>
+<pie-player id="player9"></pie-player>
+<pie-player id="player10"></pie-player>
+
+<script type="text/javascript" src="./utils/models.js"></script>
+<script>
+  const config = {
+    "id": "4fde0f35-1c03-497c-a871-b510dab7e13b@0.0.1",
+    "models": [
+      {
+        "id": "p-00000000",
+        "element": "pp-pie-element-math-inline",
+        "config": {
+          "responseType": "Simple",
+          "element": "pp-pie-element-math-inline",
+          "feedback": {
+            "correct": {
+              "default": "Correct",
+              "type": "none"
+            },
+            "incorrect": {
+              "default": "Incorrect",
+              "type": "none"
+            },
+            "partial": {
+              "default": "Nearly",
+              "type": "none"
+            }
+          },
+          "equationEditor": "item-authoring",
+          "expression": "",
+          "question": "",
+          "customKeys": [
+            "\\left(\\right)",
+            "\\frac{}{}",
+            "x\\frac{}{}"
+          ],
+          "feedbackEnabled": false,
+          "promptEnabled": true,
+          "rationaleEnabled": false,
+          "teacherInstructionsEnabled": false,
+          "studentInstructionsEnabled": false,
+          "id": "p-00000000",
+          "partialScoring": true,
+          "rationale": null,
+          "prompt": "<div>test</div>",
+          "scoringType": "auto",
+          "response": {
+            "answer": "",
+            "validation": "literal"
+          },
+          "toolbarEditorPosition": "bottom",
+          "validationDefault": "literal",
+          "ignoreOrderDefault": false,
+          "allowTrailingZerosDefault": false,
+          "errors": {},
+          "responses": [],
+          "showNote": false,
+          "teacherInstructions": null,
+          "env": {
+            "mode": "gather",
+            "role": "student",
+            "partialScoring": true,
+            "@pie-element": {
+              "lockChoiceOrder": true
+            }
+          }
+        },
+        "disabled": false,
+        "view": false,
+        "rationale": null,
+        "teacherInstructions": null
+      }
+    ],
+    "elements": {
+      // "pp-pie-element-math-inline": "@pie-element/math-inline@6.11.0"
+      "pp-pie-element-math-inline": "@pie-element/math-inline@7.16.5"
+    },
+    "markup": "<pp-pie-element-math-inline id=\"p-00000000\"></pp-pie-element-math-inline>",
+    "bundle": {
+      url: "https://pits-dot-pie-prod-221718.appspot.com/bundles/@pie-element/math-inline@7.16.5/player.js"
+      // "url": [
+      //   // "https://pits-dot-pie-prod-221718.appspot.com/bundles/@pie-element/math-inline@6.11.0/player.js"
+      //   "https://pits-dot-pie-prod-221718.appspot.com/bundles/@pie-element/math-inline@7.16.5/player.js"
+      // ]
+    }
+  };
+  // const endpoints = {
+  //   bundleBase: "https://storage.googleapis.com/pie-pits-staging/bundles/",
+  //   buildServiceBase: "https://pits-dot-pie-dev-221718.appspot.com/bundles/"
+  // };
+  const player = document.getElementById('player');
+  const player2 = document.getElementById('player2');
+  const player3 = document.getElementById('player3');
+  const player4 = document.getElementById('player4');
+  const player5 = document.getElementById('player5');
+  const player6 = document.getElementById('player6');
+  const player7 = document.getElementById('player7');
+  const player8 = document.getElementById('player8');
+  const player9 = document.getElementById('player9');
+  const player10 = document.getElementById('player10');
+
+  // player.bundleEndpoints = endpoints;
+
+  document.addEventListener("session-changed", e => console.log(">", e));
+
+  player.addEventListener('sessionChanged', event => {
+    console.log(event.type + ':' + JSON.stringify(event.detail));
+  });
+
+
+  // player.session = {
+  //   "id": "ac1dce40-4f05-11ef-a071-012811be37aa",
+  //   "assignment": {
+  //     "_id": "ac2129a0-4f05-11ef-a071-012811be37aa",
+  //     "assignment": "4968f460-4e50-11ef-8860-5b446b66af0a",
+  //     "kind": "AssignmentSessionMember",
+  //     "organization": "1",
+  //     "session": "ac1dce40-4f05-11ef-a071-012811be37aa",
+  //     "createdAt": "2024-07-31T06:25:25.319Z",
+  //     "__v": 0,
+  //     "updatedAt": "2024-07-31T10:54:05.557Z",
+  //     "id": "ac2129a0-4f05-11ef-a071-012811be37aa"
+  //   },
+  //   "data": [
+  //     {
+  //       "id": "p-00000000",
+  //       "answers": {},
+  //       "response": "123+\\theta^2\\ +\\ \\frac{2}{3}+\\sqrt{25}+\\longdiv{100}"
+  //     }
+  //   ],
+  //   "createdAt": "2024-07-31T06:25:25.287Z",
+  //   "updatedAt": "2024-07-31T06:25:25.287Z",
+  //   "mode": "gather",
+  //   "autoScore": {
+  //     "max": 1,
+  //     "points": 0,
+  //     "partialScoring": true,
+  //     "type": "auto"
+  //   }
+  // };
+  // player.env = { mode: 'view', role: 'student' }
+  //
+  player.config = config;
+  player2.config = config;
+  player3.config = config;
+  player4.config = config;
+  player5.config = config;
+  player6.config = config;
+  player7.config = config;
+  player8.config = config;
+  player9.config = config;
+  player10.config = {
+    "id": "0",
+    "models": [
+      {
+        "id": "p-00000000",
+        "element": "pp-pie-element-ebsr",
+        "config": {
+          "element": "pp-pie-element-ebsr",
+          "id": "p-00000000",
+        },
+        "disabled": false,
+        "view": false,
+        "rationale": null,
+        "teacherInstructions": null
+      }
+    ],
+    "elements": {
+      "pp-pie-element-ebsr": "@pie-element/ebsr"
+    },
+    "markup": "<pp-pie-element-ebsr id=\"p-00000000\"></pp-pie-element-ebsr>",
+  };
+</script>
+</body>
+</html>

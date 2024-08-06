@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Item Player</title>
+
+  <script
+    type="module"
+    src="https://unpkg.com/@pie-framework/pie-player-components@1.7.0/dist/pie-player-components/pie-player-components.esm.js"
+  ></script>
+<!--  <script type="module" src="/build/pie-player-components.esm.js"></script>-->
+<!--  <script nomodule src="/build/pie-player-components.js"></script>-->
+</head>
+<body>
+<pie-player id="player"></pie-player>
+<pie-player class="hydrated" id="player-passage"></pie-player>
+<pie-player class="ibx-vendor-item hydrated" id="player2"></pie-player>
+
+<script>
+  const player = document.getElementById("player");
+  const player2 = document.getElementById("player2");
+  const playerPassage = document.getElementById("player-passage");
+
+  const endpoints = {
+    bundleBase: "https://pits-cdn.pie-api.io/bundles/",
+    buildServiceBase: "https://proxy.pie-api.com/bundles/"
+  };
+
+  player.addCorrectResponse = true;
+  player2.addCorrectResponse = true;
+
+
+  player.bundleEndpoints = endpoints;
+  player2.bundleEndpoints = endpoints;
+  playerPassage.bundleEndpoints = endpoints;
+
+  player.config = {
+    "markup": "<drag-in-the-blank id=\"4028e4a24d3edf7c014db0b5679f24ea\"></drag-in-the-blank>",
+    "elements": {
+      "drag-in-the-blank": "@pie-element/drag-in-the-blank@5.12.5"
+    },
+    "models": [
+      {
+        "duplicates": false,
+        "lockChoiceOrder": true,
+        "teacherInstructions": "",
+        "partialScoring": true,
+        "markup": "<p>The total number of students surveyed is {{0}}.</p>\n\n<p>The number of students who watched more than 30 minutes of television is {{1}}.</p>\n\n<p>There are exactly 10&#160;students who watched {{2}} minutes of television.</p>\n",
+        "correctResponse": {
+          "0": "9",
+          "1": "8",
+          "2": "4"
+        },
+        "id": "4028e4a24d3edf7c014db0b5679f24ea",
+        "choices": [
+          {
+            "id": "0",
+            "value": "1-15"
+          },
+          {
+            "id": "1",
+            "value": "16-30"
+          },
+          {
+            "id": "2",
+            "value": "31-45"
+          },
+          {
+            "id": "3",
+            "value": "46-60"
+          },
+          {
+            "id": "4",
+            "value": "more than 60"
+          },
+          {
+            "id": "5",
+            "value": "10"
+          },
+          {
+            "id": "6",
+            "value": "15"
+          },
+          {
+            "id": "7",
+            "value": "30"
+          },
+          {
+            "id": "8",
+            "value": "55"
+          },
+          {
+            "id": "9",
+            "value": "80"
+          }
+        ],
+        "prompt": "<p>The histogram below represents the number of minutes a random sample of seventh graders&nbsp;spent watching television the previous day.</p><p><img alt=\"The histogram shows time watching television in minutes. Five students watched between 1 and 15, twenty students watched between 16 and 30, fifteen students watched between 31 and 45, thirty students watched between 46 and 60, and ten students watched more than 60 minutes.\" id=\"0656026d5ee4459cb0dfe5152d26f3e6\" src=\"https://assets.pie-api.com/assets/4028e4a24d3edf7c014db0b5679f24ea@0.0.89/image/jpeg/e0cceab1-3bcc-427e-9e0b-518b4472a1a2\"></p><p>Drag and drop the correct response into&nbsp;each box to make the statements true.</p>",
+        "choicesPosition": "below",
+        "rationale": "<p>The correct responses are shown.</p><ul><li><span>​</span>The total number of students surveyed is <strong>80</strong>.</li><li>The number of students who watched more than 30 minutes of television is <strong>55</strong>.</li><li>There are exactly 10&nbsp;students who watched <strong>more than 60</strong> minutes of television.</li></ul><p>From the histogram you can see that 5 students watched for 1–15 minutes; 20 students watched for 16–30 minutes; 15 students watched for 31–45 minutes; 30 students watched for 46–60 minutes; and 10 students watched for more than 60 minutes. So a total of 5 + 20 + 15 + 30 + 10 = 80 students were surveyed.</p><p>Students in the categories&nbsp;31–45 minutes, 46–60 minutes, and more than 60 minutes watched for more than 30 minutes. So 15 + 30 + 10 = 55 students watched for more than 30 minutes.</p><p>The bar with the height of 10 students corresponds to the category more than 60 minutes.</p>",
+        "element": "drag-in-the-blank"
+      }
+    ],
+    "_id": "6571742582ded862da63a010"
+  };
+  playerPassage.config = {
+    "id": "8a808081841c045001842e709d6505ed",
+    "markup": "<pie-passage id=\"8a808081841c045001842e709d6505ed\"></pie-passage>",
+    "elements": {
+      "pie-passage": "@pie-element/passage@2.10.5"
+    },
+    "models": [
+      {
+        "passages": [
+          {
+            "teacherInstructions": "",
+            "author": "",
+            "subtitle": "A Thriving People",
+            "text": "<h3>Latin American Indians:</h3><h4>A Thriving People</h4><div><div class=\"p-number\">1</div><div class=\"numbered-paragraph\"><p>Latin America encompasses the regions of North America, South America, Central America, and the Caribbean, where the primary language is Portuguese or Spanish. Latin American Indians are the indigenous peoples who live in these areas. As of 2016, there were about 42 million Latin American Indians. More than half of Latin American Indians live in urban areas, but there are other groups that live in voluntary isolation. Latin American Indians can be a large or a small presence in a country. In 2021 in Mexico, for example, there were about 17 million indigenous people, or 15 percent of Mexico’s total population. In contrast, there were fewer than 100,000 indigenous people in Uruguay in 2021, or about 2.4 percent of that country’s population.</p></div><div class=\"p-number\">2</div><div class=\"numbered-paragraph\"><p>While there is no doubt that Latin American Indians have a rich culture, it is impossible to present a succinct description. In Paraguay alone, indigenous peoples include the Toba, Qom, Maskoy, Manjuy, and Aché, just to name a few. There are hundreds more groups throughout Latin America. The indigenous peoples of Latin America speak more than 500 languages. Sadly, the culture of many groups is slowly disappearing over time.</p></div><div class=\"p-number\">3</div><div class=\"numbered-paragraph\"><p>The Quechua are just one indigenous group in Latin America with a rich culture. Making their homes in the Andean highlands, the Quechua use traditional flutes, called quenas and sikus, to create their signature huayno music. They use their spinning and weaving skills to create vibrantly-colored blankets and clothing. Foods important to the Quechua culture include potatoes, coca tea, and alpaca meat. This is just a cursory overview of a single group’s culture. Someone could likely spend years learning about Latin American Indian culture and still just scratch the surface.</p></div><div class=\"p-number\">4</div><div class=\"numbered-paragraph\"><p>Latin American Indians face a variety of challenges, but there are many outspoken and determined leaders who are willing to fight for important causes. One of them is Miriam Miranda, who began her life in a Garífuna village in Honduras. One of Miranda’s main interests is the protection of Garífuna land, and she has fought back against potentially destructive tourism and real estate projects. In her own words, Miranda explains, “The displacement of communities and the loss of cultures that come with the development of tourism is growing . . . but the Garífuna women, many of them elders, have incredible strength.”</p></div><div class=\"p-number\">5</div><div class=\"numbered-paragraph\"><p>Whereas Miranda is a guardian of the land, Oscar Olivera is a defender of water. He successfully fought against the privatization of a Bolivian water source and is involved with efforts to combat water pollution. With the combined efforts of people like Miranda and Olivera, Latin American Indians will hopefully be able to preserve and protect their communities and way of life for years to come.</p></div><div class=\"numbered-paragraph\"><p style=\"text-align: center;\"><span class=\"no-number\"><img alt=\"\" id=\"ae9ef4b393ef454e9d8fb41df92663eb\" src=\"https://assets.pie-api.com/assets/8a808081841c045001842e709d6505ed@0.0.107/image/jpeg/bb5af79d-aa77-4bb5-a658-a162c2244f82\"></span></p></div></div>",
+            "title": "Latin American Indians:"
+          }
+        ],
+        "id": "8a808081841c045001842e709d6505ed",
+        "element": "pie-passage"
+      }
+    ],
+    "_id": "666090842c68d449025de6a9",
+    "layout": "left",
+    "buildInfo": [
+      {
+        "name": "@pie-element/passage",
+        "version": "latest"
+      }
+    ]
+  };
+  player2.config = {
+    "markup": "<drag-in-the-blank id=\"8a8080818c231dfc018c85cdfa7a4414\"></drag-in-the-blank>",
+    "elements": {
+      "drag-in-the-blank": "@pie-element/drag-in-the-blank@5.12.5"
+    },
+    "models": [
+      {
+        "duplicates": false,
+        "lockChoiceOrder": false,
+        "teacherInstructions": "",
+        "partialScoring": true,
+        "markup": "After reading this text, the reader will likely be inspired by Miriam Miranda and Oscar Olivera due to&#160;{{0}}.",
+        "correctResponse": {
+          "0": "1"
+        },
+        "id": "8a8080818c231dfc018c85cdfa7a4414",
+        "choices": [
+          {
+            "id": "0",
+            "value": "their fight against water pollution in Bolivia"
+          },
+          {
+            "id": "1",
+            "value": "their commitment to protecting their land and community"
+          },
+          {
+            "id": "2",
+            "value": "their promotion of&#160;tourism in Latin America to help locals find jobs"
+          },
+          {
+            "id": "3",
+            "value": "their work with helping indigenous groups and displaced communities find homes."
+          }
+        ],
+        "prompt": "<p>Drag the phrase that correctly completes the sentence below.</p>",
+        "choicesPosition": "below",
+        "rationale": "<p>The reader&#160;will likely be inspired by Miriam Miranda and Oscar Olivera because of their commitment and determination to safeguard their land, community, and culture from various threats.</p>",
+        "element": "drag-in-the-blank"
+      }
+    ],
+    "_id": "658b46b24b7fcb4d09de5504"
+  };
+</script>
+</body>
+</html>
