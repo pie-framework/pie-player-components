@@ -79,8 +79,8 @@
 }
 
 .pie-api-player img {
-  max-width: inherit;
-  max-height: inherit;
+  max-width: inherit !important;
+  max-height: inherit !important;
 }
 
 /* These styles are used in the body content of an item -- they also appear in the item body editor. */
