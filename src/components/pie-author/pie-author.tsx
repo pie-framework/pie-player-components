@@ -272,11 +272,14 @@ export class Author {
 
       this.dialogOpened = false;
 
-      if (this.fileInput.files.length === 0) {
-        // it means the user clicked cancel
-        this.imageHandler.cancel();
-        this.imageHandler = null;
-      }
+      // needed in order for the fileInput to be populated with the file
+      setTimeout(() => {
+        if (this.fileInput.files.length === 0) {
+          // it means the user clicked cancel
+          this.imageHandler.cancel();
+          this.imageHandler = null;
+        }
+      }, 50);
     };
 
     this.handleInsertImage = (e: InsertImageEvent) => {
