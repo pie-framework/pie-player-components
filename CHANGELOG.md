@@ -1,3 +1,10 @@
+## [2.11.10](https://github.com/pie-framework/pie-player-components/compare/v2.11.9...v2.11.10) (2024-08-23)
+
+
+### Bug Fixes
+
+* made sure image upload works PD-4013 ([d4e5383](https://github.com/pie-framework/pie-player-components/commit/d4e5383c1ed70cd1a08cd4ed769b413616b5ca3e))
+
 ## [2.11.9](https://github.com/pie-framework/pie-player-components/compare/v2.11.8...v2.11.9) (2024-08-02)
 
 
