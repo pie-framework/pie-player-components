@@ -128,6 +128,7 @@ export class Author {
 
   imageHandler: ImageHandler = null;
   dialogOpened: boolean = false;
+  changeHandled: boolean = false;
 
   handleFileInputChange: (e: Event) => void;
   handleInsertImage: (e: InsertImageEvent) => void;
@@ -253,6 +254,8 @@ export class Author {
         return;
       }
 
+      this.changeHandled = true;
+
       const files: FileList = (input as any).files;
       if (files.length < 1 || !files[0]) {
         this.imageHandler.cancel();
@@ -274,12 +277,13 @@ export class Author {
 
       // needed in order for the fileInput to be populated with the file
       setTimeout(() => {
-        if (this.fileInput.files.length === 0) {
+        if (this.fileInput.files.length === 0 && !this.changeHandled) {
           // it means the user clicked cancel
           this.imageHandler.cancel();
           this.imageHandler = null;
+          this.changeHandled = true;
         }
-      }, 50);
+      }, 500);
     };
 
     this.handleInsertImage = (e: InsertImageEvent) => {
@@ -289,6 +293,7 @@ export class Author {
       if (!e.detail.isPasted) {
         this.fileInput.click();
         this.dialogOpened = true;
+        this.changeHandled = false;
       } else if (e.detail.getChosenFile) {
         // this is for images that were pasted into the editor (or dropped)
         // they also need to be uploaded, but the file input doesn't have to be used
