@@ -1,3 +1,10 @@
+## [2.11.12](https://github.com/pie-framework/pie-player-components/compare/v2.11.11...v2.11.12) (2024-08-26)
+
+
+### Bug Fixes
+
+* temporary remove usage of math-rendering-accessible PD-3989 ([bd468aa](https://github.com/pie-framework/pie-player-components/commit/bd468aaafdde026a77ce0ac5eed6bdca1b7b7c53))
+
 ## [2.11.11](https://github.com/pie-framework/pie-player-components/compare/v2.11.10...v2.11.11) (2024-08-26)
 
 
