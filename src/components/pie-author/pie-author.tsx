@@ -7,7 +7,10 @@ import {
   ModelUpdatedEvent
 } from "@pie-framework/pie-configure-events";
 
-import {_dll_pie_lib__pie_toolbox_math_rendering_accessible} from "@pie-lib/pie-toolbox-math-rendering-module/module";
+import {
+  _dll_pie_lib__pie_toolbox_math_rendering,
+  // _dll_pie_lib__pie_toolbox_math_rendering_accessible
+} from "@pie-lib/pie-toolbox-math-rendering-module/module";
 import {Component, Element, Event, EventEmitter, h, Method, Prop, State, Watch} from "@stencil/core";
 import cloneDeep from "lodash/cloneDeep";
 import _isEmpty from "lodash/isEmpty";
@@ -738,7 +741,8 @@ export class Author {
 
   private renderMath() {
     setTimeout(() => {
-      _dll_pie_lib__pie_toolbox_math_rendering_accessible.renderMath(this.el);
+      _dll_pie_lib__pie_toolbox_math_rendering.renderMath(this.el);
+      // _dll_pie_lib__pie_toolbox_math_rendering_accessible.renderMath(this.el);
     }, 50);
   }
 
