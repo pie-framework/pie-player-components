@@ -1,3 +1,10 @@
+## [2.11.11](https://github.com/pie-framework/pie-player-components/compare/v2.11.10...v2.11.11) (2024-08-26)
+
+
+### Bug Fixes
+
+* handled extra time and upload case PD-4013 ([f9a2460](https://github.com/pie-framework/pie-player-components/commit/f9a246085b112eba202cc15f3c4c1d3d98071013))
+
 ## [2.11.10](https://github.com/pie-framework/pie-player-components/compare/v2.11.9...v2.11.10) (2024-08-23)
 
 
