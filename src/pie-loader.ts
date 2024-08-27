@@ -27,7 +27,7 @@ export const DEFAULT_ENDPOINTS = {
   // this is actually not really used anymore? equals to dev
   stage: {
     bundleBase: "https://pits-cdn.pie-api.io/bundles/",
-    buildServiceBase: "https://proxy.dev.pie-api.com/bundles/",
+    buildServiceBase: "https://proxy.pie-api.com/bundles/",
   },
 };
 
