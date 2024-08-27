@@ -22,77 +22,6 @@
 
 <script type="text/javascript" src="./utils/models.js"></script>
 <script>
-  // const config = {
-  //   "pie": {
-  //     "models": [
-  //       {
-  //         "disabled": false,
-  //         "mode": "gather",
-  //         "prompt": "<div>MC </div><div>CSM1 </div>",
-  //         "choicesLayout": "vertical",
-  //         "gridColumns": "2",
-  //         "choiceMode": "radio",
-  //         "keyMode": "letters",
-  //         "choices": [
-  //           {
-  //             "label": "<div>3</div>",
-  //             "value": "2",
-  //             "rationale": null
-  //           },
-  //           {
-  //             "label": "<div>1</div>",
-  //             "value": "0",
-  //             "rationale": null
-  //           },
-  //           {
-  //             "label": "<div>2</div>",
-  //             "value": "1",
-  //             "rationale": null
-  //           },
-  //           {
-  //             "label": "<div>4</div>",
-  //             "value": "3",
-  //             "rationale": null
-  //           }
-  //         ],
-  //         "teacherInstructions": null,
-  //         "element": "pp-pie-element-multiple-choice",
-  //         "id": "p-00000000"
-  //       }
-  //     ],
-  //     "elements": {
-  //       "pp-pie-element-multiple-choice": "@pie-element/multiple-choice@7.13.0"
-  //     },
-  //     "id": "3b3151a0-97c5-4214-9120-01b680f241d4@0.0.3",
-  //     "markup": "<pp-pie-element-multiple-choice id=\"p-00000000\"></pp-pie-element-multiple-choice>"
-  //   },
-  //   "stimulus": {
-  //     "layout": "left",
-  //     "models": [
-  //       {
-  //         "passages": [
-  //           {
-  //             "text": "<h3>A Boy Called Sparky</h3><div><div class=\"p-number\">1</div><div class=\"numbered-paragraph\"><p>     Sparky always looked forward to Sunday mornings. His dad did not have to work, so the two of them would sit at the kitchen table eating breakfast and reading the “funnies,” or comic strips. Sparky loved cartoons. In fact, his nickname “Sparky” came from a cartoon. His uncle gave him the name when he was just a baby. It was the name of the horse Spark Plug from the “Barney Google” comic strip.</p></div><div class=\"p-number\">2</div><div class=\"numbered-paragraph\"><p>     Sparky had his favorite cartoons. He liked “Skippy,” “Mickey Mouse,” and “Popeye” the best. He had a dream deep in his heart. He wanted to draw cartoons when he grew up.</p></div><div class=\"p-number\">3</div><div class=\"numbered-paragraph\"><p>     He started practicing right away. He drew whenever he could. When he was a senior in high school, his teacher asked him to draw some cartoons for the yearbook. Sparky was very excited about it, and he worked really hard. But when the yearbooks were handed out at the end of the year, his drawings were not in them. He felt sad because he thought his teacher had liked his drawings.</p></div><div class=\"p-number\">4</div><div class=\"numbered-paragraph\"><p>     At the same time, Sparky took a special class in an art school. The school was far away, so he mailed in his assignments. His teacher did not think Sparky could draw children very well. She gave him a C in the class.</p></div><div class=\"p-number\">5</div><div class=\"numbered-paragraph\"><p>     Even though Sparky felt bad about both of these things, he did not give up. He knew he could draw, even if others didn’t always agree. Finally, one of his drawings of a dog was printed in a magazine, and that gave him some hope.</p></div><div class=\"p-number\">6</div><div class=\"numbered-paragraph\"><p>     Sparky continued to draw as a young adult, especially as a soldier in World War II. The more he practiced, the better he became. When he came home from the war, he was able to get a few art jobs. One was at the art school he had gone to. Another was for his local paper. The paper printed his comic strip “Li’l Folks” for three years.</p></div><div class=\"p-number\">7</div><div class=\"numbered-paragraph\"><p>     His big break came in October 1950. That’s when seven national newspapers started printing a new comic strip he made up. It was called “Peanuts” and featured children and a dog as the main characters. Soon Charlie Brown, Snoopy, and the rest of the “Peanuts” gang were famous around the world. Many people loved these fun characters.</p></div><div class=\"p-number\">8</div><div class=\"numbered-paragraph\"><p>     Charles “Sparky” Schulz’s dream had come true. He was a cartoonist at last.</p></div><div class=\"numbered-paragraph\"><p style=\"text-align: center;\"><span class=\"no-number\"><img alt=\"A photo of Charles Schulz from 1956 sitting at a drawing table.\" id=\"c76e478ba7a94944adf86678ef706ec5\" src=\"https://storage.googleapis.com/pie-prod-221718-assets/image/3c0ef9b5-f331-48e6-a870-d53e99fdabd2\"></span></p></div></div>",
-  //             "title": "A Boy Called Sparky"
-  //           }
-  //         ],
-  //         "id": "4028e4a23ef2387f013f0a6afe781d9b",
-  //         "element": "pie-passage"
-  //       }
-  //     ],
-  //     "markup": "<pie-passage id=\"4028e4a23ef2387f013f0a6afe781d9b\"></pie-passage>",
-  //     "buildInfo": [
-  //       {
-  //         "name": "@pie-element/passage",
-  //         "version": "latest"
-  //       }
-  //     ],
-  //     "elements": {
-  //       "pie-passage": "@pie-element/passage@1.11.4"
-  //     },
-  //     "id": "4028e4a23ef2387f013f0a6afe781d9b"
-  //   }
-  // };
   const config = {
     "pie": {
       "id": "81b8dd41-469c-4960-8828-8956e88b7735@0.0.1-draft.17",
@@ -135,14 +64,12 @@
       "markup": "<pie-passage id=\"1\"></pie-passage>"
     }
   };
-
-  const endpoints = {
-    bundleBase: "https://pits-cdn.pie-api.io/bundles/",
-    buildServiceBase: "https://proxy.pie-api.com/bundles/",
-  };
   const player = document.getElementById('player');
 
-  player.bundleEndpoints = endpoints;
+  // player.bundleEndpoints = {
+  //   bundleBase: "https://pits-cdn.pie-api.io/bundles/",
+  //   buildServiceBase: "https://pits-dot-pie-prod-221718.appspot.com/bundles/"
+  // };
 
   document.addEventListener("session-changed", e => console.log(">", e));
 

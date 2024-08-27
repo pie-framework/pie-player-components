@@ -18,16 +18,17 @@ window["pieHelpers"] = {
 export const DEFAULT_ENDPOINTS = {
   prod: {
     bundleBase: "https://pits-cdn.pie-api.io/bundles/",
-    buildServiceBase: "https://pits-dot-pie-prod-221718.appspot.com/bundles/"
-  },
-  stage: {
-    bundleBase: "https://pits-cdn.pie-api.io/bundles/",
-    buildServiceBase: "https://pits-dot-pie-prod-221718.appspot.com/bundles/"
+    buildServiceBase: "https://proxy.pie-api.com/bundles/",
   },
   dev: {
-    bundleBase: "https://pits-cdn.pie-api.io/bundles/",
-    buildServiceBase: "https://pits-dot-pie-prod-221718.appspot.com/bundles/"
-  }
+    bundleBase: "https://pits-cdn-dev.pie-api.io/bundles/",
+    buildServiceBase: "https://proxy.dev.pie-api.com/bundles/",
+  },
+  // this is actually not really used anymore? equals to dev
+  stage: {
+    bundleBase: "https://pits-cdn-dev.pie-api.io/bundles/",
+    buildServiceBase: "https://proxy.dev.pie-api.com/bundles/",
+  },
 };
 
 export interface Entry {
