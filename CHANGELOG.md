@@ -1,3 +1,15 @@
+# [3.0.0](https://github.com/pie-framework/pie-player-components/compare/v2.11.12...v3.0.0) (2024-08-27)
+
+
+### Features
+
+* use proxy for bundle endpoints defaults PD-4048 ([0c094f3](https://github.com/pie-framework/pie-player-components/commit/0c094f3bfd3ceabb1076078166f880a36aa91a6d))
+
+
+### BREAKING CHANGES
+
+* The new defaults for bundle endpoints will redirect to proxy. That means the customers need to whitelist proxy link.
+
 ## [2.11.12](https://github.com/pie-framework/pie-player-components/compare/v2.11.11...v2.11.12) (2024-08-26)
 
 
