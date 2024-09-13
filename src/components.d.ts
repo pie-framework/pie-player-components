@@ -95,6 +95,10 @@ export namespace Components {
     * external providers can set this if they need to upload the assets to the cloud etc. by default we use data urls
     */
     'uploadSoundSupport': ExternalUploadSoundSupport;
+    /**
+    * If the Player should try to use math-rendering-accessible. Do not set this to TRUE if you're not using item types that were released before having the math-rendering-accessible fix. The versions that can be safely used can be found here: TODO.
+    */
+    'useMathRenderingAccessible': boolean;
     'validateModels': () => Promise<any>;
     'version': string;
   }
@@ -154,6 +158,10 @@ export namespace Components {
     * @param update the updated model
     */
     'updateElementModel': (update: PieModel) => Promise<void>;
+    /**
+    * If the Player should try to use math-rendering-accessible. Do not set this to TRUE if you're not using item types that were released before having the math-rendering-accessible fix. The versions that can be safely used can be found here: TODO.
+    */
+    'useMathRenderingAccessible': boolean;
     'version': string;
   }
   interface PiePreviewControl {}
@@ -290,6 +298,10 @@ declare namespace LocalJSX {
     * external providers can set this if they need to upload the assets to the cloud etc. by default we use data urls
     */
     'uploadSoundSupport'?: ExternalUploadSoundSupport;
+    /**
+    * If the Player should try to use math-rendering-accessible. Do not set this to TRUE if you're not using item types that were released before having the math-rendering-accessible fix. The versions that can be safely used can be found here: TODO.
+    */
+    'useMathRenderingAccessible'?: boolean;
     'version'?: string;
   }
   interface PieEmbed {}
@@ -358,6 +370,10 @@ declare namespace LocalJSX {
     * In evaluate mode, add a bottom border to visually separate each item in the case of a multi-item
     */
     'showBottomBorder'?: boolean;
+    /**
+    * If the Player should try to use math-rendering-accessible. Do not set this to TRUE if you're not using item types that were released before having the math-rendering-accessible fix. The versions that can be safely used can be found here: TODO.
+    */
+    'useMathRenderingAccessible'?: boolean;
     'version'?: string;
   }
   interface PiePreviewControl {
