@@ -22,11 +22,12 @@
 <!--  </script>-->
   <!--  To test PD-3989 - end -->
 
-  <script nomodule src="/build/pie-player-components.js"></script>
-  <script type="module" src="/build/pie-player-components.esm.js"></script>
-
 <!--  You can adjust pie-api-components version below-->
-<!--  <script src="https://unpkg.com/@pie-api/pie-api-components@latest/dist/pie-api-components.js"></script>-->
+  <script type="module" src="https://unpkg.com/@pie-api/pie-api-components@latest/dist/pie-api-components/pie-api-components.esm.js"></script>
+  <script nomodule="" src="https://unpkg.com/@pie-api/pie-api-components@latest/dist/pie-api-components/pie-api-components.js"></script>
+
+<!--  <script nomodule src="/build/pie-player-components.js"></script>-->
+<!--  <script type="module" src="/build/pie-player-components.esm.js"></script>-->
 
   <style>
     #players {
@@ -48,6 +49,8 @@
 
 <script>
   const players = document.getElementById("players");
+
+  // next versions
   const dragInTheBlankElement = "@pie-element/drag-in-the-blank@5.21.5-next.46";
   const passageElement = "@pie-element/passage@2.21.8-next.29";
   const multipleChoiceElement = "@pie-element/multiple-choice@8.24.5-next.46";
@@ -61,6 +64,21 @@
   const eteElement = "@pie-element/extended-text-entry@10.23.5-next.46";
   const rubricElement = "@pie-element/rubric@3.19.5-next.46";
   const chartingElement = "@pie-element/charting@7.22.5-next.46";
+
+  // latest versions
+  // const dragInTheBlankElement = "@pie-element/drag-in-the-blank@latest";
+  // const passageElement = "@pie-element/passage@latest";
+  // const multipleChoiceElement = "@pie-element/multiple-choice@latest";
+  // const explicitConstructedResponseElement = "@pie-element/explicit-constructed-response@latest";
+  // const hotspotElement = "@pie-element/hotspot@latest";
+  // const inlineDropdownElement = "@pie-element/inline-dropdown@latest";
+  // const selectTextElement = "@pie-element/select-text@latest";
+  // const icaElement = "@pie-element/image-cloze-association@latest";
+  // const matchElement = "@pie-element/match@latest";
+  // const mathInlineElement = "@pie-element/math-inline@latest";
+  // const eteElement = "@pie-element/extended-text-entry@latest";
+  // const rubricElement = "@pie-element/rubric@latest";
+  // const chartingElement = "@pie-element/charting@latest";
 
   // You can change configs to be what you need (adjust item versions, etc). It's just a bunch of item configs I copied from NIB.
   const configs = {
@@ -10457,7 +10475,7 @@
     players.appendChild(player);
 
     // Set this variable ONLY if you're using item types that are using correct math-rendering-accessible package
-    player.useMathRenderingAccessible = true;
+    // player.useMathRenderingAccessible = true;
 
     player.reFetchBundle = true;
     player.addCorrectResponse = true;
