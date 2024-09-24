@@ -96,7 +96,7 @@ export namespace Components {
     */
     'uploadSoundSupport': ExternalUploadSoundSupport;
     /**
-    * If the Player should try to use math-rendering-accessible. Do not set this to TRUE if you're not using item types that were released before having the math-rendering-accessible fix. The versions that can be safely used can be found here: TODO.
+    * Enables math-rendering accessibility support for the Player. Set to TRUE only if you're using item types that include the math-rendering accessibility fix. For safe version compatibility, refer to the following link: TODO (https://illuminate.atlassian.net/wiki/x/zIBkFwQ).
     */
     'useMathRenderingAccessible': boolean;
     'validateModels': () => Promise<any>;
@@ -159,7 +159,7 @@ export namespace Components {
     */
     'updateElementModel': (update: PieModel) => Promise<void>;
     /**
-    * If the Player should try to use math-rendering-accessible. Do not set this to TRUE if you're not using item types that were released before having the math-rendering-accessible fix. The versions that can be safely used can be found here: TODO.
+    * Enables math-rendering accessibility support for the Player. Set to TRUE only if you're using item types that include the math-rendering accessibility fix. For safe version compatibility, refer to the following link: TODO (https://illuminate.atlassian.net/wiki/x/zIBkFwQ).
     */
     'useMathRenderingAccessible': boolean;
     'version': string;
@@ -299,7 +299,7 @@ declare namespace LocalJSX {
     */
     'uploadSoundSupport'?: ExternalUploadSoundSupport;
     /**
-    * If the Player should try to use math-rendering-accessible. Do not set this to TRUE if you're not using item types that were released before having the math-rendering-accessible fix. The versions that can be safely used can be found here: TODO.
+    * Enables math-rendering accessibility support for the Player. Set to TRUE only if you're using item types that include the math-rendering accessibility fix. For safe version compatibility, refer to the following link: TODO (https://illuminate.atlassian.net/wiki/x/zIBkFwQ).
     */
     'useMathRenderingAccessible'?: boolean;
     'version'?: string;
@@ -371,7 +371,7 @@ declare namespace LocalJSX {
     */
     'showBottomBorder'?: boolean;
     /**
-    * If the Player should try to use math-rendering-accessible. Do not set this to TRUE if you're not using item types that were released before having the math-rendering-accessible fix. The versions that can be safely used can be found here: TODO.
+    * Enables math-rendering accessibility support for the Player. Set to TRUE only if you're using item types that include the math-rendering accessibility fix. For safe version compatibility, refer to the following link: TODO (https://illuminate.atlassian.net/wiki/x/zIBkFwQ).
     */
     'useMathRenderingAccessible'?: boolean;
     'version'?: string;
