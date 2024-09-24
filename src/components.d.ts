@@ -95,6 +95,10 @@ export namespace Components {
     * external providers can set this if they need to upload the assets to the cloud etc. by default we use data urls
     */
     'uploadSoundSupport': ExternalUploadSoundSupport;
+    /**
+    * Enables math-rendering accessibility support for the Player. Set to TRUE only if you're using item types that include the math-rendering accessibility fix. For safe version compatibility, refer to the following link: TODO (https://illuminate.atlassian.net/wiki/x/zIBkFwQ).
+    */
+    'useMathRenderingAccessible': boolean;
     'validateModels': () => Promise<any>;
     'version': string;
   }
@@ -154,6 +158,10 @@ export namespace Components {
     * @param update the updated model
     */
     'updateElementModel': (update: PieModel) => Promise<void>;
+    /**
+    * Enables math-rendering accessibility support for the Player. Set to TRUE only if you're using item types that include the math-rendering accessibility fix. For safe version compatibility, refer to the following link: TODO (https://illuminate.atlassian.net/wiki/x/zIBkFwQ).
+    */
+    'useMathRenderingAccessible': boolean;
     'version': string;
   }
   interface PiePreviewControl {}
@@ -290,6 +298,10 @@ declare namespace LocalJSX {
     * external providers can set this if they need to upload the assets to the cloud etc. by default we use data urls
     */
     'uploadSoundSupport'?: ExternalUploadSoundSupport;
+    /**
+    * Enables math-rendering accessibility support for the Player. Set to TRUE only if you're using item types that include the math-rendering accessibility fix. For safe version compatibility, refer to the following link: TODO (https://illuminate.atlassian.net/wiki/x/zIBkFwQ).
+    */
+    'useMathRenderingAccessible'?: boolean;
     'version'?: string;
   }
   interface PieEmbed {}
@@ -358,6 +370,10 @@ declare namespace LocalJSX {
     * In evaluate mode, add a bottom border to visually separate each item in the case of a multi-item
     */
     'showBottomBorder'?: boolean;
+    /**
+    * Enables math-rendering accessibility support for the Player. Set to TRUE only if you're using item types that include the math-rendering accessibility fix. For safe version compatibility, refer to the following link: TODO (https://illuminate.atlassian.net/wiki/x/zIBkFwQ).
+    */
+    'useMathRenderingAccessible'?: boolean;
     'version'?: string;
   }
   interface PiePreviewControl {

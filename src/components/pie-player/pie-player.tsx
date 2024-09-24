@@ -1,7 +1,7 @@
 import {SessionChangedEvent} from "@pie-framework/pie-player-events";
 import {
   _dll_pie_lib__pie_toolbox_math_rendering,
-  // _dll_pie_lib__pie_toolbox_math_rendering_accessible
+  _dll_pie_lib__pie_toolbox_math_rendering_accessible
 } from "@pie-lib/pie-toolbox-math-rendering-module/module";
 import {
   Component,
@@ -161,6 +161,13 @@ export class Player {
 
   @Prop({mutable: false, reflect: false})
   version: string = VERSION;
+
+  /**
+   * Enables math-rendering accessibility support for the Player.
+   * Set to TRUE only if you're using item types that include the math-rendering accessibility fix.
+   * For safe version compatibility, refer to the following link: TODO (https://illuminate.atlassian.net/wiki/x/zIBkFwQ).
+   */
+  @Prop() useMathRenderingAccessible: boolean = false;
 
   /**
    * Allow to resize pie-stimulus layout
@@ -398,8 +405,11 @@ export class Player {
 
   private renderMath() {
     setTimeout(() => {
-      _dll_pie_lib__pie_toolbox_math_rendering.renderMath(this.el);
-      // _dll_pie_lib__pie_toolbox_math_rendering_accessible.renderMath(this.el);
+      if (this.useMathRenderingAccessible) {
+        _dll_pie_lib__pie_toolbox_math_rendering_accessible.renderMath(this.el);
+      } else {
+        _dll_pie_lib__pie_toolbox_math_rendering.renderMath(this.el);
+      }
     }, 50);
   }
 
