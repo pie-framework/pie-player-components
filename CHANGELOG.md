@@ -1,3 +1,11 @@
+# [3.1.0](https://github.com/pie-framework/pie-player-components/compare/v3.0.0...v3.1.0) (2024-09-24)
+
+
+### Features
+
+* ability to enable/disable math-rendering-accessible PD-3989 ([aaaada6](https://github.com/pie-framework/pie-player-components/commit/aaaada61b016ac4159c56862eb246f8e4048fe75))
+* update pie-lib/pie-toolbox-math-rendering-module PD-3989,4103,3865 ([bae158a](https://github.com/pie-framework/pie-player-components/commit/bae158a91100faa377e67debf1b8ab1729ec10f1))
+
 # [3.0.0](https://github.com/pie-framework/pie-player-components/compare/v2.11.12...v3.0.0) (2024-08-27)
 
 
