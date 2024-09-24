@@ -35,8 +35,8 @@
     }
 
     pie-player {
-      width: 20vw;
-      height: 10vh;
+      width: 30vw;
+      /*height: 30vh;*/
       margin: 1vw;
       overflow: hidden;
       background: lightcyan;
@@ -10442,7 +10442,6 @@
   };
 
   Object.keys(configs)
-    .slice(0, 0)
     .forEach(id => {
     const player = document.createElement("pie-player");
     player.id = "player" + id;
@@ -10450,6 +10449,7 @@
     players.appendChild(player);
 
     // player.reFetchBundle = true;
+    //   player.useMathRenderingAccessible = true;
     player.bundleEndpoints = endpoints;
     player.addCorrectResponse = true;
     player.config = configs[id];
