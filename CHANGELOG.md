@@ -1,3 +1,10 @@
+## [3.1.1](https://github.com/pie-framework/pie-player-components/compare/v3.1.0...v3.1.1) (2024-09-26)
+
+
+### Bug Fixes
+
+* add back math-rendering-accessible ([92f395f](https://github.com/pie-framework/pie-player-components/commit/92f395faf165c4133cbdd77233d538e387e8d609))
+
 # [3.1.0](https://github.com/pie-framework/pie-player-components/compare/v3.0.0...v3.1.0) (2024-09-24)
 
 
