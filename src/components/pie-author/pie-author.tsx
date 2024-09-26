@@ -9,7 +9,7 @@ import {
 
 import {
   _dll_pie_lib__pie_toolbox_math_rendering,
-  _dll_pie_lib__pie_toolbox_math_rendering_accessible
+  // _dll_pie_lib__pie_toolbox_math_rendering_accessible
 } from "@pie-lib/pie-toolbox-math-rendering-module/module";
 import {Component, Element, Event, EventEmitter, h, Method, Prop, State, Watch} from "@stencil/core";
 import cloneDeep from "lodash/cloneDeep";
@@ -120,13 +120,6 @@ export class Author {
    * If pie-author is used inside pie-api-author component. Do not set it manually.
    */
   @Prop() isInsidePieApiAuthor?: boolean = false;
-
-  /**
-   * Enables math-rendering accessibility support for the Player.
-   * Set to TRUE only if you're using item types that include the math-rendering accessibility fix.
-   * For safe version compatibility, refer to the following link: TODO (https://illuminate.atlassian.net/wiki/x/zIBkFwQ).
-   */
-  @Prop() useMathRenderingAccessible: boolean = false;
 
   pieContentModel: PieContent;
 
@@ -748,11 +741,8 @@ export class Author {
 
   private renderMath() {
     setTimeout(() => {
-      if (this.useMathRenderingAccessible) {
-        _dll_pie_lib__pie_toolbox_math_rendering_accessible.renderMath(this.el);
-      } else {
-        _dll_pie_lib__pie_toolbox_math_rendering.renderMath(this.el);
-      }
+      _dll_pie_lib__pie_toolbox_math_rendering.renderMath(this.el);
+      // _dll_pie_lib__pie_toolbox_math_rendering_accessible.renderMath(this.el);
     }, 50);
   }
 
