@@ -10,10 +10,10 @@
   <script nomodule src="/build/pie-player-components.js"></script>
   <script type="module" src="/build/pie-player-components.esm.js"></script>
 
-  <!--    <script-->
-  <!--            type="module"-->
-  <!--            src="https://unpkg.com/@pie-framework/pie-player-components@latest/dist/pie-player-components/pie-player-components.esm.js"-->
-  <!--    ></script>-->
+<!--      <script-->
+<!--              type="module"-->
+<!--              src="https://unpkg.com/@pie-framework/pie-player-components@3.0.0/dist/pie-player-components/pie-player-components.esm.js"-->
+<!--      ></script>-->
 </head>
 <body>
 <pie-author id="author" add-preview="true"></pie-author>
@@ -21,26 +21,27 @@
 <script>
   const author = document.getElementById('author');
 
-  const endpoints = {
-    bundleBase: "https://pits-cdn.pie-api.io/bundles/",
-    buildServiceBase: "https://proxy.pie-api.com/bundles/",
-  };
-
-  author.bundleEndpoints = endpoints;
-
-
   author.config = {
-    "models": [
+    id: "p-00000000",
+    elements: {
+      "pie-explicit-constructed-response": "@pie-element/explicit-constructed-response@next"
+    },
+    models: [
       {
-        "id": "p-9c9ded01",
-        "element": "pp-pie-element-complex-rubric"
+        id: "p-00000000",
+        element: "pie-explicit-constructed-response",
+        disabled: false,
+        mode: "gather",
+        prompt: "<div>This is the prompt</div>",
+        shuffle: true,
+        choices: {
+          0: [{ label: "foo", value: "foo" }]
+        },
+        markup: "<div>This is slate markup {{0}}</div>"
       }
     ],
-    "elements": {
-      "pp-pie-element-complex-rubric": "@pie-element/complex-rubric"
-    },
-    "id": "1",
-    "markup": "<pp-pie-element-complex-rubric id=\"p-9c9ded01\"></pp-pie-element-complex-rubric>"
+    markup: '<span data-latex=\"\" data-raw=\"\\Sigma\\sin\\theta\">\\Sigma\\sin\\theta</span><span data-latex=\"\" data-raw=\"\\times\\longdiv{\\theta}\">\\times\\longdiv{\\theta}</span>' +
+      '<pie-explicit-constructed-response id="p-00000000"></pie-explicit-constructed-response><div style="width: 75%"></div>'
   };
 </script>
 </body>
