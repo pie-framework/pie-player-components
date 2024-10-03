@@ -1,3 +1,10 @@
+## [3.1.2](https://github.com/pie-framework/pie-player-components/compare/v3.1.1...v3.1.2) (2024-10-03)
+
+
+### Bug Fixes
+
+* update @pie-lib/pie-toolbox-math-rendering-module ([0b849b3](https://github.com/pie-framework/pie-player-components/commit/0b849b3f75ffbd796173801e6304670dbdccadf5))
+
 ## [3.1.1](https://github.com/pie-framework/pie-player-components/compare/v3.1.0...v3.1.1) (2024-09-26)
 
 
