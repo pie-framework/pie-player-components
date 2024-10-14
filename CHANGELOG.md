@@ -1,3 +1,10 @@
+## [3.1.3](https://github.com/pie-framework/pie-player-components/compare/v3.1.2...v3.1.3) (2024-10-14)
+
+
+### Bug Fixes
+
+* update pie-toolbox ([fa9748c](https://github.com/pie-framework/pie-player-components/commit/fa9748c943dfa6c7422d9a61d57dc7708c753d89))
+
 ## [3.1.2](https://github.com/pie-framework/pie-player-components/compare/v3.1.1...v3.1.2) (2024-10-03)
 
 
