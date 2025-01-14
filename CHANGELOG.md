@@ -1,3 +1,11 @@
+# [3.2.0](https://github.com/pie-framework/pie-player-components/compare/v3.1.4...v3.2.0) (2025-01-14)
+
+
+### Features
+
+* **pie-api-player:** update docu based on findings PD-4664 ([658db17](https://github.com/pie-framework/pie-player-components/commit/658db17f2ea023e71537db434db3b90528698555))
+* **pie-player:** update documentation nased on findings PD-4664 ([66db6c3](https://github.com/pie-framework/pie-player-components/commit/66db6c3e58062d69cdc08c9935f9c80159cc4d02))
+
 ## [3.1.4](https://github.com/pie-framework/pie-player-components/compare/v3.1.3...v3.1.4) (2024-11-15)
 
 
