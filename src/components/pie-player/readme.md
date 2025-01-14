@@ -11,6 +11,26 @@ The class `pie-loading` will be added to the element while assets are being load
 
 <!-- Auto Generated Below -->
 
+## Notes
+
+### `hosted` property / attribute
+
+| false                                              | true                                  
+|BundleType = clientPlayer(has controller)           | BundleType = player                  
+|uses elements controllers when env changes          | hosted by hosting system, only does pieEl.model = model 
+ calls controller.model to initialise pieEl.model
+|generates bundle urls based on current items config | use bundle url from item config if set
+
+
+### `renderStimulus` property / attribute
+
+This has effect when we load stimulus items (items that contain passage in config) and is set to true. 
+It is a corner case where we load two instances of <pie-player>.
+One for passage and one for the other items.
+
+If there are elements in our item config that share the same bundle url, the bundle is loaded in webpage only once for perfomance reasons.
+(check pie-loader.ts, loadCloudPies method)
+If pie-player is used from api-components we will always have a separate bundle for passage and a separate bundle for items PD-4664
 
 ## Properties
 
