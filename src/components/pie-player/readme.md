@@ -28,7 +28,9 @@ This has effect when we load stimulus items (items that contain passage in confi
 It is a corner case where we load two instances of <pie-player>.
 One for passage and one for the other items.
 
-If there are multi items or stimulus items and some of them share the same bundle url, it is loaded in webpage only once. 
+If there are elements in our item config that share the same bundle url, the bundle is loaded in webpage only once for perfomance reasons.
+(check pie-loader.ts, loadCloudPies method)
+If pie-player is used from api-components we will always have a separate bundle for passage and a separate bundle for items PD-4664
 
 ## Properties
 
