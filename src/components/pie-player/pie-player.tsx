@@ -1,7 +1,5 @@
-import {SessionChangedEvent} from "@pie-framework/pie-player-events";
-import {
-  _dll_pie_lib__pie_toolbox_math_rendering_accessible
-} from "@pie-lib/pie-toolbox-math-rendering-module/module";
+import { SessionChangedEvent } from "@pie-framework/pie-player-events";
+import { _dll_pie_lib__pie_toolbox_math_rendering_accessible } from "@pie-lib/pie-toolbox-math-rendering-module/module";
 import {
   Component,
   Element,
@@ -29,9 +27,10 @@ import {
   DEFAULT_ENDPOINTS,
   BundleEndpoints
 } from "../../pie-loader";
-import {addRubric} from "../../rubric-utils";
-import {normalizeContentElements} from "../../utils/utils";
-import {VERSION} from "../../version";
+import { addRubric } from "../../rubric-utils";
+import { normalizeContentElements } from "../../utils/utils";
+//import { ResourceManager } from "../../utils/resource-manager";
+import { VERSION } from "../../version";
 
 const controllerErrorMessage: string =
   "Error processing question configuration, verify the question model?";
@@ -47,7 +46,10 @@ export class Player {
    */
   stimulusPlayer: HTMLElement;
 
-  @Prop({context: "document"}) doc!: Document;
+ // private resourceManager: ResourceManager = new ResourceManager();
+  private root: ShadowRoot;
+
+  @Prop({ context: "document" }) doc!: Document;
 
   /**
    * Optionally specifies the back-end that builds and hosts javascript bundles for rendering assessment items.
@@ -84,13 +86,13 @@ export class Player {
    * the `complete` propery would be false if 1 or 2 points had been added, but true if all three had.
    *
    */
-  @Event({eventName: "session-changed"}) sessionChanged: EventEmitter;
+  @Event({ eventName: "session-changed" }) sessionChanged: EventEmitter;
 
   /**
    * Emmitted if there is an error encountered while rendering.
    * `event.detail` will be a string containing a message about the error.
    */
-  @Event({eventName: "player-error"}) playerError: EventEmitter;
+  @Event({ eventName: "player-error" }) playerError: EventEmitter;
 
   /**
    * TODO - Emmitted when any all interactions in a PIE Assessment Item have reported that a user
@@ -101,7 +103,7 @@ export class Player {
   /**
    * Emitted when the content in the config has been loaded.
    */
-  @Event({eventName: "load-complete"}) loadComplete: EventEmitter;
+  @Event({ eventName: "load-complete" }) loadComplete: EventEmitter;
 
   @State() elementsLoaded: boolean = false;
 
@@ -137,13 +139,13 @@ export class Player {
   /**
    * The Pie Session
    */
-  @Prop() session: ItemSession = {id: "", data: []};
+  @Prop() session: ItemSession = { id: "", data: [] };
 
   /**
    * Describes runtime environment for the player.
    *
    */
-  @Prop() env: Env = {mode: "gather", role: "student"};
+  @Prop() env: Env = { mode: "gather", role: "student" };
 
   /**
    * Indicates if player running in the context of a PIE hosting system.
@@ -158,7 +160,7 @@ export class Player {
    */
   @Prop() renderStimulus: boolean = true;
 
-  @Prop({mutable: false, reflect: false})
+  @Prop({ mutable: false, reflect: false })
   version: string = VERSION;
 
   /**
@@ -180,33 +182,61 @@ export class Player {
   @Watch("config")
   async watchConfig(newConfig) {
     this.elementsLoaded = false;
+
+    if (!newConfig) {
+      console.log("No config detected");
+      return;
+    }
+
     try {
-      if (!newConfig) {
-        return;
+      // Parse config if it's a JSON string
+      if (typeof newConfig === "string") {
+        newConfig = JSON.parse(newConfig);
       }
-      try {
-        if (typeof newConfig == "string") {
-          newConfig = JSON.parse(newConfig);
-        }
-        if (newConfig.pie) {
-          this.stimulusItemModel = newConfig;
-          return; // if stimulus item
-        } else if (newConfig.elements) {
-          this.pieContentModel = addRubric(newConfig);
-          this.pieContentModel = normalizeContentElements(this.pieContentModel);
-        } else {
-          this.playerError.emit(`invalid pie data model`);
-          return;
-        }
-      } catch (err) {
-        this.playerError.emit(
-          `exception processing content model - ${err.message}`
-        );
+
+      console.log(newConfig, "New config detected");
+      // if (newConfig.resources) {
+      //   const { stylesheets, container } = newConfig.resources;
+      //   console.log(
+      //     "Calling loadStylesheets from watchConfig with:",
+      //     stylesheets
+      //   );
+      //   if (stylesheets) {
+      //     console.log(
+      //       "Calling loadStylesheets from watchConfig with:",
+      //       stylesheets
+      //     );
+      //     await this.resourceManager.loadStylesheets(stylesheets, this.root);
+      //   }
+
+      //   if (container && this.pieContentModel.markup) {
+      //     console.log("Calling applyContainer with container:", container);
+      //     this.pieContentModel.markup = this.resourceManager.applyContainer(
+      //       this.pieContentModel.markup,
+      //       container
+      //     );
+      //   }
+      // }
+
+      // Handle pie or elements configuration
+      if (newConfig.pie) {
+        console.log("Stimulus item model detected");
+        this.stimulusItemModel = newConfig;
+        return; // Stop further processing for stimulus item
+      } else if (newConfig.elements) {
+        console.log("Normalizing pie content model with elements");
+        this.pieContentModel = addRubric(newConfig);
+        this.pieContentModel = normalizeContentElements(this.pieContentModel);
+      } else {
+        console.error("Invalid pie data model");
+        this.playerError.emit("Invalid pie data model");
         return;
       }
 
+      // Load cloud pies if needed
       if (!this.elementsLoaded && !this.disableBundler) {
         let endpoints = DEFAULT_ENDPOINTS.prod;
+
         if (
           this.bundleHost &&
           ["dev", "stage", "prod"].includes(this.bundleHost)
@@ -214,13 +244,13 @@ export class Player {
           endpoints = DEFAULT_ENDPOINTS[this.bundleHost];
         }
 
-        // if bundleEndpoints are provided, use them instead of the default
-        // used for proxies, etc.
         let forceBundleUrl = false;
         if (this.bundleEndpoints) {
           endpoints = this.bundleEndpoints;
           forceBundleUrl = true;
         }
+
+        console.log("Loading cloud pies with endpoints:", endpoints);
 
         await this.pieLoader.loadCloudPies({
           content: this.pieContentModel,
@@ -233,7 +263,8 @@ export class Player {
         });
       }
     } catch (err) {
-      this.playerError.emit(`problem loading item (${err})`);
+      console.error("Error in watchConfig:", err.message);
+      this.playerError.emit(`Problem loading item: ${err.message}`);
     }
   }
 
@@ -259,28 +290,34 @@ export class Player {
   async provideScore() {
     // TODO I think we have to check if it's hosted or not to expose this function
     if (!this.pieContentModel || !this.pieContentModel.models) {
-      console.error('No pie content model');
+      console.error("No pie content model");
 
       return false;
     }
 
-    return Promise.all((this.pieContentModel.models || []).map(async model => {
-      let pieEl: PieElement = this.el.querySelector(`[id='${model.id}']`);
-      !pieEl && (pieEl = this.el.querySelector(`[pie-id='${model.id}']`));
+    return Promise.all(
+      (this.pieContentModel.models || []).map(async model => {
+        let pieEl: PieElement = this.el.querySelector(`[id='${model.id}']`);
+        !pieEl && (pieEl = this.el.querySelector(`[pie-id='${model.id}']`));
 
-      const session = this.findOrAddSession(this.session.data, model.id);
+        const session = this.findOrAddSession(this.session.data, model.id);
 
-      if (pieEl) {
-        const controller: PieController = this.pieLoader.getController(pieEl.localName);
+        if (pieEl) {
+          const controller: PieController = this.pieLoader.getController(
+            pieEl.localName
+          );
 
-        if (controller && controller.outcome) {
-          return {
-            ...session,
-            ...(await controller.outcome(model, session, {mode: 'evaluate'}))
-          };
+          if (controller && controller.outcome) {
+            return {
+              ...session,
+              ...(await controller.outcome(model, session, {
+                mode: "evaluate"
+              }))
+            };
+          }
         }
-      }
-    }));
+      })
+    );
   }
 
   @Watch("env")
@@ -330,7 +367,7 @@ export class Player {
                 ) {
                   session = await controller.createCorrectResponseSession(
                     model,
-                    {...newEnv, ...{role: "instructor"}}
+                    { ...newEnv, ...{ role: "instructor" } }
                   );
                 }
                 pieEl.model = await controller.model(model, session, newEnv);
@@ -380,8 +417,11 @@ export class Player {
   }
 
   async componentWillLoad() {
+    this.root = this.el.shadowRoot || this.el.attachShadow({ mode: "open" });
+
     if (this.config) {
-      this.watchConfig(this.config);
+      console.log("componentWillLoad: Config available, calling watchConfig");
+      await this.watchConfig(this.config);
     }
   }
 
@@ -390,7 +430,7 @@ export class Player {
     if (s) {
       return s;
     }
-    const ss = {id};
+    const ss = { id };
     data.push(ss);
     return ss;
   }
@@ -405,11 +445,11 @@ export class Player {
     }
 
     tags.forEach(tag => {
-      const elems = document.querySelectorAll(`${tag}`)
+      const elems = document.querySelectorAll(`${tag}`);
 
       for (const elem of elems) {
         if (elem && elem instanceof HTMLElement) {
-          elem.classList.add('evaluate-bottom-border');
+          elem.classList.add("evaluate-bottom-border");
         }
       }
     });
@@ -421,8 +461,10 @@ export class Player {
         this.updateModels();
         this.renderMath();
 
-        if (this.showBottomBorder && this.env.mode === 'evaluate') {
-          const pieTags = this.pieContentModel.elements && Object.keys(this.pieContentModel.elements)
+        if (this.showBottomBorder && this.env.mode === "evaluate") {
+          const pieTags =
+            this.pieContentModel.elements &&
+            Object.keys(this.pieContentModel.elements);
           this.addBottomBorder(pieTags);
         }
       } else {
@@ -449,6 +491,7 @@ export class Player {
   }
 
   async componentDidLoad() {
+    console.log("componentDidLoad: Shadow root initialized", this.root);
     await this.afterRender();
   }
 
@@ -460,7 +503,7 @@ export class Player {
     if (this.stimulusItemModel) {
       return this.renderStimulus ? (
         <pie-stimulus-layout allowedResize={this.allowedResize}>
-          <div slot="stimulus" class='player-stimulus-container'>
+          <div slot="stimulus" class="player-stimulus-container">
             <pie-player
               id="stimulusPlayer"
               config={this.stimulusItemModel.passage}
@@ -472,7 +515,7 @@ export class Player {
               bundleEndpoints={this.bundleEndpoints}
             />
           </div>
-          <div slot="item" class='player-item-container'>
+          <div slot="item" class="player-item-container">
             <pie-player
               id="itemPlayer"
               addCorrectResponse={this.addCorrectResponse}
@@ -499,7 +542,8 @@ export class Player {
     } else {
       if (this.elementsLoaded) {
         return (
-          <div class='player-container'
+          <div
+            class="player-container"
             innerHTML={
               this.pieContentModel && this.pieContentModel.markup
                 ? this.pieContentModel.markup
@@ -509,7 +553,7 @@ export class Player {
         );
       }
 
-      return <pie-spinner/>;
+      return <pie-spinner />;
     }
   }
 }
