@@ -71,7 +71,7 @@
 }
 
 
-@media screen and (max-width: 1200px) {
+@media screen and (max-width: 1020px) {
   #pie-stimulus-container {
     flex-direction: column;
   }
