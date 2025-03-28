@@ -192,6 +192,8 @@ export class PieLoader {
     forceBundleUrl: boolean;
     reFetchBundle: boolean;
   }) => {
+    performance.mark('pie-loader-start');
+
     if (!options.endpoints) {
       options.endpoints = this.endpoints;
     }
@@ -205,11 +207,17 @@ export class PieLoader {
       head = options.doc.createElement("head");
       options.doc.appendChild(head);
     }
+
+    performance.mark('pie-getElementsToLoad-start');
+
     const piesToLoad = this.getElementsToLoad(
       elements,
       options.bundle,
       this.registry
     );
+
+    performance.mark('pie-getElementsToLoad-end');
+    performance.measure('PIE Get Elements To Load Time', 'pie-getElementsToLoad-start', 'pie-getElementsToLoad-end');
 
     let scriptUrl = this.getScriptsUrl(options, piesToLoad);
 
@@ -238,6 +246,14 @@ export class PieLoader {
 
     const onloadFn = (_pies => {
       return () => {
+        performance.mark('pie-loader-end');
+        performance.measure('PIE Loader Bundle Time', 'pie-loader-start', 'pie-loader-end');
+        const entry = performance.getEntriesByName('PIE Loader Bundle Time')[0];
+        const duration = entry ? entry.duration : 0;
+        console.log('[PIE Loader Bundle Time]', duration.toFixed(2), 'ms');
+
+        performance.mark('pie-custom-elements-define-start');
+
         const pieKeys = Object.keys(_pies);
 
         pieKeys.forEach(key => {
@@ -286,6 +302,12 @@ export class PieLoader {
             }
           }
         });
+
+        performance.mark('pie-custom-elements-define-end');
+        performance.measure('PIE Define Custom Elements Time', 'pie-custom-elements-define-start', 'pie-custom-elements-define-end');
+        const defineEntry = performance.getEntriesByName('PIE Define Custom Elements Time')[0];
+        const defineDuration = defineEntry ? defineEntry.duration : 0;
+        console.log('[PIE Define Custom Elements Time]', defineDuration.toFixed(2), 'ms');
       };
     })(piesToLoad);
 
