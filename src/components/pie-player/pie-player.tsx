@@ -472,21 +472,18 @@ export class Player {
         ) {
           this.elementsLoaded = true;
 
-          performance.mark("pie-elements-load-end");
-          performance.measure(
-            "PIE Elements Load Time",
-            "pie-load-end",
-            "pie-elements-load-end"
-          );
-          const renderEntry = performance.getEntriesByName(
-            "PIE Elements Load Time"
-          )[0];
-          const renderDuration = renderEntry ? renderEntry.duration : 0;
-          console.log(
-            "[PIE Elements Load + Render Time]",
-            renderDuration.toFixed(2),
-            "ms"
-          );
+          if (performance.getEntriesByName("pie-load-end").length > 0) {
+            performance.mark("pie-elements-load-end");
+            performance.measure("PIE Elements Load Time", "pie-load-end", "pie-elements-load-end");
+          
+            const renderEntry = performance.getEntriesByName("PIE Elements Load Time")[0];
+            const renderDuration = renderEntry ? renderEntry.duration : 0;
+            console.log(
+              "[PIE Elements Load + Render Time]",
+              renderDuration.toFixed(2),
+              "ms"
+            );
+          }          
         }
       }
     }
