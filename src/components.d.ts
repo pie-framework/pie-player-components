@@ -116,6 +116,7 @@ export namespace Components {
     * Optionally specifies the back-end that builds and hosts javascript bundles for rendering assessment items. This property lets you choose which environment to use, from 'dev' , 'stage' or 'prod' environments. Until 1.0 will default to 'stage'. Starting v2.0.3, it will temporarily redirect to production only
     */
     'bundleHost'?: string;
+    'classname'?: string;
     /**
     * The Pie config model.
     */
@@ -128,6 +129,10 @@ export namespace Components {
     * Describes runtime environment for the player.
     */
     'env': Env;
+    /**
+    * Support styling with external stylesheet url Target the pie-player component using the class provided in the class property Parse the css file and add the class to the stylesheet to scope the styles
+    */
+    'externalStyleUrl'?: string;
     /**
     * Indicates if player running in the context of a PIE hosting system. Do not modify the default value for this property if you are not implementing a PIE host. If true, the host is responsible for all model updates.
     */
@@ -310,6 +315,7 @@ declare namespace LocalJSX {
     * Optionally specifies the back-end that builds and hosts javascript bundles for rendering assessment items. This property lets you choose which environment to use, from 'dev' , 'stage' or 'prod' environments. Until 1.0 will default to 'stage'. Starting v2.0.3, it will temporarily redirect to production only
     */
     'bundleHost'?: string;
+    'classname'?: string;
     /**
     * The Pie config model.
     */
@@ -322,6 +328,10 @@ declare namespace LocalJSX {
     * Describes runtime environment for the player.
     */
     'env'?: Env;
+    /**
+    * Support styling with external stylesheet url Target the pie-player component using the class provided in the class property Parse the css file and add the class to the stylesheet to scope the styles
+    */
+    'externalStyleUrl'?: string;
     /**
     * Indicates if player running in the context of a PIE hosting system. Do not modify the default value for this property if you are not implementing a PIE host. If true, the host is responsible for all model updates.
     */

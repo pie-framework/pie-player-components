@@ -169,6 +169,14 @@ export class Player {
 
   @State() stimulusItemModel: AdvancedItemConfig;
 
+  /**
+   * Support styling with external stylesheet url
+   * Target the pie-player component using the class provided in the class property
+   * Parse the css file and add the class to the stylesheet to scope the styles
+   */
+  @Prop() externalStyleUrl?: string;
+  @Prop() classname?: string;
+
   pieLoader = new PieLoader();
 
   player() {
@@ -405,6 +413,27 @@ export class Player {
     e.stopPropagation();
   }
 
+  private scopeCSS(cssText, classname) {
+    return cssText.replace(/(^|\})\s*([^{]+)\s*\{/g, (_, close, selector) => {
+      const scoped = selector
+        .split(',')
+        .map(s => `pie-player.${classname} ${s.trim()}`)
+        .join(', ');
+      return `${close} ${scoped} {`;
+    });
+  }
+
+  private async loadScopedExternalStyle(url, classname) {
+    const res = await fetch(url);
+    const css = await res.text();
+    const scopedCSS = this.scopeCSS(css, classname);
+
+    const styleTag = document.createElement('style');
+    styleTag.setAttribute('data-pie-style', url);
+    styleTag.textContent = scopedCSS;
+    document.head.appendChild(styleTag);
+  }
+
   async componentWillLoad() {
     if (this.config) {
       this.watchConfig(this.config);
@@ -475,7 +504,7 @@ export class Player {
           if (performance.getEntriesByName("pie-load-end").length > 0) {
             performance.mark("pie-elements-load-end");
             performance.measure("PIE Elements Load Time", "pie-load-end", "pie-elements-load-end");
-          
+
             const renderEntry = performance.getEntriesByName("PIE Elements Load Time")[0];
             const renderDuration = renderEntry ? renderEntry.duration : 0;
             console.log(
@@ -483,9 +512,13 @@ export class Player {
               renderDuration.toFixed(2),
               "ms"
             );
-          }          
+          }
         }
       }
+    }
+
+    if (this.externalStyleUrl && this.classname && !document.querySelector(`[data-pie-style="${this.externalStyleUrl}"]`)) {
+      await this.loadScopedExternalStyle(this.externalStyleUrl, this.classname);
     }
   }
 
@@ -511,6 +544,7 @@ export class Player {
               ref={el => (this.stimulusPlayer = el as HTMLElement)}
               bundleHost={this.bundleHost}
               bundleEndpoints={this.bundleEndpoints}
+              class={this.classname}
             />
           </div>
           <div slot="item" class="player-item-container">
@@ -523,6 +557,7 @@ export class Player {
               session={this.session}
               bundleHost={this.bundleHost}
               bundleEndpoints={this.bundleEndpoints}
+              class={this.classname}
             />
           </div>
         </pie-stimulus-layout>
@@ -535,6 +570,7 @@ export class Player {
           hosted={this.hosted}
           session={this.session}
           bundleEndpoints={this.bundleEndpoints}
+          class={this.classname}
         />
       );
     } else {
