@@ -413,20 +413,28 @@ export class Player {
     e.stopPropagation();
   }
 
-  private scopeCSS(cssText, classname) {
+  private scopeCSS(cssText: string, classname: string) {
     return cssText.replace(/(^|\})\s*([^{]+)\s*\{/g, (_, close, selector) => {
       const scoped = selector
         .split(',')
-        .map(s => `pie-player.${classname} ${s.trim()}`)
+        .map((s: string) => `pie-player.${classname} ${s.trim()}`)
         .join(', ');
       return `${close} ${scoped} {`;
     });
   }
 
-  private async loadScopedExternalStyle(url, classname) {
+  private async loadScopedExternalStyle(url: string, classname: string) {
+    const startTime = performance.now();
+    console.log(`[style-loader] Fetching CSS: ${url}`);
     const res = await fetch(url);
     const css = await res.text();
+    const fetchEnd = performance.now();
+    console.log(`[style-loader] Fetch complete in ${(fetchEnd - startTime).toFixed(2)}ms`);
+
+    const scopeStart = performance.now();
     const scopedCSS = this.scopeCSS(css, classname);
+    const scopeEnd = performance.now();
+    console.log(`[style-loader] CSS scoped in ${(scopeEnd - scopeStart).toFixed(2)}ms`);
 
     const styleTag = document.createElement('style');
     styleTag.setAttribute('data-pie-style', url);
@@ -517,7 +525,13 @@ export class Player {
       }
     }
 
-    if (this.externalStyleUrl && this.classname && !document.querySelector(`[data-pie-style="${this.externalStyleUrl}"]`)) {
+    if (
+      this.externalStyleUrl &&
+      typeof this.externalStyleUrl === 'string' &&
+      this.classname &&
+      typeof this.classname === 'string' &&
+      !document.querySelector(`style[data-pie-style="${this.externalStyleUrl}"]`)
+    ) {
       await this.loadScopedExternalStyle(this.externalStyleUrl, this.classname);
     }
   }
