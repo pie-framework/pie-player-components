@@ -87,46 +87,7 @@
     },
   };
 
-  // function scopeCSS(cssText, scopeSelector = 'pie-player.ibx-client-style') {
-  //   return cssText.replace(/(^|\})\s*([^{]+)\s*\{/g, (_, close, selector) => {
-  //     const scoped = selector
-  //       .split(',')
-  //       .map(s => `${scopeSelector} ${s.trim()}`)
-  //       .join(', ');
-  //     return `${close} ${scoped} {`;
-  //   });
-  // }
-  //
-  // async function loadScopedExternalStyle(url, scopeSelector) {
-  //   const res = await fetch(url);
-  //   const css = await res.text();
-  //   const scopedCSS = scopeCSS(css, scopeSelector);
-  //
-  //   const styleTag = document.createElement('style');
-  //   styleTag.setAttribute('data-pie-style', url);
-  //   styleTag.textContent = scopedCSS;
-  //   document.head.appendChild(styleTag);
-  // }
-
   const player = document.getElementsByTagName('pie-player')[0];
-  console.log('player', player);
-
-  // if (player) {
-  //   loadScopedExternalStyle(
-  //     'https://cdnjs.cloudflare.com/ajax/libs/milligram/1.4.1/milligram.min.css',
-  //     'pie-player.ibx-client-style'
-  //   );
-  // }
-  player.addEventListener('ready', () => {
-    console.log('ready');
-  });
-  player.addEventListener('loaded', () => {
-    console.log('loaded');
-  });
-
-  player.addEventListener('sessionChanged', event => {
-    console.log(event.type + ':' + JSON.stringify(event.detail));
-  });
 
   player.config = config;
   player.env = { mode: 'evaluate', role: 'instructor' };
