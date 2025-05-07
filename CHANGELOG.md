@@ -1,3 +1,13 @@
+# [3.4.0](https://github.com/pie-framework/pie-player-components/compare/v3.3.0...v3.4.0) (2025-05-07)
+
+
+### Features
+
+* add performance logs and validation for props PD-4120 ([466dbad](https://github.com/pie-framework/pie-player-components/commit/466dbad55a11646163de8c559ec3d1709b492677))
+* clean up ([7d7a4cf](https://github.com/pie-framework/pie-player-components/commit/7d7a4cffde65ca80b2dc6ff42530f6d40143b4cd))
+* support multiple stylesheets url PD-4120 ([e456f16](https://github.com/pie-framework/pie-player-components/commit/e456f168e0e472373d98d42daf0f970902c2eead))
+* wip suppport external stylesheets PD-4120 ([1881a4b](https://github.com/pie-framework/pie-player-components/commit/1881a4b7855dba567e819167db15a84816245883))
+
 # [3.3.0](https://github.com/pie-framework/pie-player-components/compare/v3.2.0...v3.3.0) (2025-03-28)
 
 
