@@ -169,6 +169,15 @@ export class Player {
 
   @State() stimulusItemModel: AdvancedItemConfig;
 
+  /**
+   * Support styling with external stylesheet urls (comma separated urls)
+   * Target the pie-player component using the class provided in the class property
+   * Parse the css file and add the class to the stylesheet to scope the styles
+   * The last stylesheet url takes priority if the selectors have the same specificity.
+   */
+  @Prop() externalStyleUrls: string;
+  @Prop() customClassname?: string;
+
   pieLoader = new PieLoader();
 
   player() {
@@ -405,6 +414,35 @@ export class Player {
     e.stopPropagation();
   }
 
+  private scopeCSS(cssText: string, customClassname: string) {
+    return cssText.replace(/(^|\})\s*([^{]+)\s*\{/g, (_, close, selector) => {
+      const scoped = selector
+        .split(',')
+        .map((s: string) => `pie-player.${customClassname} ${s.trim()}`)
+        .join(', ');
+      return `${close} ${scoped} {`;
+    });
+  }
+
+  private async loadScopedExternalStyle(url: string, customClassname: string) {
+    const startTime = performance.now();
+    console.log(`[style-loader] Fetching CSS: ${url}`);
+    const res = await fetch(url);
+    const css = await res.text();
+    const fetchEnd = performance.now();
+    console.log(`[style-loader] Fetch complete in ${(fetchEnd - startTime).toFixed(2)}ms`);
+
+    const scopeStart = performance.now();
+    const scopedCSS = this.scopeCSS(css, customClassname);
+    const scopeEnd = performance.now();
+    console.log(`[style-loader] CSS scoped in ${(scopeEnd - scopeStart).toFixed(2)}ms`);
+
+    const styleTag = document.createElement('style');
+    styleTag.setAttribute('data-pie-style', url);
+    styleTag.textContent = scopedCSS;
+    document.head.appendChild(styleTag);
+  }
+
   async componentWillLoad() {
     if (this.config) {
       this.watchConfig(this.config);
@@ -475,7 +513,7 @@ export class Player {
           if (performance.getEntriesByName("pie-load-end").length > 0) {
             performance.mark("pie-elements-load-end");
             performance.measure("PIE Elements Load Time", "pie-load-end", "pie-elements-load-end");
-          
+
             const renderEntry = performance.getEntriesByName("PIE Elements Load Time")[0];
             const renderDuration = renderEntry ? renderEntry.duration : 0;
             console.log(
@@ -483,9 +521,24 @@ export class Player {
               renderDuration.toFixed(2),
               "ms"
             );
-          }          
+          }
         }
       }
+    }
+
+    if (
+      this.externalStyleUrls &&
+      typeof this.externalStyleUrls === 'string' &&
+      this.customClassname &&
+      typeof this.customClassname === 'string'
+    ) {
+      const urls = this.externalStyleUrls.split(',').map(url => url.trim());
+
+      urls.forEach(url => {
+        if (url && typeof url === 'string' && !document.querySelector(`style[data-pie-style="${url}"]`)) {
+          this.loadScopedExternalStyle(url, this.customClassname);
+        }
+      });
     }
   }
 
@@ -511,6 +564,7 @@ export class Player {
               ref={el => (this.stimulusPlayer = el as HTMLElement)}
               bundleHost={this.bundleHost}
               bundleEndpoints={this.bundleEndpoints}
+              class={this.customClassname}
             />
           </div>
           <div slot="item" class="player-item-container">
@@ -523,6 +577,7 @@ export class Player {
               session={this.session}
               bundleHost={this.bundleHost}
               bundleEndpoints={this.bundleEndpoints}
+              class={this.customClassname}
             />
           </div>
         </pie-stimulus-layout>
@@ -535,6 +590,7 @@ export class Player {
           hosted={this.hosted}
           session={this.session}
           bundleEndpoints={this.bundleEndpoints}
+          class={this.customClassname}
         />
       );
     } else {

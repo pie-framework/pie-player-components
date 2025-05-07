@@ -120,6 +120,7 @@ export namespace Components {
     * The Pie config model.
     */
     'config': ItemConfig;
+    'customClassname'?: string;
     /**
     * Allows disabling of the default behaviour which is to look up and load the JS bundle that define the Custom Elements used by the item config. This if for advanced use cases when using the pie-player in a container that is managing loading of Custom Elements and Controllers.
     */
@@ -128,6 +129,10 @@ export namespace Components {
     * Describes runtime environment for the player.
     */
     'env': Env;
+    /**
+    * Support styling with external stylesheet urls (comma separated urls) Target the pie-player component using the class provided in the class property Parse the css file and add the class to the stylesheet to scope the styles The last stylesheet url takes priority if the selectors have the same specificity.
+    */
+    'externalStyleUrls': string;
     /**
     * Indicates if player running in the context of a PIE hosting system. Do not modify the default value for this property if you are not implementing a PIE host. If true, the host is responsible for all model updates.
     */
@@ -314,6 +319,7 @@ declare namespace LocalJSX {
     * The Pie config model.
     */
     'config'?: ItemConfig;
+    'customClassname'?: string;
     /**
     * Allows disabling of the default behaviour which is to look up and load the JS bundle that define the Custom Elements used by the item config. This if for advanced use cases when using the pie-player in a container that is managing loading of Custom Elements and Controllers.
     */
@@ -322,6 +328,10 @@ declare namespace LocalJSX {
     * Describes runtime environment for the player.
     */
     'env'?: Env;
+    /**
+    * Support styling with external stylesheet urls (comma separated urls) Target the pie-player component using the class provided in the class property Parse the css file and add the class to the stylesheet to scope the styles The last stylesheet url takes priority if the selectors have the same specificity.
+    */
+    'externalStyleUrls'?: string;
     /**
     * Indicates if player running in the context of a PIE hosting system. Do not modify the default value for this property if you are not implementing a PIE host. If true, the host is responsible for all model updates.
     */

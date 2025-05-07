@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0"
+  />
+  <title>Item With Stimulus</title>
+  <script nomodule src="/build/pie-player-components.js"></script>
+  <script type="module" src="/build/pie-player-components.esm.js"></script>
+</head>
+<body>
+<div>
+  <pie-player
+    render-stimulus="false"
+    custom-classname="ibx-client-style"
+    external-style-urls="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.4.1/milligram.min.css, https://cdnjs.cloudflare.com/ajax/libs/mini.css/3.0.1/mini-default.min.css"
+  ></pie-player>
+</div>
+
+<script type="text/javascript" src="./utils/models.js"></script>
+<script>
+  const config = {
+    'pie': {
+      'models': [
+        {
+          choiceMode: 'checkbox',
+          choicePrefix: 'numbers',
+          choices: [
+            {
+              correct: true,
+              value: 'sweden',
+              label: 'Sweden',
+              feedback: {
+                type: 'none',
+                value: '',
+              },
+            },
+            {
+              value: 'iceland',
+              label: 'Iceland',
+              feedback: {
+                type: 'none',
+                value: '',
+              },
+              rationale: 'Rationale for Iceland',
+            },
+            {
+              value: 'norway',
+              label: 'Norway',
+              feedback: {
+                type: 'none',
+                value: '',
+              },
+              rationale: 'Rationale for Norway',
+            },
+            {
+              correct: true,
+              value: 'finland',
+              label: 'Finland',
+              feedback: {
+                type: 'none',
+                value: '',
+              },
+              rationale: 'Rationale for Finland',
+            },
+          ],
+          prompt: 'Which of these northern European countries are EU members?',
+          promptEnabled: true,
+          toolbarEditorPosition: 'bottom',
+          rubricEnabled: false,
+          'element': 'multiple-choice',
+          'id': '1'
+        }
+      ],
+      'elements': {
+        'multiple-choice': '@pie-element/multiple-choice@9.14.1-next.4'
+      },
+      'id': '1',
+      'markup': '<multiple-choice id="1"></multiple-choice>',
+      'bundle': {
+        'url': [
+          'https://pits-dot-pie-prod-221718.appspot.com/bundles/@pie-element/multiple-choice@9.14.1-next.4/player.js'
+        ]
+      }
+    },
+  };
+
+  const player = document.getElementsByTagName('pie-player')[0];
+
+  player.config = config;
+  player.env = { mode: 'evaluate', role: 'instructor' };
+</script>
+</body>
+</html>
