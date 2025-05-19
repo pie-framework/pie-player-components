@@ -193,7 +193,7 @@ export const pieShortIdGenerator = () => {
 
 /**
  * Wait for the given milliseconds.
- * @param ms: milliseconds
+ * @param ms
  */
 const waitFor = (ms: number): Promise<void> => {
   return new Promise(resolve => setTimeout(resolve, ms));
@@ -208,7 +208,7 @@ const waitFor = (ms: number): Promise<void> => {
  * @param delay: The delay, in milliseconds.
  */
 export const withRetry = <E>(
-  fn: (currentDelay: number) => Promise<E>,
+  fn: (currentDelay: number, attempt: number) => Promise<E>,
   maxRetries: number,
   delay: number = 100,
   maxDelay?: number
@@ -216,17 +216,20 @@ export const withRetry = <E>(
   const retryWithBackoff = async (retries: number): Promise<E> => {
     try {
       let currentDelay = 0;
+
       // don't wait on the first attempt
       if (retries > 0) {
         // on every retry, exponentially increase the time to wait
         currentDelay = Math.pow(2, retries) * delay;
+
         if (maxDelay && maxDelay < currentDelay) {
           currentDelay = maxDelay;
         }
 
         await waitFor(currentDelay);
       }
-      return await fn(currentDelay);
+
+      return await fn(currentDelay, retries);
     } catch (err) {
       // retry if the limit isn't reached, otherwise throw the error
       if (retries < maxRetries) {
@@ -237,5 +240,6 @@ export const withRetry = <E>(
       }
     }
   };
+
   return retryWithBackoff(0);
 };
