@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>New Relic Integration Test</title>
+  <script type="module" src="/build/pie-api-components.esm.js"></script>
+  <script nomodule src="/build/pie-api-components.js"></script>
+  <!-- Here copy New Relic Browser agent configuration (see Browser/Applications/<app>/Application Settings/Agent and Account -->
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .test-panel {
+      margin-bottom: 20px;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+    h2 {
+      margin-top: 0;
+    }
+    button {
+      padding: 8px 12px;
+      margin-right: 10px;
+      margin-bottom: 10px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    .results {
+      margin-top: 10px;
+      padding: 10px;
+      background-color: #f5f5f5;
+      border-radius: 4px;
+      min-height: 20px;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+    .config-panel {
+      margin-top: 20px;
+      padding: 15px;
+      background-color: #f8f9fa;
+      border-radius: 5px;
+    }
+    .config-toggle {
+      margin-right: 15px;
+    }
+  </style>
+</head>
+<body>
+<h1>New Relic Integration Test</h1>
+
+<div class="config-panel">
+  <h2>Configuration</h2>
+  <div>
+    <label class="config-toggle">
+      <input type="checkbox" id="exceptions-toggle" checked>
+      Track Exceptions
+    </label>
+    <label class="config-toggle">
+      <input type="checkbox" id="page-actions-toggle" checked>
+      Track Page Actions
+    </label>
+    <label class="config-toggle">
+      <input type="checkbox" id="record-screen-toggle">
+      Record Screen
+    </label>
+  </div>
+  <div style="margin-top: 10px;">
+    <label for="identity-input">User Identity: </label>
+    <input type="text" id="identity-input" placeholder="user123">
+  </div>
+</div>
+
+<div class="test-panel">
+  <h2>Test New Relic Availability</h2>
+  <button id="check-nr">Check New Relic</button>
+  <div id="nr-results" class="results"></div>
+</div>
+
+<div class="test-panel">
+  <h2>Test Player Initialization</h2>
+  <button id="init-player">Initialize Player</button>
+  <div id="init-results" class="results"></div>
+</div>
+
+<div class="test-panel">
+  <h2>Test Error Tracking</h2>
+  <button id="error-test">Generate Error</button>
+  <button id="custom-error">Custom Error</button>
+  <button id="promise-error">Promise Error</button>
+  <div id="error-results" class="results"></div>
+</div>
+
+<div class="test-panel">
+  <h2>Test Page Actions</h2>
+  <button id="page-action">Add Page Action</button>
+  <button id="custom-attribute">Set Custom Attribute</button>
+  <button id="user-id">Set User ID</button>
+  <div id="action-results" class="results"></div>
+</div>
+
+<div class="test-panel">
+  <h2>Test Session Simulation</h2>
+  <button id="simulate-session">Simulate Session</button>
+  <button id="score-test">Score Test</button>
+  <div id="session-results" class="results"></div>
+</div>
+
+<script>
+  // Reference to test result divs
+  const nrResults = document.getElementById('nr-results');
+  const initResults = document.getElementById('init-results');
+  const errorResults = document.getElementById('error-results');
+  const actionResults = document.getElementById('action-results');
+  const sessionResults = document.getElementById('session-results');
+
+  // Configuration toggles
+  const exceptionsToggle = document.getElementById('exceptions-toggle');
+  const pageActionsToggle = document.getElementById('page-actions-toggle');
+  const recordScreenToggle = document.getElementById('record-screen-toggle');
+  const identityInput = document.getElementById('identity-input');
+
+  // Global references
+  let player = null;
+
+  // Helper function to log results
+  function logResult(element, message) {
+    const timestamp = new Date().toLocaleTimeString();
+    element.innerHTML += `<div>[${timestamp}] ${message}</div>`;
+    // Auto-scroll to bottom
+    element.scrollTop = element.scrollHeight;
+  }
+
+  // Check if New Relic is available
+  document.getElementById('check-nr').addEventListener('click', function() {
+    nrResults.innerHTML = '';
+
+    if (window.NREUM) {
+      logResult(nrResults, 'New Relic (NREUM) is available in the global scope');
+
+      // Check for expected methods
+      const methods = ['noticeError', 'addPageAction', 'setCustomAttribute', 'setUserId'];
+      methods.forEach(method => {
+        if (typeof window.NREUM[method] === 'function') {
+          logResult(nrResults, `✓ Method ${method} is available`);
+        } else {
+          logResult(nrResults, `✗ Method ${method} is NOT available`);
+        }
+      });
+
+      // Log New Relic info
+      if (window.NREUM.info) {
+        logResult(nrResults, `Application ID: ${window.NREUM.info.applicationID || 'N/A'}`);
+        logResult(nrResults, `Beacon: ${window.NREUM.info.beacon || 'N/A'}`);
+      }
+    } else {
+      logResult(nrResults, 'New Relic (NREUM) is NOT available in the global scope');
+    }
+  });
+
+  // Initialize player button
+  document.getElementById('init-player').addEventListener('click', function() {
+    try {
+      // Clear previous results
+      initResults.innerHTML = '';
+
+      // Create new player if not exists
+      if (!player) {
+        player = document.createElement('pie-api-player');
+        player.setAttribute('id', 'test-player');
+        player.setAttribute('optimize', 'false');
+        player.setAttribute('item-id', '13946bec-ff25-4984-a01c-9a3609eb8ce5');
+        player.setAttribute('token', 'pie-token');
+
+        // Set configuration from toggles
+        player.setAttribute('exceptions', exceptionsToggle.checked);
+        player.setAttribute('track-page-actions', pageActionsToggle.checked);
+        player.setAttribute('record-screen', recordScreenToggle.checked);
+
+        if (identityInput.value) {
+          player.setAttribute('record-screen-identity', identityInput.value);
+        }
+
+        // Set API host
+        player.customConfig = {
+          host: 'https://api.star.pie-api.com/api'
+        };
+
+        // Append to body
+        document.body.appendChild(player);
+
+        // Listen for events from the player
+        player.addEventListener('api-player-error', (event) => {
+          logResult(initResults, `Player error: ${JSON.stringify(event.detail)}`);
+        });
+
+        player.addEventListener('session-created', (event) => {
+          logResult(initResults, `Session created: ${JSON.stringify(event.detail)}`);
+        });
+
+        logResult(initResults, 'Player created and appended to DOM');
+        logResult(initResults, `Attributes set: exceptions=${player.getAttribute('exceptions')}, trackPageActions=${player.getAttribute('track-page-actions')}, recordScreen=${player.getAttribute('record-screen')}`);
+      } else {
+        // Update existing player configuration
+        player.setAttribute('exceptions', exceptionsToggle.checked);
+        player.setAttribute('track-page-actions', pageActionsToggle.checked);
+        player.setAttribute('record-screen', recordScreenToggle.checked);
+
+        if (identityInput.value) {
+          player.setAttribute('record-screen-identity', identityInput.value);
+        } else {
+          player.removeAttribute('record-screen-identity');
+        }
+
+        logResult(initResults, 'Updated existing player configuration');
+        logResult(initResults, `Attributes set: exceptions=${player.getAttribute('exceptions')}, trackPageActions=${player.getAttribute('track-page-actions')}, recordScreen=${player.getAttribute('record-screen')}`);
+      }
+    } catch (error) {
+      logResult(initResults, `ERROR: ${error.message}`);
+      console.error(error);
+    }
+  });
+
+  // Test error tracking
+  document.getElementById('error-test').addEventListener('click', function() {
+    try {
+      errorResults.innerHTML = '';
+
+      if (!window.NREUM) {
+        logResult(errorResults, 'ERROR: New Relic not initialized');
+        return;
+      }
+
+      // Generate a runtime error
+      try {
+        const obj = null;
+        obj.nonExistentMethod(); // This will throw an error
+      } catch (error) {
+        logResult(errorResults, `Generated error: ${error.message}`);
+        logResult(errorResults, 'Error should be automatically tracked if exceptions are enabled on player');
+      }
+    } catch (error) {
+      logResult(errorResults, `ERROR: ${error.message}`);
+    }
+  });
+
+  // Test custom error
+  document.getElementById('custom-error').addEventListener('click', function() {
+    try {
+      errorResults.innerHTML = '';
+
+      if (!window.NREUM) {
+        logResult(errorResults, 'ERROR: New Relic not initialized');
+        return;
+      }
+
+      // Create a custom error
+      const customError = new Error('This is a test custom error');
+
+      // Explicitly notify New Relic of the error
+      window.NREUM.noticeError(customError, {
+        errorType: 'custom',
+        customAttribute: 'test value',
+        timestamp: Date.now()
+      });
+
+      logResult(errorResults, 'Custom error reported to New Relic');
+    } catch (error) {
+      logResult(errorResults, `ERROR: ${error.message}`);
+    }
+  });
+
+  // Test promise error
+  document.getElementById('promise-error').addEventListener('click', function() {
+    try {
+      errorResults.innerHTML = '';
+
+      if (!window.NREUM) {
+        logResult(errorResults, 'ERROR: New Relic not initialized');
+        return;
+      }
+
+      // Create a promise that rejects
+      new Promise((resolve, reject) => {
+        setTimeout(() => {
+          reject(new Error('Test promise rejection'));
+        }, 100);
+      }).catch(error => {
+        logResult(errorResults, `Promise rejected with: ${error.message}`);
+        logResult(errorResults, 'Error should be automatically tracked if exceptions are enabled on player');
+      });
+    } catch (error) {
+      logResult(errorResults, `ERROR: ${error.message}`);
+    }
+  });
+
+  // Test page action
+  document.getElementById('page-action').addEventListener('click', function() {
+    try {
+      actionResults.innerHTML = '';
+
+      if (!window.NREUM) {
+        logResult(actionResults, 'ERROR: New Relic not initialized');
+        return;
+      }
+
+      // Add a page action
+      window.NREUM.addPageAction('test_action', {
+        category: 'test',
+        value: Math.random().toFixed(2),
+        timestamp: Date.now()
+      });
+
+      logResult(actionResults, 'Page action added (if trackPageActions is enabled on player)');
+    } catch (error) {
+      logResult(actionResults, `ERROR: ${error.message}`);
+    }
+  });
+
+  // Test custom attribute
+  document.getElementById('custom-attribute').addEventListener('click', function() {
+    try {
+      actionResults.innerHTML = '';
+
+      if (!window.NREUM) {
+        logResult(actionResults, 'ERROR: New Relic not initialized');
+        return;
+      }
+
+      // Set a custom attribute
+      const value = `test_value_${Math.floor(Math.random() * 1000)}`;
+      window.NREUM.setCustomAttribute('test_attribute', value);
+
+      logResult(actionResults, `Custom attribute set: test_attribute = ${value}`);
+    } catch (error) {
+      logResult(actionResults, `ERROR: ${error.message}`);
+    }
+  });
+
+  // Test user ID
+  document.getElementById('user-id').addEventListener('click', function() {
+    try {
+      actionResults.innerHTML = '';
+
+      if (!window.NREUM) {
+        logResult(actionResults, 'ERROR: New Relic not initialized');
+        return;
+      }
+
+      // Set user ID
+      const userId = identityInput.value || `user_${Math.floor(Math.random() * 10000)}`;
+      window.NREUM.setUserId(userId);
+
+      logResult(actionResults, `User ID set: ${userId}`);
+    } catch (error) {
+      logResult(actionResults, `ERROR: ${error.message}`);
+    }
+  });
+
+  // Test session simulation
+  document.getElementById('simulate-session').addEventListener('click', function() {
+    try {
+      sessionResults.innerHTML = '';
+
+      if (!window.NREUM) {
+        logResult(sessionResults, 'ERROR: New Relic not initialized');
+        return;
+      }
+
+      // Simulate a series of user interactions and events
+      logResult(sessionResults, 'Starting session simulation...');
+
+      // Track the start of the simulation
+      window.NREUM.addPageAction('simulation_started', {
+        timestamp: Date.now()
+      });
+
+      // Set up a sequence of events
+      setTimeout(() => {
+        window.NREUM.setCustomAttribute('simulation_step', '1');
+        logResult(sessionResults, 'Simulation step 1 complete');
+
+        // Simulate a session that changes data
+        if (player) {
+          // This should trigger session-changed event
+          player.dispatchEvent(new CustomEvent('session-changed'));
+          logResult(sessionResults, 'Dispatched session-changed event');
+        }
+      }, 1000);
+
+      setTimeout(() => {
+        window.NREUM.setCustomAttribute('simulation_step', '2');
+        logResult(sessionResults, 'Simulation step 2 complete');
+
+        // Simulate a non-critical error
+        try {
+          const result = JSON.parse('{invalid json}');
+        } catch (e) {
+          window.NREUM.noticeError(e, {
+            severity: 'warning',
+            simulationStep: 2
+          });
+          logResult(sessionResults, 'Simulated a non-critical error');
+        }
+      }, 2000);
+
+      setTimeout(() => {
+        window.NREUM.setCustomAttribute('simulation_step', '3');
+        logResult(sessionResults, 'Simulation step 3 complete');
+
+        // Track the end of the simulation
+        window.NREUM.addPageAction('simulation_completed', {
+          duration_ms: 3000,
+          timestamp: Date.now()
+        });
+
+        logResult(sessionResults, 'Session simulation completed');
+      }, 3000);
+
+    } catch (error) {
+      logResult(sessionResults, `ERROR: ${error.message}`);
+    }
+  });
+
+  // Test score
+  document.getElementById('score-test').addEventListener('click', function() {
+    try {
+      sessionResults.innerHTML = '';
+
+      if (!player) {
+        logResult(sessionResults, 'ERROR: Player not initialized');
+        return;
+      }
+
+      // Attempt to score
+      logResult(sessionResults, 'Requesting score...');
+
+      player.score().then((score) => {
+        logResult(sessionResults, `Score result: ${JSON.stringify(score)}`);
+
+        // Track the score event if New Relic is available
+        if (window.NREUM) {
+          window.NREUM.addPageAction('score_received', {
+            score: JSON.stringify(score),
+            timestamp: Date.now()
+          });
+        }
+      }).catch((error) => {
+        logResult(sessionResults, `Score error: ${error.message}`);
+
+        // Notice the error if New Relic is available
+        if (window.NREUM) {
+          window.NREUM.noticeError(error, {
+            action: 'scoring',
+            timestamp: Date.now()
+          });
+        }
+      });
+    } catch (error) {
+      logResult(sessionResults, `ERROR: ${error.message}`);
+    }
+  });
+
+  // Update toggles when changed
+  exceptionsToggle.addEventListener('change', function() {
+    if (player) {
+      player.setAttribute('exceptions', this.checked);
+      logResult(initResults, `Exceptions tracking ${this.checked ? 'enabled' : 'disabled'}`);
+    }
+  });
+
+  pageActionsToggle.addEventListener('change', function() {
+    if (player) {
+      player.setAttribute('track-page-actions', this.checked);
+      logResult(initResults, `Page actions tracking ${this.checked ? 'enabled' : 'disabled'}`);
+    }
+  });
+
+  recordScreenToggle.addEventListener('change', function() {
+    if (player) {
+      player.setAttribute('record-screen', this.checked);
+      logResult(initResults, `Screen recording ${this.checked ? 'enabled' : 'disabled'}`);
+    }
+  });
+</script>
+</body>
+</html>

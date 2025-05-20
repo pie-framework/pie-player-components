@@ -1,12 +1,14 @@
 import isFunction from "lodash/isFunction";
+import pickBy from "lodash/pickBy";
 import {
   getPackageWithoutVersion,
   getPackageBundleUri,
   withRetry
 } from "./utils/utils";
-import { PieItemElement, PieContent } from "./interface";
-import pickBy from "lodash/pickBy";
 import { emptyConfigure } from "./components/empty-configure";
+
+import { PieItemElement, PieContent } from "./interface";
+import { NewRelicEnabledClient } from "./new-relic";
 
 window["pieHelpers"] = {
   loadingScripts: {}
@@ -18,16 +20,16 @@ window["pieHelpers"] = {
 export const DEFAULT_ENDPOINTS = {
   prod: {
     bundleBase: "https://pits-cdn.pie-api.io/bundles/",
-    buildServiceBase: "https://proxy.pie-api.com/bundles/",
+    buildServiceBase: "https://proxy.pie-api.com/bundles/"
   },
   // this is actually not really used anymore? equals to dev
   stage: {
     bundleBase: "https://pits-cdn.pie-api.io/bundles/",
-    buildServiceBase: "https://proxy.pie-api.com/bundles/",
+    buildServiceBase: "https://proxy.pie-api.com/bundles/"
   },
   dev: {
     bundleBase: "https://pits-cdn.pie-api.io/bundles/",
-    buildServiceBase: "https://proxy.dev.pie-api.com/bundles/",
+    buildServiceBase: "https://proxy.dev.pie-api.com/bundles/"
   }
 };
 
@@ -73,6 +75,7 @@ export const needToLoad = (registry: any, bundle: BundleType) => (
   if (!registry) {
     return true;
   }
+
   const regEntry: Entry = registry[key];
 
   if (!regEntry) {
@@ -80,6 +83,7 @@ export const needToLoad = (registry: any, bundle: BundleType) => (
   }
 
   const { config, controller, element } = regEntry;
+
   switch (bundle) {
     case BundleType.editor:
       return !config || !controller || !element;
@@ -93,28 +97,52 @@ export const needToLoad = (registry: any, bundle: BundleType) => (
 };
 
 /**
- * Pie Registry contols the loading of all PIEs from the pie build service
+ * Configuration options for Pie Loader
  */
-export class PieLoader {
+export type LoaderConfig = {
+  /**
+   * Enable tracking page actions/events with New Relic.
+   * When enabled, all network requests will be instrumented.
+   * Note: Setting this to true increases data sent to New Relic, which may affect costs.
+   * Default: false
+   */
+  trackPageActions?: boolean;
+};
+
+// Default pie loader configuration values
+const DEFAULT_LOADER_CONFIG: Required<LoaderConfig> = {
+  trackPageActions: false
+};
+
+/**
+ * Pie Registry controls the loading of all PIEs from the pie build service
+ */
+export class PieLoader extends NewRelicEnabledClient {
+  private readonly loaderConfig: Required<LoaderConfig>;
   endpoints: BundleEndpoints;
 
   /**
    * Create a PieLoader instance
    * Can provide config object for endpoints, will default to to production environment preset.
-   * @param endpoints an object providing {bundleBase, buildServiceBase} endpoints
+   * @param _endpoints
+   * @param config
    */
-  constructor(_endpoints?: BundleEndpoints) {
+  constructor(_endpoints?: BundleEndpoints, config?: LoaderConfig) {
+    super();
+
     if (!_endpoints) {
       this.endpoints = DEFAULT_ENDPOINTS.prod;
     } else {
       this.endpoints = _endpoints;
     }
+
     // read from global in case >1 instance loaded.
     window["PIE_REGISTRY"] = window["PIE_REGISTRY"]
       ? window["PIE_REGISTRY"]
       : {};
     PieLoader._registry = window["PIE_REGISTRY"];
     this.registry = PieLoader._registry;
+    this.loaderConfig = { ...DEFAULT_LOADER_CONFIG, ...config };
   }
 
   private static _registry: { [elementName: string]: Entry };
@@ -126,22 +154,32 @@ export class PieLoader {
       : null;
   };
 
-  public elementsHaveLoaded = (
+  public elementsHaveLoaded = async (
     els: LoadedElementsQuery[]
   ): Promise<LoadedElementsResp> => {
+    const startTime = this.trackOperationStart("elementsHaveLoaded", {
+      elementsQuery: els
+    });
     const promises = els.map(el => customElements.whenDefined(el.tag));
 
-    return Promise.all(promises)
-      .then(() => {
-        return Promise.resolve({ elements: els, val: true });
-      })
-      .catch(() => {
-        return Promise.resolve({ elements: els, val: false });
-      });
+    try {
+      await Promise.all(promises);
+      this.trackOperationComplete("elementsHaveLoaded", startTime);
+      return Promise.resolve({ elements: els, val: true });
+    } catch (e) {
+      this.trackOperationComplete(
+        "elementsHaveLoaded",
+        startTime,
+        false,
+        "Something went wrong"
+      );
+      return Promise.resolve({ elements: els, val: false });
+    }
   };
 
   private getBaseUrls = (options, piesToLoad) => {
     const bundleUri = getPackageBundleUri(piesToLoad);
+
     if (!bundleUri) {
       return;
     }
@@ -192,32 +230,36 @@ export class PieLoader {
     forceBundleUrl: boolean;
     reFetchBundle: boolean;
   }) => {
-    performance.mark('pie-loader-start');
-
     if (!options.endpoints) {
       options.endpoints = this.endpoints;
     }
+
     if (!options.bundle) {
       options.bundle = BundleType.editor;
     }
 
+    const startTime = this.trackOperationStart("loadCloudPies", {
+      elements: options.content.elements,
+      endpoints: options.endpoints,
+      bundle: options.bundle,
+      useCdn: options.useCdn,
+      forceBundleUrl: options.forceBundleUrl,
+      reFetchBundle: options.reFetchBundle
+    });
+
     const elements = options.content.elements;
     let head: HTMLElement = options.doc.getElementsByTagName("head")[0];
+
     if (!head) {
       head = options.doc.createElement("head");
       options.doc.appendChild(head);
     }
-
-    performance.mark('pie-getElementsToLoad-start');
 
     const piesToLoad = this.getElementsToLoad(
       elements,
       options.bundle,
       this.registry
     );
-
-    performance.mark('pie-getElementsToLoad-end');
-    performance.measure('PIE Get Elements To Load Time', 'pie-getElementsToLoad-start', 'pie-getElementsToLoad-end');
 
     let scriptUrl = this.getScriptsUrl(options, piesToLoad);
 
@@ -232,13 +274,17 @@ export class PieLoader {
     //  this means that we'll make that fetch request multiple times, which slows down the page
     const loadedScripts = [...head.getElementsByTagName("script")];
     // That's why we're using this little helper to store the ones that are in the process of loading as well
-    const alreadyLoadingScript = window["pieHelpers"] && window["pieHelpers"].loadingScripts[scriptUrl];
+    const alreadyLoadingScript =
+      window["pieHelpers"] && window["pieHelpers"].loadingScripts[scriptUrl];
 
-    if (loadedScripts.find(s => (s.src === scriptUrl)) || alreadyLoadingScript) {
+    if (loadedScripts.find(s => s.src === scriptUrl) || alreadyLoadingScript) {
       return;
     }
 
-    if (window["pieHelpers"] && !window["pieHelpers"].loadingScripts[scriptUrl]) {
+    if (
+      window["pieHelpers"] &&
+      !window["pieHelpers"].loadingScripts[scriptUrl]
+    ) {
       window["pieHelpers"].loadingScripts[scriptUrl] = true;
     }
 
@@ -246,13 +292,10 @@ export class PieLoader {
 
     const onloadFn = (_pies => {
       return () => {
-        performance.mark('pie-loader-end');
-        performance.measure('PIE Loader Bundle Time', 'pie-loader-start', 'pie-loader-end');
-        const entry = performance.getEntriesByName('PIE Loader Bundle Time')[0];
-        const duration = entry ? entry.duration : 0;
-        console.log('[PIE Loader Bundle Time]', duration.toFixed(2), 'ms');
-
-        performance.mark('pie-custom-elements-define-start');
+        const defineElemsStartTime = this.trackOperationStart(
+          "defineCustomElements",
+          { items: _pies }
+        );
 
         const pieKeys = Object.keys(_pies);
 
@@ -262,11 +305,14 @@ export class PieLoader {
             window["pie"] && window["pie"].default
               ? window["pie"].default[packagesWithoutVersion]
               : null;
+
           if (!pie) {
             console.log(`pie constructor not found for ${key}`);
             return;
           }
+
           const elName = key;
+
           if (!customElements.get(elName)) {
             customElements.define(elName, pie.Element);
             this.registry[elName] = {
@@ -303,28 +349,33 @@ export class PieLoader {
           }
         });
 
-        performance.mark('pie-custom-elements-define-end');
-        performance.measure('PIE Define Custom Elements Time', 'pie-custom-elements-define-start', 'pie-custom-elements-define-end');
-        const defineEntry = performance.getEntriesByName('PIE Define Custom Elements Time')[0];
-        const defineDuration = defineEntry ? defineEntry.duration : 0;
-        console.log('[PIE Define Custom Elements Time]', defineDuration.toFixed(2), 'ms');
+        this.trackOperationComplete(
+          "defineCustomElements",
+          defineElemsStartTime
+        );
       };
     })(piesToLoad);
 
     if (options.reFetchBundle) {
       const loadScript = async () => {
+        const loadScriptStartTime = this.trackOperationStart(
+          "loadScript",
+          { scriptUrl },
+          true
+        );
+
         try {
           const response = await withRetry(
             async (currentDelay: number) => {
               const res = await fetch(scriptUrl);
-              // if the request fails with 503 retry it
-              if (res.status === 503) {
-                console.warn(
-                  `Service unavailable (503), retrying in ${currentDelay / 1000 ||
-                  1} seconds...`
-                );
 
-                throw new Error("Unavailable, retrying");
+              // if the request fails with 503, retry it
+              if (res.status === 503) {
+                const errorMsg = `Service unavailable (503), retrying in ${currentDelay /
+                  1000 || 1} seconds...`;
+                console.warn(errorMsg);
+
+                throw new Error(errorMsg);
               }
 
               return res;
@@ -334,21 +385,42 @@ export class PieLoader {
             30000
           );
 
-          // if the request is successful inject the response as a script tag
-          // to avoid doing the same call twice
+          // if the request is successful, inject the response as a script tag to avoid doing the same call twice
           if (response.status === 200) {
             script.onload = onloadFn;
             script.src = scriptUrl;
             head.appendChild(script);
 
             delete window["pieHelpers"].loadingScripts[scriptUrl];
+
+            this.trackOperationComplete(
+              "loadScript",
+              loadScriptStartTime,
+              true
+            );
           } else {
-            console.error("Failed to load script, status code:", response.status);
+            const errorMsg = `Failed to load script, status code: ${
+              response.status
+            }`;
+            console.error(errorMsg);
+            this.trackOperationComplete(
+              "loadScript",
+              loadScriptStartTime,
+              true,
+              errorMsg
+            );
           }
         } catch (error) {
           console.error(
             "Network error occurred while trying to load script:",
             error
+          );
+
+          this.trackOperationComplete(
+            "loadScript",
+            loadScriptStartTime,
+            true,
+            error.message
           );
         }
       };
@@ -359,13 +431,17 @@ export class PieLoader {
       script.src = scriptUrl;
       head.appendChild(script);
     }
+
+    this.trackOperationComplete("loadCloudPies", startTime);
   };
 
   /**
-   * Given a defintion of elements, will check the registry
+   * Given a definition of elements, will check the registry
    * and return the elements and tags that need to be loaded.
    *
-   * @param elements - the elements to test against registry
+   * @param els
+   * @param bundle
+   * @param registry
    */
   protected getElementsToLoad = (
     els: PieItemElement,
@@ -374,4 +450,74 @@ export class PieLoader {
   ): PieItemElement => {
     return pickBy(els, needToLoad(registry, bundle));
   };
+
+  /**
+   * Implementation of the abstract method from NewRelicEnabledClient
+   */
+  protected getTrackingBaseAttributes(): Record<string, any> {
+    return {
+      endpoints: this.endpoints,
+      networkInfo: this.getNetworkInfo()
+    };
+  }
+
+  /**
+   * Check if an error is a network error
+   */
+  private isNetworkError(error: Error): boolean {
+    return (
+      error.name === "AbortError" ||
+      error instanceof TypeError ||
+      error.message.includes("NetworkError") ||
+      error.message.includes("Failed to fetch") ||
+      error.message.includes("Network request failed") ||
+      !(typeof navigator !== "undefined" && navigator.onLine)
+    );
+  }
+
+  /**
+   * Track operation start if trackPageActions is enabled
+   */
+  private trackOperationStart(
+    operationName: string,
+    data: Record<string, any> = {},
+    apiRequest: boolean = false
+  ) {
+    const startTime = Date.now();
+
+    if (!this.loaderConfig.trackPageActions || !this.newRelic) {
+      return startTime;
+    }
+
+    const operationType = apiRequest ? "api" : "pie";
+
+    this.track("activity", `${operationType}_${operationName}_started`, {
+      data: JSON.stringify(data),
+      timestamp: new Date().toISOString()
+    });
+
+    return startTime;
+  }
+
+  /**
+   * Track operation complete if trackPageActions is enabled
+   */
+  private trackOperationComplete(
+    operationName: string,
+    startTime: number,
+    apiRequest?: boolean = false,
+    errorMessage?: string
+  ) {
+    if (this.loaderConfig.trackPageActions || !this.newRelic) {
+      return;
+    }
+
+    const operationType = apiRequest ? "api" : "pie";
+
+    this.track("activity", `${operationType}_${operationName}_complete`, {
+      duration: Date.now() - startTime,
+      success: errorMessage ? false : true,
+      ...(errorMessage && { errorMessage })
+    });
+  }
 }
