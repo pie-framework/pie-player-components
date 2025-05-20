@@ -1,3 +1,10 @@
+## [3.5.1](https://github.com/pie-framework/pie-player-components/compare/v3.5.0...v3.5.1) (2025-05-20)
+
+
+### Bug Fixes
+
+* **new-relic:** add loader config to  player and author ([d8f9108](https://github.com/pie-framework/pie-player-components/commit/d8f91088a488e3f6dcce42ca95098fe0ab2dc7f3))
+
 # [3.5.0](https://github.com/pie-framework/pie-player-components/compare/v3.4.0...v3.5.0) (2025-05-20)
 
 
