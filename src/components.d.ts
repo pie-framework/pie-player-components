@@ -9,6 +9,7 @@
 import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
 import {
   BundleEndpoints,
+  LoaderConfig,
 } from './pie-loader';
 import {
   Env,
@@ -88,6 +89,10 @@ export namespace Components {
     */
     'isInsidePieApiAuthor'?: boolean;
     /**
+    * The Pie loader config.
+    */
+    'loaderConfig': LoaderConfig;
+    /**
     * used to automatically re-fetch the bundle (in case we get a 503)
     */
     'reFetchBundle'?: boolean;
@@ -137,6 +142,10 @@ export namespace Components {
     * Indicates if player running in the context of a PIE hosting system. Do not modify the default value for this property if you are not implementing a PIE host. If true, the host is responsible for all model updates.
     */
     'hosted'?: boolean;
+    /**
+    * The Pie loader config.
+    */
+    'loaderConfig': LoaderConfig;
     'provideScore': () => Promise<false | any[]>;
     /**
     * used to automatically re-fetch the bundle (in case we get a 503)
@@ -280,6 +289,10 @@ declare namespace LocalJSX {
     */
     'isInsidePieApiAuthor'?: boolean;
     /**
+    * The Pie loader config.
+    */
+    'loaderConfig'?: LoaderConfig;
+    /**
     * Emmitted when the content models in the config have been set on the content
     */
     'onModelLoaded'?: (event: CustomEvent<any>) => void;
@@ -336,6 +349,10 @@ declare namespace LocalJSX {
     * Indicates if player running in the context of a PIE hosting system. Do not modify the default value for this property if you are not implementing a PIE host. If true, the host is responsible for all model updates.
     */
     'hosted'?: boolean;
+    /**
+    * The Pie loader config.
+    */
+    'loaderConfig'?: LoaderConfig;
     /**
     * Emitted when the content in the config has been loaded.
     */

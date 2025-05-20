@@ -25,6 +25,8 @@
     markup: "<pie-multiple-choice id='1'></pie-multiple-choice>"
   };
 
+  // author.loaderConfig = { trackPageActions: true }
+
   window.addEventListener('load', () => {
     author.addRubricToConfig(config).then(newConf => {
       author.config = newConf;

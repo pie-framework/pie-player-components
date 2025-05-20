@@ -25,7 +25,8 @@ import {
   PieLoader,
   BundleType,
   DEFAULT_ENDPOINTS,
-  BundleEndpoints
+  BundleEndpoints,
+  LoaderConfig
 } from "../../pie-loader";
 import { addRubric } from "../../rubric-utils";
 import { normalizeContentElements } from "../../utils/utils";
@@ -125,6 +126,11 @@ export class Player {
    */
   @Prop() reFetchBundle?: boolean = false;
 
+  /**
+   * The Pie loader config.
+   */
+  @Prop() loaderConfig: LoaderConfig;
+
   @Watch("addCorrectResponse")
   watchAddCorrectResponse(newValue, oldValue) {
     if (newValue !== oldValue) {
@@ -178,7 +184,7 @@ export class Player {
   @Prop() externalStyleUrls: string;
   @Prop() customClassname?: string;
 
-  pieLoader = new PieLoader();
+  pieLoader = new PieLoader(null, this.loaderConfig);
 
   player() {
     return this.stimulusPlayer ? this.stimulusPlayer : this;
