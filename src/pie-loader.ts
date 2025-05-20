@@ -461,19 +461,19 @@ export class PieLoader extends NewRelicEnabledClient {
     };
   }
 
-  /**
-   * Check if an error is a network error
-   */
-  private isNetworkError(error: Error): boolean {
-    return (
-      error.name === "AbortError" ||
-      error instanceof TypeError ||
-      error.message.includes("NetworkError") ||
-      error.message.includes("Failed to fetch") ||
-      error.message.includes("Network request failed") ||
-      !(typeof navigator !== "undefined" && navigator.onLine)
-    );
-  }
+  // /**
+  //  * Check if an error is a network error
+  //  */
+  // private isNetworkError(error: Error): boolean {
+  //   return (
+  //     error.name === "AbortError" ||
+  //     error instanceof TypeError ||
+  //     error.message.includes("NetworkError") ||
+  //     error.message.includes("Failed to fetch") ||
+  //     error.message.includes("Network request failed") ||
+  //     !(typeof navigator !== "undefined" && navigator.onLine)
+  //   );
+  // }
 
   /**
    * Track operation start if trackPageActions is enabled
@@ -505,7 +505,7 @@ export class PieLoader extends NewRelicEnabledClient {
   private trackOperationComplete(
     operationName: string,
     startTime: number,
-    apiRequest?: boolean = false,
+    apiRequest: boolean = false,
     errorMessage?: string
   ) {
     if (this.loaderConfig.trackPageActions || !this.newRelic) {
