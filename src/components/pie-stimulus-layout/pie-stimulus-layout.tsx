@@ -96,8 +96,8 @@ export class PieStimulusLayout {
   // add style when the containers are resizable
   private getStyle(flex) {
     const viewPortWidth = window.innerWidth;
-    // avoid this style for viewports < 600
-    if (this.allowedResize && viewPortWidth > 1200) {
+    // avoid this style for viewports < 1020
+    if (this.allowedResize && viewPortWidth > 1020) {
       return { flex: `${flex}`, transition: this.isResizing ? 'none' : 'flex 0.1s ease'}
     }
     return {};
