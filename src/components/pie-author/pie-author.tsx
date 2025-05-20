@@ -7,18 +7,37 @@ import {
   ModelUpdatedEvent
 } from "@pie-framework/pie-configure-events";
 
+import { _dll_pie_lib__pie_toolbox_math_rendering_accessible } from "@pie-lib/pie-toolbox-math-rendering-module/module";
 import {
-  _dll_pie_lib__pie_toolbox_math_rendering_accessible
-} from "@pie-lib/pie-toolbox-math-rendering-module/module";
-import {Component, Element, Event, EventEmitter, h, Method, Prop, State, Watch} from "@stencil/core";
+  Component,
+  Element,
+  Event,
+  EventEmitter,
+  h,
+  Method,
+  Prop,
+  State,
+  Watch
+} from "@stencil/core";
 import cloneDeep from "lodash/cloneDeep";
 import _isEmpty from "lodash/isEmpty";
 import _isEqual from "lodash/isEqual";
 import _omit from "lodash/omit";
 import parseNpm from "parse-package-name";
 
-import {ItemConfig, PieContent, PieController, PieElement, PieModel} from "../../interface";
-import {BundleEndpoints, DEFAULT_ENDPOINTS, PieLoader} from "../../pie-loader";
+import {
+  ItemConfig,
+  PieContent,
+  PieController,
+  PieElement,
+  PieModel
+} from "../../interface";
+import {
+  BundleEndpoints,
+  DEFAULT_ENDPOINTS,
+  PieLoader,
+  LoaderConfig
+} from "../../pie-loader";
 import {
   addComplexRubric,
   addModelToContent,
@@ -29,10 +48,16 @@ import {
   complexRubricChecks,
   removeComplexRubricFromMarkup
 } from "../../rubric-utils";
-import {createTag, pieContentFromConfig} from "../../utils/utils";
-import {VERSION} from "../../version";
-import {DataURLImageSupport, ExternalImageSupport} from "./dataurl-image-support";
-import {DataURLUploadSoundSupport, ExternalUploadSoundSupport} from "./dataurl-upload-sound-support";
+import { createTag, pieContentFromConfig } from "../../utils/utils";
+import { VERSION } from "../../version";
+import {
+  DataURLImageSupport,
+  ExternalImageSupport
+} from "./dataurl-image-support";
+import {
+  DataURLUploadSoundSupport,
+  ExternalUploadSoundSupport
+} from "./dataurl-upload-sound-support";
 
 /**
  * Pie Author will load a Pie Content model for authoring.
@@ -46,7 +71,7 @@ import {DataURLUploadSoundSupport, ExternalUploadSoundSupport} from "./dataurl-u
 export class Author {
   _modelLoadedState: boolean = false;
 
-  @Prop({context: "document"}) doc!: Document;
+  @Prop({ context: "document" }) doc!: Document;
 
   /**
    * Optionally specifies the back-end that builds and hosts javascript bundles for rendering assessment items.
@@ -90,6 +115,11 @@ export class Author {
   @Prop() config: ItemConfig;
 
   /**
+   * The Pie loader config.
+   */
+  @Prop() loaderConfig: LoaderConfig;
+
+  /**
    * Emmitted when the model for the content has been updated within the ui due to user action.
    */
   @Event() modelUpdated: EventEmitter;
@@ -122,7 +152,7 @@ export class Author {
 
   pieContentModel: PieContent;
 
-  pieLoader = new PieLoader();
+  pieLoader = new PieLoader(null, this.loaderConfig);
 
   renderMarkup: String;
 
@@ -143,14 +173,14 @@ export class Author {
   private componentLoaded = false;
 
   /** external providers can set this if they need to upload the assets to the cloud etc. by default we use data urls */
-  @Prop({reflect: false})
+  @Prop({ reflect: false })
   imageSupport: ExternalImageSupport = new DataURLImageSupport();
 
   /** external providers can set this if they need to upload the assets to the cloud etc. by default we use data urls */
-  @Prop({reflect: false})
+  @Prop({ reflect: false })
   uploadSoundSupport: ExternalUploadSoundSupport = new DataURLUploadSoundSupport();
 
-  @Prop({mutable: false, reflect: false})
+  @Prop({ mutable: false, reflect: false })
   version: string = VERSION;
 
   /**
@@ -169,64 +199,73 @@ export class Author {
   @Method()
   async validateModels() {
     if (!this.pieContentModel || !this.pieContentModel.models) {
-      console.error('No pie content model');
+      console.error("No pie content model");
 
-      return {hasErrors: false, validatedModels: {}};
+      return { hasErrors: false, validatedModels: {} };
     }
 
-    return (this.pieContentModel.models || []).reduce((acc: any, model, index) => {
-      let pieEl: PieElement = this.el.querySelector(`[id='${model.id}']`);
-      !pieEl && (pieEl = this.el.querySelector(`[pie-id='${model.id}']`));
+    return (this.pieContentModel.models || []).reduce(
+      (acc: any, model, index) => {
+        let pieEl: PieElement = this.el.querySelector(`[id='${model.id}']`);
+        !pieEl && (pieEl = this.el.querySelector(`[pie-id='${model.id}']`));
 
-      if (pieEl) {
-        const pieElName = pieEl.tagName.toLowerCase().split("-config")[0];
+        if (pieEl) {
+          const pieElName = pieEl.tagName.toLowerCase().split("-config")[0];
 
-        const controller: PieController = this.pieLoader.getController(pieElName);
+          const controller: PieController = this.pieLoader.getController(
+            pieElName
+          );
 
-        const packageName = parseNpm(this.pieContentModel.elements[pieElName]).name;
-        const configuration = this.configSettings && this.configSettings[packageName] || {};
+          const packageName = parseNpm(this.pieContentModel.elements[pieElName])
+            .name;
+          const configuration =
+            (this.configSettings && this.configSettings[packageName]) || {};
 
-        if (controller && controller.validate) {
-          // here we call controller.validate which returns an object with all the errors
-          const errors = controller.validate(model, configuration);
-          const errorsAreTheSame = _isEqual(model && model.errors, errors);
+          if (controller && controller.validate) {
+            // here we call controller.validate which returns an object with all the errors
+            const errors = controller.validate(model, configuration);
+            const errorsAreTheSame = _isEqual(model && model.errors, errors);
 
-          // Only update models if anything changed to errors object, otherwise, we'll keep calling onModelUpdated and again validateModels
-          // for complex items (like ebsr, complex-rubric, who are using other items)
-          if (!errorsAreTheSame) {
-            // added this to ensure that this.pieContentModel.model is updated with the correct errors
-            // TODO: figure out what's actually happening and if there is a better way to make sure that this.pieContentModels.models is actually updated
-            this.pieContentModel.models[index] = { ...model, errors };
+            // Only update models if anything changed to errors object, otherwise, we'll keep calling onModelUpdated and again validateModels
+            // for complex items (like ebsr, complex-rubric, who are using other items)
+            if (!errorsAreTheSame) {
+              // added this to ensure that this.pieContentModel.model is updated with the correct errors
+              // TODO: figure out what's actually happening and if there is a better way to make sure that this.pieContentModels.models is actually updated
+              this.pieContentModel.models[index] = { ...model, errors };
 
-            // here we can update the model in author, so we can set errors
-            pieEl.model = { ...model, errors };
-          }
-
-          // for ebsr
-          if (errors && errors.partA && errors.partB) {
-            acc.hasErrors = acc.hasErrors || (!_isEmpty(errors.partA) || !_isEmpty(errors.partB));
-          } else {
-            // here we return a boolean value if models are valid or not
-            acc.hasErrors = acc.hasErrors || !_isEmpty(errors);
-          }
-
-          acc.validatedModels = {
-            ...acc.validatedModels,
-            [model.id]: {
-              ...model,
-              errors,
+              // here we can update the model in author, so we can set errors
+              pieEl.model = { ...model, errors };
             }
-          };
-        } else {
-          acc.validatedModels = {
-            ...acc.validatedModels,
-            [model.id]: model,
+
+            // for ebsr
+            if (errors && errors.partA && errors.partB) {
+              acc.hasErrors =
+                acc.hasErrors ||
+                (!_isEmpty(errors.partA) || !_isEmpty(errors.partB));
+            } else {
+              // here we return a boolean value if models are valid or not
+              acc.hasErrors = acc.hasErrors || !_isEmpty(errors);
+            }
+
+            acc.validatedModels = {
+              ...acc.validatedModels,
+              [model.id]: {
+                ...model,
+                errors
+              }
+            };
+          } else {
+            acc.validatedModels = {
+              ...acc.validatedModels,
+              [model.id]: model
+            };
           }
         }
-      }
 
-      return acc;
-    }, { hasErrors: false, validatedModels: {} });
+        return acc;
+      },
+      { hasErrors: false, validatedModels: {} }
+    );
   }
 
   insertImage(file: File) {
@@ -318,7 +357,7 @@ export class Author {
 
     this.handleInsertSound = (e: InsertSoundEvent) => {
       console.log("[handleInsertSound]", e);
-      this.uploadSoundSupport.insert(e.detail.fileChosen, e.detail.done)
+      this.uploadSoundSupport.insert(e.detail.fileChosen, e.detail.done);
     };
 
     this.handleDeleteSound = (e: DeleteImageEvent) => {
@@ -357,18 +396,24 @@ export class Author {
 
         const pieContentModel = pieContentFromConfig(newValue);
 
-        const complexRubricCheckedValues = complexRubricChecks(pieContentModel, this.configSettings);
-        const {shouldAddComplexRubric, shouldRemoveComplexRubric} = complexRubricCheckedValues || {};
+        const complexRubricCheckedValues = complexRubricChecks(
+          pieContentModel,
+          this.configSettings
+        );
+        const { shouldAddComplexRubric, shouldRemoveComplexRubric } =
+          complexRubricCheckedValues || {};
 
         // if changes are needed
 
         if (shouldAddComplexRubric || shouldRemoveComplexRubric) {
           this.pieContentModel = null;
 
-          const newConfig = await this.getPieContentModelWithToggledComplexRubric({
-            complexRubricCheckedValues,
-            pieContentModel
-          });
+          const newConfig = await this.getPieContentModelWithToggledComplexRubric(
+            {
+              complexRubricCheckedValues,
+              pieContentModel
+            }
+          );
 
           // and then we reset the config
           if (newConfig) {
@@ -388,7 +433,7 @@ export class Author {
     }
   }
 
-  getElementByType = (elements: {[key: string]: string;}, type: string) => {
+  getElementByType = (elements: { [key: string]: string }, type: string) => {
     const result = [];
     for (const [key, value] of Object.entries(elements || {})) {
       if (value.startsWith(type)) {
@@ -397,9 +442,12 @@ export class Author {
     }
 
     return result;
-  }
+  };
 
-  getPieContentModelWithToggledComplexRubric = async ({complexRubricCheckedValues, pieContentModel}) => {
+  getPieContentModelWithToggledComplexRubric = async ({
+    complexRubricCheckedValues,
+    pieContentModel
+  }) => {
     const {
       shouldAddComplexRubric,
       shouldRemoveComplexRubric,
@@ -410,13 +458,18 @@ export class Author {
       let clonedModel = cloneDeep(pieContentModel);
 
       // we have to convert the rubric to complex-rubric, so get the default values from it
-      const rubricNames = this.getElementByType(pieContentModel.elements, '@pie-element/rubric');
+      const rubricNames = this.getElementByType(
+        pieContentModel.elements,
+        "@pie-element/rubric"
+      );
 
       for (const rubricName of rubricNames) {
-        const rubric = ((pieContentModel && pieContentModel.models) || []).find((el) => el.element === rubricName);
+        const rubric = ((pieContentModel && pieContentModel.models) || []).find(
+          el => el.element === rubricName
+        );
 
         if (rubric) {
-          const simpleRubric = _omit(rubric, ['id', 'element']);
+          const simpleRubric = _omit(rubric, ["id", "element"]);
 
           this.defaultComplexRubricModel = {
             rubrics: {
@@ -424,7 +477,11 @@ export class Author {
             }
           };
 
-          clonedModel = this.removeRubricItemTypes(clonedModel, rubric.id, rubric.element);
+          clonedModel = this.removeRubricItemTypes(
+            clonedModel,
+            rubric.id,
+            rubric.element
+          );
         }
       }
 
@@ -434,22 +491,25 @@ export class Author {
 
     if (shouldRemoveComplexRubric) {
       // we remove complex-rubric from config
-      return this.removeComplexRubricItemTypes(cloneDeep(pieContentModel), complexRubricElements);
+      return this.removeComplexRubricItemTypes(
+        cloneDeep(pieContentModel),
+        complexRubricElements
+      );
     }
 
     return null;
-  }
+  };
 
-  getNewConfig = (newConfig) => {
+  getNewConfig = newConfig => {
     if (this.isAdvancedItemConfig(this.config)) {
       return {
         ...this.config,
         pie: newConfig
-      }
+      };
     }
 
     return newConfig;
-  }
+  };
 
   removeRubricItemTypes(pieContentModel, rubricId, rubricElement) {
     if (!rubricElement || !pieContentModel.models) {
@@ -459,15 +519,19 @@ export class Author {
     // delete the rubric elements from elements object
     delete pieContentModel.elements[rubricElement];
 
-    const {
-      markupWithoutComplexRubric,
-    } = removeComplexRubricFromMarkup(pieContentModel, [rubricElement], this.doc);
+    const { markupWithoutComplexRubric } = removeComplexRubricFromMarkup(
+      pieContentModel,
+      [rubricElement],
+      this.doc
+    );
 
     // delete the rubric nodes from markup
     pieContentModel.markup = markupWithoutComplexRubric;
 
     // delete the rubric models
-    pieContentModel.models = (pieContentModel.models || []).filter(model => rubricId !== model.id);
+    pieContentModel.models = (pieContentModel.models || []).filter(
+      model => rubricId !== model.id
+    );
 
     return pieContentModel;
   }
@@ -478,18 +542,26 @@ export class Author {
     }
 
     // delete the complex-rubric elements from elements object
-    rubricElements.forEach(rubricElementKey => delete pieContentModel.elements[rubricElementKey]);
+    rubricElements.forEach(
+      rubricElementKey => delete pieContentModel.elements[rubricElementKey]
+    );
 
     const {
       markupWithoutComplexRubric,
       deletedComplexRubricItemIds
-    } = removeComplexRubricFromMarkup(pieContentModel, rubricElements, this.doc);
+    } = removeComplexRubricFromMarkup(
+      pieContentModel,
+      rubricElements,
+      this.doc
+    );
 
     // delete the complex-rubric nodes from markup
     pieContentModel.markup = markupWithoutComplexRubric;
 
     // delete the complex-rubric models
-    pieContentModel.models = pieContentModel.models.filter(model => !deletedComplexRubricItemIds.includes(model.id));
+    pieContentModel.models = pieContentModel.models.filter(
+      model => !deletedComplexRubricItemIds.includes(model.id)
+    );
 
     return pieContentModel;
   }
@@ -499,7 +571,7 @@ export class Author {
       id: COMPLEX_RUBRIC,
       element: `pie-${COMPLEX_RUBRIC}`,
       // if there is a default model defined for complex-rubric, we have to use it
-      ...this.defaultComplexRubricModel || {},
+      ...(this.defaultComplexRubricModel || {})
     };
 
     const packageName = `@pie-element/${COMPLEX_RUBRIC}`;
@@ -562,7 +634,7 @@ export class Author {
         if (this.pieContentModel.elements[pieElName]) {
           const elementId = el.getAttribute("id");
           if (!this.pieContentModel.models.find(m => m.id === elementId)) {
-            const model = {id: elementId, element: pieElName};
+            const model = { id: elementId, element: pieElName };
             this.pieContentModel.models.push(model);
           }
         }
@@ -590,22 +662,27 @@ export class Author {
           const pieElName = pieEl.tagName.toLowerCase().split("-config")[0];
 
           try {
-            const packageName = parseNpm(this.pieContentModel.elements[pieElName]).name;
+            const packageName = parseNpm(
+              this.pieContentModel.elements[pieElName]
+            ).name;
             pieEl.model = model;
 
             if (this.configSettings && this.configSettings[packageName]) {
               pieEl.configuration = this.configSettings[packageName];
             }
-
           } catch (e) {
-            console.log(e.toString(), pieElName, this.pieContentModel.elements[pieElName]);
+            console.log(
+              e.toString(),
+              pieElName,
+              this.pieContentModel.elements[pieElName]
+            );
           }
         }
       });
     }
-  }
+  };
 
-  @Watch('configSettings')
+  @Watch("configSettings")
   watchConfigSettings() {
     if (this.canWatchConfigSettings) {
       this.setModelsAndConfigurations();
@@ -620,10 +697,10 @@ export class Author {
     this.el.removeEventListener(DeleteSoundEvent.TYPE, this.handleDeleteSound);
 
     if (this.fileInput) {
-      this.fileInput.removeEventListener('change', this.handleFileInputChange);
+      this.fileInput.removeEventListener("change", this.handleFileInputChange);
     }
 
-    window.removeEventListener('focus', this.handleWindowFocus);
+    window.removeEventListener("focus", this.handleWindowFocus);
   }
 
   async componentWillLoad() {
@@ -632,59 +709,69 @@ export class Author {
     }
     // Note: cannot use the @Listen decorator as creates bundling problems due
     // to `.` in event name.
-    this.el.addEventListener(ModelUpdatedEvent.TYPE, async (e: ModelUpdatedEvent) => {
-      // set the internal model
-      // emit a content-item level event with the model
-      let rubricChanged;
+    this.el.addEventListener(
+      ModelUpdatedEvent.TYPE,
+      async (e: ModelUpdatedEvent) => {
+        // set the internal model
+        // emit a content-item level event with the model
+        let rubricChanged;
 
-      if (this.pieContentModel && e.update) {
-        this.pieContentModel.models.forEach(m => {
-          if (m.id === e.update.id && m.element === e.update.element) {
-            rubricChanged = rubricChanged || m.rubricEnabled !== e.update.rubricEnabled;
+        if (this.pieContentModel && e.update) {
+          this.pieContentModel.models.forEach(m => {
+            if (m.id === e.update.id && m.element === e.update.element) {
+              rubricChanged =
+                rubricChanged || m.rubricEnabled !== e.update.rubricEnabled;
 
-            Object.assign(m, e.update);
+              Object.assign(m, e.update);
 
-            if (e.update.errors && !_isEmpty(e.update.errors)) {
-              this.validateModels();
-            }
-          }
-        });
-      }
-
-      if (this._modelLoadedState) {
-        if (rubricChanged) {
-          if (this.isInsidePieApiAuthor) {
-            // if pie-author is used inside pie-api-author, then what we need is to
-            // calculate the new pieContentModel and make sure we emit the modelUpdated event with the updated pieContentModel
-
-            // first thing, we check what changed (if we have to add or remove complex-rubric)
-            const complexRubricCheckedValues = complexRubricChecks(this.pieContentModel, this.configSettings);
-            const {shouldAddComplexRubric, shouldRemoveComplexRubric} = complexRubricCheckedValues || {};
-
-            if (shouldAddComplexRubric || shouldRemoveComplexRubric) {
-              // then, if changes are needed, we make them and save the new contentModel
-              const newPieContentModel = await this.getPieContentModelWithToggledComplexRubric({
-                complexRubricCheckedValues,
-                pieContentModel: this.pieContentModel
-              });
-
-              // last thing to do is to make sure we send the updated pie content model to pie-api-author
-              // (which listens for this event) who will trigger watchConfig
-              if (newPieContentModel) {
-                this.modelUpdated.emit(newPieContentModel);
+              if (e.update.errors && !_isEmpty(e.update.errors)) {
+                this.validateModels();
               }
             }
+          });
+        }
+
+        if (this._modelLoadedState) {
+          if (rubricChanged) {
+            if (this.isInsidePieApiAuthor) {
+              // if pie-author is used inside pie-api-author, then what we need is to
+              // calculate the new pieContentModel and make sure we emit the modelUpdated event with the updated pieContentModel
+
+              // first thing, we check what changed (if we have to add or remove complex-rubric)
+              const complexRubricCheckedValues = complexRubricChecks(
+                this.pieContentModel,
+                this.configSettings
+              );
+              const { shouldAddComplexRubric, shouldRemoveComplexRubric } =
+                complexRubricCheckedValues || {};
+
+              if (shouldAddComplexRubric || shouldRemoveComplexRubric) {
+                // then, if changes are needed, we make them and save the new contentModel
+                const newPieContentModel = await this.getPieContentModelWithToggledComplexRubric(
+                  {
+                    complexRubricCheckedValues,
+                    pieContentModel: this.pieContentModel
+                  }
+                );
+
+                // last thing to do is to make sure we send the updated pie content model to pie-api-author
+                // (which listens for this event) who will trigger watchConfig
+                if (newPieContentModel) {
+                  this.modelUpdated.emit(newPieContentModel);
+                }
+              }
+            } else {
+              // however, if we only use pie-player-components, just force the call to watchConfig
+              await this.watchConfig(this.config, {});
+            }
           } else {
-            // however, if we only use pie-player-components, just force the call to watchConfig
-            await this.watchConfig(this.config, {});
+            // if rubricEnabled did not change, just behave as previously
+            // (pie-api-author listens for this event and triggers watchConfig)
+            this.modelUpdated.emit(this.pieContentModel);
           }
-        } else {
-          // if rubricEnabled did not change, just behave as previously
-          // (pie-api-author listens for this event and triggers watchConfig)
-          this.modelUpdated.emit(this.pieContentModel);
         }
       }
-    });
+    );
 
     this.el.addEventListener(InsertImageEvent.TYPE, this.handleInsertImage);
     this.el.addEventListener(DeleteImageEvent.TYPE, this.handleDeleteImage);
@@ -692,7 +779,7 @@ export class Author {
     this.el.addEventListener(InsertSoundEvent.TYPE, this.handleInsertSound);
     this.el.addEventListener(DeleteSoundEvent.TYPE, this.handleDeleteSound);
 
-    window.addEventListener('focus', this.handleWindowFocus);
+    window.addEventListener("focus", this.handleWindowFocus);
   }
 
   async componentDidLoad() {
@@ -705,7 +792,7 @@ export class Author {
     await this.afterRender();
 
     if (this.fileInput) {
-      this.fileInput.addEventListener('change', this.handleFileInputChange);
+      this.fileInput.addEventListener("change", this.handleFileInputChange);
     }
   }
 
@@ -765,7 +852,6 @@ export class Author {
     }
   }
 
-
   /**
    * Utility method to add a `@pie-element/rubric` section to an item config when creating an item should be used before setting the config.
    *
@@ -776,7 +862,9 @@ export class Author {
    */
   @Method()
   async addRubricToConfig(config: ItemConfig, rubricModel?) {
-    console.warn('If you are using complex-rubric, stop using this function to prevent having duplicated rubrics.');
+    console.warn(
+      "If you are using complex-rubric, stop using this function to prevent having duplicated rubrics."
+    );
 
     if (!rubricModel) {
       rubricModel = {
@@ -806,8 +894,13 @@ export class Author {
    * @param multiTraitRubricModel
    */
   @Method()
-  async addMultiTraitRubricToConfig(config: ItemConfig, multiTraitRubricModel?) {
-    console.warn('If you are using complex-rubric, stop using this function to prevent having duplicated rubrics.');
+  async addMultiTraitRubricToConfig(
+    config: ItemConfig,
+    multiTraitRubricModel?
+  ) {
+    console.warn(
+      "If you are using complex-rubric, stop using this function to prevent having duplicated rubrics."
+    );
 
     if (!multiTraitRubricModel) {
       multiTraitRubricModel = {
@@ -822,23 +915,19 @@ export class Author {
         scales: [
           {
             maxPoints: 4,
-            scorePointsLabels: ['', '', '', ''],
-            traitLabel: 'Trait',
+            scorePointsLabels: ["", "", "", ""],
+            traitLabel: "Trait",
             traits: [
               {
-                name: '',
+                name: "",
                 standards: [],
-                description: '',
-                scorePointsDescriptors: [
-                  '',
-                  '',
-                  '',
-                  '',
-                  '',
-                ],
-              },]
-          }]
-      }
+                description: "",
+                scorePointsDescriptors: ["", "", "", "", ""]
+              }
+            ]
+          }
+        ]
+      };
     }
 
     const configPieContent = pieContentFromConfig(config);
@@ -860,22 +949,32 @@ export class Author {
           <pie-preview-layout config={this.config}>
             <div slot="configure">
               <pie-spinner active={!this.elementsLoaded}>
-                <div class='author-container' innerHTML={markup}/>
+                <div class="author-container" innerHTML={markup} />
               </pie-spinner>
             </div>
-            <input type="file" hidden ref={r => (this.fileInput = r)} style={{display: 'none'}}/>
+            <input
+              type="file"
+              hidden
+              ref={r => (this.fileInput = r)}
+              style={{ display: "none" }}
+            />
           </pie-preview-layout>
         );
       } else {
         return (
           <pie-spinner active={!this.elementsLoaded}>
-            <div class='author-container' innerHTML={markup}/>
-            <input type="file" hidden ref={r => (this.fileInput = r)} style={{display: 'none'}}/>
+            <div class="author-container" innerHTML={markup} />
+            <input
+              type="file"
+              hidden
+              ref={r => (this.fileInput = r)}
+              style={{ display: "none" }}
+            />
           </pie-spinner>
         );
       }
     } else {
-      return <pie-spinner/>;
+      return <pie-spinner />;
     }
   }
 }
