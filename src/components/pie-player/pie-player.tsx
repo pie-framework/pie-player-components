@@ -186,8 +186,8 @@ export class Player {
 
   @Watch("config")
   async watchConfig(newConfig) {
-    performance.mark("pie-load-start");
     this.elementsLoaded = false;
+
     try {
       if (!newConfig) {
         return;
@@ -215,6 +215,7 @@ export class Player {
 
       if (!this.elementsLoaded && !this.disableBundler) {
         let endpoints = DEFAULT_ENDPOINTS.prod;
+
         if (
           this.bundleHost &&
           ["dev", "stage", "prod"].includes(this.bundleHost)
@@ -239,12 +240,6 @@ export class Player {
           forceBundleUrl,
           reFetchBundle: this.reFetchBundle
         });
-
-        performance.mark("pie-load-end");
-        performance.measure("PIE Load Time", "pie-load-start", "pie-load-end");
-        const perfEntry = performance.getEntriesByName("PIE Load Time")[0];
-        const bundleLoadDuration = perfEntry ? perfEntry.duration : 0;
-        console.log("[PIE Load Time]", bundleLoadDuration.toFixed(2), "ms");
       }
     } catch (err) {
       this.playerError.emit(`problem loading item (${err})`);
@@ -417,9 +412,9 @@ export class Player {
   private scopeCSS(cssText: string, customClassname: string) {
     return cssText.replace(/(^|\})\s*([^{]+)\s*\{/g, (_, close, selector) => {
       const scoped = selector
-        .split(',')
+        .split(",")
         .map((s: string) => `pie-player.${customClassname} ${s.trim()}`)
-        .join(', ');
+        .join(", ");
       return `${close} ${scoped} {`;
     });
   }
@@ -430,15 +425,19 @@ export class Player {
     const res = await fetch(url);
     const css = await res.text();
     const fetchEnd = performance.now();
-    console.log(`[style-loader] Fetch complete in ${(fetchEnd - startTime).toFixed(2)}ms`);
+    console.log(
+      `[style-loader] Fetch complete in ${(fetchEnd - startTime).toFixed(2)}ms`
+    );
 
     const scopeStart = performance.now();
     const scopedCSS = this.scopeCSS(css, customClassname);
     const scopeEnd = performance.now();
-    console.log(`[style-loader] CSS scoped in ${(scopeEnd - scopeStart).toFixed(2)}ms`);
+    console.log(
+      `[style-loader] CSS scoped in ${(scopeEnd - scopeStart).toFixed(2)}ms`
+    );
 
-    const styleTag = document.createElement('style');
-    styleTag.setAttribute('data-pie-style', url);
+    const styleTag = document.createElement("style");
+    styleTag.setAttribute("data-pie-style", url);
     styleTag.textContent = scopedCSS;
     document.head.appendChild(styleTag);
   }
@@ -512,9 +511,15 @@ export class Player {
 
           if (performance.getEntriesByName("pie-load-end").length > 0) {
             performance.mark("pie-elements-load-end");
-            performance.measure("PIE Elements Load Time", "pie-load-end", "pie-elements-load-end");
+            performance.measure(
+              "PIE Elements Load Time",
+              "pie-load-end",
+              "pie-elements-load-end"
+            );
 
-            const renderEntry = performance.getEntriesByName("PIE Elements Load Time")[0];
+            const renderEntry = performance.getEntriesByName(
+              "PIE Elements Load Time"
+            )[0];
             const renderDuration = renderEntry ? renderEntry.duration : 0;
             console.log(
               "[PIE Elements Load + Render Time]",
@@ -528,14 +533,18 @@ export class Player {
 
     if (
       this.externalStyleUrls &&
-      typeof this.externalStyleUrls === 'string' &&
+      typeof this.externalStyleUrls === "string" &&
       this.customClassname &&
-      typeof this.customClassname === 'string'
+      typeof this.customClassname === "string"
     ) {
-      const urls = this.externalStyleUrls.split(',').map(url => url.trim());
+      const urls = this.externalStyleUrls.split(",").map(url => url.trim());
 
       urls.forEach(url => {
-        if (url && typeof url === 'string' && !document.querySelector(`style[data-pie-style="${url}"]`)) {
+        if (
+          url &&
+          typeof url === "string" &&
+          !document.querySelector(`style[data-pie-style="${url}"]`)
+        ) {
           this.loadScopedExternalStyle(url, this.customClassname);
         }
       });

@@ -97,37 +97,9 @@ export const needToLoad = (registry: any, bundle: BundleType) => (
 };
 
 /**
- * Configuration options for API request retry behavior
+ * Configuration options for Pie Loader
  */
-export type RetryConfig = {
-  /**
-   * Maximum number of retry attempts for failed requests.
-   * Does not include the initial request attempt.
-   * Default: 2
-   */
-  maxRetryAttempts?: number;
-
-  // /**
-  //  * Maximum time in milliseconds to wait for a response before aborting the request.
-  //  * Used to prevent requests from hanging indefinitely in poor network conditions.
-  //  * Default: 10000 (10 seconds)
-  //  */
-  // requestTimeoutMs?: number;
-
-  /**
-   * Initial delay in milliseconds before the first retry attempt.
-   * This value is used as the base for exponential backoff calculation.
-   * Default: 500 (0.5 seconds)
-   */
-  initialRetryDelayMs?: number;
-
-  /**
-   * Maximum delay in milliseconds between retry attempts.
-   * Caps the exponential backoff to prevent excessively long waits.
-   * Default: 2000 (2 seconds)
-   */
-  maxRetryDelayMs?: number;
-
+export type LoaderConfig = {
   /**
    * Enable tracking page actions/events with New Relic.
    * When enabled, all network requests will be instrumented.
@@ -137,12 +109,8 @@ export type RetryConfig = {
   trackPageActions?: boolean;
 };
 
-// Default retry configuration values
-const DEFAULT_RETRY_CONFIG: Required<RetryConfig> = {
-  maxRetryAttempts: 20,
-  // requestTimeoutMs: 10000,
-  initialRetryDelayMs: 1000,
-  maxRetryDelayMs: 30000,
+// Default pie loader configuration values
+const DEFAULT_LOADER_CONFIG: Required<LoaderConfig> = {
   trackPageActions: false
 };
 
@@ -150,7 +118,7 @@ const DEFAULT_RETRY_CONFIG: Required<RetryConfig> = {
  * Pie Registry controls the loading of all PIEs from the pie build service
  */
 export class PieLoader extends NewRelicEnabledClient {
-  private readonly retryConfig: Required<RetryConfig>;
+  private readonly loaderConfig: Required<LoaderConfig>;
   endpoints: BundleEndpoints;
 
   /**
@@ -159,7 +127,7 @@ export class PieLoader extends NewRelicEnabledClient {
    * @param _endpoints
    * @param config
    */
-  constructor(_endpoints?: BundleEndpoints, config?: RetryConfig) {
+  constructor(_endpoints?: BundleEndpoints, config?: LoaderConfig) {
     super();
 
     if (!_endpoints) {
@@ -174,7 +142,7 @@ export class PieLoader extends NewRelicEnabledClient {
       : {};
     PieLoader._registry = window["PIE_REGISTRY"];
     this.registry = PieLoader._registry;
-    this.retryConfig = { ...DEFAULT_RETRY_CONFIG, ...config };
+    this.loaderConfig = { ...DEFAULT_LOADER_CONFIG, ...config };
   }
 
   private static _registry: { [elementName: string]: Entry };
@@ -189,12 +157,22 @@ export class PieLoader extends NewRelicEnabledClient {
   public elementsHaveLoaded = async (
     els: LoadedElementsQuery[]
   ): Promise<LoadedElementsResp> => {
+    const startTime = this.trackOperationStart("elementsHaveLoaded", {
+      elementsQuery: els
+    });
     const promises = els.map(el => customElements.whenDefined(el.tag));
 
     try {
       await Promise.all(promises);
+      this.trackOperationComplete("elementsHaveLoaded", startTime);
       return Promise.resolve({ elements: els, val: true });
     } catch (e) {
+      this.trackOperationComplete(
+        "elementsHaveLoaded",
+        startTime,
+        false,
+        "Something went wrong"
+      );
       return Promise.resolve({ elements: els, val: false });
     }
   };
@@ -252,9 +230,6 @@ export class PieLoader extends NewRelicEnabledClient {
     forceBundleUrl: boolean;
     reFetchBundle: boolean;
   }) => {
-    const loaderStartTime = Date.now();
-    this.trackOperationStart("loader", options);
-
     if (!options.endpoints) {
       options.endpoints = this.endpoints;
     }
@@ -262,6 +237,15 @@ export class PieLoader extends NewRelicEnabledClient {
     if (!options.bundle) {
       options.bundle = BundleType.editor;
     }
+
+    const startTime = this.trackOperationStart("loadCloudPies", {
+      elements: options.content.elements,
+      endpoints: options.endpoints,
+      bundle: options.bundle,
+      useCdn: options.useCdn,
+      forceBundleUrl: options.forceBundleUrl,
+      reFetchBundle: options.reFetchBundle
+    });
 
     const elements = options.content.elements;
     let head: HTMLElement = options.doc.getElementsByTagName("head")[0];
@@ -271,20 +255,11 @@ export class PieLoader extends NewRelicEnabledClient {
       options.doc.appendChild(head);
     }
 
-    const elemToLoadStartTime = Date.now();
-    this.trackOperationStart("getElementsToLoad", {
-      elements,
-      bundle: options.bundle,
-      registry: this.registry
-    });
-
     const piesToLoad = this.getElementsToLoad(
       elements,
       options.bundle,
       this.registry
     );
-
-    this.trackOperationComplete("getElementsToLoad", elemToLoadStartTime);
 
     let scriptUrl = this.getScriptsUrl(options, piesToLoad);
 
@@ -317,9 +292,10 @@ export class PieLoader extends NewRelicEnabledClient {
 
     const onloadFn = (_pies => {
       return () => {
-        const defineElemsStartTime = Date.now();
-        this.trackOperationComplete("loader", loaderStartTime);
-        this.trackOperationStart("defineCustomElements", { customElements });
+        const defineElemsStartTime = this.trackOperationStart(
+          "defineCustomElements",
+          { items: _pies }
+        );
 
         const pieKeys = Object.keys(_pies);
 
@@ -382,73 +358,69 @@ export class PieLoader extends NewRelicEnabledClient {
 
     if (options.reFetchBundle) {
       const loadScript = async () => {
-        const loadScriptStartTime = Date.now();
+        const loadScriptStartTime = this.trackOperationStart(
+          "loadScript",
+          { scriptUrl },
+          true
+        );
+
         try {
-          this.trackOperationStart("loadScript", { scriptUrl }, true);
-
           const response = await withRetry(
-            async (currentDelay: number, attempt: number) => {
-              const operationStartTime = Date.now();
-
-              if (attempt > 0) {
-                this.trackRetryAttempt(attempt, { scriptUrl });
-              }
-
+            async (currentDelay: number) => {
               const res = await fetch(scriptUrl);
 
-              // if the request fails with 503 retry it
+              // if the request fails with 503, retry it
               if (res.status === 503) {
                 const errorMsg = `Service unavailable (503), retrying in ${currentDelay /
                   1000 || 1} seconds...`;
                 console.warn(errorMsg);
-                const error = new Error(errorMsg);
 
-                this.trackError(
-                  error,
-                  {
-                    scriptUrl,
-                    attempt,
-                    finalAttempt: this.retryConfig.maxRetryAttempts === attempt,
-                    duration: Date.now() - operationStartTime
-                  },
-                  { status: res.status, statusText: res.statusText }
-                );
-
-                throw error;
+                throw new Error(errorMsg);
               }
 
               return res;
             },
-            this.retryConfig.maxRetryAttempts,
-            this.retryConfig.initialRetryDelayMs,
-            this.retryConfig.maxRetryDelayMs
+            20,
+            1000,
+            30000
           );
 
-          // If we're here, the operation succeeded
-          this.trackOperationComplete("loadScript", loadScriptStartTime, true);
-
-          // if the request is successful inject the response as a script tag to avoid doing the same call twice
+          // if the request is successful, inject the response as a script tag to avoid doing the same call twice
           if (response.status === 200) {
             script.onload = onloadFn;
             script.src = scriptUrl;
             head.appendChild(script);
 
             delete window["pieHelpers"].loadingScripts[scriptUrl];
+
+            this.trackOperationComplete(
+              "loadScript",
+              loadScriptStartTime,
+              true
+            );
           } else {
-            console.error(
-              "Failed to load script, status code:",
+            const errorMsg = `Failed to load script, status code: ${
               response.status
+            }`;
+            console.error(errorMsg);
+            this.trackOperationComplete(
+              "loadScript",
+              loadScriptStartTime,
+              true,
+              errorMsg
             );
           }
         } catch (error) {
-          this.trackError(error, {
-            scriptUrl,
-            isNetworkError: this.isNetworkError(error),
-            duration: Date.now() - loadScriptStartTime
-          });
           console.error(
             "Network error occurred while trying to load script:",
             error
+          );
+
+          this.trackOperationComplete(
+            "loadScript",
+            loadScriptStartTime,
+            true,
+            error.message
           );
         }
       };
@@ -459,6 +431,8 @@ export class PieLoader extends NewRelicEnabledClient {
       script.src = scriptUrl;
       head.appendChild(script);
     }
+
+    this.trackOperationComplete("loadCloudPies", startTime);
   };
 
   /**
@@ -508,9 +482,11 @@ export class PieLoader extends NewRelicEnabledClient {
     operationName: string,
     data: Record<string, any> = {},
     apiRequest: boolean = false
-  ): void {
-    if (!this.retryConfig.trackPageActions || !this.newRelic) {
-      return;
+  ) {
+    const startTime = Date.now();
+
+    if (!this.loaderConfig.trackPageActions || !this.newRelic) {
+      return startTime;
     }
 
     const operationType = apiRequest ? "api" : "pie";
@@ -519,6 +495,8 @@ export class PieLoader extends NewRelicEnabledClient {
       data: JSON.stringify(data),
       timestamp: new Date().toISOString()
     });
+
+    return startTime;
   }
 
   /**
@@ -527,82 +505,19 @@ export class PieLoader extends NewRelicEnabledClient {
   private trackOperationComplete(
     operationName: string,
     startTime: number,
-    apiRequest: boolean = false
+    apiRequest?: boolean = false,
+    errorMessage?: string
   ) {
-    if (this.retryConfig.trackPageActions) {
-      const operationType = apiRequest ? "api" : "pie";
-
-      this.track("activity", `${operationType}_${operationName}_complete`, {
-        duration: Date.now() - startTime,
-        success: true
-      });
+    if (this.loaderConfig.trackPageActions || !this.newRelic) {
+      return;
     }
-  }
 
-  /**
-   * Track retry attempt
-   */
-  private trackRetryAttempt(attempt: number, data?: Record<string, any>): void {
-    this.track("activity", "api_retry_attempt", {
-      attempt,
-      ...(data && { data: JSON.stringify(data) })
+    const operationType = apiRequest ? "api" : "pie";
+
+    this.track("activity", `${operationType}_${operationName}_complete`, {
+      duration: Date.now() - startTime,
+      success: errorMessage ? false : true,
+      ...(errorMessage && { errorMessage })
     });
-  }
-
-  /**
-   * Track error
-   */
-  private trackError(
-    error: Error,
-    attributes: Record<string, any>,
-    responseInfo?: { status: number; statusText: string; responseData?: string }
-  ): void {
-    const errorType = responseInfo ? "api_error" : "api_final_error";
-
-    const { finalAttempt, isNetworkError, ...customAttributes } = attributes;
-
-    /**
-     * Transient (retryable) errors:
-     * - 400 Request Timeout
-     * - 429 Too Many Requests
-     * - 500–502, 503, 504 Server Errors (sometimes recoverable)
-     * - Network errors
-     */
-    const recoveryStatus =
-      (responseInfo &&
-        [408, 429, 500, 502, 503, 504].includes(responseInfo.status)) ||
-      !!isNetworkError
-        ? "transient_recoverable"
-        : "non_recoverable";
-
-    const errorData: Record<string, any> = {
-      ...customAttributes,
-      finalAttempt: !!finalAttempt,
-      errorName: error.name,
-      errorMessage: error.message,
-      errorType,
-      recoveryStatus,
-      stackTrace: error.stack
-    };
-
-    if (responseInfo) {
-      Object.assign(errorData, {
-        status: responseInfo.status,
-        statusText: responseInfo.statusText,
-        ...(responseInfo.responseData && {
-          responseData: responseInfo.responseData
-        })
-      });
-    } else {
-      Object.assign(errorData, {
-        isNetworkError: !!isNetworkError
-      });
-    }
-
-    if (recoveryStatus === "transient_recoverable") {
-      this.track("activity", "transient_error", errorData, error);
-    } else {
-      this.track("error", errorType, errorData, error);
-    }
   }
 }
