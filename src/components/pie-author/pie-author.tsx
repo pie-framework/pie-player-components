@@ -11,6 +11,7 @@ import { _dll_pie_lib__pie_toolbox_math_rendering_accessible } from "@pie-lib/pi
 import {
   _dll_pie_lib__pie_toolbox_math_rendering
 } from "@pie-lib/pie-toolbox-math-rendering-module/module";
+import {
   Component,
   Element,
   Event,
