@@ -1,3 +1,25 @@
+## [3.5.1](https://github.com/pie-framework/pie-player-components/compare/v3.5.0...v3.5.1) (2025-05-20)
+
+
+### Bug Fixes
+
+* **new-relic:** add loader config to  player and author ([d8f9108](https://github.com/pie-framework/pie-player-components/commit/d8f91088a488e3f6dcce42ca95098fe0ab2dc7f3))
+
+# [3.5.0](https://github.com/pie-framework/pie-player-components/compare/v3.4.0...v3.5.0) (2025-05-20)
+
+
+### Bug Fixes
+
+* remove unused code PD-4939 ([f02902b](https://github.com/pie-framework/pie-player-components/commit/f02902ba9626c242f415ba99be1c4c9fbdeeec26))
+* ts errors PD-4939 ([5ebb828](https://github.com/pie-framework/pie-player-components/commit/5ebb828649cce0deac28e51dc55d50afab0b67bb))
+* **new-relic:** simplify config and update tracking ([29d6a2a](https://github.com/pie-framework/pie-player-components/commit/29d6a2a779305bdd097edf5e4dd4aaeb5bd25e5e))
+
+
+### Features
+
+* **new-relic:** add new relic support PD-4939 ([96e56ef](https://github.com/pie-framework/pie-player-components/commit/96e56ef449bed9ce6bd1694f99dc287592b34d81))
+* **pie-stimulus-layout:** adjust viewport threshold for layout switch to 1020px PD-4526 ([4d5cb14](https://github.com/pie-framework/pie-player-components/commit/4d5cb1490979a89955ea7a189e875146a7a3d6bc))
+
 # [3.4.0](https://github.com/pie-framework/pie-player-components/compare/v3.3.0...v3.4.0) (2025-05-07)
 
 
