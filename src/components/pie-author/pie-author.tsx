@@ -8,7 +8,7 @@ import {
 } from "@pie-framework/pie-configure-events";
 
 import {
-  _dll_pie_lib__pie_toolbox_math_rendering_accessible
+  _dll_pie_lib__pie_toolbox_math_rendering
 } from "@pie-lib/pie-toolbox-math-rendering-module/module";
 import {Component, Element, Event, EventEmitter, h, Method, Prop, State, Watch} from "@stencil/core";
 import cloneDeep from "lodash/cloneDeep";
@@ -739,7 +739,7 @@ export class Author {
   }
 
   private renderMath() {
-    _dll_pie_lib__pie_toolbox_math_rendering_accessible.renderMath(this.el);
+    _dll_pie_lib__pie_toolbox_math_rendering.renderMath(this.el);
   }
 
   async afterRender() {
