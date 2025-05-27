@@ -1,3 +1,17 @@
+# [3.6.0](https://github.com/pie-framework/pie-player-components/compare/v3.5.1...v3.6.0) (2025-05-27)
+
+
+### Bug Fixes
+
+* merge master ([b0fec4d](https://github.com/pie-framework/pie-player-components/commit/b0fec4d581a64c15d6923989c7de7fdfc45beb2b))
+* remove mra ([3ea8d82](https://github.com/pie-framework/pie-player-components/commit/3ea8d827e1fdd2f966d6419f26745557884df49c))
+
+
+### Features
+
+* bump @pie-lib/pie-toolbox-math-rendering-module version ([5ce5998](https://github.com/pie-framework/pie-player-components/commit/5ce59980af3e21cf06a8774fb9fc18fe76fa72ac))
+* use updated math-rendering package instead of accessible version ([1bffb08](https://github.com/pie-framework/pie-player-components/commit/1bffb085cad268de78b99615412e4cd6d2d573dd))
+
 ## [3.5.1](https://github.com/pie-framework/pie-player-components/compare/v3.5.0...v3.5.1) (2025-05-20)
 
 
