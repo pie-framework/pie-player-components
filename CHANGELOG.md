@@ -1,3 +1,10 @@
+# [3.7.0](https://github.com/pie-framework/pie-player-components/compare/v3.6.0...v3.7.0) (2025-05-27)
+
+
+### Features
+
+* bump pie-toolbox-math-rendering-module version PD-4810 ([cf69426](https://github.com/pie-framework/pie-player-components/commit/cf6942616d4f77bfe6c6141375fe52848cf1aea9))
+
 # [3.6.0](https://github.com/pie-framework/pie-player-components/compare/v3.5.1...v3.6.0) (2025-05-27)
 
 
