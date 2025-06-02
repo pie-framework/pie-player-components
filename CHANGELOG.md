@@ -1,3 +1,10 @@
+## [3.8.1](https://github.com/pie-framework/pie-player-components/compare/v3.8.0...v3.8.1) (2025-06-02)
+
+
+### Bug Fixes
+
+* revert changes from PD-4810 ([821f9b1](https://github.com/pie-framework/pie-player-components/commit/821f9b1e7c8a07872d95e98de003d050fc7e6889))
+
 # [3.8.0](https://github.com/pie-framework/pie-player-components/compare/v3.7.0...v3.8.0) (2025-05-27)
 
 
