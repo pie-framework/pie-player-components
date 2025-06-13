@@ -44,7 +44,7 @@ export const addRubric = (content: PieContent): PieContent => {
     (id, tag, markup) => {
       return `
     ${markup}
-    <div style="width: 75%">
+    <div>
       <${tag} id="${id}"></${tag}>
     </div>
     `;
