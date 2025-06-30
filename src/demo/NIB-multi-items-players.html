@@ -7,19 +7,19 @@
   <!--  To test PD-3989 - start -->
 <!--  You can uncomment this to reproduce the issue or comment it if you don't want to interfere.  -->
   <title>MathJax Example</title>
-<!--  <script-->
-<!--    type="text/javascript"-->
-<!--    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.6.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>-->
-<!--  <script-->
-<!--    type="text/x-mathjax-config">-->
-<!--        MathJax.Hub.Config({-->
-<!--            tex2jax: {-->
-<!--                inlineMath: [['$','$'], ['\\(','\\)']],-->
-<!--                processEscapes: true-->
-<!--            }-->
-<!--        });-->
+<script
+  type="text/javascript"
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.6.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']],
+      processEscapes: true
+    }
+  });
+</script>
 
-<!--  </script>-->
   <!--  To test PD-3989 - end -->
 
   <script nomodule src="/build/pie-player-components.js"></script>
@@ -52,20 +52,21 @@
 <div id="players"></div>
 
 <script>
-  const players = document.getElementById("players");
-  const chartingElement = "@pie-element/charting@latest";
-  const dragInTheBlankElement = "@pie-element/drag-in-the-blank@latest";
-  const ecrElement = "@pie-element/explicit-constructed-response@latest";
-  const extendedTElement = "@pie-element/extended-text-entry@latest";
-  const hotspotElement = "@pie-element/hotspot@latest";
-  const inlineDropdownElement = "@pie-element/inline-dropdown@latest";
-  const icaElement = "@pie-element/image-cloze-association@latest";
-  const mathInlineElement = "@pie-element/math-inline@latest";
-  const matchElement = "@pie-element/match@latest";
-  const multipleChoiceElement = "@pie-element/multiple-choice@latest";
-  const passageElement = "@pie-element/passage@latest";
-  const rubricElement = "@pie-element/rubric@latest";
-  const seletctTextElement = "@pie-element/select-text@latest";
+const players = document.getElementById("players");
+const chartingElement = "@pie-element/charting@8.6.9-next.6";
+const dragInTheBlankElement = "@pie-element/drag-in-the-blank@6.11.1-next.6";
+const ecrElement = "@pie-element/explicit-constructed-response@7.5.9-next.6";
+const extendedTElement = "@pie-element/extended-text-entry@11.7.9-next.6";
+const hotspotElement = "@pie-element/hotspot@7.9.9-next.6";
+const inlineDropdownElement = "@pie-element/inline-dropdown@6.6.3-next.6";
+const icaElement = "@pie-element/image-cloze-association@6.11.9-next.6";
+const mathInlineElement = "@pie-element/math-inline@8.7.1-next.6";
+const matchElement = "@pie-element/match@8.6.9-next.6";
+const multipleChoiceElement = "@pie-element/multiple-choice@9.16.3-next.6";
+const passageElement = "@pie-element/passage@3.6.3-next.6";
+const rubricElement = "@pie-element/rubric@4.8.1-next.6";
+const seletctTextElement = "@pie-element/select-text@9.5.9-next.6";
+
 
   // You can change configs to be what you need (adjust item versions, etc). It's just a bunch of item configs I copied from NIB.
   const configs = {
