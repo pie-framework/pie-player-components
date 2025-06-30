@@ -1,3 +1,12 @@
+## [3.8.2](https://github.com/pie-framework/pie-player-components/compare/v3.8.1...v3.8.2) (2025-06-30)
+
+
+### Bug Fixes
+
+* handle other mathjax version on the page for accessibility PD-5059 ([6533287](https://github.com/pie-framework/pie-player-components/commit/6533287379e4c0dd0e6f6743dbeb5419c0c1df68))
+* test PD-5059 ([f20ca9c](https://github.com/pie-framework/pie-player-components/commit/f20ca9cd6b50836653fbdaa97fb665a2fb96181c))
+* use math-rendering PD-4810 ([086c984](https://github.com/pie-framework/pie-player-components/commit/086c984114753135a7f530bc6d6f765645a032b0))
+
 ## [3.8.1](https://github.com/pie-framework/pie-player-components/compare/v3.8.0...v3.8.1) (2025-06-02)
 
 
