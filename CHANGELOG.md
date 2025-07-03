@@ -1,3 +1,11 @@
+## [3.8.3](https://github.com/pie-framework/pie-player-components/compare/v3.8.2...v3.8.3) (2025-07-03)
+
+
+### Bug Fixes
+
+* **pie-stimulus-layout:** handle window resize for read more PD-5043 ([27c7e80](https://github.com/pie-framework/pie-player-components/commit/27c7e80ef9f56dec5d80818d20b77d092391a9a0))
+* **pie-stimulus-layout:** rewrite code to be cleaner PD-5043 ([b046496](https://github.com/pie-framework/pie-player-components/commit/b046496c49bb04572bc2b3254a4d0f402cc0fefd))
+
 ## [3.8.2](https://github.com/pie-framework/pie-player-components/compare/v3.8.1...v3.8.2) (2025-06-30)
 
 
