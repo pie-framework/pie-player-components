@@ -29,7 +29,7 @@ export class PieStimulusLayout {
   //  flex values of the right component as the user resizes them
   @State() initialRightFlex = 0.5;
   // track if stimulus is expanded (for orientation change handling)
-   @State() isStimulusExpanded = false;
+  @State() isStimulusExpanded = false;
 
   componentDidRender() {
     PieStimulusLayout.handleElements();
@@ -64,23 +64,17 @@ export class PieStimulusLayout {
   }
 
   private handleResize() {
-    // Reset overflow based on current viewport and stimulus state
-    if (this.stimulus) {
-      const viewportWidth = window.innerWidth;
-      const isPortrait = viewportWidth <= 1020;
-      
-      if (isPortrait) {
-        // In portrait mode, stimulus should be hidden unless expanded
-        if (this.isStimulusExpanded) {
-          this.stimulus.style.overflow = 'auto';
-        } else {
-          this.stimulus.style.overflow = 'hidden';
-        }
-      } else {
-        // In landscape mode, stimulus should be scrollable
-        this.stimulus.style.overflow = 'scroll';
-        this.stimulus.style.flex = '1';
-      }
+    if (!this.stimulus) return;
+    
+    const isPortrait = window.innerWidth <= 1020;
+    
+    if (isPortrait) {
+      // Portrait mode: overflow depends on expansion state
+      this.stimulus.style.overflow = this.isStimulusExpanded ? 'auto' : 'hidden';
+    } else {
+      // Landscape mode: always scrollable, reset to default flex
+      this.stimulus.style.overflow = 'scroll';
+      this.stimulus.style.flex = '1';
     }
   }
 
