@@ -19,11 +19,11 @@ For authoring content.
 
 # Development
 
-`npm install`
+`yarn install`
 
-`npm run test`
+`yarn run test`
 
-`npm run demo` - starts stencil in dev mode and launches a http server to serve files in `src/demo` folder
+`yarn run demo` - starts stencil in dev mode and launches a http server to serve files in `src/demo` folder
 
 
 ### Debugging
