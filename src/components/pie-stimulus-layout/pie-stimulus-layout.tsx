@@ -28,6 +28,8 @@ export class PieStimulusLayout {
   @State() initialLeftFlex = 0.5;
   //  flex values of the right component as the user resizes them
   @State() initialRightFlex = 0.5;
+  // track if stimulus is expanded (for orientation change handling)
+   @State() isStimulusExpanded = false;
 
   componentDidRender() {
     PieStimulusLayout.handleElements();
@@ -44,6 +46,9 @@ export class PieStimulusLayout {
       this.resizer.addEventListener('mouseup', this.handleMouseUp.bind(this));
     }
     this.readMoreButton.addEventListener("click", () => this.handleReadMore());
+    
+    // Add resize listener to handle orientation changes
+    window.addEventListener('resize', this.handleResize.bind(this));
   }
 
   componentDidUpdate() {
@@ -55,6 +60,28 @@ export class PieStimulusLayout {
       window.removeEventListener('mousemove', this.handleMouseMove.bind(this));
       this.resizer.removeEventListener('mouseup', this.handleMouseUp.bind(this));
     }
+    window.removeEventListener('resize', this.handleResize.bind(this));
+  }
+
+  private handleResize() {
+    // Reset overflow based on current viewport and stimulus state
+    if (this.stimulus) {
+      const viewportWidth = window.innerWidth;
+      const isPortrait = viewportWidth <= 1020;
+      
+      if (isPortrait) {
+        // In portrait mode, stimulus should be hidden unless expanded
+        if (this.isStimulusExpanded) {
+          this.stimulus.style.overflow = 'auto';
+        } else {
+          this.stimulus.style.overflow = 'hidden';
+        }
+      } else {
+        // In landscape mode, stimulus should be scrollable
+        this.stimulus.style.overflow = 'scroll';
+        this.stimulus.style.flex = '1';
+      }
+    }
   }
 
   private handleReadMore() {
@@ -63,12 +90,14 @@ export class PieStimulusLayout {
       this.readMoreButton.innerHTML = `Read Less <span class=arrow-up>&#9650;</span>`;
       this.stimulus.style.overflow = 'auto'
       this.stimulus.classList.remove('truncated');
+      this.isStimulusExpanded = true;
     } else {
       this.readMoreButton.innerHTML = `Read More <span class=arrow-down>&#9660;</span>`;
       this.stimulus.style.flex = '0 0 30%';
       this.stimulus.style.overflow = 'hidden';
       this.stimulus.scrollTop = 0;
       this.stimulus.classList.add('truncated');
+      this.isStimulusExpanded = false;
     }
   }
 
