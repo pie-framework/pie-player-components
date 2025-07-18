@@ -1,3 +1,10 @@
+## [3.9.1](https://github.com/pie-framework/pie-player-components/compare/v3.9.0...v3.9.1) (2025-07-18)
+
+
+### Bug Fixes
+
+* duplicate stylesheet injection for player with passage ([a7bae50](https://github.com/pie-framework/pie-player-components/commit/a7bae503974040393a30075bdb282c036dccba20))
+
 # [3.9.0](https://github.com/pie-framework/pie-player-components/compare/v3.8.3...v3.9.0) (2025-07-18)
 
 
