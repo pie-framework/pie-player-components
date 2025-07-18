@@ -1,3 +1,16 @@
+# [3.9.0](https://github.com/pie-framework/pie-player-components/compare/v3.8.3...v3.9.0) (2025-07-18)
+
+
+### Bug Fixes
+
+* race condition fix and demo file change ([3211226](https://github.com/pie-framework/pie-player-components/commit/3211226418fc32ff95ea28b109ece5abbecc6468))
+
+
+### Features
+
+* clean up ([c04b349](https://github.com/pie-framework/pie-player-components/commit/c04b3492a07f049140d98ec02332e6c33fd5f11a))
+* pd-5129 support stylesheets inside resources property ([db78711](https://github.com/pie-framework/pie-player-components/commit/db78711ae78a71667754dcd8f7bf93c83320190d))
+
 ## [3.8.3](https://github.com/pie-framework/pie-player-components/compare/v3.8.2...v3.8.3) (2025-07-03)
 
 
