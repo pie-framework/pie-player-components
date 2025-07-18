@@ -573,7 +573,13 @@ export class Player {
       });
     }
 
-    // handle stylesheets from config.resources like externalStyleUrls
+    // handle stylesheets from config.resources like externalStyleUrl
+    // if the player is not a stimulus player, because we don't want to load stylesheets twice
+    // the stimulus player will be rendered with the player component
+    if (this.stimulusPlayer) {
+      return;
+    }
+
     let configResources: ConfigResource | undefined = undefined;
     if (this.pieContentModel && this.pieContentModel.resources) {
       configResources = this.pieContentModel.resources;
