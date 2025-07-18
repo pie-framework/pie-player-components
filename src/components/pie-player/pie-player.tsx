@@ -560,7 +560,6 @@ export class Player {
     }
 
     // handle stylesheets from config.resources like externalStyleUrls
-    // const classNameToUse = this.customClassname || `pie-player-${Math.random()}`;
     let configResources: ConfigResource | undefined = undefined;
     if (this.pieContentModel && this.pieContentModel.resources) {
       configResources = this.pieContentModel.resources;
@@ -570,7 +569,6 @@ export class Player {
     if (!configResources && advancedConfig && advancedConfig.pie && advancedConfig.pie.resources) {
       configResources = advancedConfig.pie.resources;
     }
-    console.log('configResources', configResources)
     if (
       configResources && configResources.stylesheets &&
       Array.isArray(configResources.stylesheets)
