@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0"
+  />
+  <title>Item With Stimulus</title>
+  <script nomodule src="/build/pie-player-components.js"></script>
+  <script type="module" src="/build/pie-player-components.esm.js"></script>
+</head>
+<body>
+<div>
+  <pie-player
+    render-stimulus="true"
+  ></pie-player>
+</div>
+
+<script type="text/javascript" src="./utils/models.js"></script>
+<script>
+  const config = {
+    "pie": {
+      "resources": {
+        "stylesheets": [
+          {
+            "url": "https://cdn-stg.fluence.net/qti/css/lsy/index.css"
+          },
+          {
+            "url": "https://cdn-stg.fluence.net/qti/css/lsy/preload.css"
+          },
+          {
+            "url": "https://cdn-stg.fluence.net/qti/css/lsy/vendor.css"
+          },
+          {
+            "url": "https://cdn-stg.fluence.net/qti/css/lsy/main.css"
+          }
+        ],
+        "container": {
+          "markup": "<div class=\"lrn lrn_widget lrn_feature lrn_sharedpassage\"><div class=\"lrn_widget_content\">{body}</div></div>"
+        }
+      },
+      "id": "i2010700-en",
+      "markup": "<match id=\"i2010700-en\"></match>",
+      "elements": {
+        "match": "@pie-element/match@latest"
+      },
+      "models": [
+        {
+          "element": "match",
+          "id": "i2010700-en",
+          "prompt": "<div class=\"lrn lrn_widget lrn_feature lrn_sharedpassage\">Select the physical attribute that belongs with each description.</div><img class=\"lrn-image-right\" height=\"82\" src=\"https://cdn-stg.fluence.net/qti/images-clt231/beaae0b5ad00e8a0b05f483dd4e71913_acc8c901-657d-4ad7-a015-d16ced37a40a.jpg\" style=\"width: 124px; height: 82px;\" width=\"124\" />",
+          "rubricEnabled": false,
+          "scoringType": "auto",
+          "partialScoring": false,
+          "lockChoiceOrder": true,
+          "choiceMode": "radio",
+          "layout": 5,
+          "headers": [
+            "",
+            "                <b>Color</b>              ",
+            "                <strong>Luster</strong>              ",
+            "                <strong>Texture</strong>              ",
+            "                <strong>Hardness</strong>              "
+          ],
+          "rows": [
+            {
+              "id": "1",
+              "title": "Determined by the ability of one rock to scratch another",
+              "values": [
+                false,
+                false,
+                false,
+                true
+              ]
+            },
+            {
+              "id": "2",
+              "title": "Determined by the rock’s ability to reflect light",
+              "values": [
+                false,
+                true,
+                false,
+                false
+              ]
+            },
+            {
+              "id": "3",
+              "title": "Refers to the size, shape, and arrangement of the grains and crystals",
+              "values": [
+                false,
+                false,
+                true,
+                false
+              ]
+            },
+            {
+              "id": "4",
+              "title": "Tells the type of rock and what it is made of",
+              "values": [
+                true,
+                false,
+                false,
+                false
+              ]
+            }
+          ],
+          "autoplayAudioEnabled": false,
+          "completeAudioEnabled": false
+        }
+      ]
+    },
+    "passage": {
+      "id": "cf5c68bb-ade2-487e-974e-70a53ff5ba06",
+      "markup": "<pie-passage id=\"cf5c68bb-ade2-487e-974e-70a53ff5ba06\"></pie-passage>",
+      "layout": "left",
+      "elements": {
+        "pie-passage": "@pie-element/passage@latest"
+      },
+      "buildInfo": {
+        "name": "@pie-element/passage",
+        "version": "latest"
+      },
+      "models": [
+        {
+          "id": "cf5c68bb-ade2-487e-974e-70a53ff5ba06",
+          "element": "pie-passage",
+          "passages": [
+            {
+              "title": "Rocks",
+              "text": "<h3>Rocks</h3><p class=\"lrn-numbered-paragraph\">Rocks are formed within the Earth and make up much of the planet. They range in size from boulders found on the side of mountains to tiny pebbles found at the beach. Rocks are natural substances made of different materials.&#160;</p><p class=\"lrn-numbered-paragraph\">Geologists are scientists who study rocks. They classify rocks by examining their physical attributes. The physical attributes of rocks are color, texture, luster, and hardness. The physical attributes help determine the type of rock.&#160;</p><p class=\"lrn-numbered-paragraph\"><strong>Color</strong><br />Rocks are both beautiful and unique. They range in color from dull gray to sea blue. <img class=\"lrn-image-right\" height=\"82\" src=\"https://cdn-stg.fluence.net/qti/images-clt231/beaae0b5ad00e8a0b05f483dd4e71913_acc8c901-657d-4ad7-a015-d16ced37a40a.jpg\" style=\"width: 124px; height: 82px;\" width=\"124\" />Color can be helpful when identifying rocks. The color can tell the type of rock and even what minerals make up the rock. For example, red-colored rocks often contain iron, and black rocks may contain titanium or magnesium.&#160;</p><p class=\"lrn-numbered-paragraph\"><strong>Texture</strong><br />Another physical attribute that geologists use to classify rocks is texture. Texture refers to the size, shape, and arrangement of the grains or crystals that make up the rock. If you look&#160;at a rock, you will notice the grain size and shape. The texture of rocks can be described as smooth or rough, soft or hard, and matte or glossy.&#160;</p><p class=\"lrn-numbered-paragraph\"><strong>Luster</strong><br />Luster is how the surface of a rock reflects light. Rocks are classified as metallic or nonmetallic. A rock with a metallic luster will look shiny, and a dull rock is called nonmetallic.&#160;</p><p class=\"lrn-numbered-paragraph\"><strong>Hardness</strong><br />Another way to classify rocks is by testing their hardness. You might think that all rocks are hard. However, some are softer than others. The hardness of a rock is determined by the ability of one rock to scratch another. A German mineralogist named Friedrich Mohs produced a hardness scale. The scale ranges from 1 to 10. At the bottom of the chart is talc because it can be scratched easily. Diamonds are one of the hardest materials and are located at the top of the chart.&#160;</p><p class=\"lrn-numbered-paragraph\">Each rock is distinctive in its color, texture, luster, and hardness. The differences in the physical attributes help scientists identify types of rocks. You can also use these physical attributes to identify the rocks you find!</p>",
+              "teacherInstructionsEnabled": false,
+              "titleEnabled": false,
+              "subtitleEnabled": false,
+              "authorEnabled": false,
+              "textEnabled": true
+            }
+          ]
+        }
+      ]
+    }
+  };
+
+  const player = document.getElementsByTagName('pie-player')[0];
+
+  player.config = config;
+  player.env = { mode: 'evaluate', role: 'instructor' };
+</script>
+</body>
+</html>

@@ -16,6 +16,17 @@ interface PieContent {
   defaultExtraModels?: {
     [key: string]: PieDefaultModel
   };
+
+  resources?: ConfigResource;
+}
+
+interface ConfigResource {
+  container?: {
+    markup?: string;
+  },
+  stylesheets?: {
+    url: string;
+  }[];
 }
 
 export type BundleInfo = {

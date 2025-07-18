@@ -12,7 +12,7 @@ import {
   Watch
 } from "@stencil/core";
 import {
-  AdvancedItemConfig,
+  AdvancedItemConfig, ConfigResource,
   Env,
   ItemConfig,
   ItemSession,
@@ -20,7 +20,7 @@ import {
   PieController,
   PieElement,
   PieModel
-} from "../../interface";
+} from '../../interface';
 import {
   PieLoader,
   BundleType,
@@ -415,17 +415,18 @@ export class Player {
     e.stopPropagation();
   }
 
-  private scopeCSS(cssText: string, customClassname: string) {
-    return cssText.replace(/(^|\})\s*([^{]+)\s*\{/g, (_, close, selector) => {
+  private scopeCSS(cssText: string, customClassname?: string) {
+    return cssText.replace(/(^|\})\s*([^\{]+)\s*\{/g, (_, close, selector) => {
+      const prefix = customClassname ? `pie-player.${customClassname}` : "pie-player";
       const scoped = selector
         .split(",")
-        .map((s: string) => `pie-player.${customClassname} ${s.trim()}`)
+        .map((s: string) => `${prefix} ${s.trim()}`)
         .join(", ");
       return `${close} ${scoped} {`;
     });
   }
 
-  private async loadScopedExternalStyle(url: string, customClassname: string) {
+  private async loadScopedExternalStyle(url: string, customClassname?: string) {
     const startTime = performance.now();
     console.log(`[style-loader] Fetching CSS: ${url}`);
     const res = await fetch(url);
@@ -436,7 +437,9 @@ export class Player {
     );
 
     const scopeStart = performance.now();
-    const scopedCSS = this.scopeCSS(css, customClassname);
+    // determine classname: passed-in or component's customClassname
+    const classname = customClassname || this.customClassname || undefined;
+    const scopedCSS = this.scopeCSS(css, classname);
     const scopeEnd = performance.now();
     console.log(
       `[style-loader] CSS scoped in ${(scopeEnd - scopeStart).toFixed(2)}ms`
@@ -465,7 +468,7 @@ export class Player {
   }
 
   private renderMath() {
-   _dll_pie_lib__pie_toolbox_math_rendering.renderMath(this.el);
+    _dll_pie_lib__pie_toolbox_math_rendering.renderMath(this.el);
   }
 
   private addBottomBorder(tags: string[]) {
@@ -549,6 +552,34 @@ export class Player {
         if (
           url &&
           typeof url === "string" &&
+          !document.querySelector(`style[data-pie-style="${url}"]`)
+        ) {
+          this.loadScopedExternalStyle(url, this.customClassname);
+        }
+      });
+    }
+
+    // handle stylesheets from config.resources like externalStyleUrls
+    // const classNameToUse = this.customClassname || `pie-player-${Math.random()}`;
+    let configResources: ConfigResource | undefined = undefined;
+    if (this.pieContentModel && this.pieContentModel.resources) {
+      configResources = this.pieContentModel.resources;
+    }
+    const advancedConfig: AdvancedItemConfig =
+      this.stimulusItemModel || (this.config as AdvancedItemConfig);
+    if (!configResources && advancedConfig && advancedConfig.pie && advancedConfig.pie.resources) {
+      configResources = advancedConfig.pie.resources;
+    }
+    console.log('configResources', configResources)
+    if (
+      configResources && configResources.stylesheets &&
+      Array.isArray(configResources.stylesheets)
+    ) {
+      configResources.stylesheets.forEach(resource => {
+        const url = resource.url;
+        if (
+          url &&
+          typeof url === 'string' &&
           !document.querySelector(`style[data-pie-style="${url}"]`)
         ) {
           this.loadScopedExternalStyle(url, this.customClassname);
