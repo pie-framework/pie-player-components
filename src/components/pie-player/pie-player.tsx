@@ -1,5 +1,5 @@
-import { SessionChangedEvent } from "@pie-framework/pie-player-events";
-import { _dll_pie_lib__pie_toolbox_math_rendering } from "@pie-lib/pie-toolbox-math-rendering-module/module";
+import { SessionChangedEvent } from '@pie-framework/pie-player-events';
+import { _dll_pie_lib__pie_toolbox_math_rendering } from '@pie-lib/pie-toolbox-math-rendering-module/module';
 import {
   Component,
   Element,
@@ -10,7 +10,7 @@ import {
   Prop,
   State,
   Watch
-} from "@stencil/core";
+} from '@stencil/core';
 import {
   AdvancedItemConfig, ConfigResource,
   Env,
@@ -27,17 +27,17 @@ import {
   DEFAULT_ENDPOINTS,
   BundleEndpoints,
   LoaderConfig
-} from "../../pie-loader";
-import { addRubric } from "../../rubric-utils";
-import { normalizeContentElements } from "../../utils/utils";
-import { VERSION } from "../../version";
+} from '../../pie-loader';
+import { addRubric } from '../../rubric-utils';
+import { normalizeContentElements } from '../../utils/utils';
+import { VERSION } from '../../version';
 
 const controllerErrorMessage: string =
-  "Error processing question configuration, verify the question model?";
+  'Error processing question configuration, verify the question model?';
 
 @Component({
-  tag: "pie-player",
-  styleUrl: "../components.css",
+  tag: 'pie-player',
+  styleUrl: '../components.css',
   shadow: false
 })
 export class Player {
@@ -46,7 +46,7 @@ export class Player {
    */
   stimulusPlayer: HTMLElement;
 
-  @Prop({ context: "document" }) doc!: Document;
+  @Prop({ context: 'document' }) doc!: Document;
 
   /**
    * Optionally specifies the back-end that builds and hosts javascript bundles for rendering assessment items.
@@ -83,13 +83,13 @@ export class Player {
    * the `complete` propery would be false if 1 or 2 points had been added, but true if all three had.
    *
    */
-  @Event({ eventName: "session-changed" }) sessionChanged: EventEmitter;
+  @Event({ eventName: 'session-changed' }) sessionChanged: EventEmitter;
 
   /**
    * Emmitted if there is an error encountered while rendering.
    * `event.detail` will be a string containing a message about the error.
    */
-  @Event({ eventName: "player-error" }) playerError: EventEmitter;
+  @Event({ eventName: 'player-error' }) playerError: EventEmitter;
 
   /**
    * TODO - Emmitted when any all interactions in a PIE Assessment Item have reported that a user
@@ -100,7 +100,7 @@ export class Player {
   /**
    * Emitted when the content in the config has been loaded.
    */
-  @Event({ eventName: "load-complete" }) loadComplete: EventEmitter;
+  @Event({ eventName: 'load-complete' }) loadComplete: EventEmitter;
 
   @State() elementsLoaded: boolean = false;
 
@@ -131,7 +131,7 @@ export class Player {
    */
   @Prop() loaderConfig: LoaderConfig;
 
-  @Watch("addCorrectResponse")
+  @Watch('addCorrectResponse')
   watchAddCorrectResponse(newValue, oldValue) {
     if (newValue !== oldValue) {
       this.updateModels();
@@ -141,13 +141,13 @@ export class Player {
   /**
    * The Pie Session
    */
-  @Prop() session: ItemSession = { id: "", data: [] };
+  @Prop() session: ItemSession = { id: '', data: [] };
 
   /**
    * Describes runtime environment for the player.
    *
    */
-  @Prop() env: Env = { mode: "gather", role: "student" };
+  @Prop() env: Env = { mode: 'gather', role: 'student' };
 
   /**
    * Indicates if player running in the context of a PIE hosting system.
@@ -185,12 +185,13 @@ export class Player {
   @Prop() customClassname?: string;
 
   pieLoader = new PieLoader(null, this.loaderConfig);
+  private loadingStyles = new Set<string>();
 
   player() {
     return this.stimulusPlayer ? this.stimulusPlayer : this;
   }
 
-  @Watch("config")
+  @Watch('config')
   async watchConfig(newConfig) {
     this.elementsLoaded = false;
 
@@ -199,7 +200,7 @@ export class Player {
         return;
       }
       try {
-        if (typeof newConfig == "string") {
+        if (typeof newConfig == 'string') {
           newConfig = JSON.parse(newConfig);
         }
         if (newConfig.pie) {
@@ -224,7 +225,7 @@ export class Player {
 
         if (
           this.bundleHost &&
-          ["dev", "stage", "prod"].includes(this.bundleHost)
+          ['dev', 'stage', 'prod'].includes(this.bundleHost)
         ) {
           endpoints = DEFAULT_ENDPOINTS[this.bundleHost];
         }
@@ -274,7 +275,7 @@ export class Player {
   async provideScore() {
     // TODO I think we have to check if it's hosted or not to expose this function
     if (!this.pieContentModel || !this.pieContentModel.models) {
-      console.error("No pie content model");
+      console.error('No pie content model');
 
       return false;
     }
@@ -295,7 +296,7 @@ export class Player {
             return {
               ...session,
               ...(await controller.outcome(model, session, {
-                mode: "evaluate"
+                mode: 'evaluate'
               }))
             };
           }
@@ -304,7 +305,7 @@ export class Player {
     );
   }
 
-  @Watch("env")
+  @Watch('env')
   updateModels(newEnv = this.env) {
     // wrapping a player in stimulus layout
     if (this.stimulusPlayer) {
@@ -312,12 +313,12 @@ export class Player {
       return;
     }
 
-    performance.mark("pie-model-set-start");
+    performance.mark('pie-model-set-start');
 
     if (
       this.pieContentModel &&
       this.pieContentModel.models &&
-      typeof this.pieContentModel.models.forEach === "function" &&
+      typeof this.pieContentModel.models.forEach === 'function' &&
       this.pieContentModel.markup &&
       this.elementsLoaded
     ) {
@@ -349,11 +350,11 @@ export class Player {
                 if (
                   this.addCorrectResponse &&
                   controller.createCorrectResponseSession &&
-                  typeof controller.createCorrectResponseSession === "function"
+                  typeof controller.createCorrectResponseSession === 'function'
                 ) {
                   session = await controller.createCorrectResponseSession(
                     model,
-                    { ...newEnv, ...{ role: "instructor" } }
+                    { ...newEnv, ...{ role: 'instructor' } }
                   );
                 }
                 pieEl.model = await controller.model(model, session, newEnv);
@@ -387,17 +388,17 @@ export class Player {
         }
       });
 
-      performance.mark("pie-model-set-end");
+      performance.mark('pie-model-set-end');
       performance.measure(
-        "PIE Model Setup Time",
-        "pie-model-set-start",
-        "pie-model-set-end"
+        'PIE Model Setup Time',
+        'pie-model-set-start',
+        'pie-model-set-end'
       );
       const modelEntry = performance.getEntriesByName(
-        "PIE Model Setup Time"
+        'PIE Model Setup Time'
       )[0];
       const modelDuration = modelEntry ? modelEntry.duration : 0;
-      console.log("[PIE Model Setup Time]", modelDuration.toFixed(2), "ms");
+      console.log('[PIE Model Setup Time]', modelDuration.toFixed(2), 'ms');
 
       setTimeout(() => {
         /** remove the event blocker - see above */
@@ -417,38 +418,51 @@ export class Player {
 
   private scopeCSS(cssText: string, customClassname?: string) {
     return cssText.replace(/(^|\})\s*([^\{]+)\s*\{/g, (_, close, selector) => {
-      const prefix = customClassname ? `pie-player.${customClassname}` : "pie-player";
+      const prefix = customClassname ? `pie-player.${customClassname}` : 'pie-player';
       const scoped = selector
-        .split(",")
+        .split(',')
         .map((s: string) => `${prefix} ${s.trim()}`)
-        .join(", ");
+        .join(', ');
       return `${close} ${scoped} {`;
     });
   }
 
   private async loadScopedExternalStyle(url: string, customClassname?: string) {
-    const startTime = performance.now();
-    console.log(`[style-loader] Fetching CSS: ${url}`);
-    const res = await fetch(url);
-    const css = await res.text();
-    const fetchEnd = performance.now();
-    console.log(
-      `[style-loader] Fetch complete in ${(fetchEnd - startTime).toFixed(2)}ms`
-    );
+    if (
+      document.querySelector(`style[data-pie-style="${url}"]`) ||
+      this.loadingStyles.has(url)
+    ) {
+      return;
+    }
+    this.loadingStyles.add(url);
+    try {
+      const startTime = performance.now();
+      console.log(`[style-loader] Fetching CSS: ${url}`);
+      const res = await fetch(url);
+      const css = await res.text();
+      const fetchEnd = performance.now();
+      console.log(
+        `[style-loader] Fetch complete in ${(fetchEnd - startTime).toFixed(2)}ms`
+      );
 
-    const scopeStart = performance.now();
-    // determine classname: passed-in or component's customClassname
-    const classname = customClassname || this.customClassname || undefined;
-    const scopedCSS = this.scopeCSS(css, classname);
-    const scopeEnd = performance.now();
-    console.log(
-      `[style-loader] CSS scoped in ${(scopeEnd - scopeStart).toFixed(2)}ms`
-    );
+      const scopeStart = performance.now();
+      // determine classname: passed-in or component's customClassname
+      const classname = customClassname || this.customClassname || undefined;
+      const scopedCSS = this.scopeCSS(css, classname);
+      const scopeEnd = performance.now();
+      console.log(
+        `[style-loader] CSS scoped in ${(scopeEnd - scopeStart).toFixed(2)}ms`
+      );
 
-    const styleTag = document.createElement("style");
-    styleTag.setAttribute("data-pie-style", url);
-    styleTag.textContent = scopedCSS;
-    document.head.appendChild(styleTag);
+      const styleTag = document.createElement('style');
+      styleTag.setAttribute('data-pie-style', url);
+      styleTag.textContent = scopedCSS;
+      document.head.appendChild(styleTag);
+    } catch (err) {
+      console.error(`[style-loader] Error loading stylesheet from ${url}:`, err);
+    } finally {
+      this.loadingStyles.delete(url);
+    }
   }
 
   async componentWillLoad() {
@@ -481,7 +495,7 @@ export class Player {
 
       for (const elem of elems) {
         if (elem && elem instanceof HTMLElement) {
-          elem.classList.add("evaluate-bottom-border");
+          elem.classList.add('evaluate-bottom-border');
         }
       }
     });
@@ -493,7 +507,7 @@ export class Player {
         this.updateModels();
         this.renderMath();
 
-        if (this.showBottomBorder && this.env.mode === "evaluate") {
+        if (this.showBottomBorder && this.env.mode === 'evaluate') {
           const pieTags =
             this.pieContentModel.elements &&
             Object.keys(this.pieContentModel.elements);
@@ -518,22 +532,22 @@ export class Player {
         ) {
           this.elementsLoaded = true;
 
-          if (performance.getEntriesByName("pie-load-end").length > 0) {
-            performance.mark("pie-elements-load-end");
+          if (performance.getEntriesByName('pie-load-end').length > 0) {
+            performance.mark('pie-elements-load-end');
             performance.measure(
-              "PIE Elements Load Time",
-              "pie-load-end",
-              "pie-elements-load-end"
+              'PIE Elements Load Time',
+              'pie-load-end',
+              'pie-elements-load-end'
             );
 
             const renderEntry = performance.getEntriesByName(
-              "PIE Elements Load Time"
+              'PIE Elements Load Time'
             )[0];
             const renderDuration = renderEntry ? renderEntry.duration : 0;
             console.log(
-              "[PIE Elements Load + Render Time]",
+              '[PIE Elements Load + Render Time]',
               renderDuration.toFixed(2),
-              "ms"
+              'ms'
             );
           }
         }
@@ -542,16 +556,16 @@ export class Player {
 
     if (
       this.externalStyleUrls &&
-      typeof this.externalStyleUrls === "string" &&
+      typeof this.externalStyleUrls === 'string' &&
       this.customClassname &&
-      typeof this.customClassname === "string"
+      typeof this.customClassname === 'string'
     ) {
-      const urls = this.externalStyleUrls.split(",").map(url => url.trim());
+      const urls = this.externalStyleUrls.split(',').map(url => url.trim());
 
       urls.forEach(url => {
         if (
           url &&
-          typeof url === "string" &&
+          typeof url === 'string' &&
           !document.querySelector(`style[data-pie-style="${url}"]`)
         ) {
           this.loadScopedExternalStyle(url, this.customClassname);
@@ -645,13 +659,13 @@ export class Player {
             innerHTML={
               this.pieContentModel && this.pieContentModel.markup
                 ? this.pieContentModel.markup
-                : ""
+                : ''
             }
           />
         );
       }
 
-      return <pie-spinner />;
+      return <pie-spinner/>;
     }
   }
 }
