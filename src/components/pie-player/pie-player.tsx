@@ -182,8 +182,6 @@ export class Player {
    * The last stylesheet url takes priority if the selectors have the same specificity.
    * If no class is provided, a random class will be generated to scope the styles.
    * We did not use the shadow DOM for the pie-player component, so we need to scope the styles manually.
-   * This is useful for styling the pie-player component in a specific way, without affecting other
-   * components that may use the same styles.
    * @example
    * <pie-player external-style-urls="https://example.com/style.css,https://example.com/another-style.css"
    *             custom-classname="my-custom-class"></pie-player>
@@ -191,6 +189,13 @@ export class Player {
    * If no custom class name is provided, a random class will be generated, such as `pie-player-abc12345`.
    */
   @Prop() externalStyleUrls: string = '';
+  
+  /**
+   * A custom class name to scope the styles to the pie-player component.
+   * If not provided, a random class will be generated, such as `pie-player-abc12345`.
+   * This is useful for styling the pie-player component in a specific way, without affecting other
+   * components that may use the same styles.
+   */
   @Prop() customClassname: string = '';
 
   pieLoader = new PieLoader(null, this.loaderConfig);
