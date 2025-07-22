@@ -126,7 +126,7 @@ export namespace Components {
     */
     'config': ItemConfig;
     /**
-    * A custom class name to scope the styles to the pie-player component. If not provided, a random class will be generated, such as `pie-player-abc12345`. This is useful for styling the pie-player component in a specific way, without affecting other components that may use the same styles.
+    * A custom class name to scope the styles to the pie-player component. The custom class name is used to scope the styles from the externalStyleUrls property, by using the pie-player.[CUSTOM_CLASS] selector. If not provided, a random class will be generated, such as `pie-player-abc12345`. This is useful for styling the pie-player component in a specific way, without affecting other components that may use the same styles.
     */
     'customClassname': string;
     /**
@@ -337,7 +337,7 @@ declare namespace LocalJSX {
     */
     'config'?: ItemConfig;
     /**
-    * A custom class name to scope the styles to the pie-player component. If not provided, a random class will be generated, such as `pie-player-abc12345`. This is useful for styling the pie-player component in a specific way, without affecting other components that may use the same styles.
+    * A custom class name to scope the styles to the pie-player component. The custom class name is used to scope the styles from the externalStyleUrls property, by using the pie-player.[CUSTOM_CLASS] selector. If not provided, a random class will be generated, such as `pie-player-abc12345`. This is useful for styling the pie-player component in a specific way, without affecting other components that may use the same styles.
     */
     'customClassname'?: string;
     /**
