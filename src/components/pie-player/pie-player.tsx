@@ -180,9 +180,24 @@ export class Player {
    * Target the pie-player component using the class provided in the class property
    * Parse the css file and add the class to the stylesheet to scope the styles
    * The last stylesheet url takes priority if the selectors have the same specificity.
+   * If no class is provided, a random class will be generated to scope the styles.
+   * We did not use the shadow DOM for the pie-player component, so we need to scope the styles manually.
+   * @example
+   * <pie-player external-style-urls="https://example.com/style.css,https://example.com/another-style.css"
+   *             custom-classname="my-custom-class"></pie-player>
+   * This will load the styles from the provided URLs and scope them to the pie-player component using the pie-player.my-custom-class selector.
+   * If no custom class name is provided, a random class will be generated, such as `pie-player-abc12345`.
    */
-  @Prop() externalStyleUrls: string;
-  @Prop() customClassname?: string;
+  @Prop() externalStyleUrls: string = '';
+  
+  /**
+   * A custom class name to scope the styles to the pie-player component.
+   * The custom class name is used to scope the styles from the externalStyleUrls property, by using the pie-player.[CUSTOM_CLASS] selector.
+   * If not provided, a random class will be generated, such as `pie-player-abc12345`.
+   * This is useful for styling the pie-player component in a specific way, without affecting other
+   * components that may use the same styles.
+   */
+  @Prop() customClassname: string = '';
 
   pieLoader = new PieLoader(null, this.loaderConfig);
   private loadingStyles = new Set<string>();
@@ -416,9 +431,9 @@ export class Player {
     e.stopPropagation();
   }
 
-  private scopeCSS(cssText: string, customClassname?: string) {
+  private scopeCSS(cssText: string) {
+    const prefix = `pie-player.${this.customClassname}`;
     return cssText.replace(/(^|\})\s*([^\{]+)\s*\{/g, (_, close, selector) => {
-      const prefix = customClassname ? `pie-player.${customClassname}` : 'pie-player';
       const scoped = selector
         .split(',')
         .map((s: string) => `${prefix} ${s.trim()}`)
@@ -427,7 +442,7 @@ export class Player {
     });
   }
 
-  private async loadScopedExternalStyle(url: string, customClassname?: string) {
+  private async loadScopedExternalStyle(url: string) {
     if (
       document.querySelector(`style[data-pie-style="${url}"]`) ||
       this.loadingStyles.has(url)
@@ -446,9 +461,7 @@ export class Player {
       );
 
       const scopeStart = performance.now();
-      // determine classname: passed-in or component's customClassname
-      const classname = customClassname || this.customClassname || undefined;
-      const scopedCSS = this.scopeCSS(css, classname);
+      const scopedCSS = this.scopeCSS(css);
       const scopeEnd = performance.now();
       console.log(
         `[style-loader] CSS scoped in ${(scopeEnd - scopeStart).toFixed(2)}ms`
@@ -466,6 +479,9 @@ export class Player {
   }
 
   async componentWillLoad() {
+    if (!this.customClassname) {
+      this.customClassname = `pie-player-${Math.random().toString(36).substr(2, 8)}`;
+    }
     if (this.config) {
       this.watchConfig(this.config);
     }
@@ -568,7 +584,7 @@ export class Player {
           typeof url === 'string' &&
           !document.querySelector(`style[data-pie-style="${url}"]`)
         ) {
-          this.loadScopedExternalStyle(url, this.customClassname);
+          this.loadScopedExternalStyle(url);
         }
       });
     }
@@ -600,7 +616,7 @@ export class Player {
           typeof url === 'string' &&
           !document.querySelector(`style[data-pie-style="${url}"]`)
         ) {
-          this.loadScopedExternalStyle(url, this.customClassname);
+          this.loadScopedExternalStyle(url);
         }
       });
     }
@@ -629,6 +645,7 @@ export class Player {
               bundleHost={this.bundleHost}
               bundleEndpoints={this.bundleEndpoints}
               class={this.customClassname}
+              customClassname={this.customClassname}
             />
           </div>
           <div slot="item" class="player-item-container">
@@ -642,6 +659,7 @@ export class Player {
               bundleHost={this.bundleHost}
               bundleEndpoints={this.bundleEndpoints}
               class={this.customClassname}
+              customClassname={this.customClassname}
             />
           </div>
         </pie-stimulus-layout>
@@ -655,6 +673,7 @@ export class Player {
           session={this.session}
           bundleEndpoints={this.bundleEndpoints}
           class={this.customClassname}
+          customClassname={this.customClassname}
         />
       );
     } else {
@@ -671,7 +690,7 @@ export class Player {
         );
       }
 
-      return <pie-spinner/>;
+      return <pie-spinner />;
     }
   }
 }
