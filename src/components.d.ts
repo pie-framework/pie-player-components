@@ -125,7 +125,7 @@ export namespace Components {
     * The Pie config model.
     */
     'config': ItemConfig;
-    'customClassname'?: string;
+    'customClassname': string;
     /**
     * Allows disabling of the default behaviour which is to look up and load the JS bundle that define the Custom Elements used by the item config. This if for advanced use cases when using the pie-player in a container that is managing loading of Custom Elements and Controllers.
     */
@@ -135,7 +135,8 @@ export namespace Components {
     */
     'env': Env;
     /**
-    * Support styling with external stylesheet urls (comma separated urls) Target the pie-player component using the class provided in the class property Parse the css file and add the class to the stylesheet to scope the styles The last stylesheet url takes priority if the selectors have the same specificity.
+    * Support styling with external stylesheet urls (comma separated urls) Target the pie-player component using the class provided in the class property Parse the css file and add the class to the stylesheet to scope the styles The last stylesheet url takes priority if the selectors have the same specificity. If no class is provided, a random class will be generated to scope the styles. We did not use the shadow DOM for the pie-player component, so we need to scope the styles manually. This is useful for styling the pie-player component in a specific way, without affecting other components that may use the same styles.
+    * @example <pie-player external-style-urls="https://example.com/style.css,https://example.com/another-style.css"             custom-classname="my-custom-class"></pie-player> This will load the styles from the provided URLs and scope them to the pie-player component using the pie-player.my-custom-class selector. If no custom class name is provided, a random class will be generated, such as `pie-player-abc12345`.
     */
     'externalStyleUrls': string;
     /**
@@ -342,7 +343,8 @@ declare namespace LocalJSX {
     */
     'env'?: Env;
     /**
-    * Support styling with external stylesheet urls (comma separated urls) Target the pie-player component using the class provided in the class property Parse the css file and add the class to the stylesheet to scope the styles The last stylesheet url takes priority if the selectors have the same specificity.
+    * Support styling with external stylesheet urls (comma separated urls) Target the pie-player component using the class provided in the class property Parse the css file and add the class to the stylesheet to scope the styles The last stylesheet url takes priority if the selectors have the same specificity. If no class is provided, a random class will be generated to scope the styles. We did not use the shadow DOM for the pie-player component, so we need to scope the styles manually. This is useful for styling the pie-player component in a specific way, without affecting other components that may use the same styles.
+    * @example <pie-player external-style-urls="https://example.com/style.css,https://example.com/another-style.css"             custom-classname="my-custom-class"></pie-player> This will load the styles from the provided URLs and scope them to the pie-player component using the pie-player.my-custom-class selector. If no custom class name is provided, a random class will be generated, such as `pie-player-abc12345`.
     */
     'externalStyleUrls'?: string;
     /**
