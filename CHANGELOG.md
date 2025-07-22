@@ -1,3 +1,16 @@
+# [3.10.0](https://github.com/pie-framework/pie-player-components/compare/v3.9.1...v3.10.0) (2025-07-22)
+
+
+### Bug Fixes
+
+* enforce custom classname as required property, add default pd-5129 ([642a669](https://github.com/pie-framework/pie-player-components/commit/642a6692deb2da90f28d84fdeaab1abe7bfec546))
+* update customclassname documentation to clarify usage ([bc9ab1e](https://github.com/pie-framework/pie-player-components/commit/bc9ab1e192fc2055212a608cbbd3a3f41db8191c))
+
+
+### Features
+
+* add documentation ([8546df0](https://github.com/pie-framework/pie-player-components/commit/8546df026a9790cf869d5c246a6f68c249d56c5c))
+
 ## [3.9.1](https://github.com/pie-framework/pie-player-components/compare/v3.9.0...v3.9.1) (2025-07-18)
 
 
