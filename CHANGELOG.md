@@ -1,3 +1,10 @@
+# [3.11.0](https://github.com/pie-framework/pie-player-components/compare/v3.10.0...v3.11.0) (2025-07-24)
+
+
+### Features
+
+* add passageContainerClass and containerClass support ([3a83752](https://github.com/pie-framework/pie-player-components/commit/3a83752f447379257cc1116411c3a65e3c8e1324))
+
 # [3.10.0](https://github.com/pie-framework/pie-player-components/compare/v3.9.1...v3.10.0) (2025-07-22)
 
 
