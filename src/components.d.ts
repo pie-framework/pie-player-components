@@ -126,6 +126,10 @@ export namespace Components {
     */
     'config': ItemConfig;
     /**
+    * Optional CSS class for the item player container
+    */
+    'containerClass'?: string;
+    /**
     * A custom class name to scope the styles to the pie-player component. The custom class name is used to scope the styles from the externalStyleUrls property, by using the pie-player.[CUSTOM_CLASS] selector. If not provided, a random class will be generated, such as `pie-player-abc12345`. This is useful for styling the pie-player component in a specific way, without affecting other components that may use the same styles.
     */
     'customClassname': string;
@@ -150,6 +154,10 @@ export namespace Components {
     * The Pie loader config.
     */
     'loaderConfig': LoaderConfig;
+    /**
+    * Optional CSS class for the stimulus container wrapper
+    */
+    'passageContainerClass'?: string;
     'provideScore': () => Promise<false | any[]>;
     /**
     * used to automatically re-fetch the bundle (in case we get a 503)
@@ -337,6 +345,10 @@ declare namespace LocalJSX {
     */
     'config'?: ItemConfig;
     /**
+    * Optional CSS class for the item player container
+    */
+    'containerClass'?: string;
+    /**
     * A custom class name to scope the styles to the pie-player component. The custom class name is used to scope the styles from the externalStyleUrls property, by using the pie-player.[CUSTOM_CLASS] selector. If not provided, a random class will be generated, such as `pie-player-abc12345`. This is useful for styling the pie-player component in a specific way, without affecting other components that may use the same styles.
     */
     'customClassname'?: string;
@@ -377,6 +389,10 @@ declare namespace LocalJSX {
     * Emmitted when any interaction in the set of interactions being rendered has been mutated by user action.  The `Event.detail` property contains a `complete` property. If true, this indicates that enough data has been gathered by the interaciton to constitute a response. For example, in a plot line questsion where a user had to plot three points to plot the line, the `complete` propery would be false if 1 or 2 points had been added, but true if all three had.
     */
     'onSession-changed'?: (event: CustomEvent<any>) => void;
+    /**
+    * Optional CSS class for the stimulus container wrapper
+    */
+    'passageContainerClass'?: string;
     /**
     * used to automatically re-fetch the bundle (in case we get a 503)
     */
