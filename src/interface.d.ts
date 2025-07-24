@@ -21,12 +21,11 @@ interface PieContent {
 }
 
 interface ConfigResource {
-  container?: {
-    markup?: string;
-  },
   stylesheets?: {
     url: string;
   }[];
+  containerClass?: string;
+  passageContainerClass?: string;
 }
 
 export type BundleInfo = {
