@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0" />
+  <title>Item With Stimulus</title>
+  <script type="module"
+          src="https://unpkg.com/@pie-framework/pie-player-components@latest/dist/pie-player-components/pie-player-components.esm.js"></script>
+</head>
+
+<body>
+<div>
+  <pie-player render-stimulus="false" custom-classname="ibx-client-style"
+              external-style-urls="https://cdn-stg.fluence.net/qti/css/lsy/index.css,https://cdn-stg.fluence.net/qti/css/lsy/preload.css,https://cdn-stg.fluence.net/qti/css/lsy/vendor.css,https://cdn-stg.fluence.net/qti/css/lsy/main.css"></pie-player>
+</div>
+<script>
+  const config = {
+    "pie": {
+      "resources": {
+        "container": {
+          "markup": "<div class=\"lrn lrn_widget lrn_feature lrn_sharedpassage\"><div class=\"lrn_widget_content\">{body}</div></div>"
+        }
+      },
+      "id": "i2010700-en",
+      "markup": "<match id=\"i2010700-en\"></match>",
+      "elements": {
+        "match": "@pie-element/match@latest"
+      },
+      "models": [
+        {
+          "element": "match",
+          "id": "i2010700-en",
+          "prompt": "<div class=\"lrn lrn_widget lrn_feature lrn_sharedpassage\">Select the physical attribute that belongs with each description.</div><img class=\"lrn-image-right\" height=\"82\" src=\"https://cdn-stg.fluence.net/qti/images-clt231/beaae0b5ad00e8a0b05f483dd4e71913_acc8c901-657d-4ad7-a015-d16ced37a40a.jpg\" style=\"width: 124px; height: 82px;\" width=\"124\" />",
+          "rubricEnabled": false,
+          "scoringType": "auto",
+          "partialScoring": false,
+          "lockChoiceOrder": true,
+          "choiceMode": "radio",
+          "layout": 5,
+          "headers": [
+            "",
+            "                <b>Color</b>              ",
+            "                <strong>Luster</strong>              ",
+            "                <strong>Texture</strong>              ",
+            "                <strong>Hardness</strong>              "
+          ],
+          "rows": [
+            {
+              "id": "1",
+              "title": "Determined by the ability of one rock to scratch another",
+              "values": [
+                false,
+                false,
+                false,
+                true
+              ]
+            },
+            {
+              "id": "2",
+              "title": "Determined by the rock’s ability to reflect light",
+              "values": [
+                false,
+                true,
+                false,
+                false
+              ]
+            },
+            {
+              "id": "3",
+              "title": "Refers to the size, shape, and arrangement of the grains and crystals",
+              "values": [
+                false,
+                false,
+                true,
+                false
+              ]
+            },
+            {
+              "id": "4",
+              "title": "Tells the type of rock and what it is made of",
+              "values": [
+                true,
+                false,
+                false,
+                false
+              ]
+            }
+          ],
+          "autoplayAudioEnabled": false,
+          "completeAudioEnabled": false
+        }
+      ]
+    },
+  };
+
+  const player = document.getElementsByTagName('pie-player')[0];
+
+  player.config = config;
+  player.env = { mode: 'gather', role: 'instructor' };
+</script>
+</body>
+
+</html>

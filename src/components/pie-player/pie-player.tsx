@@ -319,7 +319,8 @@ export class Player {
             return {
               ...session,
               ...(await controller.outcome(model, session, {
-                mode: 'evaluate'
+                mode: 'evaluate',
+                partialScoring: this.env.partialScoring
               }))
             };
           }
@@ -507,7 +508,7 @@ export class Player {
     if (!configResources) {
       return;
     }
-    // add the container classes from the config 
+    // add the container classes from the config
     if (configResources.containerClass) {
       this.containerClass = configResources.containerClass;
     }
