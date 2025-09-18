@@ -316,6 +316,7 @@ export class Player {
           );
 
           if (controller && controller.outcome) {
+            console.log('env-->', this.env);
             return {
               ...session,
               ...(await controller.outcome(model, session, {
