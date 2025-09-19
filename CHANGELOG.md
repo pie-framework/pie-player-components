@@ -1,3 +1,12 @@
+## [3.11.1](https://github.com/pie-framework/pie-player-components/compare/v3.11.0...v3.11.1) (2025-09-19)
+
+
+### Bug Fixes
+
+* add a log for testing ([eb6797f](https://github.com/pie-framework/pie-player-components/commit/eb6797f677a32fd3374c481ea4f6495316cd8d09))
+* get rid of unused demo page ([93d1037](https://github.com/pie-framework/pie-player-components/commit/93d10375862469d2ffb1a3d26523a7d2cef9e2fa))
+* send partialScoring in env to provide score player PD-5213 ([d237f3e](https://github.com/pie-framework/pie-player-components/commit/d237f3eab6a4f5b80ae5354d95b3013ac6145ce0))
+
 # [3.11.0](https://github.com/pie-framework/pie-player-components/compare/v3.10.0...v3.11.0) (2025-07-24)
 
 
