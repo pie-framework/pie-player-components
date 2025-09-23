@@ -1,5 +1,4 @@
 import { SessionChangedEvent } from '@pie-framework/pie-player-events';
-import { _dll_pie_lib__pie_toolbox_math_rendering } from '@pie-lib/pie-toolbox-math-rendering-module/module';
 import {
   Component,
   Element,
@@ -29,8 +28,9 @@ import {
   LoaderConfig
 } from '../../pie-loader';
 import { addRubric } from '../../rubric-utils';
-import { normalizeContentElements } from '../../utils/utils';
+import { normalizeContentElements, exposeMathRenderingGlobal, getMathRendering } from '../../utils/utils';
 import { VERSION } from '../../version';
+
 
 const controllerErrorMessage: string =
   'Error processing question configuration, verify the question model?';
@@ -490,6 +490,8 @@ export class Player {
   }
 
   async componentWillLoad() {
+    exposeMathRenderingGlobal();
+
      if (this.config) {
       this.watchConfig(this.config);
     }
@@ -529,7 +531,7 @@ export class Player {
   }
 
   private renderMath() {
-    _dll_pie_lib__pie_toolbox_math_rendering.renderMath(this.el);
+   getMathRendering().renderMath(this.el);
   }
 
   private addBottomBorder(tags: string[]) {

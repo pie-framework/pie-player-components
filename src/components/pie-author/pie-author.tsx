@@ -7,9 +7,6 @@ import {
   ModelUpdatedEvent
 } from "@pie-framework/pie-configure-events";
 import {
-  _dll_pie_lib__pie_toolbox_math_rendering
-} from "@pie-lib/pie-toolbox-math-rendering-module/module";
-import {
   Component,
   Element,
   Event,
@@ -49,7 +46,7 @@ import {
   complexRubricChecks,
   removeComplexRubricFromMarkup
 } from "../../rubric-utils";
-import { createTag, pieContentFromConfig } from "../../utils/utils";
+import { createTag, pieContentFromConfig, exposeMathRenderingGlobal, getMathRendering } from "../../utils/utils";
 import { VERSION } from "../../version";
 import {
   DataURLImageSupport,
@@ -705,6 +702,8 @@ export class Author {
   }
 
   async componentWillLoad() {
+    exposeMathRenderingGlobal();
+
     if (this.config) {
       this.watchConfig(this.config, {});
     }
@@ -827,7 +826,7 @@ export class Author {
   }
 
   private renderMath() {
-    _dll_pie_lib__pie_toolbox_math_rendering.renderMath(this.el);
+    getMathRendering().renderMath(this.el);
   }
 
   async afterRender() {
