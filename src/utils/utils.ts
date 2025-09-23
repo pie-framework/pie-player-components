@@ -13,17 +13,8 @@ export const createTag = npmPkg => `pp-${packageToElementName(npmPkg)}`;
 const KEY = "@pie-lib/math-rendering";
 type MathRenderingApi = typeof _dll_pie_lib__math_rendering;
 
-/** Expose once on window so all elements can reuse the same instance. */
-export function exposeMathRenderingGlobal(): MathRenderingApi {
-  const w = window as any;
-  if (!w[KEY]) {
-    w[KEY] = _dll_pie_lib__math_rendering;
-  }
-  return w[KEY] as MathRenderingApi;
-}
-
-export function getMathRendering(): MathRenderingApi {
-  return (window as any)[KEY] as MathRenderingApi;
+if (typeof window !== "undefined" && !(window as any)[KEY]) {
+  (window as any)[KEY] = _dll_pie_lib__math_rendering as MathRenderingApi;
 }
 
 /**

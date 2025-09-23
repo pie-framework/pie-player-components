@@ -46,7 +46,7 @@ import {
   complexRubricChecks,
   removeComplexRubricFromMarkup
 } from "../../rubric-utils";
-import { createTag, pieContentFromConfig, exposeMathRenderingGlobal, getMathRendering } from "../../utils/utils";
+import { createTag, pieContentFromConfig } from "../../utils/utils";
 import { VERSION } from "../../version";
 import {
   DataURLImageSupport,
@@ -702,8 +702,6 @@ export class Author {
   }
 
   async componentWillLoad() {
-    exposeMathRenderingGlobal();
-
     if (this.config) {
       this.watchConfig(this.config, {});
     }
@@ -826,7 +824,11 @@ export class Author {
   }
 
   private renderMath() {
-    getMathRendering().renderMath(this.el);
+    const MR = (window as any)["@pie-lib/math-rendering"];
+
+    if (MR && typeof MR.renderMath === "function") {
+      MR.renderMath(this.el);
+    }
   }
 
   async afterRender() {
