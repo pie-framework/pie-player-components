@@ -3,6 +3,13 @@ import { sass } from "@stencil/sass";
 export const config: Config = {
   namespace: "pie-player-components",
 
+  testing: {
+    moduleNameMapper: {
+      "^@pie-lib/math-rendering-module/module$":
+        "<rootDir>/src/test-mocks/math-rendering-module.js"
+    }
+  },
+
   outputTargets: [
     {
       type: "dist",
@@ -20,9 +27,9 @@ export const config: Config = {
       ]
     },
     {
-      type: 'docs-readme',
-      footer: '',
-      dir: 'docs'
+      type: "docs-readme",
+      footer: "",
+      dir: "docs"
     },
     {
       type: "www",
