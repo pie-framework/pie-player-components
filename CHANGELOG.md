@@ -1,3 +1,10 @@
+# [3.12.0](https://github.com/pie-framework/pie-player-components/compare/v3.11.1...v3.12.0) (2025-09-25)
+
+
+### Features
+
+* expose math-rendering on window PD-5227 ([18c938d](https://github.com/pie-framework/pie-player-components/commit/18c938d20ac449bb1cb78e08d51f9b13d73ca09a))
+
 ## [3.11.1](https://github.com/pie-framework/pie-player-components/compare/v3.11.0...v3.11.1) (2025-09-19)
 
 
