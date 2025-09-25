@@ -5,9 +5,17 @@ import {
   PieItemElement,
   PieModel
 } from "../interface";
+import { _dll_pie_lib__math_rendering } from "@pie-lib/math-rendering-module/module";
 
 // prefix new tag with pp- for pie player and to ensure custom element validity
 export const createTag = npmPkg => `pp-${packageToElementName(npmPkg)}`;
+
+const KEY = "@pie-lib/math-rendering";
+type MathRenderingApi = typeof _dll_pie_lib__math_rendering;
+
+if (typeof window !== "undefined" && !(window as any)[KEY]) {
+  (window as any)[KEY] = _dll_pie_lib__math_rendering as MathRenderingApi;
+}
 
 /**
  * Replaces all user-defined element name mappings with ones derived from
