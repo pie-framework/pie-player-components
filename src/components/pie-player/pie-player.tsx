@@ -294,17 +294,34 @@ export class Player {
     }
   }
 
+  private getModelsForScoring() {
+    // Handle stimulus items
+    if (this.stimulusItemModel && this.stimulusItemModel.pie) {
+      return this.stimulusItemModel.pie.models || [];
+    }
+    
+    // Handle regular items
+    if (this.pieContentModel && this.pieContentModel.models) {
+      return this.pieContentModel.models || [];
+    }
+    
+    return null;
+  }
+
   @Method()
   async provideScore() {
     // TODO I think we have to check if it's hosted or not to expose this function
-    if (!this.pieContentModel || !this.pieContentModel.models) {
-      console.error('No pie content model');
-
+    
+    // Get models to score - handle both stimulus items and regular items
+    const modelsToScore = this.getModelsForScoring();
+    
+    if (!modelsToScore || modelsToScore.length === 0) {
+      console.error('No models available for scoring');
       return false;
     }
 
     return Promise.all(
-      (this.pieContentModel.models || []).map(async model => {
+      modelsToScore.map(async model => {
         let pieEl: PieElement = this.el.querySelector(`[id='${model.id}']`);
         !pieEl && (pieEl = this.el.querySelector(`[pie-id='${model.id}']`));
 
