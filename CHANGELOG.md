@@ -1,3 +1,12 @@
+## [3.12.2](https://github.com/pie-framework/pie-player-components/compare/v3.12.1...v3.12.2) (2025-09-30)
+
+
+### Bug Fixes
+
+* conclude merge with master ([80cef23](https://github.com/pie-framework/pie-player-components/commit/80cef236e39d246ff5624d800f0aa139f6c4cdc3))
+* extend provideScore to handle stimulus item PD-5213 ([d374f65](https://github.com/pie-framework/pie-player-components/commit/d374f658650f44b2abe4680d2819d05e451218f3))
+* return empty list instead of null ([b896d11](https://github.com/pie-framework/pie-player-components/commit/b896d110748b7be89ddaa45302bb8afecdace169))
+
 ## [3.12.1](https://github.com/pie-framework/pie-player-components/compare/v3.12.0...v3.12.1) (2025-09-26)
 
 
