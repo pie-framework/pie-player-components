@@ -299,13 +299,11 @@ export class Player {
     if (this.stimulusItemModel && this.stimulusItemModel.pie) {
       return this.stimulusItemModel.pie.models || [];
     }
-
     // Handle regular items
     if (this.pieContentModel && this.pieContentModel.models) {
       return this.pieContentModel.models || [];
     }
-
-    return null;
+    return [];
   }
 
   @Method()
