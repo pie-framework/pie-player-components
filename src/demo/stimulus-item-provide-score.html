@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0"
+    />
+    <title>Item With Stimulus</title>
+    <script nomodule src="/build/pie-player-components.js"></script>
+    <script type="module" src="/build/pie-player-components.esm.js"></script>
+  </head>
+  <body>
+     <div>
+       <h2>render stimulus</h2>
+       <pie-player id="player" render-stimulus="true"></pie-player>
+     </div>
+
+     <div>
+       <h2>Actions</h2>
+       <button id="scoreButton">Get Score</button>
+       <div id="scoreResult"></div>
+     </div>
+     <script>
+      const config = {
+        pie: {
+    markup:
+      '<multiple-choice--version-latest id="0000000053c4858b015405f9e9271533"></multiple-choice--version-latest>',
+    elements: {
+      "multiple-choice--version-latest": "@pie-element/multiple-choice@latest",
+    },
+    models: [
+      {
+        keyMode: "none",
+        lockChoiceOrder: false,
+        id: "0000000053c4858b015405f9e9271533",
+        choiceMode: "radio",
+        choices: [
+          {
+            correct: false,
+            label: "<p>She wishes she were somewhere more exciting.</p>",
+            value: "0000000053c4858b015405f9e9271537",
+            rationale:
+              "<p>Besides being hungry, Stacy is content in the minivan. She also enjoys the diner, where she watches the fish and then eats spaghetti. There is no suggestion that she wants excitement.</p>",
+          },
+          {
+            correct: true,
+            label: "<p>She is interested in looking at the world around her.</p>",
+            value: "0000000053c4858b015405f9e9271534",
+            rationale:
+              "<p>In both settings, Stacy is described as observing the world around her; she watches the miles and miles of forest while riding in the minivan, and she is captivated by the fish in the diner.</p>",
+          },
+          {
+            correct: false,
+            label: "<p>She enjoys reading about new places.</p>",
+            value: "0000000053c4858b015405f9e9271535",
+            rationale:
+              "<p>Stacy&#8217;s sister Rosie is engrossed in a book during the ride, but the text does not describe Stacy reading.</p>",
+          },
+          {
+            correct: false,
+            label: "<p>She has fun joking with her brother and sister.</p>",
+            value: "0000000053c4858b015405f9e9271536",
+            rationale:
+              "<p>In both settings, Stacy&#8217;s brother and sister are involved in their own activities. There is no joking among the children in the text.</p>",
+          },
+        ],
+        prompt:
+          '<p>For <span class="passage-title">Stacy&#8217;s Spaghetti,</span> which sentence describes Stacy in the minivan and in the diner?</p>',
+        element: "multiple-choice--version-latest",
+      },
+    ],
+    id: {
+      buffer: {
+        0: 103,
+        1: 27,
+        2: 194,
+        3: 139,
+        4: 216,
+        5: 160,
+        6: 182,
+        7: 2,
+        8: 134,
+        9: 173,
+        10: 8,
+        11: 239,
+      },
+    },
+  },
+  passage: {
+    id: "671bc28bd8a0b60286ad08e4",
+    markup:
+      '<pie-passage--version-latest id="4028e4a23eb84423013ec8f684341d59"></pie-passage--version-latest>',
+    elements: {
+      "pie-passage--version-latest": "@pie-element/passage@latest",
+    },
+    models: [
+      {
+        passages: [
+          {
+            teacherInstructions: "",
+            author: "",
+            subtitle: "",
+            text: `<div><div class="p-number">1</div><div class="numbered-paragraph"><p>Long, long ago, before there were buildings and roads on the land, people lived in the forest&#160;and ate their food grown in the wild. While walking under the shady trees one day, a mother led her three children in a search for berries for a nice snack. The youngest girl, Hadie, hummed as she walked, looking forward to some juicy fruit.</p></div><div class="p-number">2</div><div class="numbered-paragraph"><p>As they turned a corner in the path, the children spotted a clearing ahead in the forest. A large field greeted them, with stalks of grass softly waving in the breeze.</p></div><div class="p-number">3</div><div class="numbered-paragraph"><p>The children pranced through the grass, excited to have space to run and play. They began chasing each other freely, enjoying the warmth of the sun high in the sky. Their mother, still focused on the task at hand, began collecting berries in a basket.</p></div><div class="p-number">4</div><div class="numbered-paragraph"><p>Smiling and out of breath, the two oldest children, Ben and Sal, ran over to their mother. Their mother carefully divided the fruit into three equal portions for her kids. Hadie continued twirling in the grass, happily playing alone.</p></div><div class="p-number">5</div><div class="numbered-paragraph"><p>The older boys devoured their tasty snacks, just as Hadie finally realized it was time to eat.</p></div><div class="p-number">6</div><div class="numbered-paragraph"><p>As Hadie approached her family, she saw her brothers pop the last pieces of fruit in their mouths. She sunk into a seated position under a tree. Then her mother walked over to give her the large handful of berries just for her. Hadie&#8217;s frown immediately turned upside down. She knew her mother would always keep something for her. Hadie happily ate her berries, and the children raced back into the field for some more fun.</p></div></div>`,
+            title: "A Snack in the Forest",
+          },
+          {
+            teacherInstructions: "",
+            author: "",
+            subtitle: "",
+            text: `<div><div class="p-number">1</div><div class="numbered-paragraph"><p>Stacy looked out the large window of the minivan as mile after mile of forest passed by. Her older brother, Felix, was sleeping soundly in the far backseat while Rosie, her older sister, read a book, not paying attention to the scene inside the van.</p></div><div class="p-number">2</div><div class="numbered-paragraph"><p>&#8220;Dad, I sure hope we are stopping soon, because my tummy&#8217;s growling!&#8221; Stacy moaned.</p></div><div class="p-number">3</div><div class="numbered-paragraph"><p>&#8220;We just have a few more miles to drive, then we&#8217;ll get lunch. What are you hungry for?&#8221; Dad asked excitedly.</p></div><div class="p-number">4</div><div class="numbered-paragraph"><p>&#8220;Spaghetti!&#8221; Stacy offered with glee.</p></div><div class="p-number">5</div><div class="numbered-paragraph"><p>&#8220;That sounds good to me. Spaghetti it is.&#8221;</p></div><div class="p-number">6</div><div class="numbered-paragraph"><p>After driving several more miles, a sign on the highway showed a roadside restaurant coming up in seven miles: &#8220;Aunt Gertrude&#8217;s Diner&#8221; it read in giant green and red letters in front of&#160;images of tasty apple pies and juicy hamburgers.</p></div><div class="p-number">7</div><div class="numbered-paragraph"><p>&#8220;There&#8217;s the place for us!&#8221; shouted Stacy.</p></div><div class="p-number">8</div><div class="numbered-paragraph"><p>&#8220;It looks like we found a lunch spot,&#8221; agreed Dad.</p></div><div class="p-number">9</div><div class="numbered-paragraph"><p>The minivan approached the exit ramp where a small building with large square windows sat near the highway. It was not crowded; only a couple of cars were parked outside. Dad parked the van, causing everyone to look up and inspect the new scene. They exited the van and entered the restaurant, earning a warm greeting from the server.</p></div><div class="p-number">10</div><div class="numbered-paragraph"><p>Stacy noticed a large fish tank in the corner.</p></div><div class="p-number">11</div><div class="numbered-paragraph"><p>&#8220;Look, Dad, at all the cool fish!&#8221; Stacy ran over to peer into the eyes of the little sea creatures.</p></div><div class="p-number">12</div><div class="numbered-paragraph"><p>&#8220;Come join us in a couple minutes, Stacy,&#8221; said Dad. Then he turned to the server. &#8220;One large order of spaghetti, please, with four plates.&#8221;</p></div><div class="p-number">13</div><div class="numbered-paragraph"><p>&#8220;Coming right up,&#8221; said the server, and she disappeared behind the counter. She returned after several minutes with a large, steaming platter of pasta.</p></div><div class="p-number">14</div><div class="numbered-paragraph"><p>Dad scooped an equal portion&#160;of spaghetti onto each plate.&#160; Like wild animals, Rosie and Felix began to devour the feast on their own plates.</p></div><div class="p-number">15</div><div class="numbered-paragraph"><p>Stacy skipped back to the table, holding her stomach. &#8220;Okay, I&#8217;m ready to eat!&#8221; she said, looking for a fork. She glanced around the table. All she saw were the empty plates of her brother and sister. She frowned and sank into her seat.</p></div><div class="p-number">16</div><div class="numbered-paragraph"><p>&#8220;Dad, now there&#8217;s nothing left!&#8221; cried Stacy.</p></div><div class="p-number">17</div><div class="numbered-paragraph"><p>Dad removed a napkin from over a full plate of pasta. &#8220;I was keeping this warm for you!&#8221; He pushed it over to her place at the table.</p></div><div class="p-number">18</div><div class="numbered-paragraph"><p>Stacy should have known Dad would leave something for her. She grinned and happily slurped up a tasty noodle.</p></div></div>`,
+            title: "Stacy's Spaghetti",
+          },
+        ],
+        id: "4028e4a23eb84423013ec8f684341d59",
+        element: "pie-passage--version-latest",
+      },
+    ],
+    layout: "left",
+    buildInfo: [
+      {
+        name: "@pie-element/passage",
+        version: "latest",
+      },
+    ],
+  },
+};
+    
+
+      const player = document.getElementById('player');
+      const scoreButton = document.getElementById('scoreButton');
+      const scoreResult = document.getElementById('scoreResult');
+
+      player.addEventListener('sessionChanged', event => {
+        console.log(event.type + ':' + JSON.stringify(event.detail));
+      });
+
+      // Add click handler for the score button
+      scoreButton.addEventListener('click', async () => {
+        try {
+          console.log('Getting score from player...');
+          const score = await player.provideScore();
+          console.log('Score result:', score);
+          
+          // Display the score result
+          scoreResult.innerHTML = `
+            <h3>Score Result:</h3>
+            <pre>${JSON.stringify(score, null, 2)}</pre>
+          `;
+        } catch (error) {
+          console.error('Error getting score:', error);
+          scoreResult.innerHTML = `
+            <h3>Error:</h3>
+            <p style="color: red;">${error.message}</p>
+          `;
+        }
+      });
+
+      player.config = config;
+      console.log('player.config', player.config);
+
+    </script>
+  </body>
+</html>

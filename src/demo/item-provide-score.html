@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0"
+    />
+    <title>Item</title>
+    <script nomodule src="/build/pie-player-components.js"></script>
+    <script type="module" src="/build/pie-player-components.esm.js"></script>
+  </head>
+  <body>
+     <div>
+       <h2>render itm</h2>
+       <pie-player id="player"></pie-player>
+     </div>
+
+     <div>
+       <h2>Actions</h2>
+       <button id="scoreButton">Get Score</button>
+       <div id="scoreResult"></div>
+     </div>
+     <script>
+      const config = {
+    markup:
+      '<multiple-choice--version-latest id="0000000053c4858b015405f9e9271533"></multiple-choice--version-latest>',
+    elements: {
+      "multiple-choice--version-latest": "@pie-element/multiple-choice@latest",
+    },
+    models: [
+      {
+        keyMode: "none",
+        lockChoiceOrder: false,
+        id: "0000000053c4858b015405f9e9271533",
+        choiceMode: "radio",
+        choices: [
+          {
+            correct: false,
+            label: "<p>She wishes she were somewhere more exciting.</p>",
+            value: "0000000053c4858b015405f9e9271537",
+            rationale:
+              "<p>Besides being hungry, Stacy is content in the minivan. She also enjoys the diner, where she watches the fish and then eats spaghetti. There is no suggestion that she wants excitement.</p>",
+          },
+          {
+            correct: true,
+            label: "<p>She is interested in looking at the world around her.</p>",
+            value: "0000000053c4858b015405f9e9271534",
+            rationale:
+              "<p>In both settings, Stacy is described as observing the world around her; she watches the miles and miles of forest while riding in the minivan, and she is captivated by the fish in the diner.</p>",
+          },
+          {
+            correct: false,
+            label: "<p>She enjoys reading about new places.</p>",
+            value: "0000000053c4858b015405f9e9271535",
+            rationale:
+              "<p>Stacy&#8217;s sister Rosie is engrossed in a book during the ride, but the text does not describe Stacy reading.</p>",
+          },
+          {
+            correct: false,
+            label: "<p>She has fun joking with her brother and sister.</p>",
+            value: "0000000053c4858b015405f9e9271536",
+            rationale:
+              "<p>In both settings, Stacy&#8217;s brother and sister are involved in their own activities. There is no joking among the children in the text.</p>",
+          },
+        ],
+        prompt:
+          '<p>For <span class="passage-title">Stacy&#8217;s Spaghetti,</span> which sentence describes Stacy in the minivan and in the diner?</p>',
+        element: "multiple-choice--version-latest",
+      },
+    ],
+    id: {
+      buffer: {
+        0: 103,
+        1: 27,
+        2: 194,
+        3: 139,
+        4: 216,
+        5: 160,
+        6: 182,
+        7: 2,
+        8: 134,
+        9: 173,
+        10: 8,
+        11: 239,
+      },
+    },
+};
+    
+
+      const player = document.getElementById('player');
+      const scoreButton = document.getElementById('scoreButton');
+      const scoreResult = document.getElementById('scoreResult');
+
+      player.addEventListener('sessionChanged', event => {
+        console.log(event.type + ':' + JSON.stringify(event.detail));
+      });
+
+      // Add click handler for the score button
+      scoreButton.addEventListener('click', async () => {
+        try {
+          console.log('Getting score from player...');
+          const score = await player.provideScore();
+          console.log('Score result:', score);
+          
+          // Display the score result
+          scoreResult.innerHTML = `
+            <h3>Score Result:</h3>
+            <pre>${JSON.stringify(score, null, 2)}</pre>
+          `;
+        } catch (error) {
+          console.error('Error getting score:', error);
+          scoreResult.innerHTML = `
+            <h3>Error:</h3>
+            <p style="color: red;">${error.message}</p>
+          `;
+        }
+      });
+
+      player.config = config;
+      console.log('player.config', player.config);
+
+    </script>
+  </body>
+</html>
