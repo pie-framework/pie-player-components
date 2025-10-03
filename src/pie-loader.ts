@@ -369,17 +369,26 @@ export class PieLoader extends NewRelicEnabledClient {
             async (currentDelay: number) => {
               const res = await fetch(scriptUrl);
 
-              if (res.ok) {
-                return res;
+              /**
+               * Transient (retryable) errors:
+               * - 408 Request Timeout
+               * - 429 Too Many Requests
+               * - 502, 503, 504 Server Errors (sometimes recoverable)
+               */
+              const shouldRetry = [408, 429, 502, 503, 504].includes(
+                res.status
+              );
+
+              if (shouldRetry) {
+                const errorMsg = `Failed to load script (HTTP ${
+                  res.status
+                }), retrying in ${currentDelay / 1000 || 1} seconds...`;
+
+                console.warn(errorMsg);
+                throw new Error(errorMsg);
               }
 
-              // if the request fails, retry it
-              const errorMsg = `Failed to load script (HTTP ${
-                res.status
-              }), retrying in ${currentDelay / 1000 || 1} seconds...`;
-
-              console.warn(errorMsg);
-              throw new Error(errorMsg);
+              return res;
             },
             20,
             1000,
