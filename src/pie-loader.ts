@@ -422,7 +422,7 @@ export class PieLoader extends NewRelicEnabledClient {
           }
         } catch (error) {
           console.error(
-            "Network error occurred while trying to load script:",
+            "Something went wrong while trying to load script:",
             error
           );
 
