@@ -369,12 +369,22 @@ export class PieLoader extends NewRelicEnabledClient {
             async (currentDelay: number) => {
               const res = await fetch(scriptUrl);
 
-              // if the request fails with 503, retry it
-              if (res.status === 503) {
-                const errorMsg = `Service unavailable (503), retrying in ${currentDelay /
-                  1000 || 1} seconds...`;
-                console.warn(errorMsg);
+              /**
+               * Transient (retryable) errors:
+               * - 408 Request Timeout
+               * - 429 Too Many Requests
+               * - 502, 503, 504 Server Errors (sometimes recoverable)
+               */
+              const shouldRetry = [408, 429, 502, 503, 504].includes(
+                res.status
+              );
 
+              if (shouldRetry) {
+                const errorMsg = `Failed to load script (HTTP ${
+                  res.status
+                }), retrying in ${currentDelay / 1000 || 1} seconds...`;
+
+                console.warn(errorMsg);
                 throw new Error(errorMsg);
               }
 
@@ -412,7 +422,7 @@ export class PieLoader extends NewRelicEnabledClient {
           }
         } catch (error) {
           console.error(
-            "Network error occurred while trying to load script:",
+            "Something went wrong while trying to load script:",
             error
           );
 
