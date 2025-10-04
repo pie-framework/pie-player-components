@@ -55,6 +55,10 @@ export namespace Components {
     */
     'bundleEndpoints'?: BundleEndpoints;
     /**
+    * Specifies the bundle format to use for loading PIE elements. - 'auto': Automatically detects browser support and uses ESM if available, falls back to IIFE (default, recommended) - 'esm': Force ESM loading (will fall back to IIFE if not supported) - 'iife': Force IIFE loading (all browsers)  In 'auto' mode, modern browsers (Chrome 89+, Firefox 108+, Safari 16.4+) will use ESM for better performance. Older browsers will automatically use IIFE. No configuration needed!
+    */
+    'bundleFormat'?: 'auto' | 'esm' | 'iife';
+    /**
     * Optionally specifies the back-end that builds and hosts javascript bundles for rendering assessment items. This property lets you choose which environment to use, from 'dev' , 'stage' or 'prod' environments. Until 1.0 will default to 'stage'. Starting v2.0.3, it will temporarily redirect to production only
     */
     'bundleHost'?: string;
@@ -80,6 +84,18 @@ export namespace Components {
     * Allows disabling of the default behaviour which is to look up and load the JS bundle that define the Custom Elements used by the item config. This if for advanced use cases when using the pie-player in a container that is managing loading of Custom Elements and Controllers.
     */
     'disableBundler': boolean;
+    /**
+    * Base URL for the ESM CDN when bundleFormat is 'esm'. Defaults to 'https://esm.sh' (public CDN).  Common options: - 'https://esm.sh' - Public CDN (default, open source) - 'https://proxy.pie-api.com/npm' - Private proxy with CloudFront caching - 'https://cdn.jsdelivr.net/npm' - Alternative public CDN  Only used when bundleFormat='esm'. Ignored for IIFE bundles.
+    */
+    'esmCdnUrl'?: string;
+    /**
+    * Cache TTL in milliseconds for package availability probe results. Default: 3600000ms (1 hour)  Use cases: - Production: Keep at 1 hour (package versions are immutable) - Development: Lower to 60000ms (1 minute) for testing - Long sessions: Increase to 86400000ms (24 hours) for stability  Only used when bundleFormat='auto' or 'esm'. Ignored for IIFE.
+    */
+    'esmProbeCacheTtl'?: number;
+    /**
+    * Timeout in milliseconds for probing package availability on the CDN. Default: 1000ms (1 second)  Use cases: - Fast networks: Lower to 500ms for quicker fallback - Slow networks: Increase to 2000ms to avoid premature timeouts - Development: Lower to 500ms for faster iteration  Only used when bundleFormat='auto' or 'esm'. Ignored for IIFE.
+    */
+    'esmProbeTimeout'?: number;
     /**
     * external providers can set this if they need to upload the assets to the cloud etc. by default we use data urls
     */
@@ -118,6 +134,10 @@ export namespace Components {
     */
     'bundleEndpoints'?: BundleEndpoints;
     /**
+    * Specifies the bundle format to use for loading PIE elements. - 'auto': Automatically detects browser support and uses ESM if available, falls back to IIFE (default, recommended) - 'esm': Force ESM loading (will fall back to IIFE if not supported) - 'iife': Force IIFE loading (all browsers)  In 'auto' mode, modern browsers (Chrome 89+, Firefox 108+, Safari 16.4+) will use ESM for better performance. Older browsers will automatically use IIFE. No configuration needed!
+    */
+    'bundleFormat'?: 'auto' | 'esm' | 'iife';
+    /**
     * Optionally specifies the back-end that builds and hosts javascript bundles for rendering assessment items. This property lets you choose which environment to use, from 'dev' , 'stage' or 'prod' environments. Until 1.0 will default to 'stage'. Starting v2.0.3, it will temporarily redirect to production only
     */
     'bundleHost'?: string;
@@ -141,6 +161,18 @@ export namespace Components {
     * Describes runtime environment for the player.
     */
     'env': Env;
+    /**
+    * Base URL for the ESM CDN when bundleFormat is 'esm'. Defaults to 'https://esm.sh' (public CDN).  Common options: - 'https://esm.sh' - Public CDN (default, open source) - 'https://proxy.pie-api.com/npm' - Private proxy with CloudFront caching - 'https://cdn.jsdelivr.net/npm' - Alternative public CDN  Only used when bundleFormat='esm'. Ignored for IIFE bundles.
+    */
+    'esmCdnUrl'?: string;
+    /**
+    * Cache TTL in milliseconds for package availability probe results. Default: 3600000ms (1 hour)  Use cases: - Production: Keep at 1 hour (package versions are immutable) - Development: Lower to 60000ms (1 minute) for testing - Long sessions: Increase to 86400000ms (24 hours) for stability  Only used when bundleFormat='auto' or 'esm'. Ignored for IIFE.
+    */
+    'esmProbeCacheTtl'?: number;
+    /**
+    * Timeout in milliseconds for probing package availability on the CDN. Default: 1000ms (1 second)  Use cases: - Fast networks: Lower to 500ms for quicker fallback - Slow networks: Increase to 2000ms to avoid premature timeouts - Development: Lower to 500ms for faster iteration  Only used when bundleFormat='auto' or 'esm'. Ignored for IIFE.
+    */
+    'esmProbeTimeout'?: number;
     /**
     * Support styling with external stylesheet urls (comma separated urls) Target the pie-player component using the class provided in the class property Parse the css file and add the class to the stylesheet to scope the styles The last stylesheet url takes priority if the selectors have the same specificity. If no class is provided, a random class will be generated to scope the styles. We did not use the shadow DOM for the pie-player component, so we need to scope the styles manually.
     * @example <pie-player external-style-urls="https://example.com/style.css,https://example.com/another-style.css"             custom-classname="my-custom-class"></pie-player> This will load the styles from the provided URLs and scope them to the pie-player component using the pie-player.my-custom-class selector. If no custom class name is provided, a random class will be generated, such as `pie-player-abc12345`.
@@ -267,6 +299,10 @@ declare namespace LocalJSX {
     */
     'bundleEndpoints'?: BundleEndpoints;
     /**
+    * Specifies the bundle format to use for loading PIE elements. - 'auto': Automatically detects browser support and uses ESM if available, falls back to IIFE (default, recommended) - 'esm': Force ESM loading (will fall back to IIFE if not supported) - 'iife': Force IIFE loading (all browsers)  In 'auto' mode, modern browsers (Chrome 89+, Firefox 108+, Safari 16.4+) will use ESM for better performance. Older browsers will automatically use IIFE. No configuration needed!
+    */
+    'bundleFormat'?: 'auto' | 'esm' | 'iife';
+    /**
     * Optionally specifies the back-end that builds and hosts javascript bundles for rendering assessment items. This property lets you choose which environment to use, from 'dev' , 'stage' or 'prod' environments. Until 1.0 will default to 'stage'. Starting v2.0.3, it will temporarily redirect to production only
     */
     'bundleHost'?: string;
@@ -292,6 +328,18 @@ declare namespace LocalJSX {
     * Allows disabling of the default behaviour which is to look up and load the JS bundle that define the Custom Elements used by the item config. This if for advanced use cases when using the pie-player in a container that is managing loading of Custom Elements and Controllers.
     */
     'disableBundler'?: boolean;
+    /**
+    * Base URL for the ESM CDN when bundleFormat is 'esm'. Defaults to 'https://esm.sh' (public CDN).  Common options: - 'https://esm.sh' - Public CDN (default, open source) - 'https://proxy.pie-api.com/npm' - Private proxy with CloudFront caching - 'https://cdn.jsdelivr.net/npm' - Alternative public CDN  Only used when bundleFormat='esm'. Ignored for IIFE bundles.
+    */
+    'esmCdnUrl'?: string;
+    /**
+    * Cache TTL in milliseconds for package availability probe results. Default: 3600000ms (1 hour)  Use cases: - Production: Keep at 1 hour (package versions are immutable) - Development: Lower to 60000ms (1 minute) for testing - Long sessions: Increase to 86400000ms (24 hours) for stability  Only used when bundleFormat='auto' or 'esm'. Ignored for IIFE.
+    */
+    'esmProbeCacheTtl'?: number;
+    /**
+    * Timeout in milliseconds for probing package availability on the CDN. Default: 1000ms (1 second)  Use cases: - Fast networks: Lower to 500ms for quicker fallback - Slow networks: Increase to 2000ms to avoid premature timeouts - Development: Lower to 500ms for faster iteration  Only used when bundleFormat='auto' or 'esm'. Ignored for IIFE.
+    */
+    'esmProbeTimeout'?: number;
     /**
     * external providers can set this if they need to upload the assets to the cloud etc. by default we use data urls
     */
@@ -337,6 +385,10 @@ declare namespace LocalJSX {
     */
     'bundleEndpoints'?: BundleEndpoints;
     /**
+    * Specifies the bundle format to use for loading PIE elements. - 'auto': Automatically detects browser support and uses ESM if available, falls back to IIFE (default, recommended) - 'esm': Force ESM loading (will fall back to IIFE if not supported) - 'iife': Force IIFE loading (all browsers)  In 'auto' mode, modern browsers (Chrome 89+, Firefox 108+, Safari 16.4+) will use ESM for better performance. Older browsers will automatically use IIFE. No configuration needed!
+    */
+    'bundleFormat'?: 'auto' | 'esm' | 'iife';
+    /**
     * Optionally specifies the back-end that builds and hosts javascript bundles for rendering assessment items. This property lets you choose which environment to use, from 'dev' , 'stage' or 'prod' environments. Until 1.0 will default to 'stage'. Starting v2.0.3, it will temporarily redirect to production only
     */
     'bundleHost'?: string;
@@ -360,6 +412,18 @@ declare namespace LocalJSX {
     * Describes runtime environment for the player.
     */
     'env'?: Env;
+    /**
+    * Base URL for the ESM CDN when bundleFormat is 'esm'. Defaults to 'https://esm.sh' (public CDN).  Common options: - 'https://esm.sh' - Public CDN (default, open source) - 'https://proxy.pie-api.com/npm' - Private proxy with CloudFront caching - 'https://cdn.jsdelivr.net/npm' - Alternative public CDN  Only used when bundleFormat='esm'. Ignored for IIFE bundles.
+    */
+    'esmCdnUrl'?: string;
+    /**
+    * Cache TTL in milliseconds for package availability probe results. Default: 3600000ms (1 hour)  Use cases: - Production: Keep at 1 hour (package versions are immutable) - Development: Lower to 60000ms (1 minute) for testing - Long sessions: Increase to 86400000ms (24 hours) for stability  Only used when bundleFormat='auto' or 'esm'. Ignored for IIFE.
+    */
+    'esmProbeCacheTtl'?: number;
+    /**
+    * Timeout in milliseconds for probing package availability on the CDN. Default: 1000ms (1 second)  Use cases: - Fast networks: Lower to 500ms for quicker fallback - Slow networks: Increase to 2000ms to avoid premature timeouts - Development: Lower to 500ms for faster iteration  Only used when bundleFormat='auto' or 'esm'. Ignored for IIFE.
+    */
+    'esmProbeTimeout'?: number;
     /**
     * Support styling with external stylesheet urls (comma separated urls) Target the pie-player component using the class provided in the class property Parse the css file and add the class to the stylesheet to scope the styles The last stylesheet url takes priority if the selectors have the same specificity. If no class is provided, a random class will be generated to scope the styles. We did not use the shadow DOM for the pie-player component, so we need to scope the styles manually.
     * @example <pie-player external-style-urls="https://example.com/style.css,https://example.com/another-style.css"             custom-classname="my-custom-class"></pie-player> This will load the styles from the provided URLs and scope them to the pie-player component using the pie-player.my-custom-class selector. If no custom class name is provided, a random class will be generated, such as `pie-player-abc12345`.

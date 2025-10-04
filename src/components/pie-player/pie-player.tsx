@@ -28,6 +28,7 @@ import {
   BundleEndpoints,
   LoaderConfig
 } from "../../pie-loader";
+import { EsmPieLoader } from "../../loaders/EsmPieLoader";
 import { addRubric } from "../../rubric-utils";
 import { normalizeContentElements } from "../../utils/utils";
 import { VERSION } from "../../version";
@@ -69,6 +70,56 @@ export class Player {
    * This if for advanced use cases when using the pie-player in a container that is managing loading of Custom Elements and Controllers.
    */
   @Prop() disableBundler: boolean = false;
+
+  /**
+   * Specifies the bundle format to use for loading PIE elements.
+   * - 'auto': Automatically detects browser support and uses ESM if available, falls back to IIFE (default, recommended)
+   * - 'esm': Force ESM loading (will fall back to IIFE if not supported)
+   * - 'iife': Force IIFE loading (all browsers)
+   * 
+   * In 'auto' mode, modern browsers (Chrome 89+, Firefox 108+, Safari 16.4+) will use ESM for better performance.
+   * Older browsers will automatically use IIFE. No configuration needed!
+   */
+  @Prop() bundleFormat?: 'auto' | 'esm' | 'iife' = 'auto';
+
+  /**
+   * Base URL for the ESM CDN when bundleFormat is 'esm'.
+   * Defaults to 'https://esm.sh' (public CDN).
+   * 
+   * Common options:
+   * - 'https://esm.sh' - Public CDN (default, open source)
+   * - 'https://proxy.pie-api.com/npm' - Private proxy with CloudFront caching
+   * - 'https://cdn.jsdelivr.net/npm' - Alternative public CDN
+   * 
+   * Only used when bundleFormat='esm'. Ignored for IIFE bundles.
+   */
+  @Prop() esmCdnUrl?: string = 'https://esm.sh';
+
+  /**
+   * Timeout in milliseconds for probing package availability on the CDN.
+   * Default: 1000ms (1 second)
+   * 
+   * Use cases:
+   * - Fast networks: Lower to 500ms for quicker fallback
+   * - Slow networks: Increase to 2000ms to avoid premature timeouts
+   * - Development: Lower to 500ms for faster iteration
+   * 
+   * Only used when bundleFormat='auto' or 'esm'. Ignored for IIFE.
+   */
+  @Prop() esmProbeTimeout?: number = 1000;
+
+  /**
+   * Cache TTL in milliseconds for package availability probe results.
+   * Default: 3600000ms (1 hour)
+   * 
+   * Use cases:
+   * - Production: Keep at 1 hour (package versions are immutable)
+   * - Development: Lower to 60000ms (1 minute) for testing
+   * - Long sessions: Increase to 86400000ms (24 hours) for stability
+   * 
+   * Only used when bundleFormat='auto' or 'esm'. Ignored for IIFE.
+   */
+  @Prop() esmProbeCacheTtl?: number = 60 * 60 * 1000;
 
   @Element() el: HTMLElement;
 
@@ -207,7 +258,7 @@ export class Player {
    */
   @Prop() customClassname: string = "";
 
-  pieLoader = new PieLoader(null, this.loaderConfig);
+  pieLoader = new PieLoader(null, undefined);
   private loadingStyles = new Set<string>();
 
   player() {
@@ -261,6 +312,39 @@ export class Player {
           forceBundleUrl = true;
         }
 
+        // Try ESM (auto-detect or explicit)
+        if (this.bundleFormat === 'auto' || this.bundleFormat === 'esm') {
+          try {
+            const esmLoader = new EsmPieLoader({
+              cdnBaseUrl: this.esmCdnUrl,
+              probeTimeout: this.esmProbeTimeout,
+              probeCacheTtl: this.esmProbeCacheTtl
+            });
+            
+            const modeLabel = this.bundleFormat === 'auto' ? 'Auto-detect mode' : 'Explicit ESM mode';
+            console.log(`[pie-player] ${modeLabel}: attempting ESM load from`, this.esmCdnUrl);
+            
+            // Loader handles all decision logic (browser check, probe, etc.)
+            await esmLoader.loadWithFormat(this.pieContentModel, this.doc, this.bundleFormat);
+            
+            // Success!
+            this.elementsLoaded = true;
+            console.log('[pie-player] ✅ ESM loading complete');
+            return; // Don't try IIFE
+          } catch (error) {
+            const errorMessage = (error as any).message || '';
+            if (errorMessage.includes('ESM_NOT_SUPPORTED')) {
+              console.info('[pie-player] ESM not available, falling back to IIFE');
+              console.info('[pie-player] Reason:', errorMessage);
+              // Fall through to IIFE loading below
+            } else {
+              // Re-throw other errors (actual loading failures)
+              throw error;
+            }
+          }
+        }
+        
+        // IIFE loading (fallback or explicitly requested)
         await this.pieLoader.loadCloudPies({
           content: this.pieContentModel,
           doc: this.doc,

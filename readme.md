@@ -21,7 +21,7 @@ For authoring content.
 
 `yarn install`
 
-`yarn run test`
+`yarn run test` - runs Stencil unit and E2E tests
 
 `yarn run demo` - starts stencil in dev mode and launches a http server to serve files in `src/demo` folder
 
