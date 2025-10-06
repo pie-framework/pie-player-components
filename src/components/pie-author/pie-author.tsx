@@ -33,10 +33,10 @@ import {
 import {
   BundleEndpoints,
   DEFAULT_ENDPOINTS,
-  PieLoader,
+  IifePieLoader,
   LoaderConfig
-} from "../../pie-loader";
-import { EsmPieLoader } from "../../loaders/EsmPieLoader";
+} from "../../loaders/IifePieLoader";
+import { EsmPieLoader, EsmBundleType } from "../../loaders/EsmPieLoader";
 import {
   addComplexRubric,
   addModelToContent,
@@ -201,7 +201,7 @@ export class Author {
 
   pieContentModel: PieContent;
 
-  pieLoader = new PieLoader(null, this.loaderConfig);
+  pieLoader = new IifePieLoader(null, this.loaderConfig);
 
   renderMarkup: String;
 
@@ -866,17 +866,22 @@ export class Author {
       // Try ESM (auto-detect or explicit)
       if (this.bundleFormat === 'auto' || this.bundleFormat === 'esm') {
         try {
+          // Authoring mode always needs editor bundle (elements + controllers + configure)
           const esmLoader = new EsmPieLoader({
             cdnBaseUrl: this.esmCdnUrl,
             probeTimeout: this.esmProbeTimeout,
-            probeCacheTtl: this.esmProbeCacheTtl
+            probeCacheTtl: this.esmProbeCacheTtl,
+            bundleType: EsmBundleType.editor
           });
           
           const modeLabel = this.bundleFormat === 'auto' ? 'Auto-detect mode' : 'Explicit ESM mode';
-          console.log(`[pie-author] ${modeLabel}: attempting ESM load from`, this.esmCdnUrl);
+          console.log(`[pie-author] ${modeLabel}: attempting ESM load (editor) from`, this.esmCdnUrl);
           
           // Loader handles all decision logic (browser check, probe, etc.)
           await esmLoader.loadWithFormat(this.pieContentModel, this.doc, this.bundleFormat);
+          
+          // Store loader reference to access controllers (for validation, scoring, etc.)
+          this.pieLoader = esmLoader as any;
           
           // Success!
           this.elementsLoaded = true;

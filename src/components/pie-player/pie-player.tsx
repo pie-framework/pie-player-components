@@ -22,13 +22,13 @@ import {
   PieModel
 } from "../../interface";
 import {
-  PieLoader,
+  IifePieLoader,
   BundleType,
   DEFAULT_ENDPOINTS,
   BundleEndpoints,
   LoaderConfig
-} from "../../pie-loader";
-import { EsmPieLoader } from "../../loaders/EsmPieLoader";
+} from "../../loaders/IifePieLoader";
+import { EsmPieLoader, EsmBundleType } from "../../loaders/EsmPieLoader";
 import { addRubric } from "../../rubric-utils";
 import { normalizeContentElements } from "../../utils/utils";
 import { VERSION } from "../../version";
@@ -258,7 +258,7 @@ export class Player {
    */
   @Prop() customClassname: string = "";
 
-  pieLoader = new PieLoader(null, undefined);
+  pieLoader = new IifePieLoader(null, undefined);
   private loadingStyles = new Set<string>();
 
   player() {
@@ -315,17 +315,27 @@ export class Player {
         // Try ESM (auto-detect or explicit)
         if (this.bundleFormat === 'auto' || this.bundleFormat === 'esm') {
           try {
+            // Determine bundle type based on hosted mode
+            const esmBundleType = this.hosted 
+              ? EsmBundleType.player          // Hosted: elements only (controllers on server)
+              : EsmBundleType.clientPlayer;   // Non-hosted: elements + controllers
+
             const esmLoader = new EsmPieLoader({
               cdnBaseUrl: this.esmCdnUrl,
               probeTimeout: this.esmProbeTimeout,
-              probeCacheTtl: this.esmProbeCacheTtl
+              probeCacheTtl: this.esmProbeCacheTtl,
+              bundleType: esmBundleType
             });
             
             const modeLabel = this.bundleFormat === 'auto' ? 'Auto-detect mode' : 'Explicit ESM mode';
-            console.log(`[pie-player] ${modeLabel}: attempting ESM load from`, this.esmCdnUrl);
+            const bundleLabel = this.hosted ? 'player' : 'clientPlayer';
+            console.log(`[pie-player] ${modeLabel}: attempting ESM load (${bundleLabel}) from`, this.esmCdnUrl);
             
             // Loader handles all decision logic (browser check, probe, etc.)
             await esmLoader.loadWithFormat(this.pieContentModel, this.doc, this.bundleFormat);
+            
+            // Store loader reference to access controllers (for non-hosted mode)
+            this.pieLoader = esmLoader as any;
             
             // Success!
             this.elementsLoaded = true;

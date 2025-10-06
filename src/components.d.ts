@@ -10,7 +10,7 @@ import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
 import {
   BundleEndpoints,
   LoaderConfig,
-} from './pie-loader';
+} from './loaders/IifePieLoader';
 import {
   Env,
   ItemConfig,
