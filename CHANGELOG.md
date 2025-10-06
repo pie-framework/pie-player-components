@@ -1,3 +1,16 @@
+# [3.13.0](https://github.com/pie-framework/pie-player-components/compare/v3.12.2...v3.13.0) (2025-10-06)
+
+
+### Bug Fixes
+
+* check for retryabe errors ([eeb60d0](https://github.com/pie-framework/pie-player-components/commit/eeb60d0977d788a99da3644d4caabdd73c0be414))
+* retry network errors ([162f647](https://github.com/pie-framework/pie-player-components/commit/162f64742393700e797b7bbb4cf9ef3166c9df84))
+
+
+### Features
+
+* retry bundle fetching for any error PD-5073 ([fa0fcc9](https://github.com/pie-framework/pie-player-components/commit/fa0fcc96b99870bac446236722c98e6009fa00d4))
+
 ## [3.12.2](https://github.com/pie-framework/pie-player-components/compare/v3.12.1...v3.12.2) (2025-09-30)
 
 
