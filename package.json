@@ -7,6 +7,19 @@
   "unpkg": "dist/index.js",
   "types": "dist/types/components.d.ts",
   "collection": "dist/collection/collection-manifest.json",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js",
+      "types": "./dist/types/components.d.ts"
+    },
+    "./dist/pie-player-components/pie-player-components.esm.js": "./dist/pie-player-components/pie-player-components.esm.js",
+    "./loader": {
+      "import": "./dist/loader/index.mjs",
+      "require": "./dist/loader/index.cjs.js",
+      "types": "./dist/loader/index.d.ts"
+    }
+  },
   "publishConfig": {
     "access": "public"
   },
