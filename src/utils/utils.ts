@@ -200,6 +200,20 @@ export const pieShortIdGenerator = () => {
 };
 
 /**
+ * Check if an error is a network error
+ */
+export const isNetworkError = (error: Error): boolean => {
+  return (
+    error.name === "AbortError" ||
+    error instanceof TypeError ||
+    error.message.includes("NetworkError") ||
+    error.message.includes("Failed to fetch") ||
+    error.message.includes("Network request failed") ||
+    !(typeof navigator !== "undefined" && navigator.onLine)
+  );
+};
+
+/**
  * Wait for the given milliseconds.
  * @param ms
  */
@@ -239,12 +253,26 @@ export const withRetry = <E>(
 
       return await fn(currentDelay, retries);
     } catch (err) {
-      // retry if the limit isn't reached, otherwise throw the error
+      const typedError = err instanceof Error ? err : new Error(String(err));
+      const shouldRetry =
+        isNetworkError(typedError) ||
+        typedError.message.includes("retrying in"); // this means you want to specifically retry an error
+
+      // retry if the limit isn't reached and the error is retryable, otherwise throw the error
       if (retries < maxRetries) {
-        return retryWithBackoff(retries + 1);
+        if (shouldRetry) {
+          return retryWithBackoff(retries + 1);
+        }
+
+        console.info(
+          `[retryWithBackoff] Error is not retryable. Stop retrying after ${retries} attempts.`
+        );
+        throw typedError;
       } else {
-        console.info("[retryWithBackoff] Max retries reached.");
-        throw err;
+        console.info(
+          `[retryWithBackoff] Max retries reached after ${retries} attempts.`
+        );
+        throw typedError;
       }
     }
   };
