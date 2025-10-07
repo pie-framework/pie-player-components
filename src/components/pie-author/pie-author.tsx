@@ -36,7 +36,7 @@ import {
   IifePieLoader,
   LoaderConfig
 } from "../../loaders/IifePieLoader";
-import { EsmPieLoader, EsmBundleType } from "../../loaders/EsmPieLoader";
+import { EsmPieLoader, EsmBundleType, EsmLoadingError } from "../../loaders/EsmPieLoader";
 import {
   addComplexRubric,
   addModelToContent,
@@ -159,6 +159,11 @@ export class Author {
   @State() elementsLoaded: boolean = false;
 
   /**
+   * Tracks loading errors to display instead of hanging spinner
+   */
+  @State() loadError: string = null;
+
+  /**
    * The Pie config model.
    */
   @Prop() config: ItemConfig;
@@ -201,7 +206,7 @@ export class Author {
 
   pieContentModel: PieContent;
 
-  pieLoader = new IifePieLoader(null, this.loaderConfig);
+  pieLoader = new IifePieLoader(null, undefined);
 
   renderMarkup: String;
 
@@ -442,6 +447,7 @@ export class Author {
       try {
         this.elementsLoaded = false;
         this._modelLoadedState = false;
+        this.loadError = null; // Clear any previous error
 
         const pieContentModel = pieContentFromConfig(newValue);
 
@@ -871,7 +877,8 @@ export class Author {
             cdnBaseUrl: this.esmCdnUrl,
             probeTimeout: this.esmProbeTimeout,
             probeCacheTtl: this.esmProbeCacheTtl,
-            bundleType: EsmBundleType.editor
+            bundleType: EsmBundleType.editor,
+            loaderConfig: this.loaderConfig  // Pass loaderConfig for New Relic tracking
           });
           
           const modeLabel = this.bundleFormat === 'auto' ? 'Auto-detect mode' : 'Explicit ESM mode';
@@ -884,31 +891,91 @@ export class Author {
           this.pieLoader = esmLoader as any;
           
           // Success!
+          this.loadError = null; // Clear any previous errors
           this.elementsLoaded = true;
           console.log('[pie-author] ✅ ESM loading complete');
           return; // Don't try IIFE
         } catch (error) {
           const errorMessage = (error as any).message || '';
+          
+          // Check for fallback scenarios (auto-detect only)
           if (errorMessage.includes('ESM_NOT_SUPPORTED')) {
             console.info('[pie-author] ESM not available, falling back to IIFE');
             console.info('[pie-author] Reason:', errorMessage);
             // Fall through to IIFE loading below
-          } else {
-            // Re-throw other errors (actual loading failures)
+          }
+          // Handle structured ESM loading errors
+          else if (error instanceof EsmLoadingError) {
+            const itemIds = (this.pieContentModel && this.pieContentModel.models) 
+              ? this.pieContentModel.models.map(m => m.id) 
+              : [];
+            const packageNames = error.packageVersions.map(pv => pv.split('@')[1]).join(', ');
+            
+            // User-friendly error message
+            let userMessage = '';
+            if (this.bundleFormat === 'esm') {
+              // Explicit ESM mode - no fallback available
+              userMessage = `Unable to load ESM bundle. ${error.reason}. Packages: ${packageNames}`;
+            } else {
+              // Auto mode with fallback
+              if (error.fallbackAvailable) {
+                console.warn(`[pie-author] ESM loading failed, falling back to IIFE. Reason: ${error.reason}`);
+                // Fall through to IIFE loading below
+              } else {
+                userMessage = `Unable to load content. ${error.reason}`;
+              }
+            }
+            
+            // Emit error if no fallback or explicit ESM mode
+            if (userMessage) {
+              console.error('[pie-author] ESM loading failed:', userMessage);
+              this.loadError = userMessage;
+              this.elementsLoaded = true; // Hide spinner to show error
+              
+              // Track error with New Relic if enabled
+              if (this.loaderConfig && this.loaderConfig.trackPageActions && (window as any).newrelic) {
+                (window as any).newrelic.noticeError(error, {
+                  itemIds: itemIds.join(','),
+                  packages: error.packageVersions.join(','),
+                  reason: error.reason,
+                  bundleFormat: this.bundleFormat,
+                  cdnBaseUrl: this.esmCdnUrl
+                });
+              }
+              return; // Don't proceed with IIFE if explicit ESM mode
+            }
+          }
+          // Other unexpected errors
+          else {
             throw error;
           }
         }
       }
       
       // IIFE loading (fallback or explicitly requested)
-      await this.pieLoader.loadCloudPies({
-        content: this.pieContentModel,
-        doc: this.doc,
-        endpoints,
-        useCdn: false,
-        forceBundleUrl,
-        reFetchBundle: this.reFetchBundle
-      });
+      try {
+        // Always create fresh IIFE loader to ensure correct type and config
+        const iifeLoader = new IifePieLoader(endpoints, this.loaderConfig);
+        await iifeLoader.loadCloudPies({
+          content: this.pieContentModel,
+          doc: this.doc,
+          endpoints,
+          useCdn: false,
+          forceBundleUrl,
+          reFetchBundle: this.reFetchBundle
+        });
+        
+        // Store reference for controller access
+        this.pieLoader = iifeLoader;
+        
+        // Note: elementsLoaded will be set to true by afterRender() when elements are ready
+        // This is the existing IIFE flow - don't set it here to avoid breaking that logic
+      } catch (err) {
+        const errorMsg = `problem loading authoring elements (${err})`;
+        console.error('[pie-author]', errorMsg);
+        this.loadError = errorMsg;
+        this.elementsLoaded = true; // Hide spinner to show error
+      }
     }
   }
 
@@ -936,6 +1003,7 @@ export class Author {
         loadedInfo.val &&
         !!loadedInfo.elements.find(el => this.pieContentModel.elements[el.name])
       ) {
+        this.loadError = null; // Clear any previous errors
         this.elementsLoaded = true;
 
         this.renderMath();
@@ -1033,6 +1101,24 @@ export class Author {
   }
 
   render() {
+    // Show error message if loading failed
+    if (this.loadError) {
+      return (
+        <div class="pie-author-error" style={{
+          padding: '20px',
+          margin: '20px',
+          border: '2px solid #d32f2f',
+          borderRadius: '4px',
+          backgroundColor: '#ffebee',
+          color: '#c62828',
+          fontFamily: 'sans-serif'
+        }}>
+          <h3 style={{ margin: '0 0 10px 0' }}>⚠️ Loading Error</h3>
+          <p style={{ margin: '0' }}>{this.loadError}</p>
+        </div>
+      );
+    }
+
     if (this.pieContentModel && this.pieContentModel.markup) {
       const markup = this.getRenderMarkup();
       if (this.addPreview) {

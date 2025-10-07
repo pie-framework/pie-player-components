@@ -21,6 +21,32 @@ export enum EsmBundleType {
 }
 
 /**
+ * Custom error class for ESM loading failures
+ * Provides structured context for better error handling and tracking
+ */
+export class EsmLoadingError extends Error {
+  public readonly packageVersions: string[];
+  public readonly reason: string;
+  public readonly itemIds: string[];
+  public readonly fallbackAvailable: boolean;
+
+  constructor(
+    message: string,
+    reason: string,
+    packageVersions: string[] = [],
+    itemIds: string[] = [],
+    fallbackAvailable: boolean = true
+  ) {
+    super(message);
+    this.name = 'EsmLoadingError';
+    this.reason = reason;
+    this.packageVersions = packageVersions;
+    this.itemIds = itemIds;
+    this.fallbackAvailable = fallbackAvailable;
+  }
+}
+
+/**
  * Registry entry for tracking loaded PIE components
  */
 export interface EsmRegistryEntry {
@@ -96,7 +122,9 @@ async function checkNpmEsmSupport(
     // Check if exports field has conditional imports with "import" condition
     // ESM packages have: exports: { ".": { "import": "./esm/...", "require": "./lib/..." } }
     // Old packages have: exports: { ".": "./src/index.js" } (just a string)
-    const exportsField = packageJson.exports?.['.'];
+    const exportsField = packageJson.exports && packageJson.exports['.'] 
+      ? packageJson.exports['.'] 
+      : undefined;
     const hasEsm = typeof exportsField === 'object' && 
                    exportsField !== null &&
                    typeof exportsField.import === 'string';
@@ -492,6 +520,7 @@ export class EsmPieLoader extends NewRelicEnabledClient {
     }
 
     // First, validate that all packages have proper ESM exports by checking npm registry
+    // This prevents wasting time trying to load packages that don't have ESM builds
     console.log(`[EsmPieLoader] Checking ${packageVersions.length} package(s) for ESM support via npm registry...`);
     
     try {

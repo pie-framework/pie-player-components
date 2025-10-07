@@ -28,7 +28,7 @@ import {
   BundleEndpoints,
   LoaderConfig
 } from "../../loaders/IifePieLoader";
-import { EsmPieLoader, EsmBundleType } from "../../loaders/EsmPieLoader";
+import { EsmPieLoader, EsmBundleType, EsmLoadingError } from "../../loaders/EsmPieLoader";
 import { addRubric } from "../../rubric-utils";
 import { normalizeContentElements } from "../../utils/utils";
 import { VERSION } from "../../version";
@@ -235,6 +235,11 @@ export class Player {
   @State() stimulusItemModel: AdvancedItemConfig;
 
   /**
+   * Tracks loading errors to display instead of hanging spinner
+   */
+  @State() loadError: string = null;
+
+  /**
    * Support styling with external stylesheet urls (comma separated urls)
    * Target the pie-player component using the class provided in the class property
    * Parse the css file and add the class to the stylesheet to scope the styles
@@ -268,9 +273,12 @@ export class Player {
   @Watch("config")
   async watchConfig(newConfig) {
     this.elementsLoaded = false;
+    this.loadError = null; // Clear any previous error
 
     try {
       if (!newConfig) {
+        // Empty config - nothing to load
+        this.elementsLoaded = true;
         return;
       }
       try {
@@ -284,13 +292,17 @@ export class Player {
           this.pieContentModel = addRubric(newConfig);
           this.pieContentModel = normalizeContentElements(this.pieContentModel);
         } else {
-          this.playerError.emit(`invalid pie data model`);
+          const errorMsg = 'invalid pie data model';
+          this.loadError = errorMsg;
+          this.elementsLoaded = true;
+          this.playerError.emit(errorMsg);
           return;
         }
       } catch (err) {
-        this.playerError.emit(
-          `exception processing content model - ${err.message}`
-        );
+        const errorMsg = `exception processing content model - ${err.message}`;
+        this.loadError = errorMsg;
+        this.elementsLoaded = true;
+        this.playerError.emit(errorMsg);
         return;
       }
 
@@ -324,7 +336,8 @@ export class Player {
               cdnBaseUrl: this.esmCdnUrl,
               probeTimeout: this.esmProbeTimeout,
               probeCacheTtl: this.esmProbeCacheTtl,
-              bundleType: esmBundleType
+              bundleType: esmBundleType,
+              loaderConfig: this.loaderConfig  // Pass loaderConfig for New Relic tracking
             });
             
             const modeLabel = this.bundleFormat === 'auto' ? 'Auto-detect mode' : 'Explicit ESM mode';
@@ -338,24 +351,72 @@ export class Player {
             this.pieLoader = esmLoader as any;
             
             // Success!
+            this.loadError = null; // Clear any previous errors
             this.elementsLoaded = true;
             console.log('[pie-player] ✅ ESM loading complete');
             return; // Don't try IIFE
           } catch (error) {
             const errorMessage = (error as any).message || '';
+            
+            // Check for fallback scenarios (auto-detect only)
             if (errorMessage.includes('ESM_NOT_SUPPORTED')) {
               console.info('[pie-player] ESM not available, falling back to IIFE');
               console.info('[pie-player] Reason:', errorMessage);
               // Fall through to IIFE loading below
-            } else {
-              // Re-throw other errors (actual loading failures)
+            }
+            // Handle structured ESM loading errors
+            else if (error instanceof EsmLoadingError) {
+              const itemIds = (this.pieContentModel && this.pieContentModel.models) 
+                ? this.pieContentModel.models.map(m => m.id) 
+                : [];
+              const packageNames = error.packageVersions.map(pv => pv.split('@')[1]).join(', ');
+              
+              // User-friendly error message
+              let userMessage = '';
+              if (this.bundleFormat === 'esm') {
+                // Explicit ESM mode - no fallback available
+                userMessage = `Unable to load ESM bundle. ${error.reason}. Packages: ${packageNames}`;
+              } else {
+                // Auto mode with fallback
+                if (error.fallbackAvailable) {
+                  console.warn(`[pie-player] ESM loading failed, falling back to IIFE. Reason: ${error.reason}`);
+                  // Fall through to IIFE loading below
+                } else {
+                  userMessage = `Unable to load content. ${error.reason}`;
+                }
+              }
+              
+              // Emit error if no fallback or explicit ESM mode
+              if (userMessage) {
+                console.error('[pie-player] ESM loading failed:', userMessage);
+                this.loadError = userMessage;
+                this.elementsLoaded = true; // Hide spinner to show error
+                this.playerError.emit(userMessage);
+                
+                // Track error with New Relic if enabled
+                if (this.loaderConfig && this.loaderConfig.trackPageActions && (window as any).newrelic) {
+                  (window as any).newrelic.noticeError(error, {
+                    itemIds: itemIds.join(','),
+                    packages: error.packageVersions.join(','),
+                    reason: error.reason,
+                    bundleFormat: this.bundleFormat,
+                    cdnBaseUrl: this.esmCdnUrl
+                  });
+                }
+                return; // Don't proceed with IIFE if explicit ESM mode
+              }
+            }
+            // Other unexpected errors
+            else {
               throw error;
             }
           }
         }
         
         // IIFE loading (fallback or explicitly requested)
-        await this.pieLoader.loadCloudPies({
+        // Always create fresh IIFE loader to ensure correct type and config
+        const iifeLoader = new IifePieLoader(endpoints, this.loaderConfig);
+        await iifeLoader.loadCloudPies({
           content: this.pieContentModel,
           doc: this.doc,
           endpoints: endpoints,
@@ -364,9 +425,19 @@ export class Player {
           forceBundleUrl,
           reFetchBundle: this.reFetchBundle
         });
+        
+        // Store reference for controller access
+        this.pieLoader = iifeLoader;
+        
+        // Note: elementsLoaded will be set to true by afterRender() when elements are ready
+        // This is the existing IIFE flow - don't set it here to avoid breaking that logic
       }
     } catch (err) {
-      this.playerError.emit(`problem loading item (${err})`);
+      const errorMsg = `problem loading item (${err})`;
+      console.error('[pie-player]', errorMsg);
+      this.loadError = errorMsg;
+      this.elementsLoaded = true; // Hide spinner to show error
+      this.playerError.emit(errorMsg);
     }
   }
 
@@ -701,6 +772,7 @@ export class Player {
             el => this.pieContentModel.elements[el.name]
           )
         ) {
+          this.loadError = null; // Clear any previous errors
           this.elementsLoaded = true;
 
           if (performance.getEntriesByName("pie-load-end").length > 0) {
@@ -860,6 +932,19 @@ export class Player {
           customClassname={this.customClassname}
         />
       )
+    ) : this.loadError ? (
+      <div class="pie-player-error" style={{
+        padding: '20px',
+        margin: '20px',
+        border: '2px solid #d32f2f',
+        borderRadius: '4px',
+        backgroundColor: '#ffebee',
+        color: '#c62828',
+        fontFamily: 'sans-serif'
+      }}>
+        <h3 style={{ margin: '0 0 10px 0' }}>⚠️ Loading Error</h3>
+        <p style={{ margin: '0' }}>{this.loadError}</p>
+      </div>
     ) : this.elementsLoaded ? (
       <div
         class="player-container"
