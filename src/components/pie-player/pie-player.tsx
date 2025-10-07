@@ -364,6 +364,12 @@ export class Player {
               console.info('[pie-player] Reason:', errorMessage);
               // Fall through to IIFE loading below
             }
+            // Runtime import failures in auto mode - treat as ESM not available
+            else if (this.bundleFormat === 'auto' && errorMessage.includes('Failed to import')) {
+              console.info('[pie-player] ESM runtime import failed, falling back to IIFE');
+              console.info('[pie-player] Error:', errorMessage);
+              // Fall through to IIFE loading below
+            }
             // Handle structured ESM loading errors
             else if (error instanceof EsmLoadingError) {
               const itemIds = (this.pieContentModel && this.pieContentModel.models) 

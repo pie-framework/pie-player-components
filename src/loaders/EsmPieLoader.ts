@@ -72,88 +72,6 @@ export interface EsmLoaderOptions {
 // Key: cdnBaseUrl:packageVersions, Value: { available: boolean, timestamp: number }
 const PROBE_CACHE = new Map<string, { available: boolean, timestamp: number }>();
 
-// Cache npm registry ESM checks to avoid repeated queries
-// Key: packageVersion, Value: { hasEsm: boolean, timestamp: number }
-const NPM_ESM_CACHE = new Map<string, { hasEsm: boolean, timestamp: number }>();
-const NPM_ESM_CACHE_TTL = 24 * 60 * 60 * 1000; // 24 hours - package metadata rarely changes
-
-/**
- * Check if a package has proper ESM support by querying npm registry.
- * This is the most accurate method - checks the actual package.json exports field.
- * 
- * @param packageVersion - Full package version string (e.g., "@pie-element/multiple-choice@9.20.2")
- * @param timeout - Request timeout in milliseconds (default: 2000ms)
- * @returns Promise<{hasEsm: boolean, reason?: string}> - Whether package has ESM exports
- */
-async function checkNpmEsmSupport(
-  packageVersion: string,
-  timeout: number = 2000
-): Promise<{ hasEsm: boolean; reason?: string }> {
-  // Check cache first (24 hour TTL - package metadata is stable)
-  const cached = NPM_ESM_CACHE.get(packageVersion);
-  if (cached && (Date.now() - cached.timestamp) < NPM_ESM_CACHE_TTL) {
-    return { hasEsm: cached.hasEsm };
-  }
-
-  try {
-    // Query npm registry for package metadata
-    const registryUrl = `https://registry.npmjs.org/${packageVersion}`;
-    
-    // Create abort controller for timeout
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), timeout);
-
-    const response = await fetch(registryUrl, {
-      signal: controller.signal,
-      cache: 'force-cache' // Leverage browser cache for package metadata
-    });
-
-    clearTimeout(timeoutId);
-
-    if (!response.ok) {
-      const reason = `npm registry returned ${response.status} for ${packageVersion}`;
-      // Cache negative results too
-      NPM_ESM_CACHE.set(packageVersion, { hasEsm: false, timestamp: Date.now() });
-      return { hasEsm: false, reason };
-    }
-
-    const packageJson = await response.json();
-    
-    // Check if exports field has conditional imports with "import" condition
-    // ESM packages have: exports: { ".": { "import": "./esm/...", "require": "./lib/..." } }
-    // Old packages have: exports: { ".": "./src/index.js" } (just a string)
-    const exportsField = packageJson.exports && packageJson.exports['.'] 
-      ? packageJson.exports['.'] 
-      : undefined;
-    const hasEsm = typeof exportsField === 'object' && 
-                   exportsField !== null &&
-                   typeof exportsField.import === 'string';
-
-    // Cache result
-    NPM_ESM_CACHE.set(packageVersion, { hasEsm, timestamp: Date.now() });
-
-    return {
-      hasEsm,
-      reason: hasEsm 
-        ? undefined 
-        : `Package ${packageVersion} does not have ESM exports (exports["."].import missing)`
-    };
-  } catch (error) {
-    if (error.name === 'AbortError') {
-      return { 
-        hasEsm: false, 
-        reason: `Timeout checking npm registry for ${packageVersion}` 
-      };
-    }
-    
-    // On network errors, assume no ESM to be safe
-    return { 
-      hasEsm: false, 
-      reason: `Failed to check npm registry: ${error.message}` 
-    };
-  }
-}
-
 /**
  * Loads PIE elements as native ES modules using import maps and dynamic imports.
  * Requires browser support for import maps (Chrome 89+, Firefox 108+, Safari 16.4+).
@@ -519,50 +437,9 @@ export class EsmPieLoader extends NewRelicEnabledClient {
       return false;
     }
 
-    // First, validate that all packages have proper ESM exports by checking npm registry
-    // This prevents wasting time trying to load packages that don't have ESM builds
-    console.log(`[EsmPieLoader] Checking ${packageVersions.length} package(s) for ESM support via npm registry...`);
-    
-    try {
-      // Check all packages in parallel for speed
-      const esmChecks = await Promise.all(
-        packageVersions.map(pkg => checkNpmEsmSupport(pkg, 2000))
-      );
-
-      // Check if any package lacks ESM support
-      for (let i = 0; i < packageVersions.length; i++) {
-        const packageVersion = packageVersions[i];
-        const esmCheck = esmChecks[i];
-        
-        if (!esmCheck.hasEsm) {
-          console.warn(`[EsmPieLoader] ❌ ${packageVersion}: No ESM support - ${esmCheck.reason}`);
-          
-          // Track no-ESM failures
-          if (this.loaderConfig.trackPageActions && this.newRelic) {
-            this.track("activity", "esm_autodetect_fallback_iife", {
-              reason: "no_esm_exports",
-              packageVersion,
-              message: esmCheck.reason
-            });
-          }
-          
-          // Cache negative result and return early
-          PROBE_CACHE.set(cacheKey, { available: false, timestamp: Date.now() });
-          this.trackOperationComplete("probePackageAvailability", trackingStartTime, true);
-          return false;
-        } else {
-          console.log(`[EsmPieLoader] ${packageVersion}: ✅ Has ESM exports`);
-        }
-      }
-    } catch (error) {
-      console.warn(`[EsmPieLoader] Failed to check npm registry for ESM support:`, error);
-      // On failure, fall back to IIFE to be safe
-      PROBE_CACHE.set(cacheKey, { available: false, timestamp: Date.now() });
-      this.trackOperationComplete("probePackageAvailability", trackingStartTime, false, error.message);
-      return false;
-    }
-
-    console.log(`[EsmPieLoader] All packages have ESM exports ✅`);
+    // Note: We cannot check npm registry from browsers due to CORS restrictions.
+    // Instead, we rely on the CDN probe below - if packages lack ESM builds,
+    // the CDN (esm.sh) will return 404 and we'll fall back to IIFE.
     console.log(`[EsmPieLoader] Probing ${packageVersions.length} package(s) on CDN for availability...`);
 
     try {

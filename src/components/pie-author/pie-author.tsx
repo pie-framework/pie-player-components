@@ -904,6 +904,12 @@ export class Author {
             console.info('[pie-author] Reason:', errorMessage);
             // Fall through to IIFE loading below
           }
+          // Runtime import failures in auto mode - treat as ESM not available
+          else if (this.bundleFormat === 'auto' && errorMessage.includes('Failed to import')) {
+            console.info('[pie-author] ESM runtime import failed, falling back to IIFE');
+            console.info('[pie-author] Error:', errorMessage);
+            // Fall through to IIFE loading below
+          }
           // Handle structured ESM loading errors
           else if (error instanceof EsmLoadingError) {
             const itemIds = (this.pieContentModel && this.pieContentModel.models) 
