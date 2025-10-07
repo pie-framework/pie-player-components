@@ -367,12 +367,9 @@ export class Player {
             
             const loadedInfo = await this.pieLoader.elementsHaveLoaded(elements);
             if (loadedInfo.val && !!loadedInfo.elements.find(el => this.pieContentModel.elements[el.name])) {
-              console.log('[pie-player] Elements are ready, triggering updateModels');
+              console.log('[pie-player] Elements are ready, setting elementsLoaded flag');
+              // Set the flag; the new @Watch("elementsLoaded") handler will now call updateModels()
               this.elementsLoaded = true;
-              
-              // Reset env to trigger @Watch("env") → updateModels() with controllers ready
-              // This ensures controller.model() is called even on initial page load
-              this.env = { ...this.env };
             }
             
             return; // Don't try IIFE
@@ -538,6 +535,15 @@ export class Player {
         }
       })
     );
+  }
+
+  @Watch("elementsLoaded")
+  watchElementsLoaded(newValue: boolean, oldValue: boolean) {
+    if (newValue && !oldValue) {
+      // This ensures that after elements are loaded (for both IIFE and ESM),
+      // we run updateModels() to apply controllers.
+      this.updateModels();
+    }
   }
 
   @Watch("env")
