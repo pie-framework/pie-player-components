@@ -629,8 +629,12 @@ export class EsmPieLoader extends NewRelicEnabledClient {
     const entry = this.registry.get(tag);
     
     if (!entry) {
-      // Nothing loaded yet
-      return { element: true, controller: true, configure: true };
+      // Nothing loaded yet - determine what's needed based on bundle type
+      return {
+        element: true,
+        controller: this.bundleType === EsmBundleType.clientPlayer || this.bundleType === EsmBundleType.editor,
+        configure: this.bundleType === EsmBundleType.editor
+      };
     }
 
     // Check what's missing based on bundle type
