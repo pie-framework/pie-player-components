@@ -350,10 +350,13 @@ export class Player {
             // Store loader reference to access controllers (for non-hosted mode)
             this.pieLoader = esmLoader as any;
             
-            // Success!
-            this.loadError = null; // Clear any previous errors
-            this.elementsLoaded = true;
-            console.log('[pie-player] ✅ ESM loading complete');
+            // Success! Clear any previous errors
+            this.loadError = null;
+            
+            // DON'T set elementsLoaded = true here!
+            // Let afterRender() check if elements are actually in the DOM first
+            // This matches IIFE behavior and ensures controller.model() is called at the right time
+            console.log('[pie-player] ✅ ESM loading complete, waiting for elements to render');
             return; // Don't try IIFE
           } catch (error) {
             const errorMessage = (error as any).message || '';
@@ -553,9 +556,11 @@ export class Player {
           if (!this.hosted) {
             try {
               // use local controllers
+              console.log(`[pie-player] Getting controller for element id='${model.id}' localName='${pieEl.localName}'`);
               const controller: PieController = this.pieLoader.getController(
                 pieEl.localName
               );
+              console.log(`[pie-player] Controller found:`, !!controller);
               if (controller) {
                 if (
                   this.addCorrectResponse &&

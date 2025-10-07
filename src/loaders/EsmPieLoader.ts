@@ -174,7 +174,10 @@ export class EsmPieLoader extends NewRelicEnabledClient {
    * @returns Controller module or null
    */
   public getController(pieTagName: string): any | null {
+    console.log(`[EsmPieLoader] getController('${pieTagName}') - registry has ${this.registry.size} entries`);
+    console.log(`[EsmPieLoader] Registry keys:`, Array.from(this.registry.keys()));
     const entry = this.registry.get(pieTagName);
+    console.log(`[EsmPieLoader] Found entry:`, entry ? `yes, controller=${!!entry.controller}` : 'no');
     return entry && entry.controller ? entry.controller : null;
   }
 
@@ -630,13 +633,11 @@ export class EsmPieLoader extends NewRelicEnabledClient {
     
     if (!entry) {
       // Nothing loaded yet - determine what's needed based on bundle type
-      const needs = {
+      return {
         element: true,
         controller: this.bundleType === EsmBundleType.clientPlayer || this.bundleType === EsmBundleType.editor,
         configure: this.bundleType === EsmBundleType.editor
       };
-      console.log(`[EsmPieLoader] needsLoading(${tag}) - bundleType: ${this.bundleType}, needs:`, needs);
-      return needs;
     }
 
     // Check what's missing based on bundle type
@@ -742,10 +743,10 @@ export class EsmPieLoader extends NewRelicEnabledClient {
       // 2. Load controller (if needed)
       if (needs.controller) {
         try {
-          console.log(`[EsmPieLoader] Loading controller for ${tag}`);
+          console.log(`[EsmPieLoader] Loading controller for tag='${tag}' from ${packageName}/controller`);
           const controllerModule = await this.importWithRetry(`${packageName}/controller`);
           entry.controller = controllerModule.default || controllerModule;
-          console.log(`[EsmPieLoader]   ✅ Controller loaded: ${tag}`);
+          console.log(`[EsmPieLoader]   ✅ Controller loaded and stored in registry['${tag}']:`, entry.controller);
         } catch (error) {
           console.warn(`[EsmPieLoader]   ⚠️ Controller not available for ${tag} (this is okay if package has no controller)`);
         }
@@ -753,7 +754,6 @@ export class EsmPieLoader extends NewRelicEnabledClient {
 
       // 3. Load configure (if needed)
       // Note: Configure components in ESM are web component classes (like IIFE bundles)
-      console.log(`[EsmPieLoader] Configure check for ${tag} - needs.configure: ${needs.configure}, bundleType: ${this.bundleType}`);
       if (needs.configure) {
         try {
           console.log(`[EsmPieLoader] Loading configure for ${tag}`);
