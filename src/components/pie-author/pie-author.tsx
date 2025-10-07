@@ -900,10 +900,11 @@ export class Author {
           this.loadError = null;
           this.esmLoadingInProgress = false;
           
-          // DON'T set elementsLoaded = true here!
-          // Let afterRender() check if elements are actually in the DOM first
-          // This matches IIFE behavior and ensures controller.model() is called at the right time
-          console.log('[pie-author] ✅ ESM loading complete, waiting for elements to render');
+          // Manually trigger element check now that ESM loading is complete
+          // This ensures afterRender() logic runs even on initial page load
+          console.log('[pie-author] ✅ ESM loading complete, checking if elements are ready');
+          await this.afterRender();
+          
           return; // Don't try IIFE
         } catch (error) {
           const errorMessage = (error as any).message || '';
