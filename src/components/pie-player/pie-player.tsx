@@ -154,9 +154,6 @@ export class Player {
   @Event({ eventName: "load-complete" }) loadComplete: EventEmitter;
 
   @State() elementsLoaded: boolean = false;
-  
-  // Track if ESM loading is in progress to prevent premature controller access
-  private esmLoadingInProgress = false;
 
   /**
    * The Pie config model.
@@ -330,9 +327,6 @@ export class Player {
         // Try ESM (auto-detect or explicit)
         if (this.bundleFormat === 'auto' || this.bundleFormat === 'esm') {
           try {
-            // Set flag to prevent afterRender() from accessing controllers prematurely
-            this.esmLoadingInProgress = true;
-            
             // Determine bundle type based on hosted mode
             const esmBundleType = this.hosted 
               ? EsmBundleType.player          // Hosted: elements only (controllers on server)
@@ -350,27 +344,38 @@ export class Player {
             const bundleLabel = this.hosted ? 'player' : 'clientPlayer';
             console.log(`[pie-player] ${modeLabel}: attempting ESM load (${bundleLabel}) from`, this.esmCdnUrl);
             
+            // Mark load start for performance tracking (matches IIFE marker name)
+            performance.mark("pie-load-end");
+            
             // Loader handles all decision logic (browser check, probe, etc.)
             await esmLoader.loadWithFormat(this.pieContentModel, this.doc, this.bundleFormat);
             
             // Store loader reference to access controllers (for non-hosted mode)
             this.pieLoader = esmLoader as any;
             
-            // Success! Clear any previous errors and loading flag
+            // Success! Clear any previous errors
             this.loadError = null;
-            this.esmLoadingInProgress = false;
             
-            // Manually trigger element check now that ESM loading is complete
-            // This ensures afterRender() logic runs even on initial page load
-            console.log('[pie-player] ✅ ESM loading complete, checking if elements are ready');
-            await this.afterRender();
+            // Now check if elements are ready and trigger the element check flow
+            // This will set elementsLoaded = true, which triggers updateModels() via afterRender()
+            console.log('[pie-player] ✅ ESM loading complete, checking element readiness');
+            
+            // Force element check by calling afterRender() directly
+            // This mimics what would happen on a render cycle
+            const elements = Object.keys(this.pieContentModel.elements).map(el => ({
+              name: el,
+              tag: el
+            }));
+            
+            const loadedInfo = await this.pieLoader.elementsHaveLoaded(elements);
+            if (loadedInfo.val && !!loadedInfo.elements.find(el => this.pieContentModel.elements[el.name])) {
+              console.log('[pie-player] Elements are ready, setting elementsLoaded = true');
+              this.elementsLoaded = true; // This triggers re-render → afterRender() → updateModels()
+            }
             
             return; // Don't try IIFE
           } catch (error) {
             const errorMessage = (error as any).message || '';
-            
-            // Clear loading flag on error
-            this.esmLoadingInProgress = false;
             
             // Check for fallback scenarios (auto-detect only)
             if (errorMessage.includes('ESM_NOT_SUPPORTED')) {
@@ -436,6 +441,10 @@ export class Player {
         // IIFE loading (fallback or explicitly requested)
         // Always create fresh IIFE loader to ensure correct type and config
         const iifeLoader = new IifePieLoader(endpoints, this.loaderConfig);
+        
+        // Mark load start for performance tracking
+        performance.mark("pie-load-end");
+        
         await iifeLoader.loadCloudPies({
           content: this.pieContentModel,
           doc: this.doc,
@@ -567,11 +576,9 @@ export class Player {
           if (!this.hosted) {
             try {
               // use local controllers
-              console.log(`[pie-player] Getting controller for element id='${model.id}' localName='${pieEl.localName}'`);
               const controller: PieController = this.pieLoader.getController(
                 pieEl.localName
               );
-              console.log(`[pie-player] Controller found:`, !!controller);
               if (controller) {
                 if (
                   this.addCorrectResponse &&
@@ -778,13 +785,6 @@ export class Player {
           this.addBottomBorder(pieTags);
         }
       } else {
-        // Don't proceed if ESM loading is still in progress
-        // This prevents accessing controllers before they're fully loaded
-        if (this.esmLoadingInProgress) {
-          console.log('[pie-player] afterRender: ESM still loading, skipping element check');
-          return;
-        }
-        
         const elements = Object.keys(this.pieContentModel.elements).map(el => ({
           name: el,
           tag: el

@@ -174,10 +174,7 @@ export class EsmPieLoader extends NewRelicEnabledClient {
    * @returns Controller module or null
    */
   public getController(pieTagName: string): any | null {
-    console.log(`[EsmPieLoader] getController('${pieTagName}') - registry has ${this.registry.size} entries`);
-    console.log(`[EsmPieLoader] Registry keys:`, Array.from(this.registry.keys()));
     const entry = this.registry.get(pieTagName);
-    console.log(`[EsmPieLoader] Found entry:`, entry ? `yes, controller=${!!entry.controller}` : 'no');
     return entry && entry.controller ? entry.controller : null;
   }
 
@@ -743,10 +740,10 @@ export class EsmPieLoader extends NewRelicEnabledClient {
       // 2. Load controller (if needed)
       if (needs.controller) {
         try {
-          console.log(`[EsmPieLoader] Loading controller for tag='${tag}' from ${packageName}/controller`);
+          console.log(`[EsmPieLoader] Loading controller for ${tag}`);
           const controllerModule = await this.importWithRetry(`${packageName}/controller`);
           entry.controller = controllerModule.default || controllerModule;
-          console.log(`[EsmPieLoader]   ✅ Controller loaded and stored in registry['${tag}']:`, entry.controller);
+          console.log(`[EsmPieLoader]   ✅ Controller loaded: ${tag}`);
         } catch (error) {
           console.warn(`[EsmPieLoader]   ⚠️ Controller not available for ${tag} (this is okay if package has no controller)`);
         }
