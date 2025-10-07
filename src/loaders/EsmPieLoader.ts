@@ -630,11 +630,13 @@ export class EsmPieLoader extends NewRelicEnabledClient {
     
     if (!entry) {
       // Nothing loaded yet - determine what's needed based on bundle type
-      return {
+      const needs = {
         element: true,
         controller: this.bundleType === EsmBundleType.clientPlayer || this.bundleType === EsmBundleType.editor,
         configure: this.bundleType === EsmBundleType.editor
       };
+      console.log(`[EsmPieLoader] needsLoading(${tag}) - bundleType: ${this.bundleType}, needs:`, needs);
+      return needs;
     }
 
     // Check what's missing based on bundle type
@@ -751,6 +753,7 @@ export class EsmPieLoader extends NewRelicEnabledClient {
 
       // 3. Load configure (if needed)
       // Note: Configure components in ESM are web component classes (like IIFE bundles)
+      console.log(`[EsmPieLoader] Configure check for ${tag} - needs.configure: ${needs.configure}, bundleType: ${this.bundleType}`);
       if (needs.configure) {
         try {
           console.log(`[EsmPieLoader] Loading configure for ${tag}`);
