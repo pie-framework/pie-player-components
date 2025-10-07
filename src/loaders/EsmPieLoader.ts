@@ -1,6 +1,11 @@
 import { PieContent } from "../interface";
 import { NewRelicEnabledClient } from "../new-relic";
-import { LoaderConfig } from "./shared";
+import {
+  LoaderConfig,
+  DEFAULT_LOADER_CONFIG,
+  registerCustomElement,
+  checkElementsLoaded
+} from "./shared";
 
 /**
  * ESM-specific bundle types
@@ -23,7 +28,7 @@ export interface EsmRegistryEntry {
   tagName: string;      // Custom element tag (e.g., pie-multiple-choice)
   element?: any;        // Element class
   controller?: any;     // Controller module
-  configure?: any;      // Configure class
+  config?: any;         // Configure class (matches IIFE naming)
 }
 
 /**
@@ -40,13 +45,6 @@ export interface EsmLoaderOptions {
 // Cache probe results globally (across instances) to avoid redundant checks
 // Key: cdnBaseUrl, Value: { available: boolean, timestamp: number }
 const PROBE_CACHE = new Map<string, { available: boolean, timestamp: number }>();
-
-/**
- * Default loader configuration values
- */
-const DEFAULT_LOADER_CONFIG: Required<LoaderConfig> = {
-  trackPageActions: false
-};
 
 /**
  * Loads PIE elements as native ES modules using import maps and dynamic imports.
@@ -156,7 +154,7 @@ export class EsmPieLoader extends NewRelicEnabledClient {
 
   /**
    * Check if all specified custom elements have been defined.
-   * Similar to IifePieLoader.elementsHaveLoaded()
+   * Uses shared utility for consistent behavior with IIFE loader
    *
    * @param elements - Array of element queries with name and tag
    * @returns Promise resolving to { elements, val: boolean }
@@ -169,10 +167,9 @@ export class EsmPieLoader extends NewRelicEnabledClient {
     });
 
     try {
-      const promises = elements.map(el => customElements.whenDefined(el.tag));
-      await Promise.all(promises);
+      const result = await checkElementsLoaded(elements);
       this.trackOperationComplete("elementsHaveLoaded", startTime);
-      return { elements, val: true };
+      return result;
     } catch (error) {
       console.error('[EsmPieLoader] Error waiting for elements:', error);
       this.trackOperationComplete("elementsHaveLoaded", startTime, false, "Error waiting for elements");
@@ -621,7 +618,8 @@ export class EsmPieLoader extends NewRelicEnabledClient {
 
     // Configure needed for editor
     if (this.bundleType === EsmBundleType.editor) {
-      needs.configure = !entry.configure && !customElements.get(`${tag}-config`);
+      const configElName = `${tag}-config`;
+      needs.configure = !entry.config && !customElements.get(configElName);
     }
 
     return needs;
@@ -700,8 +698,9 @@ export class EsmPieLoader extends NewRelicEnabledClient {
         console.log(`[EsmPieLoader] Loading element ${tag} from ${packageName}`);
         const elementModule = await this.importWithRetry(packageName);
         const elementClass = this.extractElementClass(elementModule, tag);
-        customElements.define(tag, elementClass);
-        entry.element = elementClass;
+        
+        // Use shared utility for consistent registration (matches IIFE behavior)
+        entry.element = await registerCustomElement(tag, elementClass);
         console.log(`[EsmPieLoader]   ✅ Element registered: ${tag}`);
       }
 
@@ -718,16 +717,19 @@ export class EsmPieLoader extends NewRelicEnabledClient {
       }
 
       // 3. Load configure (if needed)
+      // Note: Configure components in ESM are web component classes (like IIFE bundles)
       if (needs.configure) {
         try {
           console.log(`[EsmPieLoader] Loading configure for ${tag}`);
           const configureModule = await this.importWithRetry(`${packageName}/configure`);
           const configureClass = this.extractElementClass(configureModule, `${tag}-config`);
-          customElements.define(`${tag}-config`, configureClass);
-          entry.configure = configureClass;
-          console.log(`[EsmPieLoader]   ✅ Configure registered: ${tag}-config`);
+          const configElName = `${tag}-config`;
+          
+          // Use shared utility for consistent registration (matches IIFE behavior)
+          entry.config = await registerCustomElement(configElName, configureClass);
+          console.log(`[EsmPieLoader]   ✅ Configure registered: ${configElName}`);
         } catch (error) {
-          console.warn(`[EsmPieLoader]   ⚠️ Configure not available for ${tag} (this is okay if package has no configure)`);
+          console.warn(`[EsmPieLoader]   ⚠️ Configure not available for ${tag}:`, error.message);
         }
       }
 

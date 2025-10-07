@@ -14,7 +14,10 @@ import {
   Entry,
   Status,
   DEFAULT_ENDPOINTS,
-  LoaderConfig
+  LoaderConfig,
+  DEFAULT_LOADER_CONFIG,
+  registerCustomElement,
+  checkElementsLoaded
 } from "./shared";
 
 // Re-export types for convenience
@@ -52,12 +55,6 @@ export const needToLoad = (registry: any, bundle: BundleType) => (
   }
 };
 
-/**
- * Default loader configuration values
- */
-const DEFAULT_LOADER_CONFIG: Required<LoaderConfig> = {
-  trackPageActions: false
-};
 
 /**
  * IIFE-based PIE loader - loads bundled IIFE scripts from build service.
@@ -116,6 +113,7 @@ export class IifePieLoader extends NewRelicEnabledClient {
 
   /**
    * Check if all specified custom elements have been defined
+   * Uses shared utility for consistent behavior with ESM loader
    * 
    * @param els - Array of element queries with name and tag
    * @returns Promise resolving to { elements, val: boolean }
@@ -126,12 +124,11 @@ export class IifePieLoader extends NewRelicEnabledClient {
     const startTime = this.trackOperationStart("elementsHaveLoaded", {
       elementsQuery: els
     });
-    const promises = els.map(el => customElements.whenDefined(el.tag));
 
     try {
-      await Promise.all(promises);
+      const result = await checkElementsLoaded(els);
       this.trackOperationComplete("elementsHaveLoaded", startTime);
-      return Promise.resolve({ elements: els, val: true });
+      return result;
     } catch (e) {
       this.trackOperationComplete(
         "elementsHaveLoaded",
@@ -139,7 +136,7 @@ export class IifePieLoader extends NewRelicEnabledClient {
         false,
         "Something went wrong"
       );
-      return Promise.resolve({ elements: els, val: false });
+      return { elements: els, val: false };
     }
   };
 
@@ -290,16 +287,16 @@ export class IifePieLoader extends NewRelicEnabledClient {
           const elName = key;
 
           if (!customElements.get(elName)) {
-            customElements.define(elName, pie.Element);
             this.registry[elName] = {
               package: _pies[key],
               status: Status.loading,
               tagName: elName
             };
 
-            customElements.whenDefined(elName).then(async () => {
+            // Use shared utility for consistent registration
+            registerCustomElement(elName, pie.Element).then(async (registeredClass) => {
               this.registry[elName].status = Status.loaded;
-              this.registry[elName].element = customElements.get(elName);
+              this.registry[elName].element = registeredClass;
               this.registry[elName].controller = pie.controller;
             });
           }
@@ -313,12 +310,10 @@ export class IifePieLoader extends NewRelicEnabledClient {
             const configElName = elName + "-config";
 
             if (!customElements.get(configElName)) {
-              customElements.define(configElName, pie.Configure);
-              customElements.whenDefined(configElName).then(async () => {
+              // Use shared utility for consistent registration
+              registerCustomElement(configElName, pie.Configure).then(async (registeredClass) => {
                 if (this.registry[elName]) {
-                  this.registry[elName].config = customElements.get(
-                    configElName
-                  );
+                  this.registry[elName].config = registeredClass;
                 }
               });
             }
