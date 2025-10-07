@@ -157,6 +157,9 @@ export class Author {
   @Element() el: HTMLElement;
 
   @State() elementsLoaded: boolean = false;
+  
+  // Track if ESM loading is in progress to prevent premature controller access
+  private esmLoadingInProgress = false;
 
   /**
    * Tracks loading errors to display instead of hanging spinner
@@ -872,6 +875,9 @@ export class Author {
       // Try ESM (auto-detect or explicit)
       if (this.bundleFormat === 'auto' || this.bundleFormat === 'esm') {
         try {
+          // Set flag to prevent afterRender() from accessing controllers prematurely
+          this.esmLoadingInProgress = true;
+          
           // Authoring mode always needs editor bundle (elements + controllers + configure)
           const esmLoader = new EsmPieLoader({
             cdnBaseUrl: this.esmCdnUrl,
@@ -890,8 +896,9 @@ export class Author {
           // Store loader reference to access controllers (for validation, scoring, etc.)
           this.pieLoader = esmLoader as any;
           
-          // Success! Clear any previous errors
+          // Success! Clear any previous errors and loading flag
           this.loadError = null;
+          this.esmLoadingInProgress = false;
           
           // DON'T set elementsLoaded = true here!
           // Let afterRender() check if elements are actually in the DOM first
@@ -900,6 +907,9 @@ export class Author {
           return; // Don't try IIFE
         } catch (error) {
           const errorMessage = (error as any).message || '';
+          
+          // Clear loading flag on error
+          this.esmLoadingInProgress = false;
           
           // Check for fallback scenarios (auto-detect only)
           if (errorMessage.includes('ESM_NOT_SUPPORTED')) {
@@ -1002,6 +1012,13 @@ export class Author {
       this.pieContentModel.markup &&
       !this.elementsLoaded
     ) {
+      // Don't proceed if ESM loading is still in progress
+      // This prevents accessing controllers before they're fully loaded
+      if (this.esmLoadingInProgress) {
+        console.log('[pie-author] afterRender: ESM still loading, skipping element check');
+        return;
+      }
+      
       const elements = Object.keys(this.pieContentModel.elements).map(el => ({
         name: el,
         tag: `${el}-config`
