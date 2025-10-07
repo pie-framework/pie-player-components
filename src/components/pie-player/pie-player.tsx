@@ -356,12 +356,10 @@ export class Player {
             // Success! Clear any previous errors
             this.loadError = null;
             
-            // Now check if elements are ready and trigger the element check flow
-            // This will set elementsLoaded = true, which triggers updateModels() via afterRender()
+            // Now check if elements are ready and set elementsLoaded flag
+            // Then trigger updateModels() by resetting env (which fires @Watch("env"))
             console.log('[pie-player] ✅ ESM loading complete, checking element readiness');
             
-            // Force element check by calling afterRender() directly
-            // This mimics what would happen on a render cycle
             const elements = Object.keys(this.pieContentModel.elements).map(el => ({
               name: el,
               tag: el
@@ -369,8 +367,12 @@ export class Player {
             
             const loadedInfo = await this.pieLoader.elementsHaveLoaded(elements);
             if (loadedInfo.val && !!loadedInfo.elements.find(el => this.pieContentModel.elements[el.name])) {
-              console.log('[pie-player] Elements are ready, setting elementsLoaded = true');
-              this.elementsLoaded = true; // This triggers re-render → afterRender() → updateModels()
+              console.log('[pie-player] Elements are ready, triggering updateModels');
+              this.elementsLoaded = true;
+              
+              // Reset env to trigger @Watch("env") → updateModels() with controllers ready
+              // This ensures controller.model() is called even on initial page load
+              this.env = { ...this.env };
             }
             
             return; // Don't try IIFE

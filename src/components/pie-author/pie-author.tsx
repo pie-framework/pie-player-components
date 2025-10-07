@@ -893,11 +893,9 @@ export class Author {
           // Success! Clear any previous errors
           this.loadError = null;
           
-          // Now check if configure elements are ready and trigger the element check flow
-          // This will set elementsLoaded = true, which triggers rendering
+          // Now check if configure elements are ready and set elementsLoaded flag
           console.log('[pie-author] ✅ ESM loading complete, checking element readiness');
           
-          // Force element check similar to pie-player
           const elements = Object.keys(this.pieContentModel.elements).map(el => ({
             name: el,
             tag: `${el}-config`
@@ -906,7 +904,7 @@ export class Author {
           const loadedInfo = await this.pieLoader.elementsHaveLoaded(elements);
           if (loadedInfo.val && !!loadedInfo.elements.find(el => this.pieContentModel.elements[el.name])) {
             console.log('[pie-author] Elements are ready, setting elementsLoaded = true');
-            this.elementsLoaded = true; // This triggers re-render → afterRender()
+            this.elementsLoaded = true;
           }
           
           return; // Don't try IIFE
