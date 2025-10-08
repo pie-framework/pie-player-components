@@ -289,36 +289,6 @@ export class EsmPieLoader extends NewRelicEnabledClient {
   }
 
   /**
-   * Check if ESM can be used for the given content.
-   * Performs two checks:
-   * 1. Browser capability (import maps support)
-   * 2. Package availability (CDN has the packages)
-   *
-   * @param content - PIE content configuration
-   * @returns Promise<{canUse: boolean, reason?: string}>
-   */
-  async canUseEsm(content: PieContent): Promise<{canUse: boolean, reason?: string}> {
-    // Check 1: Browser capability
-    if (!this.supportsImportMaps()) {
-      return {
-        canUse: false,
-        reason: 'Browser does not support import maps (requires Chrome 89+, Firefox 108+, or Safari 16.4+)'
-      };
-    }
-
-    // Check 2: Package availability
-    const packagesAvailable = await this.probePackageAvailability(content.elements);
-    if (!packagesAvailable) {
-      return {
-        canUse: false,
-        reason: 'Packages not available on CDN (may not have ESM builds or wrong version)'
-      };
-    }
-
-    return { canUse: true };
-  }
-
-  /**
    * Internal method: Load PIE elements after checks have passed.
    * Generates import map and dynamically imports each element (and controller/configure based on bundleType).
    *
@@ -348,19 +318,6 @@ export class EsmPieLoader extends NewRelicEnabledClient {
       [EsmBundleType.editor]: 'elements + controllers + configure'
     }[this.bundleType];
     console.log(`[EsmPieLoader] Loaded ${elementTags.length} package(s) (${bundleTypeLabel})`);
-  }
-
-  /**
-   * @deprecated Use loadWithFormat() instead for better control.
-   * Load PIE elements using ESM.
-   *
-   * @param content - PIE content configuration
-   * @param doc - Document to inject import map into (defaults to document)
-   * @param options - Loading options
-   */
-  async load(content: PieContent, doc: Document = document, options?: { skipProbe?: boolean }): Promise<void> {
-    const format = (options && options.skipProbe) ? 'esm' : 'auto';
-    await this.loadWithFormat(content, doc, format);
   }
 
   /**

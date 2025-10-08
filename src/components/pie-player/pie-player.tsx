@@ -33,9 +33,6 @@ import { addRubric } from "../../rubric-utils";
 import { normalizeContentElements } from "../../utils/utils";
 import { VERSION } from "../../version";
 
-const controllerErrorMessage: string =
-  "Error processing question configuration, verify the question model?";
-
 @Component({
   tag: "pie-player",
   styleUrl: "../components.css",
@@ -356,9 +353,9 @@ export class Player {
             // Success! Clear any previous errors
             this.loadError = null;
             
-            // Now check if elements are ready and set elementsLoaded flag
-            // Then trigger updateModels() by resetting env (which fires @Watch("env"))
-            console.log('[pie-player] ✅ ESM loading complete, checking element readiness');
+            // Now that all async loading is complete, we can check for elements and then update models.
+            // This avoids all race conditions with the component lifecycle.
+            console.log('[pie-player] ✅ ESM loading complete, checking element readiness before updating models');
             
             const elements = Object.keys(this.pieContentModel.elements).map(el => ({
               name: el,
@@ -367,9 +364,9 @@ export class Player {
             
             const loadedInfo = await this.pieLoader.elementsHaveLoaded(elements);
             if (loadedInfo.val && !!loadedInfo.elements.find(el => this.pieContentModel.elements[el.name])) {
-              console.log('[pie-player] Elements are ready, setting elementsLoaded flag');
-              // Set the flag; the new @Watch("elementsLoaded") handler will now call updateModels()
               this.elementsLoaded = true;
+              // Direct call to the now fully async updateModels function.
+              await this.updateModels();
             }
             
             return; // Don't try IIFE
@@ -537,17 +534,8 @@ export class Player {
     );
   }
 
-  @Watch("elementsLoaded")
-  watchElementsLoaded(newValue: boolean, oldValue: boolean) {
-    if (newValue && !oldValue) {
-      // This ensures that after elements are loaded (for both IIFE and ESM),
-      // we run updateModels() to apply controllers.
-      this.updateModels();
-    }
-  }
-
   @Watch("env")
-  updateModels(newEnv = this.env) {
+  async updateModels(newEnv = this.env) {
     // wrapping a player in stimulus layout
     if (this.stimulusPlayer) {
       (this.stimulusPlayer as any).env = newEnv;
@@ -573,7 +561,7 @@ export class Player {
         this.stopEventFromPropagating
       );
 
-      this.pieContentModel.models.forEach(async (model, index) => {
+      await Promise.all(this.pieContentModel.models.map(async (model, index) => {
         if (model && model.error) {
           this.playerError.emit(`error loading question data`);
           throw new Error(model.error);
@@ -595,39 +583,42 @@ export class Player {
                 ) {
                   session = await controller.createCorrectResponseSession(
                     model,
-                    { ...newEnv, ...{ role: "instructor" } }
+                    newEnv
                   );
                 }
-                pieEl.model = await controller.model(model, session, newEnv);
-              } else {
-                // no controller provided
-                pieEl.model = model;
+
+                /**
+                 * Note: we are passing a session object into the model function.
+                 * The host of this component is responsible for hooking up the 'session-changed' event
+                 * and updating the session object that is passed in as a prop.
+                 */
+                const env = { ...newEnv, session: { ...session } };
+
+                if (controller.model) {
+                  pieEl.model = await controller.model(model, session, env);
+                } else {
+                  // no controller provided
+                  pieEl.model = model;
+                }
+                pieEl.session = session;
+
+                const update = { ...model, ...pieEl.model };
+                // because the pie element can modify the model, we need to update the model in the parent
+                this.pieContentModel.models.splice(index, 1, update);
               }
-            } catch (err) {
-              this.playerError.emit(`${controllerErrorMessage}  -  (${err})`);
+            } catch (e) {
+              console.error(
+                "[pie-player] error caught setting model/session",
+                e.message
+              );
             }
           } else {
-            if ((model as any).error) {
-              this.playerError.emit(
-                `${controllerErrorMessage}  -  '${(model as any).error}'`
-              );
-            }
+            // is hosted
             pieEl.model = model;
-            if (this.addCorrectResponse) {
-              this.playerError.emit(
-                `add-correct-response cannot be used in hosted environement`
-              );
-            }
-          }
-          try {
             pieEl.session = session;
-          } catch (err) {
-            this.playerError.emit(
-              `error setting item session value - ${err.message}`
-            );
           }
         }
-      });
+      }));
 
       performance.mark("pie-model-set-end");
       performance.measure(
