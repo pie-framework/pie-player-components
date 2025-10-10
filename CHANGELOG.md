@@ -1,3 +1,10 @@
+## [3.13.1](https://github.com/pie-framework/pie-player-components/compare/v3.13.0...v3.13.1) (2025-10-10)
+
+
+### Bug Fixes
+
+* new relic tracking and add tracking for operation retry PD-5261 ([7d35c85](https://github.com/pie-framework/pie-player-components/commit/7d35c85154480a347068efc0b40fa517b44157f6))
+
 # [3.13.0](https://github.com/pie-framework/pie-player-components/compare/v3.12.2...v3.13.0) (2025-10-06)
 
 
