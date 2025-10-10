@@ -366,7 +366,17 @@ export class PieLoader extends NewRelicEnabledClient {
 
         try {
           const response = await withRetry(
-            async (currentDelay: number) => {
+            async (currentDelay: number, retries: number) => {
+              const retryStartTime =
+                retries > 0
+                  ? this.trackRetryAttempt(
+                      "loadScript",
+                      { scriptUrl },
+                      retries,
+                      true
+                    )
+                  : loadScriptStartTime;
+
               const res = await fetch(scriptUrl);
 
               /**
@@ -383,8 +393,16 @@ export class PieLoader extends NewRelicEnabledClient {
                 const errorMsg = `Failed to load script (HTTP ${
                   res.status
                 }), retrying in ${currentDelay / 1000 || 1} seconds...`;
-
                 console.warn(errorMsg);
+
+                this.trackOperationFailure(
+                  "loadScript",
+                  retryStartTime,
+                  retries,
+                  true,
+                  errorMsg
+                );
+
                 throw new Error(errorMsg);
               }
 
@@ -488,8 +506,7 @@ export class PieLoader extends NewRelicEnabledClient {
     const operationType = apiRequest ? "api" : "pie";
 
     this.track("activity", `${operationType}_${operationName}_started`, {
-      data: JSON.stringify(data),
-      timestamp: new Date().toISOString()
+      data: JSON.stringify(data)
     });
 
     return startTime;
@@ -504,7 +521,7 @@ export class PieLoader extends NewRelicEnabledClient {
     apiRequest: boolean = false,
     errorMessage?: string
   ) {
-    if (this.loaderConfig.trackPageActions || !this.newRelic) {
+    if (!this.loaderConfig.trackPageActions || !this.newRelic) {
       return;
     }
 
@@ -514,6 +531,54 @@ export class PieLoader extends NewRelicEnabledClient {
       duration: Date.now() - startTime,
       success: errorMessage ? false : true,
       ...(errorMessage && { errorMessage })
+    });
+  }
+
+  /**
+   * Track retry attempt if trackPageActions is enabled
+   */
+  private trackRetryAttempt(
+    operationName: string,
+    data: Record<string, any> = {},
+    attempt: number,
+    apiRequest: boolean = false
+  ) {
+    const startTime = Date.now();
+
+    if (!this.loaderConfig.trackPageActions || !this.newRelic) {
+      return startTime;
+    }
+
+    const operationType = apiRequest ? "api" : "pie";
+
+    this.track("activity", `${operationType}_${operationName}_retry_attempt`, {
+      data: JSON.stringify(data),
+      attempt
+    });
+
+    return startTime;
+  }
+
+  /**
+   * Track operation failure if trackPageActions is enabled
+   */
+  private trackOperationFailure(
+    operationName: string,
+    startTime: number,
+    attempt: number,
+    apiRequest: boolean = false,
+    errorMessage?: string
+  ) {
+    if (!this.loaderConfig.trackPageActions || !this.newRelic) {
+      return;
+    }
+
+    const operationType = apiRequest ? "api" : "pie";
+
+    this.track("activity", `${operationType}_${operationName}_failure`, {
+      duration: Date.now() - startTime,
+      attempt,
+      ...(errorMessage && { errorMessage, success: false })
     });
   }
 }
