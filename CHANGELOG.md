@@ -1,3 +1,10 @@
+## [3.13.2](https://github.com/pie-framework/pie-player-components/compare/v3.13.1...v3.13.2) (2025-10-13)
+
+
+### Bug Fixes
+
+* pass reFetchBundle to inner pie-player and refactor PD-5264 ([8edddcc](https://github.com/pie-framework/pie-player-components/commit/8edddccd94eaab471db890f3c4a6e21252529218))
+
 ## [3.13.1](https://github.com/pie-framework/pie-player-components/compare/v3.13.0...v3.13.1) (2025-10-10)
 
 
