@@ -313,7 +313,7 @@ export class Player {
     const modelsToScore = this.getModelsForScoring();
 
     if (!modelsToScore || modelsToScore.length === 0) {
-      console.error('No models available for scoring');
+      console.error("No models available for scoring");
       return false;
     }
 
@@ -700,83 +700,85 @@ export class Player {
   }
 
   render() {
-    return this.stimulusItemModel ? (
-      this.renderStimulus ? (
-        <pie-stimulus-layout allowedResize={this.allowedResize}>
-          <div slot="stimulus" class={`player-stimulus-container`}>
-            <pie-player
-              id="stimulusPlayer"
-              config={this.stimulusItemModel.passage}
-              env={this.env}
-              hosted={this.hosted}
-              session={this.session}
-              ref={el => (this.stimulusPlayer = el as HTMLElement)}
-              bundleHost={this.bundleHost}
-              bundleEndpoints={this.bundleEndpoints}
-              class={`${this.customClassname}${
-                this.passageContainerClass
-                  ? ` ${this.passageContainerClass}`
-                  : ""
-              }`}
-              customClassname={this.customClassname}
-            />
-          </div>
-          <div slot="item" class={`player-item-container`}>
+    if (this.stimulusItemModel) {
+      const basePlayerProps = {
+        env: this.env,
+        hosted: this.hosted,
+        session: this.session,
+        bundleHost: this.bundleHost,
+        bundleEndpoints: this.bundleEndpoints,
+        addCorrectResponse: this.addCorrectResponse,
+        reFetchBundle: this.reFetchBundle,
+        customClassname: this.customClassname
+      };
+
+      if (this.renderStimulus) {
+        return (
+          <pie-stimulus-layout allowedResize={this.allowedResize}>
+            <div slot="stimulus" class="player-stimulus-container">
+              <pie-player
+                id="stimulusPlayer"
+                config={this.stimulusItemModel.passage}
+                ref={el => (this.stimulusPlayer = el as HTMLElement)}
+                class={`${this.customClassname}${
+                  this.passageContainerClass
+                    ? ` ${this.passageContainerClass}`
+                    : ""
+                }`}
+                {...basePlayerProps}
+                addCorrectResponse={false}
+              />
+            </div>
+            <div slot="item" class="player-item-container">
+              <pie-player
+                id="itemPlayer"
+                config={this.stimulusItemModel.pie}
+                class={`${this.customClassname}${
+                  this.containerClass ? ` ${this.containerClass}` : ""
+                }`}
+                {...basePlayerProps}
+              />
+            </div>
+          </pie-stimulus-layout>
+        );
+      }
+
+      if (this.containerClass) {
+        return (
+          <div class={this.containerClass}>
             <pie-player
               id="itemPlayer"
-              addCorrectResponse={this.addCorrectResponse}
               config={this.stimulusItemModel.pie}
-              env={this.env}
-              hosted={this.hosted}
-              session={this.session}
-              bundleHost={this.bundleHost}
-              bundleEndpoints={this.bundleEndpoints}
-              class={`${this.customClassname}${
-                this.containerClass ? ` ${this.containerClass}` : ""
-              }`}
-              customClassname={this.customClassname}
+              class={this.customClassname}
+              {...basePlayerProps}
             />
           </div>
-        </pie-stimulus-layout>
-      ) : this.containerClass ? (
-        <div class={this.containerClass}>
-          <pie-player
-            id="itemPlayer"
-            addCorrectResponse={this.addCorrectResponse}
-            config={this.stimulusItemModel.pie}
-            env={this.env}
-            hosted={this.hosted}
-            session={this.session}
-            bundleHost={this.bundleHost}
-            bundleEndpoints={this.bundleEndpoints}
-            class={this.customClassname}
-            customClassname={this.customClassname}
-          />
-        </div>
-      ) : (
+        );
+      }
+
+      return (
         <pie-player
           id="itemPlayer"
-          addCorrectResponse={this.addCorrectResponse}
           config={this.stimulusItemModel.pie}
-          env={this.env}
-          hosted={this.hosted}
-          session={this.session}
-          bundleEndpoints={this.bundleEndpoints}
           class={this.customClassname}
-          customClassname={this.customClassname}
+          {...basePlayerProps}
         />
-      )
-    ) : this.elementsLoaded ? (
-      <div
-        class="player-container"
-        innerHTML={
-          this.pieContentModel && this.pieContentModel.markup
-            ? this.pieContentModel.markup
-            : ""
-        }
-      />
-    ) : (
-      <pie-spinner />
-    );
+      );
+    }
+
+    if (this.elementsLoaded) {
+      return (
+        <div
+          class="player-container"
+          innerHTML={
+            this.pieContentModel && this.pieContentModel.markup
+              ? this.pieContentModel.markup
+              : ""
+          }
+        />
+      );
+    }
+
+    return <pie-spinner />;
   }
 }
