@@ -1054,10 +1054,10 @@
   resolved "https://registry.yarnpkg.com/@pie-framework/pie-player-events/-/pie-player-events-0.1.0.tgz#0150904118fd604559982ab658967811c053ffe3"
   integrity sha512-6H1tlRGmcZ3Wt+8HMqu5KugVcwwyNrMylfI5rIpvOSt0T82QDmjRj+2sPgQG5zos/w6MtwUqn/QZ+8Rq2EXSOA==
 
-"@pie-lib/math-rendering-module@2.7.0":
-  version "2.7.0"
-  resolved "https://registry.yarnpkg.com/@pie-lib/math-rendering-module/-/math-rendering-module-2.7.0.tgz#29d01cd0d9415187b94c7b187b0c23d07377fcaf"
-  integrity sha512-qZEKj02AJCXs6ZI2C0Z5SHkbnQ7W+Zz4amkclO/qD4wEhpKCxe4MaKUGbGNb4zvLjwzrdGHfxF5tG7fz5SUtQA==
+"@pie-lib/math-rendering-module@^2.7.7":
+  version "2.7.7"
+  resolved "https://registry.yarnpkg.com/@pie-lib/math-rendering-module/-/math-rendering-module-2.7.7.tgz#6f0f1b481d6bfa013c323bad1917db706caa481f"
+  integrity sha512-Fng8ceUeyak8qU9LU/jyDvrxOpd7YKKT8mjATjipOZsN9l+7u07dX9H3jKRTXeIddf/gme4ia6enZmLNi5e05g==
 
 "@release-it/conventional-changelog@^1.0.0":
   version "1.1.4"
