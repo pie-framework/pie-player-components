@@ -1,3 +1,10 @@
+## [3.13.3](https://github.com/pie-framework/pie-player-components/compare/v3.13.2...v3.13.3) (2025-10-14)
+
+
+### Bug Fixes
+
+* bump mr ([a0cd727](https://github.com/pie-framework/pie-player-components/commit/a0cd727fd073cc76e86c00782c1887ea3d8fbdef))
+
 ## [3.13.2](https://github.com/pie-framework/pie-player-components/compare/v3.13.1...v3.13.2) (2025-10-13)
 
 
