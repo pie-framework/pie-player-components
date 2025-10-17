@@ -77,8 +77,19 @@ describe("PieLoader", () => {
   describe("loadCloudPies", () => {
     it("doesnt define configure element when type is clientPlayer", async () => {
       const loader = new PieLoader();
-
       const d = new JSDOM({});
+      const doc = d.window.document;
+
+      // mock <head>.appendChild to auto-trigger <script>.onload
+      const originalAppendChild = doc.head.appendChild.bind(doc.head);
+      doc.head.appendChild = el => {
+        if (el.tagName === "SCRIPT") {
+          // simulate a short async delay for onload
+          setTimeout(() => el.onload && el.onload(), 0);
+        }
+
+        return originalAppendChild(el);
+      };
 
       await loader.loadCloudPies({
         bundle: BundleType.clientPlayer,
@@ -88,7 +99,7 @@ describe("PieLoader", () => {
           markup: "",
           elements: { "pie-el": "pie-el@latest" }
         } as PieContent,
-        doc: d.window.document,
+        doc,
         useCdn: false
       });
 
@@ -101,10 +112,6 @@ describe("PieLoader", () => {
           }
         }
       };
-      const scripts = d.window.document.querySelectorAll("script");
-      scripts.forEach(s => {
-        s.onload();
-      });
 
       expect(customElements.define).not.toHaveBeenCalledWith(
         "pie-el-config",

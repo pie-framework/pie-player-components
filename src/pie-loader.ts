@@ -291,15 +291,16 @@ export class PieLoader extends NewRelicEnabledClient {
     const script = options.doc.createElement("script");
 
     const onloadFn = (_pies => {
-      return () => {
+      return async () => {
         const defineElemsStartTime = this.trackOperationStart(
           "defineCustomElements",
           { items: _pies }
         );
 
         const pieKeys = Object.keys(_pies);
+        const promises = [];
 
-        pieKeys.forEach(key => {
+        for (const key of pieKeys) {
           const packagesWithoutVersion = getPackageWithoutVersion(_pies[key]);
           const pie =
             window["pie"] && window["pie"].default
@@ -321,11 +322,18 @@ export class PieLoader extends NewRelicEnabledClient {
               tagName: elName
             };
 
-            customElements.whenDefined(elName).then(async () => {
-              this.registry[elName].status = Status.loaded;
-              this.registry[elName].element = customElements.get(elName);
-              this.registry[elName].controller = pie.controller;
-            });
+            promises.push(
+              customElements
+                .whenDefined(elName)
+                .then(() => {
+                  this.registry[elName].status = Status.loaded;
+                  this.registry[elName].element = customElements.get(elName);
+                  this.registry[elName].controller = pie.controller;
+                })
+                .catch(err => {
+                  console.error(`Failed to define element ${elName}:`, err);
+                })
+            );
           }
 
           if (options.bundle === BundleType.editor) {
@@ -338,16 +346,29 @@ export class PieLoader extends NewRelicEnabledClient {
 
             if (!customElements.get(configElName)) {
               customElements.define(configElName, pie.Configure);
-              customElements.whenDefined(configElName).then(async () => {
-                if (this.registry[elName]) {
-                  this.registry[elName].config = customElements.get(
-                    configElName
-                  );
-                }
-              });
+
+              promises.push(
+                customElements
+                  .whenDefined(configElName)
+                  .then(() => {
+                    if (this.registry[elName]) {
+                      this.registry[elName].config = customElements.get(
+                        configElName
+                      );
+                    }
+                  })
+                  .catch(err => {
+                    console.error(
+                      `Failed to define config element ${configElName}:`,
+                      err
+                    );
+                  })
+              );
             }
           }
-        });
+        }
+
+        await Promise.all(promises);
 
         this.trackOperationComplete(
           "defineCustomElements",
@@ -415,9 +436,14 @@ export class PieLoader extends NewRelicEnabledClient {
 
           // if the request is successful, inject the response as a script tag to avoid doing the same call twice
           if (response.status === 200) {
-            script.onload = onloadFn;
-            script.src = scriptUrl;
-            head.appendChild(script);
+            await new Promise(resolve => {
+              script.onload = async () => {
+                await onloadFn(); // runs after the script is loaded
+                resolve();
+              };
+              script.src = scriptUrl;
+              head.appendChild(script);
+            });
 
             delete window["pieHelpers"].loadingScripts[scriptUrl];
 
@@ -455,9 +481,14 @@ export class PieLoader extends NewRelicEnabledClient {
 
       await loadScript();
     } else {
-      script.onload = onloadFn;
-      script.src = scriptUrl;
-      head.appendChild(script);
+      await new Promise(resolve => {
+        script.onload = async () => {
+          await onloadFn(); // runs after the script is loaded
+          resolve();
+        };
+        script.src = scriptUrl;
+        head.appendChild(script);
+      });
     }
 
     this.trackOperationComplete("loadCloudPies", startTime);
