@@ -290,6 +290,15 @@ export class PieLoader extends NewRelicEnabledClient {
 
     const script = options.doc.createElement("script");
 
+    // prevent packages failures or JS errors
+    const whenDefinedWithTimeout = (name, ms = 5000) =>
+      Promise.race([
+        customElements.whenDefined(name),
+        new Promise((_, reject) =>
+          setTimeout(() => reject(new Error(`Timeout waiting for ${name}`)), ms)
+        )
+      ]);
+
     const onloadFn = (_pies => {
       return async () => {
         const defineElemsStartTime = this.trackOperationStart(
@@ -323,8 +332,7 @@ export class PieLoader extends NewRelicEnabledClient {
             };
 
             promises.push(
-              customElements
-                .whenDefined(elName)
+              whenDefinedWithTimeout(elName)
                 .then(() => {
                   this.registry[elName].status = Status.loaded;
                   this.registry[elName].element = customElements.get(elName);
@@ -348,8 +356,7 @@ export class PieLoader extends NewRelicEnabledClient {
               customElements.define(configElName, pie.Configure);
 
               promises.push(
-                customElements
-                  .whenDefined(configElName)
+                whenDefinedWithTimeout(configElName)
                   .then(() => {
                     if (this.registry[elName]) {
                       this.registry[elName].config = customElements.get(
@@ -438,8 +445,13 @@ export class PieLoader extends NewRelicEnabledClient {
           if (response.status === 200) {
             await new Promise(resolve => {
               script.onload = async () => {
-                await onloadFn(); // runs after the script is loaded
-                resolve();
+                try {
+                  await onloadFn(); // runs after the script is loaded
+                } catch (err) {
+                  console.error("onloadFn error:", err);
+                } finally {
+                  resolve(); // always resolve the outer promise
+                }
               };
               script.src = scriptUrl;
               head.appendChild(script);
@@ -483,8 +495,13 @@ export class PieLoader extends NewRelicEnabledClient {
     } else {
       await new Promise(resolve => {
         script.onload = async () => {
-          await onloadFn(); // runs after the script is loaded
-          resolve();
+          try {
+            await onloadFn(); // runs after the script is loaded
+          } catch (err) {
+            console.error("onloadFn error:", err);
+          } finally {
+            resolve(); // always resolve the outer promise
+          }
         };
         script.src = scriptUrl;
         head.appendChild(script);
