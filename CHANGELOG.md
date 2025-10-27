@@ -1,3 +1,12 @@
+## [3.13.4](https://github.com/pie-framework/pie-player-components/compare/v3.13.3...v3.13.4) (2025-10-27)
+
+
+### Bug Fixes
+
+* prevent whenDefined failures ([0b1ef9c](https://github.com/pie-framework/pie-player-components/commit/0b1ef9c42c38b1918dfe3828902d6145b0d7a572))
+* update tests ([8b64a77](https://github.com/pie-framework/pie-player-components/commit/8b64a77cc73830e1ce7afc8b5b55d49d0bf6ae95))
+* wait for onLoadFn to complete PD-5267 ([4eb6b4d](https://github.com/pie-framework/pie-player-components/commit/4eb6b4d104c6d8e86efbb9ce1da4cf6f6da2188f))
+
 ## [3.13.3](https://github.com/pie-framework/pie-player-components/compare/v3.13.2...v3.13.3) (2025-10-14)
 
 
