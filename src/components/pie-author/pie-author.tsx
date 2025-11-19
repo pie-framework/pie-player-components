@@ -32,7 +32,6 @@ import {
 } from "../../interface";
 import {
   BundleEndpoints,
-  BundleType,
   DEFAULT_ENDPOINTS,
   PieLoader,
   LoaderConfig
@@ -373,8 +372,8 @@ export class Author {
       Object.keys(this.pieContentModel.elements).forEach(key => {
         markup = markup.split(key).join(key + "-config");
       });
-      return markup;
     }
+    return markup;
   }
 
   isAdvancedItemConfig = (config: any): Boolean => config.pie;
@@ -790,19 +789,14 @@ export class Author {
   }
 
   async componentDidUpdate() {
-    await this.afterRender();
-
-    if (this.fileInput) {
-      this.fileInput.addEventListener("change", this.handleFileInputChange);
-    }
-
     // Only update innerHTML when markup actually changes to prevent destroying React roots
+    // IMPORTANT: Do this BEFORE afterRender() so elements are in DOM when afterRender checks
     if (this.authorContainerRef && this.pieContentModel && this.pieContentModel.markup) {
       const markup = this.getRenderMarkup();
       const hasChildren = this.authorContainerRef.hasChildNodes();
       const markupChanged = this.lastMarkup !== null && this.lastMarkup !== markup;
       const needsInitialSet = !hasChildren && this.lastMarkup === null;
-      
+
       if (needsInitialSet || markupChanged) {
         this.lastMarkup = markup;
         this.authorContainerRef.innerHTML = markup;
@@ -810,6 +804,12 @@ export class Author {
     } else if (this.authorContainerRef && (!this.pieContentModel || !this.pieContentModel.markup)) {
       this.authorContainerRef.innerHTML = '';
       this.lastMarkup = null;
+    }
+
+    await this.afterRender();
+
+    if (this.fileInput) {
+      this.fileInput.addEventListener("change", this.handleFileInputChange);
     }
   }
 
@@ -831,19 +831,14 @@ export class Author {
         forceBundleUrl = true;
       }
 
-      try {
-        await this.pieLoader.loadCloudPies({
-          content: this.pieContentModel,
-          doc: this.doc,
-          endpoints,
-          bundle: BundleType.editor,
-          useCdn: false,
-          forceBundleUrl,
-          reFetchBundle: this.reFetchBundle
-        });
-      } catch (error) {
-        console.error('[pie-author] Error loading bundle:', error);
-      }
+      await this.pieLoader.loadCloudPies({
+        content: this.pieContentModel,
+        doc: this.doc,
+        endpoints,
+        useCdn: false,
+        forceBundleUrl,
+        reFetchBundle: this.reFetchBundle
+      });
     }
   }
 
@@ -865,7 +860,6 @@ export class Author {
         name: el,
         tag: `${el}-config`
       }));
-      
       const loadedInfo = await this.pieLoader.elementsHaveLoaded(elements);
 
       if (
@@ -873,21 +867,7 @@ export class Author {
         !!loadedInfo.elements.find(el => this.pieContentModel.elements[el.name])
       ) {
         this.elementsLoaded = true;
-        
-        // Set model on each element after they're loaded
-        elements.forEach(el => {
-          const domElement = this.el.querySelector(el.tag) as any;
-          const model = this.pieContentModel.models.find(m => m.element === el.name);
-          
-          if (domElement && model) {
-            try {
-              domElement.model = model;
-            } catch (error) {
-              console.error(`[pie-author] Error setting model on ${el.tag}:`, error);
-            }
-          }
-        });
-        
+
         this.renderMath();
       }
     }
