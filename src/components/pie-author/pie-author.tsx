@@ -964,9 +964,9 @@ export class Author {
 
   render() {
     if (this.pieContentModel && this.pieContentModel.markup) {
-      const containerDiv = (
-        <div 
-          class="author-container" 
+      const authorContent = (
+        <div
+          class="author-container"
           ref={el => {
             if (el && el !== this.authorContainerRef) {
               this.authorContainerRef = el;
@@ -977,7 +977,7 @@ export class Author {
                 el.innerHTML = markup;
               }
             }
-          }} 
+          }}
         />
       );
 
@@ -986,7 +986,7 @@ export class Author {
           <pie-preview-layout config={this.config}>
             <div slot="configure">
               {!this.elementsLoaded && <pie-spinner active={true} />}
-              {containerDiv}
+              {authorContent}
             </div>
             <input
               type="file"
@@ -1000,7 +1000,7 @@ export class Author {
         return (
           <div>
             {!this.elementsLoaded && <pie-spinner active={true} />}
-            {containerDiv}
+            {authorContent}
             <input
               type="file"
               hidden
