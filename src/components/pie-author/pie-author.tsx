@@ -795,6 +795,22 @@ export class Author {
     if (this.fileInput) {
       this.fileInput.addEventListener("change", this.handleFileInputChange);
     }
+
+    // Only update innerHTML when markup actually changes to prevent destroying React roots
+    if (this.authorContainerRef && this.pieContentModel && this.pieContentModel.markup) {
+      const markup = this.getRenderMarkup();
+      const hasChildren = this.authorContainerRef.hasChildNodes();
+      const markupChanged = this.lastMarkup !== null && this.lastMarkup !== markup;
+      const needsInitialSet = !hasChildren && this.lastMarkup === null;
+      
+      if (needsInitialSet || markupChanged) {
+        this.lastMarkup = markup;
+        this.authorContainerRef.innerHTML = markup;
+      }
+    } else if (this.authorContainerRef && (!this.pieContentModel || !this.pieContentModel.markup)) {
+      this.authorContainerRef.innerHTML = '';
+      this.lastMarkup = null;
+    }
   }
 
   async loadPieElements() {
@@ -815,7 +831,6 @@ export class Author {
         forceBundleUrl = true;
       }
 
-      console.log('[pie-author] Loading editor bundle for:', this.pieContentModel && this.pieContentModel.elements);
       try {
         await this.pieLoader.loadCloudPies({
           content: this.pieContentModel,
@@ -826,7 +841,6 @@ export class Author {
           forceBundleUrl,
           reFetchBundle: this.reFetchBundle
         });
-        console.log('[pie-author] Bundle loaded successfully');
       } catch (error) {
         console.error('[pie-author] Error loading bundle:', error);
       }
@@ -851,74 +865,30 @@ export class Author {
         name: el,
         tag: `${el}-config`
       }));
-      console.log('[pie-author] Waiting for elements to load:', elements);
-      
-      // Check if elements are already in the DOM
-      elements.forEach(el => {
-        const domElement = this.el.querySelector(el.tag);
-        console.log(`[pie-author] Checking DOM for ${el.tag}:`, {
-          found: !!domElement,
-          defined: !!customElements.get(el.tag)
-        });
-      });
       
       const loadedInfo = await this.pieLoader.elementsHaveLoaded(elements);
-      console.log('[pie-author] Elements loaded info:', loadedInfo);
 
       if (
         loadedInfo.val &&
         !!loadedInfo.elements.find(el => this.pieContentModel.elements[el.name])
       ) {
         this.elementsLoaded = true;
-        console.log('[pie-author] Elements loaded successfully, rendering');
         
-        // Check DOM again after elements are loaded and set model
+        // Set model on each element after they're loaded
         elements.forEach(el => {
           const domElement = this.el.querySelector(el.tag) as any;
           const model = this.pieContentModel.models.find(m => m.element === el.name);
           
-          console.log(`[pie-author] After load - ${el.tag} in DOM:`, {
-            found: !!domElement,
-            hasContent: domElement ? domElement.innerHTML.length > 0 : false,
-            innerHTML: domElement ? domElement.innerHTML.substring(0, 200) : 'N/A',
-            children: domElement ? domElement.children.length : 0,
-            shadowRoot: domElement ? !!domElement.shadowRoot : false,
-            hasModel: !!model,
-            modelId: model ? model.id : 'N/A'
-          });
-          
-          // Set the model on the element if it exists
           if (domElement && model) {
-            console.log(`[pie-author] Setting model on ${el.tag}:`, model);
             try {
               domElement.model = model;
-              console.log(`[pie-author] Model set successfully on ${el.tag}`);
-              
-              // Check again after setting model
-              setTimeout(() => {
-                console.log(`[pie-author] After model set - ${el.tag}:`, {
-                  hasContent: domElement.innerHTML.length > 0,
-                  children: domElement.children.length
-                });
-              }, 100);
             } catch (error) {
               console.error(`[pie-author] Error setting model on ${el.tag}:`, error);
             }
           }
-          
-          // Check for React errors
-          if (domElement) {
-            const reactError = domElement._reactInternalFiber || domElement._reactInternalInstance;
-            console.log(`[pie-author] React instance check for ${el.tag}:`, !!reactError);
-          }
         });
         
         this.renderMath();
-      } else {
-        console.warn('[pie-author] Elements did not load properly', {
-          loadedInfo,
-          elements: Object.keys(this.pieContentModel.elements)
-        });
       }
     }
   }
@@ -1012,48 +982,31 @@ export class Author {
     return addMultiTraitRubric(configPieContent);
   }
 
-  componentDidUpdate() {
-    // Only set innerHTML when:
-    // 1. Container is empty (first render), OR
-    // 2. Markup has actually changed (config changed)
-    if (this.authorContainerRef && this.pieContentModel && this.pieContentModel.markup) {
-      const markup = this.getRenderMarkup();
-      const shouldUpdate = !this.authorContainerRef.hasChildNodes() || 
-                          (this.lastMarkup !== null && this.lastMarkup !== markup);
-      
-      if (shouldUpdate) {
-        this.lastMarkup = markup;
-        this.authorContainerRef.innerHTML = markup;
-      }
-    } else if (this.authorContainerRef && (!this.pieContentModel || !this.pieContentModel.markup)) {
-      // Clear container if no markup
-      this.authorContainerRef.innerHTML = '';
-      this.lastMarkup = null;
-    }
-  }
-
   render() {
     if (this.pieContentModel && this.pieContentModel.markup) {
-      const markup = this.getRenderMarkup();
+      const containerDiv = (
+        <div 
+          class="author-container" 
+          ref={el => {
+            if (el && el !== this.authorContainerRef) {
+              this.authorContainerRef = el;
+              // Set initial innerHTML only if container is empty
+              if (!el.hasChildNodes() && this.pieContentModel && this.pieContentModel.markup && this.lastMarkup === null) {
+                const markup = this.getRenderMarkup();
+                this.lastMarkup = markup;
+                el.innerHTML = markup;
+              }
+            }
+          }} 
+        />
+      );
+
       if (this.addPreview) {
         return (
           <pie-preview-layout config={this.config}>
             <div slot="configure">
-              <pie-spinner active={!this.elementsLoaded}>
-                <div 
-                  class="author-container" 
-                  ref={el => {
-                    this.authorContainerRef = el;
-                    // Set innerHTML only on first render or if markup changed
-                    if (el) {
-                      if (!el.hasChildNodes() || this.lastMarkup !== markup) {
-                        this.lastMarkup = markup;
-                        el.innerHTML = markup;
-                      }
-                    }
-                  }} 
-                />
-              </pie-spinner>
+              {!this.elementsLoaded && <pie-spinner active={true} />}
+              {containerDiv}
             </div>
             <input
               type="file"
@@ -1065,27 +1018,16 @@ export class Author {
         );
       } else {
         return (
-          <pie-spinner active={!this.elementsLoaded}>
-            <div 
-              class="author-container" 
-              ref={el => {
-                this.authorContainerRef = el;
-                // Set innerHTML only on first render or if markup changed
-                if (el) {
-                  if (!el.hasChildNodes() || this.lastMarkup !== markup) {
-                    this.lastMarkup = markup;
-                    el.innerHTML = markup;
-                  }
-                }
-              }} 
-            />
+          <div>
+            {!this.elementsLoaded && <pie-spinner active={true} />}
+            {containerDiv}
             <input
               type="file"
               hidden
               ref={r => (this.fileInput = r)}
               style={{ display: "none" }}
             />
-          </pie-spinner>
+          </div>
         );
       }
     } else {
