@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0"
+  />
+  <title>Item Author - update Config Settings</title>
+  <script type="module" src="/build/pie-player-components.esm.js"></script>
+  <script nomodule src="/build/pie-player-components.js"></script>
+</head>
+<body>
+<pie-author config="evan" id="author"></pie-author>
+
+<script type="text/javascript" src="./utils/models.js"></script>
+<script>
+  const config = {
+    id: '1',
+    elements: {
+      'pie-multiple-choice': '@pie-element/multiple-choice@11.2.0-mui-update.3'
+    },
+    models: [
+        {
+          id: '1',
+          element: 'pie-multiple-choice',
+    prompt: 'Question Prompt',
+    choiceMode: 'checkbox',
+    keyMode: 'numbers',
+    choices: [
+      {
+        correct: true,
+        value: 'choiceOne',
+        label: 'Choice One',
+        feedback: {
+          type: 'none',
+          value: ''
+        }
+      }
+    ],
+    partialScoring: false,
+    partialScoringLabel: `Each correct response that is correctly checked and each incorrect response
+    that is correctly unchecked will be worth 1 point.
+    The maximum points is the total number of answer choices.`
+        }
+      ],
+    markup: '<pie-multiple-choice id="1"></pie-multiple-choice>'
+  };
+
+  const configSettings = {
+    '@pie-element/multiple-choice': {
+      studentInstructions: { label: "Student Instructions (added via config settings)", settings: true },
+    }
+  };
+
+  const author = document.getElementById('author');
+
+  author.addEventListener('modelLoaded', event => {
+    console.log(event.type + ':' + JSON.stringify(event.detail));
+  });
+
+  // Check React version after bundle loads
+  setTimeout(async () => {
+    let reactVersion = 'Not found';
+    
+    // Method 1: Check global React object
+    if (window.React?.version) {
+      reactVersion = window.React.version;
+      console.log('✅ React version (from global):', reactVersion);
+      return;
+    }
+    
+    // Method 2: Check React DevTools hook
+    if (window.__REACT_DEVTOOLS_GLOBAL_HOOK__) {
+      const renderers = window.__REACT_DEVTOOLS_GLOBAL_HOOK__.renderers;
+      if (renderers) {
+        const renderer = renderers.get(1) || renderers.values().next().value;
+        if (renderer?.version) {
+          reactVersion = renderer.version;
+          console.log('✅ React version (from DevTools hook):', reactVersion);
+          return;
+        }
+      }
+    }
+    
+    // Method 3: Fetch bundle and search for React version in source code
+    const scripts = Array.from(document.querySelectorAll('script[src]'));
+    const bundleScripts = scripts.filter(s => 
+      s.src.includes('@pie-element') ||
+      s.src.includes('multiple-choice')
+    );
+    
+    if (bundleScripts.length > 0) {
+      console.log('📦 Found bundle(s), searching for React version inside...');
+      
+      for (const script of bundleScripts) {
+        try {
+          console.log(`   Fetching: ${script.src}`);
+          const response = await fetch(script.src);
+          const bundleText = await response.text();
+          
+          // Search for React version patterns in the bundle
+          const patterns = [
+            /react@(\d+\.\d+\.\d+)/i,
+            /"react"\s*:\s*"(\d+\.\d+\.\d+)"/i,
+            /react.*?version.*?["'](\d+\.\d+\.\d+)["']/i,
+            /__REACT_VERSION__\s*=\s*["'](\d+\.\d+\.\d+)["']/i,
+            /React\.version\s*=\s*["'](\d+\.\d+\.\d+)["']/i,
+            /version:\s*["'](\d+\.\d+\.\d+)["'].*?react/i,
+          ];
+          
+          for (const pattern of patterns) {
+            const match = bundleText.match(pattern);
+            if (match && match[1]) {
+              reactVersion = match[1];
+              console.log(`✅ React version found in bundle: ${reactVersion}`);
+              console.log(`   Pattern matched: ${pattern.toString()}`);
+              return;
+            }
+          }
+          
+          // If no version found, search for React 18 specific patterns
+          if (bundleText.includes('createRoot') || bundleText.includes('react-dom/client')) {
+            console.log('   ⚠️  Bundle uses React 18 (createRoot detected, but exact version not found)');
+            reactVersion = '18.x.x (detected via createRoot)';
+          } else if (bundleText.includes('ReactDOM.render')) {
+            console.log('   ⚠️  Bundle uses React <18 (ReactDOM.render detected)');
+            reactVersion = '<18.x.x (detected via ReactDOM.render)';
+          }
+          
+        } catch (error) {
+          console.warn(`   ⚠️  Could not fetch bundle: ${error.message}`);
+        }
+      }
+      
+      if (reactVersion === 'Not found') {
+        console.log('❌ React version not found in bundle source');
+        console.log('   Tip: Open Network tab → Click the bundle → Response tab → Search for "react" or "version"');
+      } else {
+        console.log(`✅ Final React version: ${reactVersion}`);
+      }
+    } else {
+      console.log('❌ No bundle scripts found');
+    }
+  }, 3000);
+
+  author.config = config;
+
+ // author.configSettings = configSettings;
+</script>
+</body>
+</html>
