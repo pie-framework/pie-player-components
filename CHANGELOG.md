@@ -1,3 +1,16 @@
+# [3.14.0](https://github.com/pie-framework/pie-player-components/compare/v3.13.4...v3.14.0) (2025-11-20)
+
+
+### Bug Fixes
+
+* prevent editor re-render from destroying React 18 roots ([3c4fb04](https://github.com/pie-framework/pie-player-components/commit/3c4fb04bfe885554cd6cfbbf4971778b61a8dc58))
+* refactor ([a44af55](https://github.com/pie-framework/pie-player-components/commit/a44af55d2b4ebb6a052eb943df1334ffd8547463))
+
+
+### Features
+
+* **pd-5258:** fix pie-author react 18 rendering issue ([51d50a5](https://github.com/pie-framework/pie-player-components/commit/51d50a5c1d7cc8e73a53261a17862e63ccb02f80))
+
 ## [3.13.4](https://github.com/pie-framework/pie-player-components/compare/v3.13.3...v3.13.4) (2025-10-27)
 
 
