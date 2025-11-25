@@ -13,7 +13,7 @@ export class DataURLUploadSoundSupport implements ExternalUploadSoundSupport {
   insert(
     file: File,
     done: (e: Error | null, src: string) => void,
-    progressFn: (percent: number, bytes: number, total: number) => void
+    progressFn?: (percent: number, bytes: number, total: number) => void
   ) {
     const reader = new FileReader();
     reader.onload = () => {
@@ -22,13 +22,16 @@ export class DataURLUploadSoundSupport implements ExternalUploadSoundSupport {
         done(null, dataURL.toString());
       }, 2000);
     };
-    let progress = 0;
-    progressFn(progress, 0, 100);
-    range(1, 100).forEach(n => {
-      setTimeout(() => {
-        progressFn(n, n, 100);
-      }, n * 20);
-    });
+
+    if (progressFn) {
+      let progress = 0;
+      progressFn(progress, 0, 100);
+      range(1, 100).forEach(n => {
+        setTimeout(() => {
+          progressFn(n, n, 100);
+        }, n * 20);
+      });
+    }
 
     // if external asset support .. add reader.readAsArrayBuffer ..
     reader.readAsDataURL(file);
