@@ -1,3 +1,10 @@
+## [3.14.1](https://github.com/pie-framework/pie-player-components/compare/v3.14.0...v3.14.1) (2025-11-27)
+
+
+### Bug Fixes
+
+* add defensive null check for sound upload progress callback PD-5384 ([61c9a63](https://github.com/pie-framework/pie-player-components/commit/61c9a637713e08e7e47e580d5b23b81df6e4ff80))
+
 # [3.14.0](https://github.com/pie-framework/pie-player-components/compare/v3.13.4...v3.14.0) (2025-11-20)
 
 
