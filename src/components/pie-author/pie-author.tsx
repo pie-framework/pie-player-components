@@ -357,7 +357,7 @@ export class Author {
 
     this.handleInsertSound = (e: InsertSoundEvent) => {
       console.log("[handleInsertSound]", e);
-      this.uploadSoundSupport.insert(e.detail.fileChosen, e.detail.done);
+      this.uploadSoundSupport.insert(e.detail.fileChosen, e.detail.done, e.detail.progress);
     };
 
     this.handleDeleteSound = (e: DeleteImageEvent) => {
