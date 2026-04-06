@@ -53,23 +53,152 @@
 
 <script>
 const players = document.getElementById("players");
-const chartingElement = "@pie-element/charting@8.6.9-next.6";
-const dragInTheBlankElement = "@pie-element/drag-in-the-blank@6.11.1-next.6";
-const ecrElement = "@pie-element/explicit-constructed-response@7.5.9-next.6";
-const extendedTElement = "@pie-element/extended-text-entry@11.7.9-next.6";
-const hotspotElement = "@pie-element/hotspot@7.9.9-next.6";
-const inlineDropdownElement = "@pie-element/inline-dropdown@6.6.3-next.6";
-const icaElement = "@pie-element/image-cloze-association@6.11.9-next.6";
-const mathInlineElement = "@pie-element/math-inline@8.7.1-next.6";
-const matchElement = "@pie-element/match@8.6.9-next.6";
-const multipleChoiceElement = "@pie-element/multiple-choice@9.16.3-next.6";
-const passageElement = "@pie-element/passage@3.6.3-next.6";
-const rubricElement = "@pie-element/rubric@4.8.1-next.6";
-const seletctTextElement = "@pie-element/select-text@9.5.9-next.6";
+const chartingElement = "@pie-element/charting@latest";
+const dragInTheBlankElement = "@pie-element/drag-in-the-blank@9.2.0-next.3";
+const ecrElement = "@pie-element/explicit-constructed-response@10.2.0-next.5";
+const extendedTElement = "@pie-element/extended-text-entry@14.2.0-next.2";
+const hotspotElement = "@pie-element/hotspot@10.2.0-next.3";
+const inlineDropdownElement = "@pie-element/inline-dropdown@9.2.0-next.6";
+const icaElement = "@pie-element/image-cloze-association@9.2.0-next.3";
+const mathInlineElement = "@pie-element/math-inline@11.2.0-next.6";
+const matchElement = "@pie-element/match@11.2.0-next.3";
+const multipleChoiceElement = "@pie-element/multiple-choice@12.2.0-next.4";
+const passageElement = "@pie-element/passage@6.2.0-next.3";
+const rubricElement = "@pie-element/rubric@7.2.0-next.2";
+const seletctTextElement = "@pie-element/select-text@12.2.0-next.3";
 
 
   // You can change configs to be what you need (adjust item versions, etc). It's just a bunch of item configs I copied from NIB.
   const configs = {
+    "d44150e0-d483-11f0-bd58-f12963df419e": {
+      "name": "E261558",
+      "markup": "<pie-element-charting id=\"8a8080815647c9ee01567b210146084a\"></pie-element-charting>",
+      "elements": {
+        "pie-element-charting": chartingElement
+      },
+      "models": [
+        {
+          "data": [
+            {
+              "editable": false,
+              "interactive": true,
+              "label": "0",
+              "value": 0
+            },
+            {
+              "editable": false,
+              "interactive": true,
+              "label": "1/8",
+              "value": 0
+            },
+            {
+              "editable": false,
+              "interactive": true,
+              "label": "1/4",
+              "value": 0
+            },
+            {
+              "editable": false,
+              "interactive": true,
+              "label": "3/8",
+              "value": 0
+            },
+            {
+              "editable": false,
+              "interactive": true,
+              "label": "1/2",
+              "value": 0
+            },
+            {
+              "editable": false,
+              "interactive": true,
+              "label": "5/8",
+              "value": 0
+            },
+            {
+              "editable": false,
+              "interactive": true,
+              "label": "3/4",
+              "value": 0
+            },
+            {
+              "editable": false,
+              "interactive": true,
+              "label": "7/8",
+              "value": 0
+            },
+            {
+              "editable": false,
+              "interactive": true,
+              "label": "1",
+              "value": 0
+            }
+          ],
+          "range": {
+            "min": 0,
+            "max": 5,
+            "labelStep": 1,
+            "step": 1
+          },
+          "title": "TURKEY SALES",
+          "rationale": "<p>A correct response is shown below:</p><p>&nbsp;<img alt=\"image da0ce2cc73904bc684ff2c72b101a67c\" id=\"da0ce2cc73904bc684ff2c72b101a67c\" src=\"https://assets.pie-api.com/assets/b87f9f5f-9ad7-4eb7-ae38-1fa5078aa024/image/jpeg/cf249762-47dd-47d3-b6c2-6e9a5c8c2e0d\"></p>",
+          "graph": {
+            "width": 500,
+            "height": 500
+          },
+          "addCategoryEnabled": false,
+          "teacherInstructions": "",
+          "domain": {
+            "label": "Weight of Container (pounds)"
+          },
+          "chartType": "linePlot",
+          "id": "8a8080815647c9ee01567b210146084a",
+          "correctAnswer": {
+            "data": [
+              {
+                "label": "0",
+                "value": 0
+              },
+              {
+                "label": "1/8",
+                "value": 5
+              },
+              {
+                "label": "1/4",
+                "value": 3
+              },
+              {
+                "label": "3/8",
+                "value": 0
+              },
+              {
+                "label": "1/2",
+                "value": 4
+              },
+              {
+                "label": "5/8",
+                "value": 0
+              },
+              {
+                "label": "3/4",
+                "value": 0
+              },
+              {
+                "label": "7/8",
+                "value": 0
+              },
+              {
+                "label": "1",
+                "value": 0
+              }
+            ]
+          },
+          "prompt": "<p>Mr. Worzak kept track of the number and weights of containers of smoked turkey that were sold during a 1-hour period at his store. He recorded this information in the table.</p><p><img alt=\"The table titled Turkey sales shows two columns and four rows. the first row shows Number of containers sold and weight of containers (pounds), the second row shows 5 and one eighth, the third row shows 3 and one fourth, and the fourth row shows 4 and one half.\" id=\"f5823f09b498435b802ce4c48f9cc33b\" src=\"https://assets.pie-api.com/assets/b87f9f5f-9ad7-4eb7-ae38-1fa5078aa024/image/jpeg/9495773f-8b60-4567-9197-2b4ade8ac867\"></p><p>Create a line plot to represent the data in the table.&nbsp;</p><p><em>To create the line plot, place your cursor over each category on the x-axis then click and drag the bar up to graph the correct number of Xs. If you need to change the number of Xs you place, click the X at the top of the bar then drag the bar up or down to show the number of Xs you need.&nbsp;</em></p><p></p>",
+          "element": "pie-element-charting"
+        }
+      ],
+      "_id": "d44150e0-d483-11f0-bd58-f12963df419e"
+    },
     "6529fd0c117b72a3375678cf": {
       "markup": "<drag-in-the-blank id=\"4028e4a24d2f79c6014d5450cb273fd5\"></drag-in-the-blank><div><span data-latex=\"\" data-raw=\"\\Sigma\\sin\\theta\">\\Sigma\\sin\\theta</span><span data-latex=\"\" data-raw=\"\\times\\longdiv{\\theta}\">\\times\\longdiv{\\theta}</span></div>",
       "elements": {
@@ -1078,7 +1207,7 @@ const seletctTextElement = "@pie-element/select-text@9.5.9-next.6";
       "buildInfo": [
         {
           "name": "@pie-element/passage",
-          "version": "latest"
+          "version": "6.2.0-next.3"
         }
       ]
     },
@@ -1159,7 +1288,7 @@ const seletctTextElement = "@pie-element/select-text@9.5.9-next.6";
       "buildInfo": [
         {
           "name": "@pie-element/passage",
-          "version": "latest"
+          "version": "6.2.0-next.3"
         }
       ]
     },
@@ -1551,7 +1680,7 @@ const seletctTextElement = "@pie-element/select-text@9.5.9-next.6";
       "buildInfo": [
         {
           "name": "@pie-element/passage",
-          "version": "latest"
+          "version": "6.2.0-next.3"
         }
       ]
     },
@@ -1588,7 +1717,7 @@ const seletctTextElement = "@pie-element/select-text@9.5.9-next.6";
       "buildInfo": [
         {
           "name": "@pie-element/passage",
-          "version": "latest"
+          "version": "6.2.0-next.3"
         }
       ]
     },
@@ -1673,7 +1802,7 @@ const seletctTextElement = "@pie-element/select-text@9.5.9-next.6";
       "buildInfo": [
         {
           "name": "@pie-element/passage",
-          "version": "latest"
+          "version": "6.2.0-next.3"
         }
       ]
     },
@@ -1747,7 +1876,7 @@ const seletctTextElement = "@pie-element/select-text@9.5.9-next.6";
       "buildInfo": [
         {
           "name": "@pie-element/passage",
-          "version": "latest"
+          "version": "6.2.0-next.3"
         }
       ]
     },
@@ -1777,7 +1906,7 @@ const seletctTextElement = "@pie-element/select-text@9.5.9-next.6";
       "buildInfo": [
         {
           "name": "@pie-element/passage",
-          "version": "latest"
+          "version": "6.2.0-next.3"
         }
       ]
     },
@@ -1807,7 +1936,7 @@ const seletctTextElement = "@pie-element/select-text@9.5.9-next.6";
       "buildInfo": [
         {
           "name": "@pie-element/passage",
-          "version": "latest"
+          "version": "6.2.0-next.3"
         }
       ]
     },
@@ -2184,7 +2313,7 @@ const seletctTextElement = "@pie-element/select-text@9.5.9-next.6";
       "buildInfo": [
         {
           "name": "@pie-element/passage",
-          "version": "latest"
+          "version": "6.2.0-next.3"
         }
       ]
     },
@@ -2470,7 +2599,7 @@ const seletctTextElement = "@pie-element/select-text@9.5.9-next.6";
       "buildInfo": [
         {
           "name": "@pie-element/passage",
-          "version": "latest"
+          "version": "6.2.0-next.3"
         }
       ]
     },
@@ -2500,7 +2629,7 @@ const seletctTextElement = "@pie-element/select-text@9.5.9-next.6";
       "buildInfo": [
         {
           "name": "@pie-element/passage",
-          "version": "latest"
+          "version": "6.2.0-next.3"
         }
       ]
     },
@@ -3063,7 +3192,7 @@ const seletctTextElement = "@pie-element/select-text@9.5.9-next.6";
       "buildInfo": [
         {
           "name": "@pie-element/passage",
-          "version": "latest"
+          "version": "6.2.0-next.3"
         }
       ]
     },
@@ -3152,7 +3281,7 @@ const seletctTextElement = "@pie-element/select-text@9.5.9-next.6";
       "buildInfo": [
         {
           "name": "@pie-element/passage",
-          "version": "latest"
+          "version": "6.2.0-next.3"
         }
       ]
     },
@@ -3182,7 +3311,7 @@ const seletctTextElement = "@pie-element/select-text@9.5.9-next.6";
       "buildInfo": [
         {
           "name": "@pie-element/passage",
-          "version": "latest"
+          "version": "6.2.0-next.3"
         }
       ]
     },
@@ -3767,7 +3896,7 @@ const seletctTextElement = "@pie-element/select-text@9.5.9-next.6";
       "buildInfo": [
         {
           "name": "@pie-element/passage",
-          "version": "latest"
+          "version": "6.2.0-next.3"
         }
       ]
     },
@@ -3797,7 +3926,7 @@ const seletctTextElement = "@pie-element/select-text@9.5.9-next.6";
       "buildInfo": [
         {
           "name": "@pie-element/passage",
-          "version": "latest"
+          "version": "6.2.0-next.3"
         }
       ]
     },
@@ -3827,7 +3956,7 @@ const seletctTextElement = "@pie-element/select-text@9.5.9-next.6";
       "buildInfo": [
         {
           "name": "@pie-element/passage",
-          "version": "latest"
+          "version": "6.2.0-next.3"
         }
       ]
     },
@@ -3857,7 +3986,7 @@ const seletctTextElement = "@pie-element/select-text@9.5.9-next.6";
     //     "buildInfo": [
     //     {
     //       "name": "@pie-element/passage",
-    //       "version": "latest"
+    //       "version": "6.2.0-next.3"
     //     }
     //   ]
     // },
@@ -3995,7 +4124,7 @@ const seletctTextElement = "@pie-element/select-text@9.5.9-next.6";
       "buildInfo": [
         {
           "name": "@pie-element/passage",
-          "version": "latest"
+          "version": "6.2.0-next.3"
         }
       ]
     },
@@ -4878,7 +5007,7 @@ const seletctTextElement = "@pie-element/select-text@9.5.9-next.6";
       "buildInfo": [
         {
           "name": "@pie-element/passage",
-          "version": "latest"
+          "version": "6.2.0-next.3"
         }
       ]
     },
@@ -4959,7 +5088,7 @@ const seletctTextElement = "@pie-element/select-text@9.5.9-next.6";
       "buildInfo": [
         {
           "name": "@pie-element/passage",
-          "version": "latest"
+          "version": "6.2.0-next.3"
         }
       ]
     },
@@ -5028,7 +5157,7 @@ const seletctTextElement = "@pie-element/select-text@9.5.9-next.6";
       "buildInfo": [
         {
           "name": "@pie-element/passage",
-          "version": "latest"
+          "version": "6.2.0-next.3"
         }
       ]
     },
@@ -5438,7 +5567,7 @@ const seletctTextElement = "@pie-element/select-text@9.5.9-next.6";
       "buildInfo": [
         {
           "name": "@pie-element/passage",
-          "version": "latest"
+          "version": "6.2.0-next.3"
         }
       ]
     },
@@ -6193,7 +6322,7 @@ const seletctTextElement = "@pie-element/select-text@9.5.9-next.6";
       "buildInfo": [
         {
           "name": "@pie-element/passage",
-          "version": "latest"
+          "version": "6.2.0-next.3"
         }
       ]
     },
@@ -6631,7 +6760,7 @@ const seletctTextElement = "@pie-element/select-text@9.5.9-next.6";
       "buildInfo": [
         {
           "name": "@pie-element/passage",
-          "version": "latest"
+          "version": "6.2.0-next.3"
         }
       ]
     },
@@ -6723,7 +6852,7 @@ const seletctTextElement = "@pie-element/select-text@9.5.9-next.6";
       "buildInfo": [
         {
           "name": "@pie-element/passage",
-          "version": "latest"
+          "version": "6.2.0-next.3"
         }
       ]
     },
@@ -9663,7 +9792,7 @@ const seletctTextElement = "@pie-element/select-text@9.5.9-next.6";
       "buildInfo": [
         {
           "name": "@pie-element/passage",
-          "version": "latest"
+          "version": "6.2.0-next.3"
         }
       ]
     },
@@ -9693,7 +9822,7 @@ const seletctTextElement = "@pie-element/select-text@9.5.9-next.6";
       "buildInfo": [
         {
           "name": "@pie-element/passage",
-          "version": "latest"
+          "version": "6.2.0-next.3"
         }
       ]
     },
@@ -9730,7 +9859,7 @@ const seletctTextElement = "@pie-element/select-text@9.5.9-next.6";
       "buildInfo": [
         {
           "name": "@pie-element/passage",
-          "version": "latest"
+          "version": "6.2.0-next.3"
         }
       ]
     },
@@ -9809,7 +9938,7 @@ const seletctTextElement = "@pie-element/select-text@9.5.9-next.6";
       "buildInfo": [
         {
           "name": "@pie-element/passage",
-          "version": "latest"
+          "version": "6.2.0-next.3"
         }
       ]
     },
@@ -9932,7 +10061,7 @@ const seletctTextElement = "@pie-element/select-text@9.5.9-next.6";
       "buildInfo": [
         {
           "name": "@pie-element/passage",
-          "version": "latest"
+          "version": "6.2.0-next.3"
         }
       ]
     },
@@ -9962,7 +10091,7 @@ const seletctTextElement = "@pie-element/select-text@9.5.9-next.6";
       "buildInfo": [
         {
           "name": "@pie-element/passage",
-          "version": "latest"
+          "version": "6.2.0-next.3"
         }
       ]
     },
@@ -10388,7 +10517,7 @@ const seletctTextElement = "@pie-element/select-text@9.5.9-next.6";
       "buildInfo": [
         {
           "name": "@pie-element/passage",
-          "version": "latest"
+          "version": "6.2.0-next.3"
         }
       ]
     },
@@ -10418,7 +10547,7 @@ const seletctTextElement = "@pie-element/select-text@9.5.9-next.6";
       "buildInfo": [
         {
           "name": "@pie-element/passage",
-          "version": "latest"
+          "version": "6.2.0-next.3"
         }
       ]
     },
@@ -10448,7 +10577,7 @@ const seletctTextElement = "@pie-element/select-text@9.5.9-next.6";
       "buildInfo": [
         {
           "name": "@pie-element/passage",
-          "version": "latest"
+          "version": "6.2.0-next.3"
         }
       ]
     }
