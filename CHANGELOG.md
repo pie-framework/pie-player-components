@@ -1,3 +1,10 @@
+# [3.15.0](https://github.com/pie-framework/pie-player-components/compare/v3.14.1...v3.15.0) (2026-04-07)
+
+
+### Features
+
+* bump math rendering module PIE-112, demo PIE-28 ([97f3ebf](https://github.com/pie-framework/pie-player-components/commit/97f3ebf427a57c4c65af0f00cf0c323df7350e24))
+
 ## [3.14.1](https://github.com/pie-framework/pie-player-components/compare/v3.14.0...v3.14.1) (2025-11-27)
 
 
