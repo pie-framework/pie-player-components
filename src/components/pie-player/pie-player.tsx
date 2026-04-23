@@ -207,6 +207,20 @@ export class Player {
    */
   @Prop() customClassname: string = "";
 
+  /**
+  * The level of the first heading emitted inside this player.
+  *
+  * Rewrites `<p data-heading="headingN">…</p>` →
+  * `<h{clamp(baseLevel + N − 1, 1, 6)} data-heading="headingN">…</h…>`,
+  * preserving the `data-heading` attribute so host CSS keyed on
+  * `[data-heading]` continues to match.
+  *
+  * Fast path: when `baseHeadingLevel` is `undefined` **or** the markup
+  * contains no `data-heading=` substring, the input is returned unchanged
+  * (the common case for legacy content, so the transform is effectively free).
+  */
+  @Prop() baseHeadingLevel?: 1 | 2 | 3 | 4 | 5 | 6;
+
   pieLoader = new PieLoader(null, this.loaderConfig);
   private loadingStyles = new Set<string>();
 
@@ -709,7 +723,8 @@ export class Player {
         bundleEndpoints: this.bundleEndpoints,
         addCorrectResponse: this.addCorrectResponse,
         reFetchBundle: this.reFetchBundle,
-        customClassname: this.customClassname
+        customClassname: this.customClassname,
+        baseHeadingLevel: this.baseHeadingLevel
       };
 
       if (this.renderStimulus) {
