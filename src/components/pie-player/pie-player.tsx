@@ -136,6 +136,20 @@ export class Player {
    */
   @Prop() renderStimulus: boolean = true;
 
+  /**
+   * The level of the first heading emitted inside this player.
+   *
+   * Rewrites `<p data-heading="headingN">…</p>` →
+   * `<h{clamp(baseLevel + N − 1, 1, 6)} data-heading="headingN">…</h…>`,
+   * preserving the `data-heading` attribute so host CSS keyed on
+   * `[data-heading]` continues to match.
+   *
+   * Fast path: when `baseHeadingLevel` is `undefined` **or** the markup
+   * contains no `data-heading=` substring, the input is returned unchanged
+   * (the common case for legacy content, so the transform is effectively free).
+   */
+  @Prop() baseHeadingLevel?: 1 | 2 | 3 | 4 | 5 | 6;
+
   @State() pieContentModel: PieContent;
 
   @State() stimulusItemModel: AdvancedItemConfig;
@@ -374,6 +388,7 @@ export class Player {
               hosted={this.hosted}
               session={this.session}
               ref={el => (this.stimulusPlayer = el as HTMLElement)}
+              baseHeadingLevel={this.baseHeadingLevel}
             />
           </div>
           <div slot="item">
@@ -384,6 +399,7 @@ export class Player {
               env={this.env}
               hosted={this.hosted}
               session={this.session}
+              baseHeadingLevel={this.baseHeadingLevel}
             />
           </div>
         </pie-stimulus-layout>
@@ -395,6 +411,7 @@ export class Player {
           env={this.env}
           hosted={this.hosted}
           session={this.session}
+          baseHeadingLevel={this.baseHeadingLevel}
         />
       );
     } else {

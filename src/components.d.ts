@@ -87,6 +87,10 @@ export namespace Components {
     */
     'addCorrectResponse': boolean;
     /**
+    * The level of the first heading emitted inside this player.  Rewrites `<p data-heading="headingN">…</p>` → `<h{clamp(baseLevel + N − 1, 1, 6)} data-heading="headingN">…</h…>`, preserving the `data-heading` attribute so host CSS keyed on `[data-heading]` continues to match.  Fast path: when `baseHeadingLevel` is `undefined` **or** the markup contains no `data-heading=` substring, the input is returned unchanged (the common case for legacy content, so the transform is effectively free).
+    */
+    'baseHeadingLevel'?: 1 | 2 | 3 | 4 | 5 | 6;
+    /**
     * Provide this property override the default endpoints used by the player to retrieve JS  bundles. Must be set before setting the config property. Most users will not need to use this property.
     */
     'bundleEndpoints'?: BundleEndpoints;
@@ -141,43 +145,43 @@ declare global {
 
 
   interface HTMLPieAuthorElement extends Components.PieAuthor, HTMLStencilElement {}
-  const HTMLPieAuthorElement: {
+  var HTMLPieAuthorElement: {
     prototype: HTMLPieAuthorElement;
     new (): HTMLPieAuthorElement;
   };
 
   interface HTMLPieLoaderElement extends Components.PieLoader, HTMLStencilElement {}
-  const HTMLPieLoaderElement: {
+  var HTMLPieLoaderElement: {
     prototype: HTMLPieLoaderElement;
     new (): HTMLPieLoaderElement;
   };
 
   interface HTMLPiePlayerElement extends Components.PiePlayer, HTMLStencilElement {}
-  const HTMLPiePlayerElement: {
+  var HTMLPiePlayerElement: {
     prototype: HTMLPiePlayerElement;
     new (): HTMLPiePlayerElement;
   };
 
   interface HTMLPiePreviewControlElement extends Components.PiePreviewControl, HTMLStencilElement {}
-  const HTMLPiePreviewControlElement: {
+  var HTMLPiePreviewControlElement: {
     prototype: HTMLPiePreviewControlElement;
     new (): HTMLPiePreviewControlElement;
   };
 
   interface HTMLPiePreviewLayoutElement extends Components.PiePreviewLayout, HTMLStencilElement {}
-  const HTMLPiePreviewLayoutElement: {
+  var HTMLPiePreviewLayoutElement: {
     prototype: HTMLPiePreviewLayoutElement;
     new (): HTMLPiePreviewLayoutElement;
   };
 
   interface HTMLPieSpinnerElement extends Components.PieSpinner, HTMLStencilElement {}
-  const HTMLPieSpinnerElement: {
+  var HTMLPieSpinnerElement: {
     prototype: HTMLPieSpinnerElement;
     new (): HTMLPieSpinnerElement;
   };
 
   interface HTMLPieStimulusLayoutElement extends Components.PieStimulusLayout, HTMLStencilElement {}
-  const HTMLPieStimulusLayoutElement: {
+  var HTMLPieStimulusLayoutElement: {
     prototype: HTMLPieStimulusLayoutElement;
     new (): HTMLPieStimulusLayoutElement;
   };
@@ -254,6 +258,10 @@ declare namespace LocalJSX {
     * Simulates a correct response for the item. This property will only have this effect if the `hosted` property is false and player is running client-side-only.
     */
     'addCorrectResponse'?: boolean;
+    /**
+    * The level of the first heading emitted inside this player.  Rewrites `<p data-heading="headingN">…</p>` → `<h{clamp(baseLevel + N − 1, 1, 6)} data-heading="headingN">…</h…>`, preserving the `data-heading` attribute so host CSS keyed on `[data-heading]` continues to match.  Fast path: when `baseHeadingLevel` is `undefined` **or** the markup contains no `data-heading=` substring, the input is returned unchanged (the common case for legacy content, so the transform is effectively free).
+    */
+    'baseHeadingLevel'?: 1 | 2 | 3 | 4 | 5 | 6;
     /**
     * Provide this property override the default endpoints used by the player to retrieve JS  bundles. Must be set before setting the config property. Most users will not need to use this property.
     */
