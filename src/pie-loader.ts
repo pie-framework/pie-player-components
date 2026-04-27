@@ -335,7 +335,7 @@ export class PieLoader extends NewRelicEnabledClient {
               whenDefinedWithTimeout(elName)
                 .then(() => {
                   this.registry[elName].status = Status.loaded;
-                  this.registry[elName].element = customElements.get(elName);
+                  this.registry[elName].element = customElements.get(elName) as unknown as Element;
                   this.registry[elName].controller = pie.controller;
                 })
                 .catch(err => {
@@ -359,9 +359,7 @@ export class PieLoader extends NewRelicEnabledClient {
                 whenDefinedWithTimeout(configElName)
                   .then(() => {
                     if (this.registry[elName]) {
-                      this.registry[elName].config = customElements.get(
-                        configElName
-                      );
+                      this.registry[elName].config = customElements.get(configElName) as unknown as Element;
                     }
                   })
                   .catch(err => {
@@ -443,7 +441,7 @@ export class PieLoader extends NewRelicEnabledClient {
 
           // if the request is successful, inject the response as a script tag to avoid doing the same call twice
           if (response.status === 200) {
-            await new Promise(resolve => {
+            await new Promise<void>(resolve => {
               script.onload = async () => {
                 try {
                   await onloadFn(); // runs after the script is loaded
@@ -493,7 +491,7 @@ export class PieLoader extends NewRelicEnabledClient {
 
       await loadScript();
     } else {
-      await new Promise(resolve => {
+      await new Promise<void>(resolve => {
         script.onload = async () => {
           try {
             await onloadFn(); // runs after the script is loaded

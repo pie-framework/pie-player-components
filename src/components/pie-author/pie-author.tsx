@@ -47,7 +47,6 @@ import {
   removeComplexRubricFromMarkup
 } from "../../rubric-utils";
 import { createTag, pieContentFromConfig } from "../../utils/utils";
-import { VERSION } from "../../version";
 import {
   DataURLImageSupport,
   ExternalImageSupport
@@ -56,6 +55,7 @@ import {
   DataURLUploadSoundSupport,
   ExternalUploadSoundSupport
 } from "./dataurl-upload-sound-support";
+import { APP_VERSION } from '../../defaults';
 
 /**
  * Pie Author will load a Pie Content model for authoring.
@@ -69,7 +69,9 @@ import {
 export class Author {
   _modelLoadedState: boolean = false;
 
-  @Prop({ context: "document" }) doc!: Document;
+  get doc(): Document {
+    return this.el.ownerDocument;
+  }
 
   /**
    * Optionally specifies the back-end that builds and hosts javascript bundles for rendering assessment items.
@@ -152,7 +154,7 @@ export class Author {
 
   pieContentModel: PieContent;
 
-  pieLoader = new PieLoader(null, this.loaderConfig);
+  pieLoader: PieLoader;
 
   renderMarkup: String;
 
@@ -181,7 +183,7 @@ export class Author {
   uploadSoundSupport: ExternalUploadSoundSupport = new DataURLUploadSoundSupport();
 
   @Prop({ mutable: false, reflect: false })
-  version: string = VERSION;
+  version: string = APP_VERSION;
 
   /**
    * used in our demo environment to allow author to watch config settings and make updates
@@ -689,7 +691,7 @@ export class Author {
     }
   }
 
-  componentDidUnload() {
+  disconnectedCallback() {
     this.el.removeEventListener(InsertImageEvent.TYPE, this.handleInsertImage);
     this.el.removeEventListener(DeleteImageEvent.TYPE, this.handleDeleteImage);
 
@@ -704,6 +706,8 @@ export class Author {
   }
 
   async componentWillLoad() {
+    this.pieLoader = new PieLoader(null, this.loaderConfig);
+
     if (this.config) {
       this.watchConfig(this.config, {});
     }

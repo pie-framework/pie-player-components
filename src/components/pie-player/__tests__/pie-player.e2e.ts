@@ -123,7 +123,8 @@ describe("pie-player", () => {
     // const loadCompleteSpy = await page.spyOnEvent("load-complete");
     const sessionChangedSpy = await page.spyOnEvent("session-changed");
     await page.waitForChanges();
-    await page.waitFor(200);
+    await new Promise((r) => setTimeout(r, 200));
+
     // expect(loadCompleteSpy).toHaveReceivedEventTimes(1);
     expect(sessionChangedSpy).toHaveReceivedEventTimes(0);
   });

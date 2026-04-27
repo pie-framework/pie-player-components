@@ -30,7 +30,7 @@ import {
 } from "../../pie-loader";
 import { addRubric } from "../../rubric-utils";
 import { normalizeContentElements } from "../../utils/utils";
-import { VERSION } from "../../version";
+import { APP_VERSION } from '../../defaults';
 
 const controllerErrorMessage: string =
   "Error processing question configuration, verify the question model?";
@@ -46,7 +46,9 @@ export class Player {
    */
   stimulusPlayer: HTMLElement;
 
-  @Prop({ context: "document" }) doc!: Document;
+  get doc(): Document {
+    return this.el.ownerDocument;
+  }
 
   /**
    * Optionally specifies the back-end that builds and hosts javascript bundles for rendering assessment items.
@@ -163,7 +165,7 @@ export class Player {
   @Prop() renderStimulus: boolean = true;
 
   @Prop({ mutable: false, reflect: false })
-  version: string = VERSION;
+  version: string = APP_VERSION;
 
   /**
    * Allow to resize pie-stimulus layout
@@ -221,7 +223,8 @@ export class Player {
   */
   @Prop() baseHeadingLevel?: 1 | 2 | 3 | 4 | 5 | 6;
 
-  pieLoader = new PieLoader(null, this.loaderConfig);
+  pieLoader: PieLoader;
+
   private loadingStyles = new Set<string>();
 
   player() {
@@ -523,6 +526,8 @@ export class Player {
   }
 
   async componentWillLoad() {
+    this.pieLoader = new PieLoader(null, this.loaderConfig);
+
     if (this.config) {
       this.watchConfig(this.config);
     }

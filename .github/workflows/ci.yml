@@ -1,0 +1,86 @@
+name: PIE Player Components CI
+
+on:
+  push:
+    branches: [develop, master]
+  pull_request:
+    branches: [develop, master]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # REQUIRED for lerna version
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: yarn
+      - run: yarn install --frozen-lockfile
+      - run: yarn run test
+        env:
+          PUPPETEER_SKIP_DOWNLOAD: false
+
+  build-next:
+    needs: test
+    if: >
+      github.event_name == 'push' &&
+      github.ref == 'refs/heads/develop'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write   # REQUIRED for npm trusted publishing
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # REQUIRED for lerna version
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org/
+          cache: yarn
+      - run: yarn install --frozen-lockfile
+        env:
+          PUPPETEER_SKIP_DOWNLOAD: false
+      - run: yarn run build:dev
+      - run: yarn run semantic-release
+
+  build-release:
+    needs: test
+    if: >
+      github.event_name == 'push' &&
+      github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write   # REQUIRED for npm trusted publishing
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # REQUIRED for lerna version
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+      - name: Prune orphaned Git tags
+        run: |
+          git fetch origin --prune --tags --force
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org/
+          cache: yarn
+      - run: yarn install --frozen-lockfile
+        env:
+          PUPPETEER_SKIP_DOWNLOAD: false
+      - run: yarn run build
+      - run: yarn run semantic-release
