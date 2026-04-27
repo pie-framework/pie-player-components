@@ -114,6 +114,10 @@ export namespace Components {
     */
     'allowedResize'?: boolean;
     /**
+    * The level of the first heading emitted inside this player.  Rewrites `<p data-heading="headingN">…</p>` → `<h{clamp(baseLevel + N − 1, 1, 6)} data-heading="headingN">…</h…>`, preserving the `data-heading` attribute so host CSS keyed on `[data-heading]` continues to match.  Fast path: when `baseHeadingLevel` is `undefined` **or** the markup contains no `data-heading=` substring, the input is returned unchanged (the common case for legacy content, so the transform is effectively free).
+    */
+    'baseHeadingLevel'?: 1 | 2 | 3 | 4 | 5 | 6;
+    /**
     * Provide this property override the default endpoints used by the player to retrieve JS bundles. Must be set before setting the config property. Most users will not need to use this property.
     */
     'bundleEndpoints'?: BundleEndpoints;
@@ -332,6 +336,10 @@ declare namespace LocalJSX {
     * Allow to resize pie-stimulus layout Set this property to false to not render the resizer.
     */
     'allowedResize'?: boolean;
+    /**
+    * The level of the first heading emitted inside this player.  Rewrites `<p data-heading="headingN">…</p>` → `<h{clamp(baseLevel + N − 1, 1, 6)} data-heading="headingN">…</h…>`, preserving the `data-heading` attribute so host CSS keyed on `[data-heading]` continues to match.  Fast path: when `baseHeadingLevel` is `undefined` **or** the markup contains no `data-heading=` substring, the input is returned unchanged (the common case for legacy content, so the transform is effectively free).
+    */
+    'baseHeadingLevel'?: 1 | 2 | 3 | 4 | 5 | 6;
     /**
     * Provide this property override the default endpoints used by the player to retrieve JS bundles. Must be set before setting the config property. Most users will not need to use this property.
     */
