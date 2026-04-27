@@ -1,3 +1,15 @@
+# [3.16.0](https://github.com/pie-framework/pie-player-components/compare/v3.15.0...v3.16.0) (2026-04-27)
+
+
+### Bug Fixes
+
+* bump math-rendering-module PIE-423 ([b1e07de](https://github.com/pie-framework/pie-player-components/commit/b1e07de0f215264f1d5a5ffd61e0d6ec54532dad))
+
+
+### Features
+
+* add baseHeadingLevel prop to player for heading control PIE-151 ([660ccdc](https://github.com/pie-framework/pie-player-components/commit/660ccdc89008dfd5069858d1d1ddd366a9a5a21a))
+
 # [3.15.0](https://github.com/pie-framework/pie-player-components/compare/v3.14.1...v3.15.0) (2026-04-07)
 
 
