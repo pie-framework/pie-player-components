@@ -7,6 +7,7 @@ export const config: Config = {
     APP_VERSION: process.env.npm_package_version,
   },
   testing: {
+    browserArgs: ['--no-sandbox', '--disable-setuid-sandbox'],
     moduleNameMapper: {
       '^@pie-lib/math-rendering-module/module$':
         '<rootDir>/src/test-mocks/math-rendering-module.js',
