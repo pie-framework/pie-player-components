@@ -52,13 +52,6 @@ It needs to be run in the context
 Utility method to add a `@pie-element/multi-trait-rubric` section to an item config when creating an item should be used before setting the config.
 *
 
-#### Parameters
-
-| Name                    | Type                               | Description               |
-| ----------------------- | ---------------------------------- | ------------------------- |
-| `config`                | `PieContent \| AdvancedItemConfig` | the item config to mutate |
-| `multiTraitRubricModel` | `any`                              |                           |
-
 #### Returns
 
 Type: `Promise<PieContent>`
@@ -68,13 +61,6 @@ Type: `Promise<PieContent>`
 ### `addRubricToConfig(config: ItemConfig, rubricModel?: any) => Promise<PieContent>`
 
 <span style="color:red">**[DEPRECATED]**</span> this method is for temporary use, will be removed at next major release<br/><br/>Utility method to add a `@pie-element/rubric` section to an item config when creating an item should be used before setting the config.
-
-#### Parameters
-
-| Name          | Type                               | Description               |
-| ------------- | ---------------------------------- | ------------------------- |
-| `config`      | `PieContent \| AdvancedItemConfig` | the item config to mutate |
-| `rubricModel` | `any`                              |                           |
 
 #### Returns
 

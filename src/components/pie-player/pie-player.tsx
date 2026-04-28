@@ -46,10 +46,6 @@ export class Player {
    */
   stimulusPlayer: HTMLElement;
 
-  get doc(): Document {
-    return this.el.ownerDocument;
-  }
-
   /**
    * Optionally specifies the back-end that builds and hosts javascript bundles for rendering assessment items.
    * This property lets you choose which environment to use, from 'dev' , 'stage' or 'prod' environments.
@@ -207,7 +203,7 @@ export class Player {
    * This is useful for styling the pie-player component in a specific way, without affecting other
    * components that may use the same styles.
    */
-  @Prop() customClassname: string = "";
+  @Prop({ mutable: true }) customClassname: string = "";
 
   /**
   * The level of the first heading emitted inside this player.
@@ -280,7 +276,7 @@ export class Player {
 
         await this.pieLoader.loadCloudPies({
           content: this.pieContentModel,
-          doc: this.doc,
+          doc: document,
           endpoints: endpoints,
           bundle: this.hosted ? BundleType.player : BundleType.clientPlayer,
           useCdn: false,

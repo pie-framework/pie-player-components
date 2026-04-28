@@ -27,7 +27,6 @@ export namespace Components {
         "addMultiTraitRubricToConfig": (config: ItemConfig, multiTraitRubricModel?: any) => Promise<PieContent>;
         /**
           * Adds a preview view which will render the content in another tab as it may appear to a student or instructor.
-          * @default false
          */
         "addPreview": boolean;
         /**
@@ -52,8 +51,7 @@ export namespace Components {
         /**
           * used in our demo environment to allow author to watch config settings and make updates defaults to false (do not set it to true because it was not tested properly)
           * @type {boolean}
-          * @private 
-          * @default false
+          * @private
          */
         "canWatchConfigSettings": boolean;
         /**
@@ -70,17 +68,14 @@ export namespace Components {
         "defaultComplexRubricModel"?: Object;
         /**
           * Allows disabling of the default behaviour which is to look up and load the JS bundle that define the Custom Elements used by the item config. This if for advanced use cases when using the pie-player in a container that is managing loading of Custom Elements and Controllers.
-          * @default false
          */
         "disableBundler": boolean;
         /**
           * external providers can set this if they need to upload the assets to the cloud etc. by default we use data urls
-          * @default new DataURLImageSupport()
          */
         "imageSupport": ExternalImageSupport;
         /**
           * If pie-author is used inside pie-api-author component. Do not set it manually.
-          * @default false
          */
         "isInsidePieApiAuthor"?: boolean;
         /**
@@ -89,18 +84,13 @@ export namespace Components {
         "loaderConfig": LoaderConfig;
         /**
           * used to automatically re-fetch the bundle (in case we get a 503)
-          * @default false
          */
         "reFetchBundle"?: boolean;
         /**
           * external providers can set this if they need to upload the assets to the cloud etc. by default we use data urls
-          * @default new DataURLUploadSoundSupport()
          */
         "uploadSoundSupport": ExternalUploadSoundSupport;
         "validateModels": () => Promise<any>;
-        /**
-          * @default APP_VERSION
-         */
         "version": string;
     }
     interface PieEmbed {
@@ -108,12 +98,10 @@ export namespace Components {
     interface PiePlayer {
         /**
           * Simulates a correct response for the item. This property will only have this effect if the `hosted` property is false and player is running client-side-only.
-          * @default false
          */
         "addCorrectResponse": boolean;
         /**
           * Allow to resize pie-stimulus layout Set this property to false to not render the resizer.
-          * @default false
          */
         "allowedResize"?: boolean;
         /**
@@ -138,28 +126,23 @@ export namespace Components {
         "containerClass"?: string;
         /**
           * A custom class name to scope the styles to the pie-player component. The custom class name is used to scope the styles from the externalStyleUrls property, by using the pie-player.[CUSTOM_CLASS] selector. If not provided, a random class will be generated, such as `pie-player-abc12345`. This is useful for styling the pie-player component in a specific way, without affecting other components that may use the same styles.
-          * @default ""
          */
         "customClassname": string;
         /**
           * Allows disabling of the default behaviour which is to look up and load the JS bundle that define the Custom Elements used by the item config. This if for advanced use cases when using the pie-player in a container that is managing loading of Custom Elements and Controllers.
-          * @default false
          */
         "disableBundler": boolean;
         /**
           * Describes runtime environment for the player.
-          * @default { mode: "gather", role: "student" }
          */
         "env": Env;
         /**
           * Support styling with external stylesheet urls (comma separated urls) Target the pie-player component using the class provided in the class property Parse the css file and add the class to the stylesheet to scope the styles The last stylesheet url takes priority if the selectors have the same specificity. If no class is provided, a random class will be generated to scope the styles. We did not use the shadow DOM for the pie-player component, so we need to scope the styles manually.
           * @example <pie-player external-style-urls="https://example.com/style.css,https://example.com/another-style.css"             custom-classname="my-custom-class"></pie-player> This will load the styles from the provided URLs and scope them to the pie-player component using the pie-player.my-custom-class selector. If no custom class name is provided, a random class will be generated, such as `pie-player-abc12345`.
-          * @default ""
          */
         "externalStyleUrls": string;
         /**
           * Indicates if player running in the context of a PIE hosting system. Do not modify the default value for this property if you are not implementing a PIE host. If true, the host is responsible for all model updates.
-          * @default false
          */
         "hosted"?: boolean;
         /**
@@ -173,22 +156,18 @@ export namespace Components {
         "provideScore": () => Promise<false | any[]>;
         /**
           * used to automatically re-fetch the bundle (in case we get a 503)
-          * @default false
          */
         "reFetchBundle"?: boolean;
         /**
           * If the item contains a stimulus, the player will render it by default. Set this property to false to not render stimulus.
-          * @default true
          */
         "renderStimulus": boolean;
         /**
           * The Pie Session
-          * @default { id: "", data: [] }
          */
         "session": ItemSession;
         /**
           * In evaluate mode, add a bottom border to visually separate each item in the case of a multi-item
-          * @default false
          */
         "showBottomBorder": boolean;
         /**
@@ -196,9 +175,6 @@ export namespace Components {
           * @param update the updated model
          */
         "updateElementModel": (update: PieModel) => Promise<void>;
-        /**
-          * @default APP_VERSION
-         */
         "version": string;
     }
     interface PiePreviewControl {
@@ -209,14 +185,10 @@ export namespace Components {
     interface PieSpinner {
         /**
           * Shows the spinner
-          * @default true
          */
         "active": boolean;
     }
     interface PieStimulusLayout {
-        /**
-          * @default false
-         */
         "allowedResize"?: boolean;
     }
 }
@@ -233,23 +205,11 @@ export interface PiePreviewControlCustomEvent<T> extends CustomEvent<T> {
     target: HTMLPiePreviewControlElement;
 }
 declare global {
-    interface HTMLPieAuthorElementEventMap {
-        "modelUpdated": any;
-        "modelLoaded": any;
-    }
     /**
      * Pie Author will load a Pie Content model for authoring.
      * It needs to be run in the context
      */
     interface HTMLPieAuthorElement extends Components.PieAuthor, HTMLStencilElement {
-        addEventListener<K extends keyof HTMLPieAuthorElementEventMap>(type: K, listener: (this: HTMLPieAuthorElement, ev: PieAuthorCustomEvent<HTMLPieAuthorElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLPieAuthorElementEventMap>(type: K, listener: (this: HTMLPieAuthorElement, ev: PieAuthorCustomEvent<HTMLPieAuthorElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLPieAuthorElement: {
         prototype: HTMLPieAuthorElement;
@@ -261,38 +221,13 @@ declare global {
         prototype: HTMLPieEmbedElement;
         new (): HTMLPieEmbedElement;
     };
-    interface HTMLPiePlayerElementEventMap {
-        "session-changed": any;
-        "player-error": any;
-        "responseCompleted": any;
-        "load-complete": any;
-    }
     interface HTMLPiePlayerElement extends Components.PiePlayer, HTMLStencilElement {
-        addEventListener<K extends keyof HTMLPiePlayerElementEventMap>(type: K, listener: (this: HTMLPiePlayerElement, ev: PiePlayerCustomEvent<HTMLPiePlayerElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLPiePlayerElementEventMap>(type: K, listener: (this: HTMLPiePlayerElement, ev: PiePlayerCustomEvent<HTMLPiePlayerElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLPiePlayerElement: {
         prototype: HTMLPiePlayerElement;
         new (): HTMLPiePlayerElement;
     };
-    interface HTMLPiePreviewControlElementEventMap {
-        "envChanged": any;
-    }
     interface HTMLPiePreviewControlElement extends Components.PiePreviewControl, HTMLStencilElement {
-        addEventListener<K extends keyof HTMLPiePreviewControlElementEventMap>(type: K, listener: (this: HTMLPiePreviewControlElement, ev: PiePreviewControlCustomEvent<HTMLPiePreviewControlElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLPiePreviewControlElementEventMap>(type: K, listener: (this: HTMLPiePreviewControlElement, ev: PiePreviewControlCustomEvent<HTMLPiePreviewControlElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLPiePreviewControlElement: {
         prototype: HTMLPiePreviewControlElement;
@@ -334,7 +269,6 @@ declare namespace LocalJSX {
     interface PieAuthor {
         /**
           * Adds a preview view which will render the content in another tab as it may appear to a student or instructor.
-          * @default false
          */
         "addPreview"?: boolean;
         /**
@@ -352,8 +286,7 @@ declare namespace LocalJSX {
         /**
           * used in our demo environment to allow author to watch config settings and make updates defaults to false (do not set it to true because it was not tested properly)
           * @type {boolean}
-          * @private 
-          * @default false
+          * @private
          */
         "canWatchConfigSettings"?: boolean;
         /**
@@ -370,17 +303,14 @@ declare namespace LocalJSX {
         "defaultComplexRubricModel"?: Object;
         /**
           * Allows disabling of the default behaviour which is to look up and load the JS bundle that define the Custom Elements used by the item config. This if for advanced use cases when using the pie-player in a container that is managing loading of Custom Elements and Controllers.
-          * @default false
          */
         "disableBundler"?: boolean;
         /**
           * external providers can set this if they need to upload the assets to the cloud etc. by default we use data urls
-          * @default new DataURLImageSupport()
          */
         "imageSupport"?: ExternalImageSupport;
         /**
           * If pie-author is used inside pie-api-author component. Do not set it manually.
-          * @default false
          */
         "isInsidePieApiAuthor"?: boolean;
         /**
@@ -397,17 +327,12 @@ declare namespace LocalJSX {
         "onModelUpdated"?: (event: PieAuthorCustomEvent<any>) => void;
         /**
           * used to automatically re-fetch the bundle (in case we get a 503)
-          * @default false
          */
         "reFetchBundle"?: boolean;
         /**
           * external providers can set this if they need to upload the assets to the cloud etc. by default we use data urls
-          * @default new DataURLUploadSoundSupport()
          */
         "uploadSoundSupport"?: ExternalUploadSoundSupport;
-        /**
-          * @default APP_VERSION
-         */
         "version"?: string;
     }
     interface PieEmbed {
@@ -415,12 +340,10 @@ declare namespace LocalJSX {
     interface PiePlayer {
         /**
           * Simulates a correct response for the item. This property will only have this effect if the `hosted` property is false and player is running client-side-only.
-          * @default false
          */
         "addCorrectResponse"?: boolean;
         /**
           * Allow to resize pie-stimulus layout Set this property to false to not render the resizer.
-          * @default false
          */
         "allowedResize"?: boolean;
         /**
@@ -445,28 +368,23 @@ declare namespace LocalJSX {
         "containerClass"?: string;
         /**
           * A custom class name to scope the styles to the pie-player component. The custom class name is used to scope the styles from the externalStyleUrls property, by using the pie-player.[CUSTOM_CLASS] selector. If not provided, a random class will be generated, such as `pie-player-abc12345`. This is useful for styling the pie-player component in a specific way, without affecting other components that may use the same styles.
-          * @default ""
          */
         "customClassname"?: string;
         /**
           * Allows disabling of the default behaviour which is to look up and load the JS bundle that define the Custom Elements used by the item config. This if for advanced use cases when using the pie-player in a container that is managing loading of Custom Elements and Controllers.
-          * @default false
          */
         "disableBundler"?: boolean;
         /**
           * Describes runtime environment for the player.
-          * @default { mode: "gather", role: "student" }
          */
         "env"?: Env;
         /**
           * Support styling with external stylesheet urls (comma separated urls) Target the pie-player component using the class provided in the class property Parse the css file and add the class to the stylesheet to scope the styles The last stylesheet url takes priority if the selectors have the same specificity. If no class is provided, a random class will be generated to scope the styles. We did not use the shadow DOM for the pie-player component, so we need to scope the styles manually.
           * @example <pie-player external-style-urls="https://example.com/style.css,https://example.com/another-style.css"             custom-classname="my-custom-class"></pie-player> This will load the styles from the provided URLs and scope them to the pie-player component using the pie-player.my-custom-class selector. If no custom class name is provided, a random class will be generated, such as `pie-player-abc12345`.
-          * @default ""
          */
         "externalStyleUrls"?: string;
         /**
           * Indicates if player running in the context of a PIE hosting system. Do not modify the default value for this property if you are not implementing a PIE host. If true, the host is responsible for all model updates.
-          * @default false
          */
         "hosted"?: boolean;
         /**
@@ -495,27 +413,20 @@ declare namespace LocalJSX {
         "passageContainerClass"?: string;
         /**
           * used to automatically re-fetch the bundle (in case we get a 503)
-          * @default false
          */
         "reFetchBundle"?: boolean;
         /**
           * If the item contains a stimulus, the player will render it by default. Set this property to false to not render stimulus.
-          * @default true
          */
         "renderStimulus"?: boolean;
         /**
           * The Pie Session
-          * @default { id: "", data: [] }
          */
         "session"?: ItemSession;
         /**
           * In evaluate mode, add a bottom border to visually separate each item in the case of a multi-item
-          * @default false
          */
         "showBottomBorder"?: boolean;
-        /**
-          * @default APP_VERSION
-         */
         "version"?: string;
     }
     interface PiePreviewControl {
@@ -527,58 +438,20 @@ declare namespace LocalJSX {
     interface PieSpinner {
         /**
           * Shows the spinner
-          * @default true
          */
         "active"?: boolean;
     }
     interface PieStimulusLayout {
-        /**
-          * @default false
-         */
         "allowedResize"?: boolean;
     }
-
-    interface PieAuthorAttributes {
-        "bundleHost": string;
-        "disableBundler": boolean;
-        "addRubric": boolean;
-        "addPreview": boolean;
-        "isInsidePieApiAuthor": boolean;
-        "version": string;
-        "canWatchConfigSettings": boolean;
-        "reFetchBundle": boolean;
-    }
-    interface PiePlayerAttributes {
-        "bundleHost": string;
-        "disableBundler": boolean;
-        "addCorrectResponse": boolean;
-        "showBottomBorder": boolean;
-        "reFetchBundle": boolean;
-        "hosted": boolean;
-        "renderStimulus": boolean;
-        "version": string;
-        "allowedResize": boolean;
-        "passageContainerClass": string;
-        "containerClass": string;
-        "externalStyleUrls": string;
-        "customClassname": string;
-        "baseHeadingLevel": 1 | 2 | 3 | 4 | 5 | 6;
-    }
-    interface PieSpinnerAttributes {
-        "active": boolean;
-    }
-    interface PieStimulusLayoutAttributes {
-        "allowedResize": boolean;
-    }
-
     interface IntrinsicElements {
-        "pie-author": Omit<PieAuthor, keyof PieAuthorAttributes> & { [K in keyof PieAuthor & keyof PieAuthorAttributes]?: PieAuthor[K] } & { [K in keyof PieAuthor & keyof PieAuthorAttributes as `attr:${K}`]?: PieAuthorAttributes[K] } & { [K in keyof PieAuthor & keyof PieAuthorAttributes as `prop:${K}`]?: PieAuthor[K] };
+        "pie-author": PieAuthor;
         "pie-embed": PieEmbed;
-        "pie-player": Omit<PiePlayer, keyof PiePlayerAttributes> & { [K in keyof PiePlayer & keyof PiePlayerAttributes]?: PiePlayer[K] } & { [K in keyof PiePlayer & keyof PiePlayerAttributes as `attr:${K}`]?: PiePlayerAttributes[K] } & { [K in keyof PiePlayer & keyof PiePlayerAttributes as `prop:${K}`]?: PiePlayer[K] };
+        "pie-player": PiePlayer;
         "pie-preview-control": PiePreviewControl;
         "pie-preview-layout": PiePreviewLayout;
-        "pie-spinner": Omit<PieSpinner, keyof PieSpinnerAttributes> & { [K in keyof PieSpinner & keyof PieSpinnerAttributes]?: PieSpinner[K] } & { [K in keyof PieSpinner & keyof PieSpinnerAttributes as `attr:${K}`]?: PieSpinnerAttributes[K] } & { [K in keyof PieSpinner & keyof PieSpinnerAttributes as `prop:${K}`]?: PieSpinner[K] };
-        "pie-stimulus-layout": Omit<PieStimulusLayout, keyof PieStimulusLayoutAttributes> & { [K in keyof PieStimulusLayout & keyof PieStimulusLayoutAttributes]?: PieStimulusLayout[K] } & { [K in keyof PieStimulusLayout & keyof PieStimulusLayoutAttributes as `attr:${K}`]?: PieStimulusLayoutAttributes[K] } & { [K in keyof PieStimulusLayout & keyof PieStimulusLayoutAttributes as `prop:${K}`]?: PieStimulusLayout[K] };
+        "pie-spinner": PieSpinner;
+        "pie-stimulus-layout": PieStimulusLayout;
     }
 }
 export { LocalJSX as JSX };
@@ -589,13 +462,13 @@ declare module "@stencil/core" {
              * Pie Author will load a Pie Content model for authoring.
              * It needs to be run in the context
              */
-            "pie-author": LocalJSX.IntrinsicElements["pie-author"] & JSXBase.HTMLAttributes<HTMLPieAuthorElement>;
-            "pie-embed": LocalJSX.IntrinsicElements["pie-embed"] & JSXBase.HTMLAttributes<HTMLPieEmbedElement>;
-            "pie-player": LocalJSX.IntrinsicElements["pie-player"] & JSXBase.HTMLAttributes<HTMLPiePlayerElement>;
-            "pie-preview-control": LocalJSX.IntrinsicElements["pie-preview-control"] & JSXBase.HTMLAttributes<HTMLPiePreviewControlElement>;
-            "pie-preview-layout": LocalJSX.IntrinsicElements["pie-preview-layout"] & JSXBase.HTMLAttributes<HTMLPiePreviewLayoutElement>;
-            "pie-spinner": LocalJSX.IntrinsicElements["pie-spinner"] & JSXBase.HTMLAttributes<HTMLPieSpinnerElement>;
-            "pie-stimulus-layout": LocalJSX.IntrinsicElements["pie-stimulus-layout"] & JSXBase.HTMLAttributes<HTMLPieStimulusLayoutElement>;
+            "pie-author": LocalJSX.PieAuthor & JSXBase.HTMLAttributes<HTMLPieAuthorElement>;
+            "pie-embed": LocalJSX.PieEmbed & JSXBase.HTMLAttributes<HTMLPieEmbedElement>;
+            "pie-player": LocalJSX.PiePlayer & JSXBase.HTMLAttributes<HTMLPiePlayerElement>;
+            "pie-preview-control": LocalJSX.PiePreviewControl & JSXBase.HTMLAttributes<HTMLPiePreviewControlElement>;
+            "pie-preview-layout": LocalJSX.PiePreviewLayout & JSXBase.HTMLAttributes<HTMLPiePreviewLayoutElement>;
+            "pie-spinner": LocalJSX.PieSpinner & JSXBase.HTMLAttributes<HTMLPieSpinnerElement>;
+            "pie-stimulus-layout": LocalJSX.PieStimulusLayout & JSXBase.HTMLAttributes<HTMLPieStimulusLayoutElement>;
         }
     }
 }

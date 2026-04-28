@@ -7,10 +7,6 @@ import { load } from "./new-loader";
   shadow: false
 })
 export class Embed {
-  get doc(): Document {
-    return this.el.ownerDocument;
-  }
-
   @State()
   tag: string;
 

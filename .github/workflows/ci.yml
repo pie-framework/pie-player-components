@@ -21,10 +21,36 @@ jobs:
         with:
           node-version: 24
           cache: yarn
-      - run: yarn install --frozen-lockfile
-      - run: yarn run test
+      - name: Cache Puppeteer Chrome
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/puppeteer
+          key: puppeteer-chrome-115.0.5790.98
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
         env:
-          PUPPETEER_SKIP_DOWNLOAD: false
+          PUPPETEER_SKIP_DOWNLOAD: true
+      - name: Install Chrome for Puppeteer (v115.0.5790.98)
+        run: node node_modules/puppeteer/install.js
+      - name: Install Chrome system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libgbm1 \
+            libnss3 \
+            libnspr4 \
+            libatk1.0-0 \
+            libatk-bridge2.0-0 \
+            libcups2 \
+            libdrm2 \
+            libxkbcommon0 \
+            libxcomposite1 \
+            libxdamage1 \
+            libxfixes3 \
+            libxrandr2 \
+            libxss1 \
+            fonts-liberation
+      - run: yarn run test
 
   build-next:
     needs: test
@@ -50,7 +76,7 @@ jobs:
           cache: yarn
       - run: yarn install --frozen-lockfile
         env:
-          PUPPETEER_SKIP_DOWNLOAD: false
+          PUPPETEER_SKIP_DOWNLOAD: true
       - run: yarn run build:dev
       - run: yarn run semantic-release
 
@@ -81,6 +107,6 @@ jobs:
           cache: yarn
       - run: yarn install --frozen-lockfile
         env:
-          PUPPETEER_SKIP_DOWNLOAD: false
+          PUPPETEER_SKIP_DOWNLOAD: true
       - run: yarn run build
       - run: yarn run semantic-release

@@ -69,10 +69,6 @@ import { APP_VERSION } from '../../defaults';
 export class Author {
   _modelLoadedState: boolean = false;
 
-  get doc(): Document {
-    return this.el.ownerDocument;
-  }
-
   /**
    * Optionally specifies the back-end that builds and hosts javascript bundles for rendering assessment items.
    * This property lets you choose which environment to use, from 'dev' , 'stage' or 'prod' environments.
@@ -145,7 +141,7 @@ export class Author {
   /**
    * To provide a way to add a default model to complex-rubric
    */
-  @Prop() defaultComplexRubricModel?: Object;
+  @Prop({ mutable: true }) defaultComplexRubricModel?: Object;
 
   /**
    * If pie-author is used inside pie-api-author component. Do not set it manually.
@@ -524,7 +520,7 @@ export class Author {
     const { markupWithoutComplexRubric } = removeComplexRubricFromMarkup(
       pieContentModel,
       [rubricElement],
-      this.doc
+      document
     );
 
     // delete the rubric nodes from markup
@@ -554,7 +550,7 @@ export class Author {
     } = removeComplexRubricFromMarkup(
       pieContentModel,
       rubricElements,
-      this.doc
+      document
     );
 
     // delete the complex-rubric nodes from markup
@@ -625,7 +621,7 @@ export class Author {
         this.pieContentModel.models = [];
       }
 
-      const tempDiv = this.doc.createElement("div");
+      const tempDiv = document.createElement("div");
       tempDiv.innerHTML = this.pieContentModel.markup;
       const elsWithId = tempDiv.querySelectorAll("[id]");
 
@@ -837,7 +833,7 @@ export class Author {
 
       await this.pieLoader.loadCloudPies({
         content: this.pieContentModel,
-        doc: this.doc,
+        doc: document,
         endpoints,
         useCdn: false,
         forceBundleUrl,

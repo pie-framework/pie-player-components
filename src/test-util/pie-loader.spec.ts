@@ -3,7 +3,7 @@ import { PieItemElement } from '../interface';
 import { MockPieLoader } from "./mockPieLoader";
 
 
-describe('hande registry  packages', () => {
+describe('handle registry packages', () => {
   const loader = new MockPieLoader();
   const registry = {};
 
@@ -48,7 +48,6 @@ describe('hande registry  packages', () => {
     expect(result).toBeDefined();
     expect(Object.keys(result2).length).toEqual(1);
     expect(result2['math-inline']).toBeDefined();
-
   });
 
   it('add packages if registry entry is missing needed constructor', () => {
@@ -61,6 +60,5 @@ describe('hande registry  packages', () => {
     expect(result2).toBeDefined();
     expect(Object.keys(result2).length).toEqual(3);
     expect(result2['math-inline']).toBeDefined();
-
   });
 });

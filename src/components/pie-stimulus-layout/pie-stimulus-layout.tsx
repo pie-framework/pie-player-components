@@ -35,7 +35,7 @@ export class PieStimulusLayout {
     PieStimulusLayout.handleElements();
   }
 
-  disconnectedCallback() {
+  componentDidLoad() {
     PieStimulusLayout.handleElements();
     if(this.allowedResize){
       this.resizer.addEventListener('mousedown', (e) => {
@@ -53,6 +53,14 @@ export class PieStimulusLayout {
 
   componentDidUpdate() {
     PieStimulusLayout.handleElements();
+  }
+
+  disconnectedCallback() {
+    if(this.allowedResize){
+      window.removeEventListener('mousemove', this.handleMouseMove.bind(this));
+      this.resizer.removeEventListener('mouseup', this.handleMouseUp.bind(this));
+    }
+    window.removeEventListener('resize', this.handleResize.bind(this));
   }
 
   private handleResize() {

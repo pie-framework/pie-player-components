@@ -63,12 +63,6 @@ Type: `Promise<false | any[]>`
 
 For previewing changes to an item. Updates the model for one question in the item model.
 
-#### Parameters
-
-| Name     | Type       | Description       |
-| -------- | ---------- | ----------------- |
-| `update` | `PieModel` | the updated model |
-
 #### Returns
 
 Type: `Promise<void>`

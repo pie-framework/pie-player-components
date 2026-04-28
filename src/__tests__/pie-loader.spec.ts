@@ -66,12 +66,11 @@ describe("PieLoader", () => {
     _ce = global.customElements;
 
     global.customElements = {
-      getName: jest.fn(),
-      upgrade: jest.fn(),
       define: jest.fn(),
       whenDefined: jest.fn().mockResolvedValue(undefined),
-      get: jest.fn().mockReturnValue(undefined)
-    };
+      get: jest.fn().mockReturnValue(undefined),
+      upgrade: jest.fn()
+    } as unknown as CustomElementRegistry;
   });
   afterAll(() => {
     global.customElements = _ce;
@@ -94,9 +93,6 @@ describe("PieLoader", () => {
       };
 
       await loader.loadCloudPies({
-        endpoints: undefined,
-        forceBundleUrl: false,
-        reFetchBundle: false,
         bundle: BundleType.clientPlayer,
         content: {
           id: "1",
@@ -104,12 +100,14 @@ describe("PieLoader", () => {
           markup: "",
           elements: { "pie-el": "pie-el@latest" }
         } as PieContent,
-        doc,
-        useCdn: false
+        doc: doc as unknown as Document,
+        useCdn: false,
+        forceBundleUrl: false,
+        reFetchBundle: false
       });
 
       // global.window = d.window;
-      (<any>window).pie = {
+      (window as any).pie = {
         default: {
           "pie-el": {
             controller: jest.fn(),
