@@ -4,7 +4,7 @@ import { sass } from '@stencil/sass';
 export const config: Config = {
   namespace: 'pie-player-components',
   env: {
-    APP_VERSION: process.env.npm_package_version,
+    APP_VERSION: process.env.npm_package_version || '1.0.0',
   },
   testing: {
     browserArgs: ['--no-sandbox', '--disable-setuid-sandbox'],

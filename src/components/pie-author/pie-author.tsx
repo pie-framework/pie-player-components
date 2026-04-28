@@ -55,7 +55,7 @@ import {
   DataURLUploadSoundSupport,
   ExternalUploadSoundSupport
 } from "./dataurl-upload-sound-support";
-import { APP_VERSION } from '../../defaults';
+import { APP_VERSION } from '../../config';
 
 /**
  * Pie Author will load a Pie Content model for authoring.

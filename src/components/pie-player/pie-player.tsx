@@ -30,7 +30,7 @@ import {
 } from "../../pie-loader";
 import { addRubric } from "../../rubric-utils";
 import { normalizeContentElements } from "../../utils/utils";
-import { APP_VERSION } from '../../defaults';
+import { APP_VERSION } from '../../config';
 
 const controllerErrorMessage: string =
   "Error processing question configuration, verify the question model?";
