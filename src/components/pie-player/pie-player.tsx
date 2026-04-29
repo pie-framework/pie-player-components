@@ -221,6 +221,18 @@ export class Player {
   */
   @Prop() baseHeadingLevel?: 1 | 2 | 3 | 4 | 5 | 6;
 
+  /**
+   * Whether to inject a visually-hidden (screen-reader-only) heading at the
+   * top of the player's rendered content.
+   *
+   * Set to `false` in contexts where an SR heading would be redundant or
+   * counter-indicated (e.g. the player is already labelled by a surrounding
+   * landmark, or the host page manages its own heading structure).
+   * Defaults to `true` so that assistive-technology users get a navigable
+   * heading out of the box.
+   */
+  @Prop() includeSrHeading: boolean = true;
+
   pieLoader = new PieLoader(null, this.loaderConfig);
   private loadingStyles = new Set<string>();
 
@@ -724,7 +736,8 @@ export class Player {
         addCorrectResponse: this.addCorrectResponse,
         reFetchBundle: this.reFetchBundle,
         customClassname: this.customClassname,
-        baseHeadingLevel: this.baseHeadingLevel
+        baseHeadingLevel: this.baseHeadingLevel,
+        includeSrHeading: this.includeSrHeading
       };
 
       if (this.renderStimulus) {

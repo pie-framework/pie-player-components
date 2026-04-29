@@ -155,6 +155,10 @@ export namespace Components {
     */
     'hosted'?: boolean;
     /**
+    * Whether to inject a visually-hidden (screen-reader-only) heading at the top of the player's rendered content.  Set to `false` in contexts where an SR heading would be redundant or counter-indicated (e.g. the player is already labelled by a surrounding landmark, or the host page manages its own heading structure). Defaults to `true` so that assistive-technology users get a navigable heading out of the box.
+    */
+    'includeSrHeading': boolean;
+    /**
     * The Pie loader config.
     */
     'loaderConfig': LoaderConfig;
@@ -377,6 +381,10 @@ declare namespace LocalJSX {
     * Indicates if player running in the context of a PIE hosting system. Do not modify the default value for this property if you are not implementing a PIE host. If true, the host is responsible for all model updates.
     */
     'hosted'?: boolean;
+    /**
+    * Whether to inject a visually-hidden (screen-reader-only) heading at the top of the player's rendered content.  Set to `false` in contexts where an SR heading would be redundant or counter-indicated (e.g. the player is already labelled by a surrounding landmark, or the host page manages its own heading structure). Defaults to `true` so that assistive-technology users get a navigable heading out of the box.
+    */
+    'includeSrHeading'?: boolean;
     /**
     * The Pie loader config.
     */
