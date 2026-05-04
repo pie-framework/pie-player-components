@@ -85,7 +85,7 @@
     "prettier": "1.16.4",
     "puppeteer": "20",
     "release-it": "^10.1.0",
-    "semantic-release": "^19.0.5",
+    "semantic-release": "^25.0.3",
     "tslint": "^5.12.1",
     "tslint-config-prettier": "^1.18.0",
     "typescript": "^4.9.5",
