@@ -62,6 +62,7 @@ jobs:
       contents: write
       pull-requests: write
       issues: write
+      id-token: write   # REQUIRED for npm trusted publishing
     steps:
       - uses: actions/checkout@v5
         with:
@@ -93,6 +94,7 @@ jobs:
       contents: write
       pull-requests: write
       issues: write
+      id-token: write   # REQUIRED for npm trusted publishing
     steps:
       - uses: actions/checkout@v5
         with:
