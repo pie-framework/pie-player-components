@@ -1,13 +1,10 @@
-import { PieLoader,Status, BundleType, Entry } from "../pie-loader";
+import { Status, BundleType } from "../pie-loader";
 import { PieItemElement } from '../interface';
 import { MockPieLoader } from "./mockPieLoader";
 
 
-describe('hande registry  packages', () => {
-
+describe('handle registry packages', () => {
   const loader = new MockPieLoader();
-
-
   const registry = {};
 
   registry['multiple-choice'] = {
@@ -34,15 +31,14 @@ describe('hande registry  packages', () => {
       clientPlayer: {element: {}, config: null, controller: {}}
     }
     const newReg = {};
-    
-    
+
     Object.keys(registry).forEach((key) => {
       newReg[key] = {...registry[key], ...constructors[bundle]};
     })
     return newReg;
   }
-  
-  it('only adds packages that are not in the registry', () => {  
+
+  it('only adds packages that are not in the registry', () => {
     const result = loader._getElementsToLoad()(els, BundleType.player, withBundle('player', registry));
     expect(result).toBeDefined();
     expect(Object.keys(result).length).toEqual(1);
@@ -52,10 +48,9 @@ describe('hande registry  packages', () => {
     expect(result).toBeDefined();
     expect(Object.keys(result2).length).toEqual(1);
     expect(result2['math-inline']).toBeDefined();
-
   });
 
-  it('add packages if registry entry is missing needed constructor', () => {  
+  it('add packages if registry entry is missing needed constructor', () => {
     const result = loader._getElementsToLoad()(els, BundleType.editor, withBundle('player', registry));
     expect(result).toBeDefined();
     expect(Object.keys(result).length).toEqual(3);
@@ -65,8 +60,5 @@ describe('hande registry  packages', () => {
     expect(result2).toBeDefined();
     expect(Object.keys(result2).length).toEqual(3);
     expect(result2['math-inline']).toBeDefined();
-
   });
-
-
 });
