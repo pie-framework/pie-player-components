@@ -30,7 +30,7 @@ import {
 } from "../../pie-loader";
 import { addRubric } from "../../rubric-utils";
 import { normalizeContentElements } from "../../utils/utils";
-import { VERSION } from "../../version";
+import { APP_VERSION } from '../../config';
 
 const controllerErrorMessage: string =
   "Error processing question configuration, verify the question model?";
@@ -45,8 +45,6 @@ export class Player {
    * a reference to the active player when wrapping playert in stimulus layout
    */
   stimulusPlayer: HTMLElement;
-
-  @Prop({ context: "document" }) doc!: Document;
 
   /**
    * Optionally specifies the back-end that builds and hosts javascript bundles for rendering assessment items.
@@ -163,7 +161,7 @@ export class Player {
   @Prop() renderStimulus: boolean = true;
 
   @Prop({ mutable: false, reflect: false })
-  version: string = VERSION;
+  version: string = APP_VERSION;
 
   /**
    * Allow to resize pie-stimulus layout
@@ -205,7 +203,7 @@ export class Player {
    * This is useful for styling the pie-player component in a specific way, without affecting other
    * components that may use the same styles.
    */
-  @Prop() customClassname: string = "";
+  @Prop({ mutable: true }) customClassname: string = "";
 
   /**
   * The level of the first heading emitted inside this player.
@@ -221,7 +219,8 @@ export class Player {
   */
   @Prop() baseHeadingLevel?: 1 | 2 | 3 | 4 | 5 | 6;
 
-  pieLoader = new PieLoader(null, this.loaderConfig);
+  pieLoader: PieLoader;
+
   private loadingStyles = new Set<string>();
 
   player() {
@@ -277,7 +276,7 @@ export class Player {
 
         await this.pieLoader.loadCloudPies({
           content: this.pieContentModel,
-          doc: this.doc,
+          doc: document,
           endpoints: endpoints,
           bundle: this.hosted ? BundleType.player : BundleType.clientPlayer,
           useCdn: false,
@@ -523,6 +522,8 @@ export class Player {
   }
 
   async componentWillLoad() {
+    this.pieLoader = new PieLoader(null, this.loaderConfig);
+
     if (this.config) {
       this.watchConfig(this.config);
     }

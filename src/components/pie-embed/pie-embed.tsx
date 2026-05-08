@@ -1,4 +1,4 @@
-import { Component, Element, h, Prop, State } from "@stencil/core";
+import { Component, Element, h, State } from "@stencil/core";
 import { load } from "./new-loader";
 
 @Component({
@@ -7,8 +7,6 @@ import { load } from "./new-loader";
   shadow: false
 })
 export class Embed {
-  @Prop({ context: "document" }) doc!: Document;
-
   @State()
   tag: string;
 

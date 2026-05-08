@@ -46,7 +46,7 @@ export class PieStimulusLayout {
       this.resizer.addEventListener('mouseup', this.handleMouseUp.bind(this));
     }
     this.readMoreButton.addEventListener("click", () => this.handleReadMore());
-    
+
     // Add resize listener to handle orientation changes
     window.addEventListener('resize', this.handleResize.bind(this));
   }
@@ -55,7 +55,7 @@ export class PieStimulusLayout {
     PieStimulusLayout.handleElements();
   }
 
-  componentDidUnload() {
+  disconnectedCallback() {
     if(this.allowedResize){
       window.removeEventListener('mousemove', this.handleMouseMove.bind(this));
       this.resizer.removeEventListener('mouseup', this.handleMouseUp.bind(this));
@@ -65,9 +65,9 @@ export class PieStimulusLayout {
 
   private handleResize() {
     if (!this.stimulus) return;
-    
+
     const isPortrait = window.innerWidth <= 1020;
-    
+
     if (isPortrait) {
       // Portrait mode: overflow depends on expansion state
       this.stimulus.style.overflow = this.isStimulusExpanded ? 'auto' : 'hidden';

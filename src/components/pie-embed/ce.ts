@@ -78,6 +78,6 @@ export const status = (
   return "none";
 };
 
-export const whenDefined = (name: string): Promise<void> => {
+export const whenDefined = (name: string): Promise<CustomElementConstructor> => {
   return customElements.whenDefined(name);
 };
