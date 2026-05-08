@@ -155,7 +155,7 @@ export namespace Components {
     */
     'hosted'?: boolean;
     /**
-    * Whether to include a screen reader (SR) heading for the player. Set to `false` in contexts where an SR heading would be redundant or counter-indicated (e.g. the player is already labelled by a surrounding landmark, or the host page manages its own heading structure). Defaults to `true` so that assistive-technology users get a navigable heading out of the box.
+    * Whether to inject a visually-hidden (screen-reader-only) heading at the top of the player's rendered content.  Set to `false` in contexts where an SR heading would be redundant or counter-indicated (e.g. the player is already labelled by a surrounding landmark, or the host page manages its own heading structure). Defaults to `true` so that assistive-technology users get a navigable heading out of the box.
     */
     'includeSrHeading': boolean;
     /**
@@ -382,7 +382,7 @@ declare namespace LocalJSX {
     */
     'hosted'?: boolean;
     /**
-    * Whether to include a screen reader (SR) heading for the player. Set to `false` in contexts where an SR heading would be redundant or counter-indicated (e.g. the player is already labelled by a surrounding landmark, or the host page manages its own heading structure). Defaults to `true` so that assistive-technology users get a navigable heading out of the box.
+    * Whether to inject a visually-hidden (screen-reader-only) heading at the top of the player's rendered content.  Set to `false` in contexts where an SR heading would be redundant or counter-indicated (e.g. the player is already labelled by a surrounding landmark, or the host page manages its own heading structure). Defaults to `true` so that assistive-technology users get a navigable heading out of the box.
     */
     'includeSrHeading'?: boolean;
     /**
