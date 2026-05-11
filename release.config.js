@@ -7,7 +7,7 @@ module.exports = {
     [
       '@semantic-release/exec',
       {
-        prepareCmd: './set-version.sh ${nextRelease.version} && npm run build',
+        prepareCmd: 'npm run build',
       },
     ],
     [
