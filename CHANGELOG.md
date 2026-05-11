@@ -1,3 +1,19 @@
+# [3.17.0](https://github.com/pie-framework/pie-player-components/compare/v3.16.0...v3.17.0) (2026-05-11)
+
+
+### Bug Fixes
+
+* build and tests [PIE-187] ([e47a23e](https://github.com/pie-framework/pie-player-components/commit/e47a23e3a852d34c52f333b723036385891d5ffc))
+* read version from env var ([37541f8](https://github.com/pie-framework/pie-player-components/commit/37541f8e3e3a0bf357e07185d96f727d9a6b2e06))
+* update github actions version ([b0c9f58](https://github.com/pie-framework/pie-player-components/commit/b0c9f58b1dc30f230705d4cdb14fa1a13f0fcc87))
+
+
+### Features
+
+* includeSrHeading prop to pie-player for heading control PIE-153 ([899cbdc](https://github.com/pie-framework/pie-player-components/commit/899cbdcbc46ef9895641982a435a2d98232d0a03))
+* update component definitions and add accessibility features ([b35c313](https://github.com/pie-framework/pie-player-components/commit/b35c313225d234ce0bb9be316d3fc7c8dde83a27))
+* update component definitions and add accessibility features ([7d844f6](https://github.com/pie-framework/pie-player-components/commit/7d844f618cebc401c0e1fdf4865ded8994d83d3f))
+
 # [3.16.0](https://github.com/pie-framework/pie-player-components/compare/v3.15.0...v3.16.0) (2026-04-27)
 
 
