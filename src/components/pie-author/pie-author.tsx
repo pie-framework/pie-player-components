@@ -47,7 +47,6 @@ import {
   removeComplexRubricFromMarkup
 } from "../../rubric-utils";
 import { createTag, pieContentFromConfig } from "../../utils/utils";
-import { VERSION } from "../../version";
 import {
   DataURLImageSupport,
   ExternalImageSupport
@@ -56,6 +55,7 @@ import {
   DataURLUploadSoundSupport,
   ExternalUploadSoundSupport
 } from "./dataurl-upload-sound-support";
+import { APP_VERSION } from '../../config';
 
 /**
  * Pie Author will load a Pie Content model for authoring.
@@ -68,8 +68,6 @@ import {
 })
 export class Author {
   _modelLoadedState: boolean = false;
-
-  @Prop({ context: "document" }) doc!: Document;
 
   /**
    * Optionally specifies the back-end that builds and hosts javascript bundles for rendering assessment items.
@@ -143,7 +141,7 @@ export class Author {
   /**
    * To provide a way to add a default model to complex-rubric
    */
-  @Prop() defaultComplexRubricModel?: Object;
+  @Prop({ mutable: true }) defaultComplexRubricModel?: Object;
 
   /**
    * If pie-author is used inside pie-api-author component. Do not set it manually.
@@ -152,7 +150,7 @@ export class Author {
 
   pieContentModel: PieContent;
 
-  pieLoader = new PieLoader(null, this.loaderConfig);
+  pieLoader: PieLoader;
 
   renderMarkup: String;
 
@@ -181,7 +179,7 @@ export class Author {
   uploadSoundSupport: ExternalUploadSoundSupport = new DataURLUploadSoundSupport();
 
   @Prop({ mutable: false, reflect: false })
-  version: string = VERSION;
+  version: string = APP_VERSION;
 
   /**
    * used in our demo environment to allow author to watch config settings and make updates
@@ -522,7 +520,7 @@ export class Author {
     const { markupWithoutComplexRubric } = removeComplexRubricFromMarkup(
       pieContentModel,
       [rubricElement],
-      this.doc
+      document
     );
 
     // delete the rubric nodes from markup
@@ -552,7 +550,7 @@ export class Author {
     } = removeComplexRubricFromMarkup(
       pieContentModel,
       rubricElements,
-      this.doc
+      document
     );
 
     // delete the complex-rubric nodes from markup
@@ -623,7 +621,7 @@ export class Author {
         this.pieContentModel.models = [];
       }
 
-      const tempDiv = this.doc.createElement("div");
+      const tempDiv = document.createElement("div");
       tempDiv.innerHTML = this.pieContentModel.markup;
       const elsWithId = tempDiv.querySelectorAll("[id]");
 
@@ -689,7 +687,7 @@ export class Author {
     }
   }
 
-  componentDidUnload() {
+  disconnectedCallback() {
     this.el.removeEventListener(InsertImageEvent.TYPE, this.handleInsertImage);
     this.el.removeEventListener(DeleteImageEvent.TYPE, this.handleDeleteImage);
 
@@ -704,6 +702,8 @@ export class Author {
   }
 
   async componentWillLoad() {
+    this.pieLoader = new PieLoader(null, this.loaderConfig);
+
     if (this.config) {
       this.watchConfig(this.config, {});
     }
@@ -833,7 +833,7 @@ export class Author {
 
       await this.pieLoader.loadCloudPies({
         content: this.pieContentModel,
-        doc: this.doc,
+        doc: document,
         endpoints,
         useCdn: false,
         forceBundleUrl,

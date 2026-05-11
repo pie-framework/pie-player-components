@@ -11,6 +11,11 @@ The class `pie-loading` will be added to the element while assets are being load
 <!-- Auto Generated Below -->
 
 
+## Overview
+
+Pie Author will load a Pie Content model for authoring.
+It needs to be run in the context
+
 ## Properties
 
 | Property                    | Attribute                   | Description                                                                                                                                                                                                                                                                                                                                  | Type                                 | Default                           |
@@ -29,7 +34,7 @@ The class `pie-loading` will be added to the element while assets are being load
 | `loaderConfig`              | --                          | The Pie loader config.                                                                                                                                                                                                                                                                                                                       | `{ trackPageActions?: boolean; }`    | `undefined`                       |
 | `reFetchBundle`             | `re-fetch-bundle`           | used to automatically re-fetch the bundle (in case we get a 503)                                                                                                                                                                                                                                                                             | `boolean`                            | `false`                           |
 | `uploadSoundSupport`        | --                          | external providers can set this if they need to upload the assets to the cloud etc. by default we use data urls                                                                                                                                                                                                                              | `ExternalUploadSoundSupport`         | `new DataURLUploadSoundSupport()` |
-| `version`                   | `version`                   |                                                                                                                                                                                                                                                                                                                                              | `string`                             | `VERSION`                         |
+| `version`                   | `version`                   |                                                                                                                                                                                                                                                                                                                                              | `string`                             | `APP_VERSION`                     |
 
 
 ## Events
