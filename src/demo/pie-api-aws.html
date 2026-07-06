@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0"
+  />
+  <title>Item With Stimulus</title>
+  <script
+    type="module"
+    src="https://unpkg.com/@pie-framework/pie-player-components@latest/dist/pie-player-components/pie-player-components.esm.js"></script>
+</head>
+<body>
+<div>
+  <h2>render stimulus</h2>
+  <pie-author id="author" allowed-resize="true"></pie-author>
+</div>
+
+<div>
+  <h2>no stimulus</h2>
+  <pie-player id="player" allowed-resize="true"></pie-player>
+</div>
+
+<script>
+  const config = {
+    "pie": {
+      "models": [
+        {
+          choiceMode: 'checkbox',
+          choicePrefix: 'numbers',
+          choices: [
+            {
+              correct: true,
+              value: 'sweden',
+              label: 'Sweden',
+              feedback: {
+                type: 'none',
+                value: '',
+              },
+            },
+            {
+              value: 'iceland',
+              label: 'Iceland',
+              feedback: {
+                type: 'none',
+                value: '',
+              },
+              rationale: 'Rationale for Iceland',
+            },
+            {
+              value: 'norway',
+              label: 'Norway',
+              feedback: {
+                type: 'none',
+                value: '',
+              },
+              rationale: 'Rationale for Norway',
+            },
+            {
+              correct: true,
+              value: 'finland',
+              label: 'Finland',
+              feedback: {
+                type: 'none',
+                value: '',
+              },
+              rationale: 'Rationale for Finland',
+            },
+          ],
+          extraCSSRules: {
+            names: ['red', 'blue'],
+            rules: `
+      .red {
+        color: red !important;
+      }
+
+      .blue {
+        color: blue !important;
+      }
+    `,
+          },
+          prompt: '',
+          promptEnabled: true,
+          toolbarEditorPosition: 'bottom',
+          rubricEnabled: false,
+          "element": "kds-multiple-choice",
+          "id": "8a80808173d98f5a0173e8cf7cc015cd"
+        },
+        {
+          "element": "kds-select-text",
+          "id": "8a80808173d98d5a0173e407d8447c96",
+          "feedback": {
+            "correct": {
+              "type": "default",
+              "default": "Correct"
+            },
+            "incorrect": {
+              "type": "default",
+              "default": "Incorrect"
+            },
+            "partial": {
+              "type": "default",
+              "default": "Nearly"
+            }
+          },
+          "partialScoring": true,
+          "maxSelections": 2,
+          "mode": "sentence",
+          "rationale": "<p>The final sentence of the passage best exemplifies the theme of the short story because Natasha&#39;s practice and determination finally pays off.</p>",
+          "prompt": "<p>Select the sentence from&#160;&#34;The Gymnast&#34; that <span class=\"relative-emphasis\">best</span> represents the theme.</p>",
+          "promptEnabled": true,
+          "toolbarEditorPosition": "bottom",
+          "text": "<p>She thought about what she had to do, struggling to rein in her wild, fearful thoughts. Coach Cummings always said that an undisciplined mind never scored a perfect 10. Natasha wanted to please her Coach, yet sometimes his approval wasn't as exciting as his anger. The gymnasts were unanimous about one thing: Coach Cummings's fits of disapproving rage were much more humorous to witness than his infrequent, backslapping moments of high praise. Just for a hair of a moment, Natasha wondered if she really wanted a perfect 10, so weary was she of trying for but never achieving one.</p>\n\n<p>At last Natasha's moment arrived. The faces of past giants of gymnastics swam before her mind's eye, now razor&#8211;sharp with fierce determination. \"I am talented. I am not afraid. I will make a perfect 10,\" she spoke aloud to herself, as she approached the mat, dusted her hands with chalk to prevent slippage, and returned to her starting point. Suddenly, the din of the gymnasium was silent to her. Forcing all sound out of her mind, she focused on the gleaming balance beam ahead of her. Taking a deep breath, Natasha made her graceful, yet powerful approach, mounted the beam flawlessly, and...executed her first perfect 10.</p>\n",
+          "tokens": [
+            {
+              "text": "She thought about what she had to do, struggling to rein in her wild, fearful thoughts.",
+              "end": 90,
+              "start": 3,
+              "correct": false
+            },
+            {
+              "start": 449,
+              "end": 585,
+              "text": "Just for a hair of a moment, Natasha wondered if she really wanted a perfect 10, so weary was she of trying for but never achieving one.",
+              "correct": false
+            },
+            {
+              "end": 627,
+              "correct": false,
+              "text": "At last Natasha's moment arrived.",
+              "start": 594
+            },
+            {
+              "end": 743,
+              "text": "The faces of past giants of gymnastics swam before her mind's eye, now razor&#8211;sharp with fierce determination.",
+              "correct": false,
+              "start": 628
+            },
+            {
+              "text": "Suddenly, the din of the gymnasium was silent to her.",
+              "end": 997,
+              "correct": false,
+              "start": 944
+            },
+            {
+              "end": 1087,
+              "start": 998,
+              "correct": false,
+              "text": "Forcing all sound out of her mind, she focused on the gleaming balance beam ahead of her."
+            },
+            {
+              "correct": true,
+              "start": 1088,
+              "end": 1225,
+              "text": "Taking a deep breath, Natasha made her graceful, yet powerful approach, mounted the beam flawlessly, and...executed her first perfect 10."
+            }
+          ],
+          "teacherInstructions": "",
+          "rubricEnabled": false
+        }
+      ],
+      "elements": {
+        "kds-multiple-choice": "@pie-element/multiple-choice@9.12.5",
+        "kds-select-text": "@pie-element/select-text@8.11.5"
+      },
+      "id": "8a80808173d98f5a0173e8cf7cc015cd@0.0.3",
+      "markup": `
+      <kds-multiple-choice id=\"8a80808173d98f5a0173e8cf7cc015cd\"></kds-multiple-choice>
+      <kds-select-text id=\"8a80808173d98d5a0173e407d8447c96\"></kds-select-text>
+      `,
+      "bundle": {
+        "url": [
+          "./.pie-bundle-builderi0Rz4M//player-bundler/2888907117/dist/editor.js"
+        ]
+      }
+    },
+    "passage": {
+      "layout": "left",
+      "elements": {
+        "pie-passage": "@pie-element/passage@3.5.0"
+      },
+      "buildInfo": [
+        {
+          "version": "3.5.0",
+          "name": "@pie-element/passage"
+        }
+      ],
+      "models": [
+        {
+          "element": "pie-passage",
+          "id": "8a80808173d98d5a0173e407d8447c96",
+          "passages": [
+            {
+              "title": "Temperature Control and Chocolate Sculptures",
+              "text": "<h3>Temperature Control and Chocolate Sculptures</h3><p>A chocolate artist wants to create small chocolate sculptures that can be purchased as gifts for special occasions. She will create the sculptures in a temperature-controlled room within her chocolate shop. Controlling the temperature of the room is necessary because the visual appearance of chocolate can change if it is heated or cooled outside of a specific temperature range. If the chocolate rises above 18&#176;C, the sculpture may begin to melt and change shape. If the chocolate drops below 15&#176;C, the sculpture may begin to discolor as sugar in the chocolate crystallizes and rises to the surface.</p><p>The artist wants to design a box to transport the chocolate sculptures when they are delivered. The chocolate shop is located in a city where the temperatures range between 22&#176;C and 30&#176;C all year long. The temperature inside of the delivery van is 20&#176;C. The ideal box will be temperature-controlled using a pack that she will design. The pack will hold a chemical substance and 100 grams of water in separate parts of the pack. Squeezing the pack will combine the two substances, causing a chemical reaction to take place that absorbs or releases energy, depending on the substance. The packs will be activated and added to the insulated box, along with the chocolate sculpture, when it is ready to be transported. </p><p>The chocolate artist purchases four different substances: ammonium nitrate, calcium chloride, sodium acetate, and sodium hydroxide. She will test each substance and then choose one to create the temperature-control packs. She will test the effects of each substance by adding various amounts to the 100 grams of water. Her investigation can be viewed in the videos.</p><p></p><pie-embed data-tag=\"embed-pivot\" data-url=\"@pie-framework/embed-pivot/lib/embed-pivot.js\" data-pivot-url=\"https://pivot-interactives-embed.s3-us-west-2.amazonaws.com/illuminate/solution-enthalpy.html\" data-width=\"1200\" data-height=\"800\"></pie-embed>"
+            }
+          ]
+        }
+      ],
+      "markup": "<pie-passage id=\"8a80808173d98d5a0173e407d8447c96\"></pie-passage>",
+      "id": "8a80808173d98d5a0173e407d8447c96",
+      "bundle": {
+        "url": [
+          "./.pie-bundle-builderi0Rz4M//player-bundler/2888907117/dist/player.js"
+        ]
+      }
+    }
+  };
+
+  const author = document.getElementById('author');
+  const player = document.getElementById('player');
+
+  author.bundleEndpoints = {
+    bundleBase: "https://builder.pie-api.com/api/v1/bundles/",
+    buildServiceBase: "https://builder.pie-api.com/api/v1/bundles/"
+  };
+
+  player.bundleEndpoints = {
+    bundleBase: "https://builder.pie-api.com/api/v1/bundles/",
+    buildServiceBase: "https://builder.pie-api.com/api/v1/bundles/"
+  };
+
+  player.addEventListener('sessionChanged', event => {
+    console.log(event.type + ':' + JSON.stringify(event.detail));
+  });
+
+  author.addEventListener('sessionChanged', event => {
+    console.log(event.type + ':' + JSON.stringify(event.detail));
+  });
+
+  author.config = config;
+  player.config = config;
+
+  author.env = { mode: 'gather', role: 'instructor' };
+  player.env = { mode: 'gather', role: 'instructor' };
+</script>
+</body>
+</html>

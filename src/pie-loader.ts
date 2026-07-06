@@ -19,17 +19,17 @@ window["pieHelpers"] = {
  */
 export const DEFAULT_ENDPOINTS = {
   prod: {
-    bundleBase: "https://pits-cdn.pie-api.io/bundles/",
-    buildServiceBase: "https://proxy.pie-api.com/bundles/"
+    bundleBase: "https://builder.pie-api.com/api/v1/bundles/",
+    buildServiceBase: "https://builder.pie-api.com/api/v1/bundles/"
   },
   // this is actually not really used anymore? equals to dev
   stage: {
-    bundleBase: "https://pits-cdn.pie-api.io/bundles/",
-    buildServiceBase: "https://proxy.pie-api.com/bundles/"
+    bundleBase: "https://builder.pie-api.com/api/v1/bundles/",
+    buildServiceBase: "https://builder.pie-api.com/api/v1/bundles/"
   },
   dev: {
-    bundleBase: "https://pits-cdn.pie-api.io/bundles/",
-    buildServiceBase: "https://proxy.dev.pie-api.com/bundles/"
+    bundleBase: "https://builder.pie-api.com/api/v1/bundles/",
+    buildServiceBase: "https://builder.pie-api.com/api/v1/bundles/"
   }
 };
 
