@@ -1,3 +1,11 @@
+## [3.17.1](https://github.com/pie-framework/pie-player-components/compare/v3.17.0...v3.17.1) (2026-07-06)
+
+
+### Bug Fixes
+
+* update math-rendering-module dependency to version 5.1.0 ([3e9ca29](https://github.com/pie-framework/pie-player-components/commit/3e9ca298f32e50b21d170af90392ab6349dc234c))
+* update math-rendering-module dependency to version 5.1.0 ([f2c150e](https://github.com/pie-framework/pie-player-components/commit/f2c150efb4b5658a934b9a88b2443b843ff3f85a))
+
 # [3.17.0](https://github.com/pie-framework/pie-player-components/compare/v3.16.0...v3.17.0) (2026-05-11)
 
 
