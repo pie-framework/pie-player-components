@@ -1422,10 +1422,10 @@
   resolved "https://registry.yarnpkg.com/@pie-framework/pie-player-events/-/pie-player-events-0.1.0.tgz#0150904118fd604559982ab658967811c053ffe3"
   integrity sha512-6H1tlRGmcZ3Wt+8HMqu5KugVcwwyNrMylfI5rIpvOSt0T82QDmjRj+2sPgQG5zos/w6MtwUqn/QZ+8Rq2EXSOA==
 
-"@pie-lib/math-rendering-module@5.0.0":
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/@pie-lib/math-rendering-module/-/math-rendering-module-5.0.0.tgz#a36c946fb74397e633b05935785f54e2dcca56ed"
-  integrity sha512-4gVC+N4RO16Qko3IoTOgrBREIaqMOS/jcx3hPB4bGY62DDUVunzHbZNut5g83bT8dHPZU1yjYsbNbY1vK3+juw==
+"@pie-lib/math-rendering-module@5.1.0":
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/@pie-lib/math-rendering-module/-/math-rendering-module-5.1.0.tgz#814aa1a0d933c623ae1530c8ba392461f1091908"
+  integrity sha512-oCfuZsoqrUJYY7vboAKslazSxhNK+ad7eTurtIUkV4be1rHH0Iqoss4pmDCKxdDR8ku+Du/vA8BWYNAUA2nwmw==
 
 "@pnpm/config.env-replace@^1.1.0":
   version "1.1.0"
