@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0"
+    />
+    <title>DNAFORM-2099 - Math rendering, 5 duplicated items</title>
+
+    <script type="module" src="/build/pie-player-components.esm.js"></script>
+    <script nomodule src="/build/pie-player-components.js"></script>
+
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        margin: 16px;
+        color: #1a1a1a;
+      }
+      h1 {
+        font-size: 18px;
+      }
+      .panel {
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        padding: 12px 16px;
+        margin-bottom: 16px;
+        background: #fafafa;
+      }
+      .panel code {
+        background: #eef;
+        padding: 2px 6px;
+        border-radius: 4px;
+      }
+      button {
+        font-size: 14px;
+        padding: 6px 12px;
+        margin: 4px 6px 4px 0;
+        cursor: pointer;
+      }
+      .item {
+        border: 2px dashed #bbb;
+        border-radius: 6px;
+        padding: 8px 12px;
+        margin-bottom: 16px;
+        background: #fff;
+      }
+      .item > h4 {
+        margin: 0 0 8px;
+        font-size: 13px;
+        color: #666;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
+      #log {
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        font-size: 12px;
+        white-space: pre-wrap;
+        background: #111;
+        color: #0f0;
+        padding: 10px;
+        border-radius: 6px;
+        max-height: 220px;
+        overflow: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>
+      DNAFORM-2099 &mdash; math rendering with 5 duplicated items on one page
+    </h1>
+
+    <div class="panel">
+      <strong>DNAFORM-2099</strong>
+      <p style="margin: 6px 0">
+        Repro for <strong>DNAFORM-2099</strong>: math notation fails to render on
+        DnA <em>View Test</em> / <em>Test Preview</em>, while the same question
+        renders correctly in <em>Browse Items</em>, in OT and in PIEOneer. The
+        difference between those pages is how many items share one page &mdash;
+        which is what this page reproduces.
+      </p>
+    </div>
+
+    <div class="panel">
+      <strong>What this checks</strong>
+      <p style="margin: 6px 0">
+        Five identical items are mounted on the same page. Each item holds two
+        interactions, and each prompt carries all four markup variants described
+        below:
+      </p>
+      <ul style="margin: 6px 0">
+        <li>
+          <code>@pie-element/multiple-choice@latest</code> &mdash; prompt with
+          the four variants (<code>n.M1</code>&ndash;<code>n.M4</code>), plus
+          latex in each answer choice (<code>n.C1</code>&ndash;<code>n.C4</code>).
+        </li>
+        <li>
+          <code>@pie-element/extended-text-entry@15.1.11</code> &mdash; prompt
+          with the same four variants
+          (<code>n.E1</code>&ndash;<code>n.E4</code>).
+        </li>
+      </ul>
+      <p style="margin: 6px 0">
+        That is 8 prompt expressions plus 4 choice expressions per item,
+        <strong>60 in total</strong>. All 60 should render as typeset math (no
+        raw <code>\(...\)</code> delimiters, no duplicated/blank output).
+      </p>
+      <p style="margin: 6px 0">
+        <strong>Observed on the current player:</strong> the <code>M</code> and
+        <code>C</code> expressions render in all five items;
+        <code>E1</code>&ndash;<code>E4</code> render only in the first one or two
+        items and fail in the rest. Which items survive shifts between runs
+        &mdash; it is a race, not a property of the content.
+      </p>
+    </div>
+
+    <div class="panel">
+      <strong>Markup variants under test</strong>
+      <p style="margin: 6px 0">
+        The two reported items differ in how their math is marked up. Both
+        prompts carry all four combinations below, so it is visible whether the
+        markup difference is what decides the outcome, or whether it is the
+        element / page that decides it.
+      </p>
+      <table style="border-collapse: collapse; font-size: 13px; margin: 8px 0">
+        <tr style="text-align: left">
+          <th style="padding: 4px 10px 4px 0">Variant</th>
+          <th style="padding: 4px 10px 4px 0">Inner text</th>
+          <th style="padding: 4px 10px 4px 0">Exponents</th>
+          <th style="padding: 4px 0">Seen in</th>
+        </tr>
+        <tr>
+          <td style="padding: 4px 10px 4px 0"><code>V1</code></td>
+          <td style="padding: 4px 10px 4px 0">no delimiters</td>
+          <td style="padding: 4px 10px 4px 0"><code>x^{3}</code></td>
+          <td style="padding: 4px 0">Q1 / 6433355 &mdash; renders in DnA</td>
+        </tr>
+        <tr>
+          <td style="padding: 4px 10px 4px 0"><code>V2</code></td>
+          <td style="padding: 4px 10px 4px 0"><code>\( ... \)</code></td>
+          <td style="padding: 4px 10px 4px 0"><code>x^3</code></td>
+          <td style="padding: 4px 0">Q2 / 6433350 &mdash; fails in DnA</td>
+        </tr>
+        <tr>
+          <td style="padding: 4px 10px 4px 0"><code>V3</code></td>
+          <td style="padding: 4px 10px 4px 0">no delimiters</td>
+          <td style="padding: 4px 10px 4px 0"><code>x^3</code></td>
+          <td style="padding: 4px 0">isolates the brace style</td>
+        </tr>
+        <tr>
+          <td style="padding: 4px 10px 4px 0"><code>V4</code></td>
+          <td style="padding: 4px 10px 4px 0"><code>\( ... \)</code></td>
+          <td style="padding: 4px 10px 4px 0"><code>x^{3}</code></td>
+          <td style="padding: 4px 0">isolates the delimiters</td>
+        </tr>
+      </table>
+      <p style="margin: 6px 0">
+        If the markup is what matters, V1/V3 and V2/V4 will split. If the element
+        is what matters, the <code>M</code> row will pass and the <code>E</code>
+        row will fail regardless of variant.
+      </p>
+    </div>
+
+    <div class="panel">
+      <strong>How to report a broken expression</strong>
+      <p style="margin: 6px 0">
+        Every expression is prefixed with a unique red tag so it can be named
+        exactly:
+      </p>
+      <ul style="margin: 6px 0">
+        <li>
+          <code>[2.M1]</code> &hellip; <code>[2.M4]</code> &mdash; item 2's
+          multiple-choice prompt, one per markup variant.
+        </li>
+        <li>
+          <code>[2.C1]</code> &hellip; <code>[2.C4]</code> &mdash; item 2's four
+          answer choices.
+        </li>
+        <li>
+          <code>[2.E1]</code> &hellip; <code>[2.E4]</code> &mdash; item 2's
+          extended-text-entry prompt, the same four variants.
+        </li>
+      </ul>
+      <p style="margin: 6px 0">
+        The tag is repeated in the sentence itself, so it stays readable even
+        where the surrounding markup is stripped. Just tell me the tags that
+        render wrong &mdash; e.g. &ldquo;3.E2 and 5.C4 are broken&rdquo;.
+      </p>
+    </div>
+
+    <div class="panel">
+      <button id="mount">Mount 5 items</button>
+      <button id="unmount">Unmount all</button>
+      <button id="remount">Re-mount all (unmount &rarr; mount)</button>
+      <button id="add">Add one more item</button>
+      <br />
+      <button id="check">Check math rendered</button>
+      <button id="report">Report per numbered expression</button>
+      <button id="rerender">Re-run renderMath on page</button>
+      <button id="dump-raw">Dump un-rendered \( \) occurrences</button>
+      <button id="clear-log">Clear log</button>
+      <label style="margin-left: 12px">
+        mode:
+        <select id="mode">
+          <option value="gather">gather</option>
+          <option value="view">view</option>
+          <option value="evaluate">evaluate</option>
+        </select>
+      </label>
+    </div>
+
+    <div id="items"></div>
+
+    <h3>Log</h3>
+    <pre id="log"></pre>
+
+    <script>
+      const itemsEl = document.getElementById("items");
+      const logEl = document.getElementById("log");
+      const modeEl = document.getElementById("mode");
+
+      const ITEM_COUNT = 5;
+      // 4 markup variants in the multiple-choice prompt + the same 4 in the
+      // extended-text-entry prompt.
+      const EXPRESSIONS_PER_ITEM = 8;
+
+      const log = (...args) => {
+        const line = args
+          .map(a => (typeof a === "string" ? a : JSON.stringify(a)))
+          .join(" ");
+        logEl.textContent += line + "\n";
+        logEl.scrollTop = logEl.scrollHeight;
+        console.log("[math-demo]", ...args);
+      };
+
+      // Every expression on the page carries a unique tag like [3.M2] so a
+      // mis-rendered one can be reported by number. Tag format:
+      //   [<item>.M<v>]  multiple-choice prompt, markup variant <v>
+      //   [<item>.E<v>]  extended-text-entry prompt, markup variant <v>
+      //   [<item>.C<n>]  answer-choice expressions
+
+      /**
+       * The four markup variants under test.
+       *
+       * V1 and V2 are the two forms found in the reported items: Q1 (6433355),
+       * which renders on the DnA View Test page, carries no `\( \)` delimiters
+       * inside the span and braces its exponents; Q2 (6433350), which does not
+       * render there, carries the delimiters and leaves exponents unbraced.
+       *
+       * V3 and V4 cross the two differences so it is clear which one (if
+       * either) is responsible: delimiters or brace style.
+       */
+      const VARIANTS = [
+        {
+          key: "V1",
+          note: "no \\( \\) delimiters, braced exponents  (= Q1 / 6433355, renders in DnA)",
+          raw: "P\\left(x\\right)=-2x^{3}-4x^{2}+18x+36",
+          delimited: false
+        },
+        {
+          key: "V2",
+          note: "\\( \\) delimiters, unbraced exponents  (= Q2 / 6433350, fails in DnA)",
+          raw: "P\\left(x\\right)=-2x^3-4x^2+18x+36",
+          delimited: true
+        },
+        {
+          key: "V3",
+          note: "no \\( \\) delimiters, unbraced exponents",
+          raw: "P\\left(x\\right)=-2x^3-4x^2+18x+36",
+          delimited: false
+        },
+        {
+          key: "V4",
+          note: "\\( \\) delimiters, braced exponents",
+          raw: "P\\left(x\\right)=-2x^{3}-4x^{2}+18x+36",
+          delimited: true
+        }
+      ];
+
+      const mathSpan = variant => {
+        const inner = variant.delimited
+          ? `\\(${variant.raw}\\)`
+          : variant.raw;
+        return `<span data-latex="" data-raw="${variant.raw}">${inner}</span>`;
+      };
+
+      const simpleMathSpan = latex =>
+        `<span data-latex="" data-raw="${latex}">\\(${latex}\\)</span>`;
+
+      const tag = label =>
+        `<strong style="color:#b00020;font-family:ui-monospace,Menlo,monospace">[${label}]</strong>`;
+
+      // One numbered sentence carrying one markup variant.
+      const promptLine = (label, variant) =>
+        `<div>${tag(label)} ${variant.key} (${variant.note}): given the ` +
+        `function ${mathSpan(variant)}, identify all zeros of the ` +
+        `polynomial.</div>`;
+
+      const variantPrompt = (index, prefix) =>
+        VARIANTS.map(v => promptLine(`${index}.${prefix}${v.key.slice(1)}`, v)).join(
+          ""
+        );
+
+      // Multiple-choice prompt: all four variants.
+      const mcPrompt = index => variantPrompt(index, "M");
+
+      // Extended-text-entry prompt: the same four variants.
+      const etePrompt = index => variantPrompt(index, "E");
+
+      const choiceLabel = (label, latex) =>
+        `${tag(label)} ${simpleMathSpan(latex)}`;
+
+      const ETE_ELEMENT_TAG =
+        "pp-pie-element-extended-text-entry--version-15-1-11";
+
+      const buildConfig = index => ({
+        id: `math-item-${index}`,
+        elements: {
+          "pie-multiple-choice": "@pie-element/multiple-choice@latest",
+          [ETE_ELEMENT_TAG]: "@pie-element/extended-text-entry@15.1.11"
+        },
+        models: [
+          {
+            id: "1",
+            element: "pie-multiple-choice",
+            prompt: mcPrompt(index),
+            choiceMode: "checkbox",
+            keyMode: "numbers",
+            choices: [
+              {
+                correct: true,
+                value: "c1",
+                label: choiceLabel(`${index}.C1`, "x=-3"),
+                feedback: { type: "none", value: "" }
+              },
+              {
+                correct: true,
+                value: "c2",
+                label: choiceLabel(`${index}.C2`, "x=2"),
+                feedback: { type: "none", value: "" }
+              },
+              {
+                correct: true,
+                value: "c3",
+                label: choiceLabel(`${index}.C3`, "x=3"),
+                feedback: { type: "none", value: "" }
+              },
+              {
+                value: "c4",
+                label: choiceLabel(`${index}.C4`, "x=-2"),
+                feedback: { type: "none", value: "" }
+              }
+            ],
+            partialScoring: false,
+            shuffle: false,
+            promptEnabled: true,
+            feedbackEnabled: false,
+            teacherInstructionsEnabled: false,
+            rationaleEnabled: false
+          },
+          {
+            id: "p-00000000",
+            element: ETE_ELEMENT_TAG,
+            dimensions: {
+              height: 100,
+              width: 500
+            },
+            prompt: etePrompt(index),
+            mathInput: false,
+            equationEditor: "Grade 8 - HS",
+            feedbackEnabled: false,
+            rationaleEnabled: false,
+            promptEnabled: true,
+            teacherInstructionsEnabled: false,
+            studentInstructionsEnabled: false,
+            feedback: {
+              type: "default",
+              default: ""
+            },
+            showMathInput: false,
+            rubricEnabled: true,
+            partialScoring: true,
+            annotationsEnabled: false,
+            playerSpellCheckDisabled: true,
+            predefinedAnnotations: [
+              { label: "good", text: "good", type: "positive" },
+              { label: "★", text: "★", type: "positive" },
+              { label: ":-)", text: ":-)", type: "positive" },
+              { label: "creative", text: "creative", type: "positive" },
+              { label: "run-on", text: "run-on", type: "negative" },
+              { label: "frag", text: "fragment", type: "negative" },
+              { label: "tran", text: "transition", type: "negative" },
+              { label: "supp", text: "support needed", type: "negative" },
+              { label: "punc", text: "punctuation", type: "negative" },
+              { label: "agr", text: "agreement wrong", type: "negative" },
+              { label: "unclear", text: "unclear", type: "negative" },
+              { label: "cut", text: "cut", type: "negative" },
+              { label: "sp", text: "spelling", type: "negative" },
+              { label: "cap", text: "capitalization", type: "negative" },
+              { label: "inf", text: "informal", type: "negative" },
+              { label: "awk", text: "awkward", type: "negative" }
+            ],
+            rationale: "",
+            spanishInput: false,
+            specialInput: false,
+            spellCheckEnabled: true,
+            teacherInstructions: "",
+            toolbarEditorPosition: "bottom",
+            errors: {}
+          }
+        ],
+        markup:
+          "<pie-multiple-choice id='1'></pie-multiple-choice>" +
+          `<${ETE_ELEMENT_TAG} id='p-00000000'></${ETE_ELEMENT_TAG}>`
+      });
+
+      const mountOne = index => {
+        const wrapper = document.createElement("div");
+        wrapper.className = "item";
+
+        const heading = document.createElement("h4");
+        heading.textContent =
+          `item ${index} — ${index}.M1–${index}.M4 (multiple-choice prompt, ` +
+          `markup variants), ${index}.C1–${index}.C4 (choices), ` +
+          `${index}.E1–${index}.E4 (extended-text-entry prompt, same variants)`;
+        wrapper.appendChild(heading);
+
+        const player = document.createElement("pie-player");
+        player.id = `player-${index}`;
+        player.env = { mode: modeEl.value, role: "student" };
+        player.config = buildConfig(index);
+
+        player.addEventListener("player-error", e =>
+          log(`item ${index}: player-error`, e.detail)
+        );
+
+        wrapper.appendChild(player);
+        itemsEl.appendChild(wrapper);
+        log(`item ${index}: mounted`);
+        return player;
+      };
+
+      const mountAll = () => {
+        if (itemsEl.childNodes.length) {
+          log("already mounted - unmount first");
+          return;
+        }
+        for (let i = 1; i <= ITEM_COUNT; i++) {
+          mountOne(i);
+        }
+        log(
+          `mounted ${ITEM_COUNT} items -> expecting ${ITEM_COUNT *
+            EXPRESSIONS_PER_ITEM} typeset prompt expressions`
+        );
+      };
+
+      const unmountAll = () => {
+        itemsEl.innerHTML = "";
+        log("unmounted all items");
+      };
+
+      const addOne = () => {
+        const index = itemsEl.childNodes.length + 1;
+        mountOne(index);
+      };
+
+      // Walk into shadow roots too - pie elements may render math inside them.
+      const collectAll = (root, selector, acc = []) => {
+        root.querySelectorAll(selector).forEach(el => acc.push(el));
+        root.querySelectorAll("*").forEach(el => {
+          if (el.shadowRoot) collectAll(el.shadowRoot, selector, acc);
+        });
+        return acc;
+      };
+
+      const collectText = (root, acc = []) => {
+        acc.push(root.textContent || "");
+        root.querySelectorAll("*").forEach(el => {
+          if (el.shadowRoot) collectText(el.shadowRoot, acc);
+        });
+        return acc;
+      };
+
+      const checkRendered = () => {
+        const players = Array.from(itemsEl.querySelectorAll("pie-player"));
+        if (!players.length) {
+          log("check: nothing mounted");
+          return;
+        }
+        let totalTypeset = 0;
+        players.forEach((player, i) => {
+          // mjx-container = MathJax 3, .katex = KaTeX, mjx/MathJax_* = MathJax 2
+          const typeset = collectAll(
+            player,
+            "mjx-container, .katex, .MathJax, .mjx-chtml"
+          );
+          const pending = collectAll(player, "span[data-latex]");
+          totalTypeset += typeset.length;
+          log(
+            `item ${i + 1}: typeset nodes=${typeset.length}` +
+              ` | data-latex spans=${pending.length}`
+          );
+        });
+        const expected = players.length * EXPRESSIONS_PER_ITEM;
+        log(
+          `check: ${totalTypeset} typeset nodes across ${players.length} items` +
+            ` (>= ${expected} expected from prompts alone)`
+        );
+      };
+
+      const TYPESET_SELECTOR = "mjx-container, .katex, .MathJax, .mjx-chtml";
+      const TAG_RE = /\[(\d+\.[A-Z]?\d+)\]/;
+
+      // Per-tag verdict: for each numbered expression on the page, look at the
+      // block that carries its [n.n] tag and say whether it typeset.
+      const reportByTag = () => {
+        const players = Array.from(itemsEl.querySelectorAll("pie-player"));
+        if (!players.length) {
+          log("report: nothing mounted");
+          return;
+        }
+        const rows = [];
+        players.forEach(player => {
+          collectAll(player, "strong").forEach(strongEl => {
+            const match = TAG_RE.exec(strongEl.textContent || "");
+            if (!match) return;
+            const block = strongEl.parentElement || strongEl;
+            const typeset = block.querySelectorAll(TYPESET_SELECTOR).length;
+            const rawText = (block.textContent || "").includes("\\(");
+            rows.push({
+              tag: match[1],
+              typeset,
+              raw: rawText
+            });
+          });
+        });
+        if (!rows.length) {
+          log(
+            "report: no [n.n] tags found in the rendered DOM" +
+              " - the element may have stripped the <strong> markers"
+          );
+          return;
+        }
+        rows.sort((a, b) =>
+          a.tag.localeCompare(b.tag, undefined, { numeric: true })
+        );
+        const bad = rows.filter(r => r.typeset === 0 || r.raw);
+        rows.forEach(r =>
+          log(
+            `  [${r.tag}] typeset=${r.typeset}` +
+              (r.raw ? " RAW \\( \\) VISIBLE" : "") +
+              (r.typeset === 0 ? " <-- NOT RENDERED" : "")
+          )
+        );
+        log(
+          `report: ${rows.length} tagged expressions, ` +
+            (bad.length
+              ? `${bad.length} look wrong -> ${bad.map(r => r.tag).join(", ")}`
+              : "all rendered")
+        );
+      };
+
+      // Force a fresh math-rendering pass over the whole page. If expressions
+      // that were showing raw \( \) suddenly typeset, the element rendered its
+      // prompt *after* pie-player's single renderMath pass (a timing bug) rather
+      // than the latex itself being unsupported.
+      const rerenderMath = () => {
+        const MR = window["@pie-lib/math-rendering"];
+        if (!MR || typeof MR.renderMath !== "function") {
+          log("re-render: window['@pie-lib/math-rendering'].renderMath missing");
+          return;
+        }
+        log("re-render: calling renderMath(document.body) ...");
+        MR.renderMath(document.body);
+        setTimeout(() => {
+          log("re-render: re-checking ...");
+          reportByTag();
+        }, 1000);
+      };
+
+      const dumpRaw = () => {
+        const players = Array.from(itemsEl.querySelectorAll("pie-player"));
+        if (!players.length) {
+          log("dump: nothing mounted");
+          return;
+        }
+        players.forEach((player, i) => {
+          const text = collectText(player).join(" ");
+          const matches = text.match(/\\\((.|\n)*?\\\)/g) || [];
+          if (matches.length) {
+            log(
+              `item ${i + 1}: ${matches.length} RAW delimiter(s) still visible ->`,
+              matches.slice(0, 3).join(" | ")
+            );
+          } else {
+            log(`item ${i + 1}: no raw \\( \\) delimiters in text - good`);
+          }
+        });
+      };
+
+      document.getElementById("mount").addEventListener("click", mountAll);
+      document.getElementById("unmount").addEventListener("click", unmountAll);
+      document.getElementById("remount").addEventListener("click", () => {
+        unmountAll();
+        setTimeout(mountAll, 300);
+      });
+      document.getElementById("add").addEventListener("click", addOne);
+      document.getElementById("check").addEventListener("click", checkRendered);
+      document.getElementById("report").addEventListener("click", reportByTag);
+      document
+        .getElementById("rerender")
+        .addEventListener("click", rerenderMath);
+      document.getElementById("dump-raw").addEventListener("click", dumpRaw);
+      document
+        .getElementById("clear-log")
+        .addEventListener("click", () => (logEl.textContent = ""));
+      modeEl.addEventListener("change", () => {
+        itemsEl.querySelectorAll("pie-player").forEach(p => {
+          p.env = { mode: modeEl.value, role: "student" };
+        });
+        log(`mode -> ${modeEl.value}`);
+      });
+
+      // Which math-rendering instance won the global? pie-player-components sets
+      // window['@pie-lib/math-rendering'] only if unset, so a bundled element can
+      // claim it first.
+      const dumpMathRenderingGlobal = () => {
+        const MR = window["@pie-lib/math-rendering"];
+        log(
+          "math-rendering global:",
+          MR ? `present, keys=${Object.keys(MR).length}` : "MISSING",
+          MR ? `renderMath=${typeof MR.renderMath}` : ""
+        );
+      };
+
+      // Mount on load, then auto-check once the bundle has had time to render.
+      dumpMathRenderingGlobal();
+      mountAll();
+      setTimeout(() => {
+        log("--- auto check after 6s ---");
+        dumpMathRenderingGlobal();
+        checkRendered();
+        reportByTag();
+        dumpRaw();
+      }, 6000);
+    </script>
+  </body>
+</html>
