@@ -33,8 +33,9 @@
  * `commitPendingSessions` in `@pie-players/pie-players-shared`; keeping a copy
  * here costs a few lines and avoids adding a dependency on the go-forward
  * players to a package being migrated away from. Changes belong upstream first,
- * and this file is generated from that one, so the two stay line-for-line
- * comparable apart from the log prefix and the inlined predicate.
+ * and this copy is kept by hand in the same order and shape as that file - apart
+ * from the log prefix and the inlined predicate - so the two can be diffed by
+ * eye. Nothing enforces it.
  */
 
 /**
@@ -230,7 +231,10 @@ function readSession(element: Element): unknown {
 
 function signatureOf(session: unknown): string | null {
   try {
-    return JSON.stringify(session);
+    const json = JSON.stringify(session);
+    // `JSON.stringify(undefined)` is `undefined`, which would be written as a
+    // signature and then read back as "no baseline".
+    return typeof json === "string" ? json : null;
   } catch {
     return null;
   }
@@ -384,18 +388,42 @@ function sweepPendingSessions(
       SESSION_COMMIT_METHOD
     ];
     if (typeof commit === "function") {
+      // An element's own commit is a no-op when nothing is pending, and its
+      // session can still differ from what the host heard: a controller writing
+      // into the session, or an element path that stores a value without
+      // notifying. Counting the call as the announcement recorded a response the
+      // host never received and every later seam then skipped it, so what the
+      // element dispatches is what counts. `flush()` is synchronous in every
+      // implementation of this contract; one that deferred would be announced
+      // twice, which a player's signature check absorbs.
+      let dispatched = false;
+      const witness = () => {
+        dispatched = true;
+      };
+      element.addEventListener("session-changed", witness, true);
+      let failed = false;
       try {
         (commit as () => void).call(element);
-        writeObservedSignature(element, signature);
-        result.committed += 1;
       } catch (error) {
+        failed = true;
         console.warn(
           `[pie-player] ${element.tagName.toLowerCase()} failed to commit its pending session`,
           error,
         );
-        result.skipped += 1;
+      } finally {
+        element.removeEventListener("session-changed", witness, true);
       }
-      continue;
+      if (failed) {
+        result.skipped += 1;
+        continue;
+      }
+      if (dispatched) {
+        writeObservedSignature(element, signature);
+        result.committed += 1;
+        continue;
+      }
+      // Nothing was pending, so fall through and announce the session the
+      // element holds.
     }
 
     try {
@@ -413,10 +441,10 @@ function sweepPendingSessions(
       writeObservedSignature(element, signature);
       result.synthesized += 1;
     } catch (error) {
-        console.warn(
-          `[pie-player] ${element.tagName.toLowerCase()} session commit dispatch failed`,
-          error,
-        );
+      console.warn(
+        `[pie-player] ${element.tagName.toLowerCase()} session commit dispatch failed`,
+        error,
+      );
       result.skipped += 1;
     }
   }

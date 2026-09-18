@@ -139,6 +139,30 @@ describe("commitPendingSessions", () => {
     expect(observed.events[0].detail.sessionCommitReason).toBeUndefined();
   });
 
+  it("announces a session an element's own commit left undispatched", () => {
+    // `commitPendingSession()` is a no-op when nothing is pending, and the
+    // element's session can still hold something the host never heard - a
+    // controller writing into it, or a path that stores a value quietly.
+    // Counting the call as the announcement recorded that response as delivered
+    // and every later seam then skipped it.
+    const element = mount(defineCommittingElement());
+    element._session = { id: "el-1" };
+    noteSessionObserved(element);
+    element._session = { id: "el-1", value: "written elsewhere" };
+    const observed = observeDocument();
+
+    const result = commitPendingSessions(document.body, { reason: "teardown" });
+    observed.stop();
+
+    expect(result.synthesized).toEqual(1);
+    expect(result.committed).toEqual(0);
+    expect(observed.events.length).toEqual(1);
+    expect(observed.events[0].detail.session).toEqual({
+      id: "el-1",
+      value: "written elsewhere"
+    });
+  });
+
   it("synthesizes an event for an element with no commit hook", () => {
     const element = mount(defineLegacyElement());
     const observed = observeDocument();

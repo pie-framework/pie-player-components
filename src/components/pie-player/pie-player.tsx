@@ -109,6 +109,12 @@ export class Player {
   @State() elementsLoaded: boolean = false;
 
   /**
+   * True while the model-set blocker below is installed. A `session-changed` it
+   * swallows never reaches the host, so it must not be recorded as announced.
+   */
+  private blockingSessionEvents = false;
+
+  /**
    * The Pie config model.
    */
   @Prop() config: ItemConfig;
@@ -403,6 +409,7 @@ export class Player {
        * TODO: The elements should *not* be firing 'session-changed' when the session is set.
        * They should only fire this if a user has made a change. Can we guarantee that?
        */
+      this.blockingSessionEvents = true;
       this.el.addEventListener(
         SessionChangedEvent.TYPE,
         this.stopEventFromPropagating
@@ -478,6 +485,7 @@ export class Player {
 
       setTimeout(() => {
         /** remove the event blocker - see above */
+        this.blockingSessionEvents = false;
         this.el.removeEventListener(
           SessionChangedEvent.TYPE,
           this.stopEventFromPropagating
@@ -504,9 +512,16 @@ export class Player {
    * Record that this element's session has been announced, so a later commit
    * can tell a pending response from one the host already has. Passive: it does
    * not stop the event or change what a host receives.
+   *
+   * `stopPropagation()` does not stop a listener on the same target, so an
+   * event the blocker above swallows still arrives here. Recording it would
+   * report a response as delivered that no host ever saw, and the commit at the
+   * next seam would then skip it - the loss this whole change exists to close.
    */
   @Listen("session-changed")
   noteSessionAnnounced(e: CustomEvent) {
+    const isCommit = Boolean(e && e.detail && (e.detail as any).sessionCommitReason);
+    if (this.blockingSessionEvents && !isCommit) return;
     noteSessionObserved(e.target as EventTarget | null);
   }
 
