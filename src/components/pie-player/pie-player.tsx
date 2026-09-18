@@ -5,6 +5,7 @@ import {
   Event,
   EventEmitter,
   h,
+  Listen,
   Method,
   Prop,
   State,
@@ -30,6 +31,11 @@ import {
 } from "../../pie-loader";
 import { addRubric } from "../../rubric-utils";
 import { normalizeContentElements } from "../../utils/utils";
+import {
+  bindPageLifecycleCommit,
+  commitPendingSessions,
+  noteSessionObserved
+} from "../../utils/session-commit";
 import { APP_VERSION } from '../../config';
 
 const controllerErrorMessage: string =
@@ -239,8 +245,14 @@ export class Player {
     return this.stimulusPlayer ? this.stimulusPlayer : this;
   }
 
+  private releasePageLifecycleCommit: (() => void) | null = null;
+
   @Watch("config")
   async watchConfig(newConfig) {
+    // The elements rendered for the outgoing config are about to be replaced
+    // through the markup prop. Commit while they are still attached, so a
+    // response still inside an element's debounce window reaches the host.
+    commitPendingSessions(this.el, { reason: "navigate" });
     this.elementsLoaded = false;
 
     try {
@@ -477,7 +489,25 @@ export class Player {
   }
 
   private stopEventFromPropagating(e: CustomEvent) {
+    // A commit is exempt. The blocker exists for the echo an element fires when
+    // the player sets its session, which carries no commit reason; swallowing a
+    // commit as well means two config changes inside the 150ms window lose the
+    // outgoing item's response with no event at all. The marker covers both
+    // commit paths: `commitPendingSessions` puts it on a synthesized event, and
+    // marks an element's own commit dispatch from a capture listener on the
+    // sweep root, which runs before this handler.
+    if (e && e.detail && (e.detail as any).sessionCommitReason) return;
     e.stopPropagation();
+  }
+
+  /**
+   * Record that this element's session has been announced, so a later commit
+   * can tell a pending response from one the host already has. Passive: it does
+   * not stop the event or change what a host receives.
+   */
+  @Listen("session-changed")
+  noteSessionAnnounced(e: CustomEvent) {
+    noteSessionObserved(e.target as EventTarget | null);
   }
 
   private scopeCSS(cssText: string) {
@@ -531,6 +561,34 @@ export class Player {
     } finally {
       this.loadingStyles.delete(url);
     }
+  }
+
+  connectedCallback() {
+    // Closing the tab, navigating away or an OS reclaiming a backgrounded tab
+    // removes nothing from the DOM, so no teardown seam fires. `visibilitychange`
+    // is the only signal a mobile browser reliably delivers before freezing the
+    // page. Stencil can re-run this on a reconnect, so the binding is idempotent.
+    if (!this.releasePageLifecycleCommit) {
+      this.releasePageLifecycleCommit = bindPageLifecycleCommit({
+        root: () => this.el
+      });
+    }
+  }
+
+  disconnectedCallback() {
+    if (this.releasePageLifecycleCommit) {
+      this.releasePageLifecycleCommit();
+      this.releasePageLifecycleCommit = null;
+    }
+    // This runs after the player has left the document, so the commit's
+    // `session-changed` reaches a host listener bound inside the removed subtree
+    // and not one on `document`. It also does not reach a Stencil `@Listen` on
+    // an ancestor: Stencil removes host listeners before `disconnectedCallback`,
+    // and an ancestor's runs first, which is why `<pie-api-player>` commits and
+    // decides its own save rather than waiting for this. A host on `document` is
+    // covered by `watchConfig` and the page lifecycle binding above, both of
+    // which run while still connected.
+    commitPendingSessions(this.el, { reason: "teardown" });
   }
 
   async componentWillLoad() {
