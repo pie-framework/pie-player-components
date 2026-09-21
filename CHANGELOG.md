@@ -1,3 +1,12 @@
+## [3.17.2](https://github.com/pie-framework/pie-player-components/compare/v3.17.1...v3.17.2) (2026-09-21)
+
+
+### Bug Fixes
+
+* commit pending element sessions at teardown (PIE-1058) ([1ed5d4c](https://github.com/pie-framework/pie-player-components/commit/1ed5d4c48e1326f3385bfe1deb56310f041e6c70))
+* preserve loaded answer state on teardown PIE-1058 ([ba886f9](https://github.com/pie-framework/pie-player-components/commit/ba886f9170f55d7489d62af5bd6cca377bef8011))
+* record a session as announced only when the host gets it (PIE-1058) ([11e8de6](https://github.com/pie-framework/pie-player-components/commit/11e8de618848d95deee999d4b4c1929eb5caceac))
+
 ## [3.17.1](https://github.com/pie-framework/pie-player-components/compare/v3.17.0...v3.17.1) (2026-07-06)
 
 
