@@ -34,6 +34,7 @@ import { normalizeContentElements } from "../../utils/utils";
 import {
   bindPageLifecycleCommit,
   commitPendingSessions,
+  noteSessionBaseline,
   noteSessionObserved
 } from "../../utils/session-commit";
 import { APP_VERSION } from '../../config';
@@ -484,6 +485,23 @@ export class Player {
       console.log("[PIE Model Setup Time]", modelDuration.toFixed(2), "ms");
 
       setTimeout(() => {
+        /**
+         * The elements now hold the sessions this player just wrote, so record
+         * them as the baseline a later commit measures against. Without it an
+         * element has no recorded signature at all, and the commit sweep falls
+         * back to guessing from the session's shape: a restored response the
+         * learner never touched gets announced as a change, and a response the
+         * learner *cleared* reads as "never answered" and is dropped - the loss
+         * this change exists to close, for the case where clearing is the
+         * learner's first action.
+         *
+         * Seeded at the end of the blocker window rather than per element as
+         * the sessions are set: an element or its controller can still write
+         * into its session after the assignment (shuffle order), and a baseline
+         * taken before that reads the write as learner input.
+         */
+        noteSessionBaseline(this.el);
+
         /** remove the event blocker - see above */
         this.blockingSessionEvents = false;
         this.el.removeEventListener(
