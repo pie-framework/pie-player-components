@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0"
+    />
+    <title>Author - Extended Text Entry remount (Vue revisit) repro</title>
+
+    <script type="module" src="/build/pie-player-components.esm.js"></script>
+    <script nomodule src="/build/pie-player-components.js"></script>
+
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        margin: 16px;
+        color: #1a1a1a;
+      }
+      h1 {
+        font-size: 18px;
+      }
+      .panel {
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        padding: 12px 16px;
+        margin-bottom: 16px;
+        background: #fafafa;
+      }
+      .versions code {
+        display: inline-block;
+        background: #eef;
+        padding: 2px 6px;
+        border-radius: 4px;
+        margin: 2px 0;
+      }
+      button {
+        font-size: 14px;
+        padding: 6px 12px;
+        margin: 4px 6px 4px 0;
+        cursor: pointer;
+      }
+      .danger {
+        color: #b00020;
+      }
+      ol li {
+        margin-bottom: 4px;
+      }
+      #log {
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        font-size: 12px;
+        white-space: pre-wrap;
+        background: #111;
+        color: #0f0;
+        padding: 10px;
+        border-radius: 6px;
+        max-height: 220px;
+        overflow: auto;
+      }
+      #holder {
+        border: 2px dashed #bbb;
+        border-radius: 6px;
+        padding: 8px;
+        min-height: 120px;
+      }
+      .empty-note {
+        color: #999;
+        font-style: italic;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Author &mdash; Extended Text Entry not rendered after revisit (Vue) repro</h1>
+
+    <div class="panel versions">
+      <strong>Combination / versions under test</strong> (prod proxy
+      <code>https://proxy.pie-api.com/bundles/</code>):
+      <div><code>@pie-element/extended-text-entry@15.1.1-ext.42</code></div>
+      <div><code>@pie-element/complex-rubric@7.1.1-next.44</code></div>
+      <div style="margin-top: 6px">
+        Expected bundle request:
+        <code
+          >.../@pie-element/extended-text-entry@15.1.1-ext.42+@pie-element/complex-rubric@7.1.1-next.44/editor.js</code
+        >
+      </div>
+    </div>
+
+    <div class="panel">
+      <strong>What this reproduces</strong>
+      <p style="margin: 6px 0">
+        A client embeds <code>pie-author</code> inside a Vue page. The first
+        visit renders Extended Text Entry fine. Navigating away unmounts
+        <code>pie-author</code> (removed from the DOM); navigating back mounts a
+        brand new <code>pie-author</code>. On that second mount the Extended Text
+        Entry config (<code>pp-pie-element-extended-text-entry-config</code>) is
+        no longer rendered &mdash; but calling
+        <code>render()</code> on that element from the console paints it back.
+      </p>
+      <ol>
+        <li>Click <strong>Mount author</strong> &mdash; ETE renders, bundle is fetched.</li>
+        <li>Click <strong>Unmount author</strong> (simulates leaving the Vue page).</li>
+        <li>
+          Click <strong>Mount author</strong> again (simulates coming back).
+          Bundle is <em>not</em> re-fetched (elements already in the global
+          registry / <code>customElements</code>).
+        </li>
+        <li class="danger">
+          Observe: ETE config area is blank on the second mount.
+        </li>
+        <li>
+          Click <strong>Force render ETE config</strong> (or run
+          <code>window.eteConfig.render()</code> in the console) &mdash; it
+          paints back.
+        </li>
+      </ol>
+    </div>
+
+    <div class="panel">
+      <button id="mount">Mount author</button>
+      <button id="unmount" class="danger">Unmount author (leave page)</button>
+      <button id="run-repro">Run full repro (mount &rarr; unmount &rarr; remount)</button>
+      <br />
+      <button id="grab">Grab ETE config el &rarr; window.eteConfig</button>
+      <button id="force-render">Force render ETE config</button>
+      <button id="dump-registry">Dump PIE_REGISTRY</button>
+    </div>
+
+    <div id="holder"><span class="empty-note">author not mounted</span></div>
+
+    <h3>Log</h3>
+    <pre id="log"></pre>
+
+    <script>
+      const holder = document.getElementById("holder");
+      const logEl = document.getElementById("log");
+      let author = null;
+
+      const log = (...args) => {
+        const line = args
+          .map(a => (typeof a === "string" ? a : JSON.stringify(a)))
+          .join(" ");
+        logEl.textContent += line + "\n";
+        logEl.scrollTop = logEl.scrollHeight;
+        console.log("[repro]", ...args);
+      };
+
+      // Pinned combination matching the client's reported bundle.
+      const buildConfig = () => ({
+        id: "p-00000000",
+        elements: {
+          "pp-pie-element-extended-text-entry":
+            "@pie-element/extended-text-entry@15.1.1-ext.42",
+          "pp-pie-element-complex-rubric":
+            "@pie-element/complex-rubric@7.1.1-next.44"
+        },
+        models: [
+          {
+            id: "p-00000000",
+            element: "pp-pie-element-extended-text-entry",
+            dimensions: { height: 100, width: 500 },
+            prompt: "<p>Write your extended response below.</p>",
+            mathInput: false,
+            equationEditor: "everything",
+            feedbackEnabled: false,
+            rationaleEnabled: false,
+            promptEnabled: true,
+            teacherInstructionsEnabled: false,
+            studentInstructionsEnabled: false,
+            feedback: { type: "default", default: "" },
+            showMathInput: false,
+            // keep complex-rubric in the config so the exact combined bundle is requested
+            rubricEnabled: true
+          },
+          {
+            id: "complex-rubric",
+            element: "pp-pie-element-complex-rubric"
+          }
+        ],
+        markup:
+          '<pp-pie-element-extended-text-entry id="p-00000000"></pp-pie-element-extended-text-entry>' +
+          '<pp-pie-element-complex-rubric id="complex-rubric"></pp-pie-element-complex-rubric>'
+      });
+
+      const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+      const mountAuthor = () => {
+        if (author) {
+          log("author already mounted, unmount first");
+          return;
+        }
+        log("mount: creating <pie-author> ...");
+        holder.innerHTML = "";
+        author = document.createElement("pie-author");
+        // prod proxy => https://proxy.pie-api.com/bundles/
+        author.bundleHost = "prod";
+
+        author.addEventListener("modelLoaded", () =>
+          log("event: modelLoaded fired")
+        );
+
+        // set config BEFORE attaching, like the Vue host does
+        author.config = buildConfig();
+        holder.appendChild(author);
+        log("mount: appended to DOM");
+        // give the elements a beat, then auto-grab the config element
+        setTimeout(grabConfigEl, 1500);
+      };
+
+      const unmountAuthor = () => {
+        if (!author) {
+          log("nothing to unmount");
+          return;
+        }
+        log("unmount: removing <pie-author> from DOM (simulating route leave)");
+        author.remove();
+        author = null;
+        window.eteConfig = null;
+        holder.innerHTML = '<span class="empty-note">author not mounted</span>';
+      };
+
+      const grabConfigEl = () => {
+        if (!author) {
+          log("grab: no author mounted");
+          return;
+        }
+        const el = author.querySelector(
+          "pp-pie-element-extended-text-entry-config"
+        );
+        window.eteConfig = el;
+        if (el) {
+          const hasContent = el.childNodes.length > 0;
+          log(
+            "grab: found ETE config el -> window.eteConfig | rendered children:",
+            el.childNodes.length,
+            hasContent ? "(looks rendered)" : "(BLANK - not rendered)"
+          );
+        } else {
+          log("grab: ETE config el NOT found in DOM");
+        }
+      };
+
+      const forceRender = () => {
+        const el =
+          window.eteConfig ||
+          (author &&
+            author.querySelector("pp-pie-element-extended-text-entry-config"));
+        if (!el) {
+          log("force-render: no ETE config el available");
+          return;
+        }
+        if (typeof el.render !== "function") {
+          log("force-render: el has no render() method");
+          return;
+        }
+        log("force-render: calling eteConfig.render() ...");
+        el.render();
+        setTimeout(
+          () =>
+            log(
+              "force-render: after render(), children:",
+              el.childNodes.length
+            ),
+          200
+        );
+      };
+
+      const dumpRegistry = () => {
+        const reg = window["PIE_REGISTRY"] || {};
+        log(
+          "PIE_REGISTRY keys:",
+          Object.keys(reg).join(", ") || "(empty)"
+        );
+        Object.keys(reg).forEach(k => {
+          const e = reg[k];
+          log(
+            ` - ${k}: status=${e.status} hasConfig=${!!e.config} hasController=${!!e.controller} hasElement=${!!e.element}`
+          );
+        });
+        log(
+          "customElements defined: ete=",
+          !!customElements.get("pp-pie-element-extended-text-entry-config"),
+          " cr=",
+          !!customElements.get("pp-pie-element-complex-rubric-config")
+        );
+      };
+
+      document.getElementById("mount").addEventListener("click", mountAuthor);
+      document
+        .getElementById("unmount")
+        .addEventListener("click", unmountAuthor);
+      document.getElementById("grab").addEventListener("click", grabConfigEl);
+      document
+        .getElementById("force-render")
+        .addEventListener("click", forceRender);
+      document
+        .getElementById("dump-registry")
+        .addEventListener("click", dumpRegistry);
+
+      document
+        .getElementById("run-repro")
+        .addEventListener("click", async () => {
+          logEl.textContent = "";
+          log("=== full repro start ===");
+          mountAuthor();
+          await sleep(3000);
+          log("--- first mount done, leaving page ---");
+          unmountAuthor();
+          await sleep(1500);
+          log("--- coming back: remount ---");
+          mountAuthor();
+          await sleep(3000);
+          grabConfigEl();
+          log(
+            "=== check the author area above: ETE config should be blank on this 2nd mount ==="
+          );
+          log("Tip: click 'Force render ETE config' to paint it back.");
+        });
+    </script>
+  </body>
+</html>
