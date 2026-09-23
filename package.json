@@ -47,7 +47,7 @@
     "@pie-lib/math-rendering-module": "6.0.0",
     "async-retry": "^1.2.3",
     "lodash": "^4.17.15",
-    "parse-package-name": "^0.1.0"
+    "parse-package-name": "^1.0.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^8.3.6",
@@ -81,7 +81,7 @@
     "jest-fetch-mock": "^3.0.3",
     "jsdom": "16",
     "lint-staged": "^8.2.0",
-    "parse-package-name": "^0.1.0",
+    "parse-package-name": "^1.0.0",
     "prettier": "1.16.4",
     "puppeteer": "20",
     "release-it": "^10.1.0",
