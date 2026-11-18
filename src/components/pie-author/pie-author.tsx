@@ -990,6 +990,7 @@ export class Author {
             </div>
             <input
               type="file"
+              accept="image/*"
               hidden
               ref={r => (this.fileInput = r)}
               style={{ display: "none" }}
@@ -1003,6 +1004,7 @@ export class Author {
             {authorContent}
             <input
               type="file"
+              accept="image/*"
               hidden
               ref={r => (this.fileInput = r)}
               style={{ display: "none" }}
