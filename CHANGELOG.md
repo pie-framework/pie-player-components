@@ -1,3 +1,10 @@
+## [3.17.3](https://github.com/pie-framework/pie-player-components/compare/v3.17.2...v3.17.3) (2026-11-27)
+
+
+### Bug Fixes
+
+* **pie-author:** restrict image upload file picker to images PIE-1412 ([894c664](https://github.com/pie-framework/pie-player-components/commit/894c66447489e1e9c2c978a5eda419ec679f0dcd))
+
 ## [3.17.2](https://github.com/pie-framework/pie-player-components/compare/v3.17.1...v3.17.2) (2026-09-21)
 
 
